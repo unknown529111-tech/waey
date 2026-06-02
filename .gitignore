@@ -28,8 +28,13 @@ Thumbs.db
 # Dev artifacts / screenshots
 screenshots/
 waey logo/
-*.png
 *.pptx
+/dashboard-screenshot.png
+/finance-traps.png
+/health-screenshot.png
+/navbar-screenshot.png
+/waey-screenshot.png
+/website-screenshot.png
 snapshot-*.txt
 snapshot-*.md
 test-ai*.mjs
