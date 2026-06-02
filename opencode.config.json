@@ -1,0 +1,29 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"]
+    },
+    "figma": {
+      "type": "remote",
+      "url": "https://mcp.figma.com/mcp",
+      "headers": {
+        "X-Figma-Region": "us-east-1"
+      }
+    },
+    "openai-docs": {
+      "type": "remote",
+      "url": "https://developers.openai.com/mcp"
+    },
+    "render": {
+      "type": "remote",
+      "url": "https://mcp.render.com/mcp"
+    }
+  },
+  "permission": {
+    "skill": {
+      "*": "allow"
+    }
+  }
+}

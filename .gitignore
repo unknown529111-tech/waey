@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+/build/
+
+# Large audio files (not part of the app)
+frontend/waey/public/sounds/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.keys
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dev artifacts / screenshots
+screenshots/
+waey logo/
+*.png
+*.pptx
+snapshot-*.txt
+snapshot-*.md
+test-ai*.mjs
+test-results/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Waey old copy
+waey - Copy/
+
+# Hermes agent artifacts (not part of the project)
+SKILL.md
+skills-lock.json
+
+# Audio / media assets (too large for git)
+Study Sounds/
+
+# Separate external repo included by accident
+Webwright/
+
+# Debug/test HTML
+iphone-frame.html
+website-snapshot.txt

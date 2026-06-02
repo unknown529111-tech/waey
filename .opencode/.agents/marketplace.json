@@ -1,0 +1,180 @@
+{
+    "name":  "anthropic-agent-skills",
+    "owner":  {
+                  "name":  "Keith Lazuka",
+                  "email":  "klazuka@anthropic.com"
+              },
+    "metadata":  {
+                     "description":  "Anthropic example skills",
+                     "version":  "1.0.0"
+                 },
+    "plugins":  [
+                    {
+                        "name":  "document-skills",
+                        "description":  "Collection of document processing suite including Excel, Word, PowerPoint, and PDF capabilities",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/xlsx",
+                                       "./skills/docx",
+                                       "./skills/pptx",
+                                       "./skills/pdf"
+                                   ]
+                    },
+                    {
+                        "name":  "example-skills",
+                        "description":  "Collection of example skills demonstrating various capabilities including skill creation, MCP building, visual design, algorithmic art, internal communications, web testing, artifact building, Slack GIFs, and theme styling",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/algorithmic-art",
+                                       "./skills/brand-guidelines",
+                                       "./skills/canvas-design",
+                                       "./skills/doc-coauthoring",
+                                       "./skills/frontend-design",
+                                       "./skills/mcp-builder",
+                                       "./skills/skill-creator",
+                                       "./skills/slack-gif-creator",
+                                       "./skills/theme-factory",
+                                       "./skills/web-artifacts-builder",
+                                       "./skills/webapp-testing"
+                                   ]
+                    },
+                    {
+                        "name":  "claude-api",
+                        "description":  "Claude API and SDK documentation skill for building LLM-powered applications",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/claude-api"
+                                   ]
+                    },
+                    {
+                        "name":  "glm-skills",
+                        "description":  "Collection of GLM-family model skills including multimodal (caption, grounding, stock analyst), OCR (formula, handwriting, table), and image generation",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/glmv-pdf-to-ppt",
+                                       "./skills/glmv-pdf-to-web",
+                                       "./skills/glmv-prd-to-app",
+                                       "./skills/glmv-web-replication"
+                                   ]
+                    },
+                    {
+                        "name":  "openai-codex-skills",
+                        "description":  "Collection of OpenAI Codex curated and system skills including deployment (Vercel, Netlify, Cloudflare, Render), development (ASP.NET, CLI, Jupyter, WinUI), security, and platform integrations (Figma, Notion, Sentry, Linear)",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/chatgpt-apps",
+                                       "./skills/cloudflare-deploy",
+                                       "./skills/figma",
+                                       "./skills/gh-address-comments",
+                                       "./skills/gh-fix-ci",
+                                       "./skills/imagegen",
+                                       "./skills/jupyter-notebook",
+                                       "./skills/migrate-to-codex",
+                                       "./skills/netlify-deploy",
+                                       "./skills/openai-docs",
+                                       "./skills/playwright",
+                                       "./skills/playwright-interactive",
+                                       "./skills/plugin-creator",
+                                       "./skills/render-deploy",
+                                       "./skills/security-best-practices",
+                                       "./skills/security-ownership-map",
+                                       "./skills/security-threat-model",
+                                       "./skills/sentry",
+                                       "./skills/skill-installer",
+                                       "./skills/transcribe",
+                                       "./skills/vercel-deploy",
+                                       "./skills/yeet"
+                                   ]
+                    },
+                    {
+                        "name":  "open-design-skills",
+                        "description":  "Collection of design, animation, and media skills from Open Design including GSAP animations, Three.js 3D, FAL AI media generation, Flutter, SwiftUI, video/audio processing, and design system tools",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/8-bit-orbit-video-template",
+                                       "./skills/after-hours-editorial-template",
+                                       "./skills/agent-browser",
+                                       "./skills/artifacts-builder",
+                                       "./skills/brainstorming",
+                                       "./skills/color-expert",
+                                       "./skills/competitive-ads-extractor",
+                                       "./skills/creative-director",
+                                       "./skills/d3-visualization",
+                                       "./skills/design-brief",
+                                       "./skills/design-consultation",
+                                       "./skills/design-md",
+                                       "./skills/design-review",
+                                       "./skills/digits-fintech-swiss-template",
+                                       "./skills/doc",
+                                       "./skills/editorial-burgundy-principles-template",
+                                       "./skills/enhance-prompt",
+                                       "./skills/fal-3d",
+                                       "./skills/fal-generate",
+                                       "./skills/fal-image-edit",
+                                       "./skills/fal-kling-o3",
+                                       "./skills/fal-lip-sync",
+                                       "./skills/fal-realtime",
+                                       "./skills/fal-restore",
+                                       "./skills/fal-train",
+                                       "./skills/fal-tryon",
+                                       "./skills/fal-upscale",
+                                       "./skills/fal-video-edit",
+                                       "./skills/fal-vision",
+                                       "./skills/faq-page",
+                                       "./skills/field-notes-editorial-template",
+                                       "./skills/frontend-dev",
+                                       "./skills/frontend-skill",
+                                       "./skills/frontend-slides",
+                                       "./skills/gif-sticker-maker",
+                                       "./skills/gsap-core",
+                                       "./skills/gsap-react",
+                                       "./skills/gsap-scrolltrigger",
+                                       "./skills/gsap-timeline",
+                                       "./skills/hand-drawn-diagrams",
+                                       "./skills/html-ppt-retro-quarterly-review",
+                                       "./skills/image-enhancer",
+                                       "./skills/imagen",
+                                       "./skills/minimax-docx",
+                                       "./skills/minimax-pdf",
+                                       "./skills/nanobanana-ppt",
+                                       "./skills/pixelbin-media",
+                                       "./skills/plan-design-review",
+                                       "./skills/platform-design",
+                                       "./skills/pptx-generator",
+                                       "./skills/pptx-html-fidelity-audit",
+                                       "./skills/release-notes-one-pager",
+                                       "./skills/remotion",
+                                       "./skills/replicate",
+                                       "./skills/screenshots-marketing",
+                                       "./skills/shadcn-ui",
+                                       "./skills/shader-dev",
+                                       "./skills/sora",
+                                       "./skills/stitch-loop",
+                                       "./skills/swiss-creative-mode-template",
+                                       "./skills/swiss-user-research-video-template",
+                                       "./skills/threejs",
+                                       "./skills/ui-skills",
+                                       "./skills/venice-audio-speech",
+                                       "./skills/venice-image-edit",
+                                       "./skills/venice-image-generate",
+                                       "./skills/venice-video",
+                                       "./skills/web-design-guidelines"
+                                   ]
+                    },
+                    {
+                        "name":  "api-design-best-practices",
+                        "description":  "Next.js App Router API design skill with Zod validation, error handling, logging, and standardized response types",
+                        "source":  "./",
+                        "strict":  false,
+                        "skills":  [
+                                       "./skills/api-design-best-practices"
+                                   ]
+                    }
+                ]
+}

@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 47 56% 98%;
+    --foreground: 60 10% 16%;
+
+    --card: 48 56% 100%;
+    --card-foreground: 60 10% 16%;
+
+    --popover: 48 56% 100%;
+    --popover-foreground: 60 10% 16%;
+
+    --primary: 100 15% 38%;
+    --primary-foreground: 80 10% 95%;
+
+    --secondary: 28 44% 56%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 33 27% 92%;
+    --muted-foreground: 60 5% 45%;
+
+    --accent: 36 33% 85%;
+    --accent-foreground: 60 7% 27%;
+
+    --destructive: 7 40% 47%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 19% 84%;
+    --input: 36 19% 84%;
+    --ring: 100 15% 38%;
+
+    --radius: 2rem;
+
+    --leaf-light: 100 15% 90%;
+    --sun-warm: 36 33% 85%;
+    --sand-deep: 36 19% 84%;
+
+    --sidebar-background: 47 56% 98%;
+    --sidebar-foreground: 60 10% 16%;
+    --sidebar-primary: 100 15% 38%;
+    --sidebar-primary-foreground: 80 10% 95%;
+    --sidebar-accent: 36 33% 85%;
+    --sidebar-accent-foreground: 60 7% 27%;
+    --sidebar-border: 36 19% 84%;
+    --sidebar-ring: 100 15% 38%;
+  }
+
+  .dark {
+    --background: 30 6% 10%;
+    --foreground: 42 10% 88%;
+
+    --card: 30 5% 14%;
+    --card-foreground: 42 10% 88%;
+
+    --popover: 30 5% 14%;
+    --popover-foreground: 42 10% 88%;
+
+    --primary: 100 20% 52%;
+    --primary-foreground: 30 6% 10%;
+
+    --secondary: 28 35% 38%;
+    --secondary-foreground: 42 10% 88%;
+
+    --muted: 35 8% 16%;
+    --muted-foreground: 50 5% 55%;
+
+    --accent: 36 10% 20%;
+    --accent-foreground: 42 10% 88%;
+
+    --destructive: 7 35% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 6% 20%;
+    --input: 36 6% 20%;
+    --ring: 100 20% 52%;
+
+    --leaf-light: 100 10% 18%;
+    --sun-warm: 36 10% 18%;
+    --sand-deep: 36 6% 16%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-alexandria antialiased;
+    direction: rtl;
+    line-height: 1.9;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-alexandria font-bold tracking-tight;
+    line-height: 1.25;
+  }
+
+  p {
+    line-height: 1.9;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
+  }
+}
+
+/* Grain texture overlay */
+@layer base {
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  .dark body::after {
+    opacity: 0.06;
+    mix-blend-mode: screen;
+  }
+}
+
+@layer base {
+  input[type="range"] {
+    @apply h-1.5 rounded-full appearance-none cursor-pointer;
+    background: hsl(var(--secondary));
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none size-5 rounded-full;
+    background: hsl(var(--primary));
+    border: 3px solid hsl(var(--card));
+    box-shadow: 0 2px 8px rgba(93, 112, 82, 0.2);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    @apply size-5 rounded-full border-[3px];
+    background: hsl(var(--primary));
+    border-color: hsl(var(--card));
+  }
+
+  select {
+    @apply appearance-none rounded-full;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2378786C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 16px center;
+    padding-left: 36px;
+  }
+}
