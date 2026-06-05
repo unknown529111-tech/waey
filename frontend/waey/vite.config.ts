@@ -12,14 +12,7 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (id.includes('node_modules')) {
-            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'vendor-react';
-            if (id.includes('node_modules/framer-motion')) return 'vendor-framer';
-            if (id.includes('node_modules/@tanstack')) return 'vendor-tanstack';
-            if (id.includes('node_modules/recharts')) return 'vendor-recharts';
-            if (id.includes('node_modules/lucide-react')) return 'vendor-lucide';
-            return 'vendor';
-          }
+          if (id.includes('node_modules')) return 'vendor';
           const pagesMatch = id.match(/src\/pages\/([^\/]+)\.tsx$/);
           if (pagesMatch) return `page-${pagesMatch[1]}`;
         },
