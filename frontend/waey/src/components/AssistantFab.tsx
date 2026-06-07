@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { Sparkles } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AssistantFab = () => {
+  const { t } = useLanguage();
   const { pathname } = useLocation();
   if (pathname === "/assistant") return null;
 
@@ -16,7 +18,7 @@ const AssistantFab = () => {
         <Sparkles className="size-6" />
       </div>
       <span className="absolute -top-9 left-1/2 -translate-x-1/2 bg-foreground text-background text-xs px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap pointer-events-none shadow-soft">
-        مساعد وعي
+        {t('chat.title')}
       </span>
     </Link>
   );

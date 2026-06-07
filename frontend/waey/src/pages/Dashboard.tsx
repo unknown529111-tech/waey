@@ -1,5 +1,6 @@
 import { Moon, Footprints, Recycle, Target, Brain, Sparkles, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useT } from "@/contexts/LanguageContext";
 import StreakBadge from "@/features/StreakBadge";
 import DailyChallenge from "@/features/DailyChallenge";
 import DailyQuote from "@/features/DailyQuote";
@@ -14,6 +15,7 @@ import NightReview from "@/features/NightReview";
 import DailyImpact from "@/features/DailyImpact";
 
 const Dashboard = () => {
+  const t = useT();
   return (
     <div className="relative min-h-[60vh]">
       <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
@@ -21,10 +23,10 @@ const Dashboard = () => {
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-primary">
-            يومي في وعي
+            {t('dash.title')}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            تابع عاداتك اليومية في الصحة والمال والبيئة.
+            {t('dash.subtitle')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -34,7 +36,7 @@ const Dashboard = () => {
             className="inline-flex items-center gap-1.5 text-sm font-bold bg-secondary hover:bg-muted hover:text-foreground hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-4 py-2"
           >
             <BarChart3 className="size-4" />
-            رؤى أسبوعية
+            {t('dash.weeklyInsights')}
           </Link>
         </div>
       </header>
@@ -52,8 +54,8 @@ const Dashboard = () => {
             <WaterTracker />
             <SimpleTracker
               storageKey="sleep"
-              title="ساعات النوم"
-              unit="ساعة"
+              title={t('dash.sleep')}
+              unit={t('dash.hour')}
               icon={Moon}
               color="text-indigo-500"
               step={0.5}
@@ -62,8 +64,8 @@ const Dashboard = () => {
             />
             <SimpleTracker
               storageKey="steps"
-              title="نشاط بدني (دقيقة)"
-              unit="دقيقة"
+              title={t('dash.activity')}
+              unit={t('dash.minute')}
               icon={Footprints}
               color="text-primary"
               step={5}
@@ -72,8 +74,8 @@ const Dashboard = () => {
             />
             <SimpleTracker
               storageKey="eco"
-              title="أفعال بيئية"
-              unit="فعل"
+              title={t('dash.eco')}
+              unit={t('dash.action')}
               icon={Recycle}
               color="text-primary"
               step={1}

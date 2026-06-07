@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { sanitizeString } from "@/lib/sanitize";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -31,13 +32,6 @@ const SYSTEM_PROMPT = `أنت "مساعد وعي" — مساعد ذكي عربي
 
 - إذا سأل المستخدم عن صانع الموقع أو مالكه، أجب حرفياً بما يلي:
 صانع الموقع هو محمود احمد محمد خليل طالب في الصف الاول الثانوي و مهتم بالبرمجه و الذكاء الاصطناعي و التطوع , متطوع مع برنامج انا متطوع في قسم الميديا و قائد في مجموعه مركز تنمية شبابية الكشفية و الارشادية و متطوع مع مؤسسه اخلاق مصريه في قسم التصوير و مبرمج و مصمم في منصه متلقي الكشافة العربية , و هدف محمود من هذا الموقع هو نشر الوعي بين كل الناس`;
-
-const SUGGESTIONS = [
-  "إزاي أبدأ ميزانية شهرية؟",
-  "نصائح بسيطة لنوم أفضل 😴",
-  "ازاي أزرع نعناع في البلكونة؟",
-  "ازاي أنظم وقتي للمذاكرة؟ 📚",
-];
 
 const BATCH_INTERVAL_MS = 80;
 
@@ -159,6 +153,13 @@ async function streamResponse(
 }
 
 const AIChat = () => {
+  const { t } = useLanguage();
+  const SUGGESTIONS = [
+    t('chat.suggestion1'),
+    t('chat.suggestion2'),
+    t('chat.suggestion3'),
+    t('chat.suggestion4'),
+  ];
   const [messages, setMessages] = useState<Msg[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -334,7 +335,7 @@ const AIChat = () => {
               <Sparkles className="size-5" />
             </div>
             <div>
-              <h2 className="font-bold text-base leading-tight">مساعد وعي</h2>
+              <h2 className="font-bold text-base leading-tight">{t('chat.title')}</h2>
               <p className="text-xs text-muted-foreground">
                 {provider === "groq"
                   ? "Groq (Llama 3.3)"
@@ -364,9 +365,9 @@ const AIChat = () => {
                 <Sparkles className="size-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">أهلاً بك! 👋</h3>
+                <h3 className="font-bold text-lg mb-2">{t('chat.greeting')}</h3>
                 <p className="text-muted-foreground text-sm max-w-[40ch] mx-auto leading-relaxed">
-                  اسألني عن أي شيء يخص صحتك، تخطيطك المالي، بيئتك، أو تعليمك.
+                  {t('chat.greetingText')}
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 gap-2 max-w-[480px] mx-auto">
@@ -440,7 +441,7 @@ const AIChat = () => {
                   send(input);
                 }
               }}
-              placeholder="اكتب سؤالك هنا..."
+              placeholder={t('chat.placeholder')}
               rows={1}
               maxLength={2000}
               disabled={isLoading}
@@ -461,7 +462,7 @@ const AIChat = () => {
             </button>
           </div>
           <p className="text-xs text-muted-foreground mt-2 text-center">
-            الردود لأغراض توعوية فقط ولا تغني عن استشارة المختصين.
+            {t('chat.disclaimer')}
           </p>
         </form>
       </div>

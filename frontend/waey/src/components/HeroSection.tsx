@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { Leaf } from "lucide-react";
 import heroImage from "@/assets/hero-nature.jpg";
 import BlobBackground from "./BlobBackground";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const HeroSection = () => {
+  const { t } = useLanguage();
   return (
     <header className="relative pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center flex flex-col items-center gap-8 overflow-hidden bg-gradient-to-br from-leaf-light/40 via-background to-sun-warm/30">
       <BlobBackground count={2} className="z-0" />
@@ -14,7 +16,7 @@ const HeroSection = () => {
         className="relative z-10 inline-flex items-center gap-2 bg-card/70 backdrop-blur text-muted-foreground text-xs font-bold px-4 py-2 rounded-full border border-border/50 shadow-soft"
       >
         <Leaf className="size-3.5" />
-        منصة التوازن الشامل
+        {t('hero.badge')}
       </motion.div>
       <motion.h1
         initial={{ opacity: 0, y: 14 }}
@@ -22,9 +24,9 @@ const HeroSection = () => {
         transition={{ duration: 0.6, delay: 0.08 }}
         className="relative z-10 text-4xl md:text-6xl font-bold text-balance leading-[1.15] tracking-tight"
       >
-        ازرع عاداتك اليوم،
+        {t('hero.title1')}
         <br />
-        <span className="text-primary mt-6 block">واحصد حياة متوازنة غداً.</span>
+        <span className="text-primary mt-6 block">{t('hero.title2')}</span>
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 14 }}
@@ -32,7 +34,7 @@ const HeroSection = () => {
         transition={{ duration: 0.6, delay: 0.16 }}
         className="relative z-10 text-base md:text-lg max-w-[55ch] text-muted-foreground text-pretty leading-[1.9]"
       >
-        منصة وعي ترشدك خطوة بخطوة نحو استقرار مالي، صحة مستدامة، وبيئة مزدهرة.
+        {t('hero.desc')}
       </motion.p>
       <motion.div
         initial={{ opacity: 0 }}
@@ -42,7 +44,7 @@ const HeroSection = () => {
       >
         <img
           src={heroImage}
-          alt="نبتة خضراء تنمو من تربة ذهبية ترمز للنمو والاستدامة"
+          alt={t('hero.alt')}
           width={1200}
           height={800}
           className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"

@@ -30,6 +30,7 @@ import {
   Plus, Trash2, Edit3, X, Check, Download, AlertTriangle, RefreshCw,
   LayoutDashboard, Flame, Mail, Lock, BookOpen, Save, Copy,
 } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 type Tab = "dashboard" | "recipes" | "challenges" | "quotes" | "users" | "system";
 
@@ -47,6 +48,7 @@ const emptyRecipe: Recipe = {
 
 export default function Admin() {
   const [loggedIn, setLoggedIn] = useState(isAdminLoggedIn());
+  const t = useT();
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const [tab, setTab] = useState<Tab>("dashboard");
@@ -67,8 +69,8 @@ export default function Admin() {
               <Shield className="size-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">لوحة المشرف</h1>
-              <p className="text-sm text-muted-foreground">يرجى تسجيل الدخول</p>
+              <h1 className="text-2xl font-bold">{t('admin.title')}</h1>
+              <p className="text-sm text-muted-foreground">{t('admin.login')}</p>
             </div>
           </div>
           <form
@@ -88,19 +90,19 @@ export default function Admin() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="كلمة المرور"
+                placeholder={t('admin.password')}
                 className="w-full h-11 pr-10 rounded-full bg-muted border border-border/50 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/30 transition-all"
                 autoFocus
               />
             </div>
             {loginError && (
-              <p className="text-xs text-red-500 mb-3">كلمة المرور غير صحيحة</p>
+              <p className="text-xs text-red-500 mb-3">{t('admin.wrongPassword')}</p>
             )}
             <button
               type="submit"
               className="w-full h-11 rounded-full bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all"
             >
-              دخول
+              {t('admin.enter')}
             </button>
           </form>
         </motion.div>
@@ -130,8 +132,8 @@ export default function Admin() {
               <Shield className="size-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">لوحة المشرف</h1>
-              <p className="text-sm text-muted-foreground">إدارة المحتوى والمستخدمين</p>
+              <h1 className="text-2xl font-bold">{t('admin.title')}</h1>
+              <p className="text-sm text-muted-foreground">{t('admin.subtitle')}</p>
             </div>
           </div>
           <button
@@ -139,7 +141,7 @@ export default function Admin() {
             className="h-9 px-4 text-xs font-bold rounded-full bg-muted hover:bg-muted/80 text-muted-foreground transition-all flex items-center gap-2"
           >
             <LogOut className="size-3.5" />
-            تسجيل خروج
+            {t('admin.logout')}
           </button>
         </motion.div>
 
@@ -300,7 +302,7 @@ function RecipesTab() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="بحث..."
+            placeholder={t('common.search')}
             className="h-9 px-4 rounded-full bg-muted border-none text-xs outline-none w-32 focus:w-40 transition-all"
           />
           <button
@@ -308,7 +310,7 @@ function RecipesTab() {
             className="h-9 px-4 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-1.5"
           >
             <Plus className="size-3.5" />
-            إضافة وصفة
+            {t('common.add')}
           </button>
         </div>
       </div>
@@ -383,14 +385,14 @@ function RecipesTab() {
                       <button
                         onClick={() => setEdit({ open: true, mode: "edit", id: r._adminId, data: r })}
                         className="size-7 rounded-full bg-muted hover:bg-primary/20 flex items-center justify-center transition-colors"
-                        title="تعديل"
+                        title={t('common.edit')}
                       >
                         <Edit3 className="size-3" />
                       </button>
                       <button
                         onClick={() => { deleteAdminRecipe(r._adminId); refresh(); }}
                         className="size-7 rounded-full bg-muted hover:bg-red-100 dark:hover:bg-red-900/30 flex items-center justify-center transition-colors"
-                        title="حذف"
+                        title={t('common.delete')}
                       >
                         <Trash2 className="size-3 text-red-500" />
                       </button>
@@ -572,13 +574,13 @@ function RecipeModal({ mode, data, onSave, onClose }: {
             className="flex-1 h-11 rounded-full bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
           >
             <Save className="size-4" />
-            {mode === "add" ? "إضافة" : "حفظ التغييرات"}
+            {mode === "add" ? t('common.add') : t('common.save')}
           </button>
           <button
             onClick={onClose}
             className="h-11 px-6 rounded-full bg-muted text-muted-foreground font-bold text-sm hover:bg-muted/80 transition-all"
           >
-            إلغاء
+            {t('common.cancel')}
           </button>
         </div>
       </motion.div>
@@ -611,7 +613,7 @@ function ChallengesTab() {
           className="h-9 px-4 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-1.5"
         >
           <Plus className="size-3.5" />
-          إضافة تحدي
+          {t('common.add')}
         </button>
       </div>
 
@@ -699,9 +701,9 @@ function ChallengesTab() {
                   className="flex-1 h-11 rounded-full bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
                 >
                   <Save className="size-4" />
-                  {editForm.id ? "حفظ" : "إضافة"}
+                  {editForm.id ? t('common.save') : t('common.add')}
                 </button>
-                <button onClick={() => setShowAdd(false)} className="h-11 px-6 rounded-full bg-muted text-muted-foreground font-bold text-sm hover:bg-muted/80 transition-all">إلغاء</button>
+                <button onClick={() => setShowAdd(false)} className="h-11 px-6 rounded-full bg-muted text-muted-foreground font-bold text-sm hover:bg-muted/80 transition-all">{t('common.cancel')}</button>
               </div>
             </motion.div>
           </motion.div>
@@ -730,7 +732,7 @@ function QuotesTab() {
           className="h-9 px-4 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-1.5"
         >
           <Plus className="size-3.5" />
-          إضافة حكمة
+          {t('common.add')}
         </button>
       </div>
 
@@ -797,9 +799,9 @@ function QuotesTab() {
                   className="flex-1 h-11 rounded-full bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
                 >
                   <Save className="size-4" />
-                  {editId ? "حفظ" : "إضافة"}
+                  {editId ? t('common.save') : t('common.add')}
                 </button>
-                <button onClick={() => setShowAdd(false)} className="h-11 px-6 rounded-full bg-muted text-muted-foreground font-bold text-sm hover:bg-muted/80 transition-all">إلغاء</button>
+                <button onClick={() => setShowAdd(false)} className="h-11 px-6 rounded-full bg-muted text-muted-foreground font-bold text-sm hover:bg-muted/80 transition-all">{t('common.cancel')}</button>
               </div>
             </motion.div>
           </motion.div>
@@ -866,7 +868,7 @@ function UsersTab() {
             className="h-9 px-4 text-xs font-bold rounded-full bg-muted hover:bg-muted/80 transition-all flex items-center gap-1.5"
           >
             <Copy className="size-3" />
-            نسخ
+            {t('common.copy')}
           </button>
         </div>
       </div>
@@ -1018,7 +1020,7 @@ function SystemTab() {
                   onClick={() => setShowReset(false)}
                   className="h-9 px-4 text-xs font-bold rounded-full bg-muted text-muted-foreground hover:bg-muted/80 transition-all"
                 >
-                  إلغاء
+                  {t('common.cancel')}
                 </button>
               </div>
             ) : (

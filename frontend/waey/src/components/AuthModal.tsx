@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/useAuth";
 import { sanitizeString, sanitizeEmail, sanitizePassword } from "@/lib/sanitize";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AuthModalProps {
   open: boolean;
@@ -13,6 +14,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ open, onOpenChange }: AuthModalProps) {
+  const { t } = useLanguage();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -66,7 +68,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl">
-            {mode === "signin" ? "تسجيل الدخول" : "إنشاء حساب"}
+            {mode === "signin" ? t('auth.signIn') : t('auth.signUp')}
           </DialogTitle>
         </DialogHeader>
 
@@ -80,11 +82,11 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
                 exit={{ opacity: 0, height: 0 }}
                 className="space-y-2"
               >
-                <Label htmlFor="auth-name">الاسم</Label>
+                <Label htmlFor="auth-name">{t('auth.name')}</Label>
                 <Input
                   id="auth-name"
                   type="text"
-                  placeholder="محمد أحمد"
+                  placeholder={t('auth.namePlaceholder')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -95,7 +97,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           </AnimatePresence>
 
           <div className="space-y-2">
-            <Label htmlFor="auth-email">البريد الإلكتروني</Label>
+            <Label htmlFor="auth-email">{t('auth.email')}</Label>
             <Input
               id="auth-email"
               type="email"
@@ -109,7 +111,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="auth-password">كلمة المرور</Label>
+            <Label htmlFor="auth-password">{t('auth.password')}</Label>
             <Input
               id="auth-password"
               type="password"
@@ -127,15 +129,15 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           )}
 
           <Button type="submit" size="lg" className="w-full" disabled={loading}>
-            {loading ? "..." : mode === "signin" ? "تسجيل الدخول" : "إنشاء الحساب"}
+            {loading ? "..." : mode === "signin" ? t('auth.signIn') : t('auth.createAccount')}
           </Button>
         </form>
 
         <div className="text-center text-sm text-muted-foreground">
           {mode === "signin" ? (
-            <>ليس لديك حساب؟ <button onClick={switchMode} className="text-primary font-bold hover:underline">إنشاء حساب</button></>
+            <button onClick={switchMode} className="text-primary font-bold hover:underline">{t('auth.noAccount')}</button>
           ) : (
-            <>لديك حساب بالفعل؟ <button onClick={switchMode} className="text-primary font-bold hover:underline">تسجيل الدخول</button></>
+            <button onClick={switchMode} className="text-primary font-bold hover:underline">{t('auth.hasAccount')}</button>
           )}
         </div>
       </DialogContent>

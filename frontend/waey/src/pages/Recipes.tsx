@@ -4,10 +4,12 @@ import PageHero from "@/components/PageHero";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { getAdminRecipes, type AdminItem } from "@/lib/adminContent";
 import { getFavorites, toggleFavorite } from "@/lib/favorites";
+import { useT } from "@/contexts/LanguageContext";
 
 const ALL_TAGS: Recipe["tags"][number][] = ["نباتي", "سريع", "اقتصادي", "صحي", "بروتين عالي"];
 
 const Recipes = () => {
+  const t = useT();
   const [maxCal, setMaxCal] = useState(1000);
   const [maxCost, setMaxCost] = useState(200);
   const [activeTags, setActiveTags] = useState<string[]>([]);
@@ -48,10 +50,10 @@ const Recipes = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
       <div className="relative">
         <PageHero
-          badge="مطبخ صحي"
+          badge={t('recipes.badge')}
           icon={<ChefHat className="size-4" />}
-          title="وصفات مصرية صحية واقتصادية"
-          subtitle="فلتر بالسعرات والتكلفة، واطبخ أكل بيتي بطعم وبصحة."
+          title={t('recipes.title')}
+          subtitle={t('recipes.subtitle')}
         />
 
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-6xl mx-auto">
@@ -96,7 +98,7 @@ const Recipes = () => {
                 }`}
               >
                 <Heart className={`size-3.5 ${favOnly ? "fill-current" : ""}`} />
-                المفضلة ({favs.length})
+                {t('recipes.favorites')} ({favs.length})
               </button>
               {ALL_TAGS.map((t) => (
                 <button
@@ -115,7 +117,7 @@ const Recipes = () => {
           </div>
 
           {filtered.length === 0 ? (
-            <p className="text-center text-muted-foreground py-12">لا توجد وصفات تطابق الفلتر. جرّب توسعته.</p>
+            <p className="text-center text-muted-foreground py-12">{t('recipes.empty')}</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((r) => {
@@ -132,7 +134,7 @@ const Recipes = () => {
                         toggle(rid);
                       }}
                       className="absolute top-4 left-4 size-10 rounded-full bg-secondary hover:bg-destructive/10 hover:scale-105 active:scale-95 flex items-center justify-center transition-all duration-300"
-                      aria-label="مفضلة"
+                      aria-label={t('recipes.favorites')}
                     >
                       <Heart className={`size-4 ${isFav ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
                     </button>
@@ -186,7 +188,7 @@ const Recipes = () => {
               <button
                 onClick={() => toggle(getId(open))}
                 className="absolute top-4 left-16 size-10 bg-secondary rounded-full flex items-center justify-center hover:bg-destructive/10 hover:scale-105 active:scale-95 transition-all duration-300"
-                aria-label="مفضلة"
+                aria-label={t('recipes.favorites')}
               >
                 <Heart className={`size-4 ${favs.includes(getId(open)) ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
               </button>

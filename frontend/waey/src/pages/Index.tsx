@@ -4,16 +4,19 @@ import { Heart, Wallet, TreePine, ArrowLeft, LayoutDashboard, GraduationCap, Spa
 import HeroSection from "@/components/HeroSection";
 import AskSection from "@/components/AskSection";
 import { getCardRadius } from "@/lib/organic";
-
-const sections = [
-  { to: "/health", icon: Heart, title: "الصحة", desc: "عادات بسيطة لجسد قوي وعقل صافي.", color: "from-primary/20 to-leaf-light/40" },
-  { to: "/finance", icon: Wallet, title: "المالية", desc: "حاسبات وادخار يبني مستقبلك.", color: "from-secondary/20 to-sun-warm/40" },
-  { to: "/environment", icon: TreePine, title: "البيئة", desc: "إعادة تدوير وتوفير طاقة وماء.", color: "from-primary/15 to-accent/30" },
-  { to: "/education", icon: GraduationCap, title: "التعليم والتركيز", desc: "طرق مذاكرة، إزاي تركز، وكلمات تحفّزك.", color: "from-secondary/15 to-muted" },
-  { to: "/dashboard", icon: LayoutDashboard, title: "يومي في وعي", desc: "لوحة شخصية، تحدي اليوم وتتبع عاداتك.", color: "from-accent/30 to-leaf-light/30" },
-];
+import { useT } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const t = useT();
+
+  const sections = [
+    { to: "/health", icon: Heart, title: t('card.health.title'), desc: t('card.health.desc'), color: "from-primary/20 to-leaf-light/40" },
+    { to: "/finance", icon: Wallet, title: t('card.finance.title'), desc: t('card.finance.desc'), color: "from-secondary/20 to-sun-warm/40" },
+    { to: "/environment", icon: TreePine, title: t('card.environment.title'), desc: t('card.environment.desc'), color: "from-primary/15 to-accent/30" },
+    { to: "/education", icon: GraduationCap, title: t('card.education.title'), desc: t('card.education.desc'), color: "from-secondary/15 to-muted" },
+    { to: "/dashboard", icon: LayoutDashboard, title: t('card.dashboard.title'), desc: t('card.dashboard.desc'), color: "from-accent/30 to-leaf-light/30" },
+  ];
+
   return (
     <div className="relative">
       <HeroSection />
@@ -34,19 +37,19 @@ const Index = () => {
             </div>
             <div className="flex-1 text-center md:text-right">
               <h3 className="text-xl md:text-2xl font-bold text-amber-900 dark:text-amber-200 mb-2">
-                🏆 نظام الجائزة
+                {t('prize.badge')}
               </h3>
               <p className="text-amber-800/80 dark:text-amber-300/80 leading-relaxed font-medium">
-                أول مستخدم يصل إلى{" "}
+                {t('prize.first')}{" "}
                 <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400 font-bold bg-amber-100 dark:bg-amber-900/40 px-3 py-0.5 rounded-full">
                   <Flame className="size-4" />
                   100
                 </span>{" "}
-                نقطة استمرار يفوز بـ{" "}
-                <span className="text-amber-600 dark:text-amber-400 font-bold text-lg">500 جنيه مصري</span> 🎉
+                {t('prize.points')}{" "}
+                <span className="text-amber-600 dark:text-amber-400 font-bold text-lg">{t('prize.amount')}</span> 🎉
               </p>
               <p className="text-sm text-amber-700/60 dark:text-amber-400/60 mt-2">
-                كل 5 دقائق تواجد نشط = نقطة استمرار (مرة واحدة يومياً). سجل دخولك وابدأ جمع النقاط!
+                {t('prize.desc')}
               </p>
             </div>
           </div>
@@ -63,10 +66,10 @@ const Index = () => {
         >
           <div className="inline-flex items-center gap-2 bg-card/70 text-muted-foreground text-sm font-bold px-5 py-2 rounded-full mb-4 hover:scale-105 transition-transform duration-300 border border-border/50 shadow-soft">
             <Sparkles className="size-4" />
-            استكشف الأقسام
+            {t('index.explore')}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-balance">
-            اختر المجال اللي عايز تبدأ فيه
+            {t('index.heading')}
           </h2>
         </motion.div>
 
@@ -91,7 +94,7 @@ const Index = () => {
                 <h3 className="font-bold text-lg md:text-xl mb-2">{s.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-5">{s.desc}</p>
                 <span className="inline-flex items-center gap-1.5 text-sm font-bold text-primary group-hover:gap-3 transition-all duration-300">
-                  ادخل القسم
+                  {t('index.cta')}
                   <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
                 </span>
               </Link>

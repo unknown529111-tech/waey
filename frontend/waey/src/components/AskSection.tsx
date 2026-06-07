@@ -4,6 +4,7 @@ import { Send, MessageCircleQuestion, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { sanitizeString, sanitizeEmail } from "@/lib/sanitize";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "الاسم مطلوب").max(100, "الاسم طويل جداً"),
@@ -22,6 +23,7 @@ const contactSchema = z.object({
 const FORM_URL = "https://formsubmit.co/ajax/waey.official.mk@gmail.com";
 
 const AskSection = () => {
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -87,11 +89,11 @@ const AskSection = () => {
           <div className="inline-flex items-center gap-2 mb-4">
             <MessageCircleQuestion className="size-6 text-primary" />
             <h2 className="text-3xl md:text-5xl font-bold text-primary tracking-tight">
-              اسأل وعي
+              {t('ask.title')}
             </h2>
           </div>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            عندك سؤال أو استفسار؟ ابعتلنا وهنرد عليك في أقرب وقت!
+            {t('ask.subtitle')}
           </p>
         </motion.div>
 
@@ -103,7 +105,7 @@ const AskSection = () => {
           className="bg-card rounded-3xl p-8 border border-border space-y-5"
         >
           <div>
-            <label className="text-sm font-bold mb-2 block">الاسم</label>
+            <label className="text-sm font-bold mb-2 block">{t('ask.name')}</label>
             <input
               type="text"
               value={name}
@@ -111,11 +113,11 @@ const AskSection = () => {
               required
               maxLength={100}
               className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
-              placeholder="اكتب اسمك"
+              placeholder={t('ask.namePlaceholder')}
             />
           </div>
           <div>
-            <label className="text-sm font-bold mb-2 block">البريد الإلكتروني</label>
+            <label className="text-sm font-bold mb-2 block">{t('ask.email')}</label>
             <input
               type="email"
               value={email}
@@ -128,7 +130,7 @@ const AskSection = () => {
             />
           </div>
           <div>
-            <label className="text-sm font-bold mb-2 block">رسالتك</label>
+            <label className="text-sm font-bold mb-2 block">{t('ask.message')}</label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -136,7 +138,7 @@ const AskSection = () => {
               maxLength={2000}
               rows={5}
               className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all resize-none"
-              placeholder="اكتب استفسارك هنا..."
+              placeholder={t('ask.messagePlaceholder')}
             />
           </div>
           <button
@@ -147,14 +149,14 @@ const AskSection = () => {
             {sending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                جاري الإرسال...
+                {t('ask.sending')}
               </>
             ) : sent ? (
-              "✓ تم الإرسال بنجاح!"
+              t('ask.sent')
             ) : (
               <>
                 <Send className="size-4" />
-                إرسال
+                {t('ask.send')}
               </>
             )}
           </button>

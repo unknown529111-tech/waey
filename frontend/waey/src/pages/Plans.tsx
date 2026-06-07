@@ -4,8 +4,10 @@ import PageHero from "@/components/PageHero";
 import { PLANS, getPlanState, startPlan, togglePlanDay, resetPlan } from "@/lib/plansData";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
+import { useT } from "@/contexts/LanguageContext";
 
 const Plans = () => {
+  const t = useT();
   const [selected, setSelected] = useState<string>(PLANS[0].id);
   const [, setTick] = useState(0);
   const refresh = () => setTick((t) => t + 1);
@@ -44,10 +46,10 @@ const Plans = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
       <div className="relative">
         <PageHero
-          badge="خطط 30 يوم"
+          badge={t('plans.badge')}
           icon={<Target className="size-4" />}
-          title="غيّر عاداتك في 30 يوم"
-          subtitle="اختر خطة وتابع تقدمك يوماً بيوم. كل يوم خطوة صغيرة تقربك من نسخة أفضل منك."
+          title={t('plans.title')}
+          subtitle={t('plans.subtitle')}
         />
 
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-6xl mx-auto">
@@ -73,7 +75,7 @@ const Plans = () => {
                   </p>
                   {ps && (
                     <div className="mt-3 text-xs font-bold tabular-nums">
-                      {ps.completed.length}/30 يوم
+                      {ps.completed.length}/30 {t('common.day')}
                     </div>
                   )}
                   <div className="mt-2 h-1.5 rounded-full bg-background/40 overflow-hidden">
@@ -102,7 +104,7 @@ const Plans = () => {
                     className="flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-bold text-sm hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all duration-300"
                   >
                     <Play className="size-4" />
-                    ابدأ الخطة
+                    {t('plans.start')}
                   </button>
                 ) : (
                   <button
@@ -110,7 +112,7 @@ const Plans = () => {
                     className="flex items-center gap-2 bg-secondary text-secondary-foreground px-4 py-2 rounded-full font-bold text-sm hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300"
                   >
                     <RotateCcw className="size-4" />
-                    إعادة
+                    {t('plans.reset')}
                   </button>
                 )}
               </div>
@@ -119,7 +121,7 @@ const Plans = () => {
             {state && (
               <>
                 <div className="mb-2 flex justify-between text-sm font-bold">
-                  <span>{completed.length} / 30 يوم</span>
+                  <span>{completed.length} / 30 {t('common.day')}</span>
                   <span className="text-primary tabular-nums">{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} className="mb-8" />

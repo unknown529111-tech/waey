@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon, User, LogOut } from "lucide-react";
+import { Menu, X, Sun, Moon, User, LogOut, Languages } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import logoLight from "@/assets/logo-waey.png";
 import logoDark from "@/assets/logo-waey-dark.png";
 import { useAuth } from "@/contexts/useAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthModal } from "./AuthModal";
 
 const links = [
-  { to: "/", label: "الرئيسية", end: true },
-  { to: "/health", label: "الصحة" },
-  { to: "/finance", label: "المالية" },
-  { to: "/environment", label: "البيئة" },
-  { to: "/education", label: "التعليم" },
-  { to: "/dashboard", label: "يومي" },
+  { to: "/", label: t("nav.home"), end: true },
+  { to: "/health", label: t("nav.health") },
+  { to: "/finance", label: t("nav.finance") },
+  { to: "/environment", label: t("nav.environment") },
+  { to: "/education", label: t("nav.education") },
+  { to: "/dashboard", label: t("nav.dashboard") },
 ];
 
 const Navbar = () => {
@@ -28,6 +29,7 @@ const Navbar = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { isAuthenticated, user, signOut } = useAuth();
+  const { lang, toggleLang, t } = useLanguage();
 
   useEffect(() => {
     if (isDark) document.documentElement.classList.add("dark");
@@ -123,6 +125,25 @@ const Navbar = () => {
             >
               {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </button>
+            <motion.button
+              onClick={toggleLang}
+              className="size-10 rounded-full bg-muted/60 flex items-center justify-center hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300 text-foreground/70 hover:text-foreground overflow-hidden"
+              aria-label={t("nav.toggleLang")}
+              whileTap={{ scale: 0.9 }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={lang}
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 20, opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="text-[10px] font-bold tracking-wider"
+                >
+                  {lang === "ar" ? "EN" : "AR"}
+                </motion.span>
+              </AnimatePresence>
+            </motion.button>
             <button
               className="md:hidden size-10 rounded-full bg-muted/60 flex items-center justify-center hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300 text-foreground/70 hover:text-foreground"
               onClick={() => setIsOpen(!isOpen)}

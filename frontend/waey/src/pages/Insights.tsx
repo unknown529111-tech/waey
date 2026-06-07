@@ -21,6 +21,7 @@ import {
 } from "@/lib/dailyStorage";
 import { Droplet, Moon, Wallet, Flame, Footprints, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useT } from "@/contexts/LanguageContext";
 
 const dayLabel = (iso: string) => {
   const d = new Date(iso);
@@ -30,6 +31,7 @@ const dayLabel = (iso: string) => {
 const COLORS = ["#5D7052", "#C18C5D", "#7BA98F", "#D4A656", "#8C7A6B", "#E6DCCD", "#9CC1A8"];
 
 const Insights = () => {
+  const t = useT();
   const days = lastNDays(7);
 
   const water = getDailyMap("water");
@@ -110,10 +112,10 @@ const Insights = () => {
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-primary mb-1">
-            رؤى أسبوعية
+            {t('insights.title')}
           </h1>
           <p className="text-sm text-muted-foreground">
-            ملخص آخر 7 أيام من نشاطك على وعي.
+            {t('insights.subtitle')}
           </p>
         </div>
         <Link
@@ -121,12 +123,12 @@ const Insights = () => {
           className="inline-flex items-center gap-1.5 text-sm font-bold bg-secondary hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-4 py-2"
         >
           <ArrowRight className="size-4" />
-          رجوع إلى يومي
+          {t('insights.back')}
         </Link>
       </header>
 
       <div className="bg-gradient-to-l from-primary/10 via-card to-accent/10 border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
-        <div className="text-xs font-bold text-primary mb-2">تقرير وعي الأسبوعي</div>
+        <div className="text-xs font-bold text-primary mb-2">{t('insights.report')}</div>
         <ul className="space-y-1.5 text-sm leading-relaxed">
           {summary.map((s, i) => (
             <li key={i}>• {s}</li>
