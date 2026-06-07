@@ -9,7 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY || "gsk_0g...U4bc";
+const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY || "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";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
