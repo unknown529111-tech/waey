@@ -8,7 +8,7 @@ import { sanitizeString } from "@/lib/sanitize";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY;
+const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY || "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";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
