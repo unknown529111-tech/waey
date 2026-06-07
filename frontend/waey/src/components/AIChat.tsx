@@ -16,7 +16,6 @@ const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
 const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
 const AI_PROXY = import.meta.env.VITE_AI_PROXY_URL;
 
-// Fallback: Groq (llama 3.3) — only used if OpenRouter & proxy fail
 const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
@@ -55,14 +54,11 @@ Important rules:
 - If the user asks about the site's creator or owner, answer literally as follows:
 The site creator is Mahmoud Ahmed Mohamed Khalil, a first-year high school student interested in programming, artificial intelligence, and volunteering. He volunteers with the "Ana Motawe" program in the media department, is a leader in a scouting and guiding youth center group, volunteers with "Akhlaq Masreya" foundation in the photography department, and is a programmer and designer for the Arab Scouts platform (Motaqi). Mahmoud's goal from this site is to spread awareness among all people.`;
 
+const MAX_TOKENS = 1000;
 const BATCH_INTERVAL_MS = 80;
 
-async function tryOpenRouter(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
+async function tryOpenRouter(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
   if (!OPENROUTER_KEY) return null;
-  const messages = [
-    { role: "system", content: systemPrompt },
-    ...history.map((m) => ({ role: m.role, content: m.content })),
-  ];
   try {
     return await fetch(OPENROUTER_URL, {
       method: "POST",
@@ -74,45 +70,34 @@ async function tryOpenRouter(history: Msg[], signal: AbortSignal, systemPrompt: 
       },
       body: JSON.stringify({
         model: OPENROUTER_MODEL,
-        messages,
+        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
         stream: true,
-        max_tokens: 500,
+        max_tokens: MAX_TOKENS,
         temperature: 0.7,
       }),
       signal,
     });
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
-async function tryProxy(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<string | null> {
+async function tryProxy(history: Msg[], signal: AbortSignal, sp: string): Promise<string | null> {
   if (!AI_PROXY) return null;
   try {
     const resp = await fetch(`${AI_PROXY}?stream=false`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        system: systemPrompt,
-        messages: history.map((m) => ({ role: m.role, content: m.content }))
-      }),
+      body: JSON.stringify({ system: sp, messages: history.map((m) => ({ role: m.role, content: m.content })) }),
       signal,
     });
     if (!resp.ok) return null;
     const j = await resp.json().catch(() => null);
     if (!j) return null;
     return (j.content || j.text || j.answer || j.output || (j.choices && j.choices[0] && (j.choices[0].message?.content || j.choices[0].text)) || null) as string | null;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
-async function tryGroq(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
+async function tryGroq(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
   if (!GROQ_KEY) return null;
-  const messages = [
-    { role: "system", content: systemPrompt },
-    ...history.map((m) => ({ role: m.role, content: m.content })),
-  ];
   try {
     return await fetch(GROQ_URL, {
       method: "POST",
@@ -122,24 +107,18 @@ async function tryGroq(history: Msg[], signal: AbortSignal, systemPrompt: string
       },
       body: JSON.stringify({
         model: GROQ_MODEL,
-        messages,
+        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
         stream: true,
-        max_tokens: 500,
+        max_tokens: MAX_TOKENS,
         temperature: 0.7,
       }),
       signal,
     });
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
-async function tryDeepSeek(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
+async function tryDeepSeek(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
   if (!DEEPSEEK_KEY) return null;
-  const messages = [
-    { role: "system", content: systemPrompt },
-    ...history.map((m) => ({ role: m.role, content: m.content })),
-  ];
   try {
     return await fetch(DEEPSEEK_URL, {
       method: "POST",
@@ -149,16 +128,14 @@ async function tryDeepSeek(history: Msg[], signal: AbortSignal, systemPrompt: st
       },
       body: JSON.stringify({
         model: "deepseek-chat",
-        messages,
+        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
         stream: true,
-        max_tokens: 500,
+        max_tokens: MAX_TOKENS,
         temperature: 0.7,
       }),
       signal,
     });
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
 function parseOpenaiSSE(line: string): string | null {
@@ -168,59 +145,41 @@ function parseOpenaiSSE(line: string): string | null {
   try {
     const parsed = JSON.parse(jsonStr);
     return parsed.choices?.[0]?.delta?.content ?? null;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
-async function streamResponse(
-  resp: Response,
-  onToken: (token: string) => void,
-  signal: AbortSignal,
-): Promise<void> {
+async function streamResponse(resp: Response, onToken: (t: string) => void, signal: AbortSignal): Promise<void> {
   if (!resp.body) return;
   const reader = resp.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
-
   signal.addEventListener("abort", () => reader.cancel(), { once: true });
-
   try {
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
-
-      let newlineIndex: number;
-      while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
-        const line = buffer.slice(0, newlineIndex).replace(/\r$/, "");
-        buffer = buffer.slice(newlineIndex + 1);
+      let idx: number;
+      while ((idx = buffer.indexOf("\n")) !== -1) {
+        const line = buffer.slice(0, idx).replace(/\r$/, "");
+        buffer = buffer.slice(idx + 1);
         if (!line.trim()) continue;
         const token = parseOpenaiSSE(line);
         if (token) onToken(token);
       }
     }
-  } catch (err) {
-    console.error("Stream read error:", err);
-  }
+  } catch (err) { console.error("Stream read error:", err); }
 }
 
 const AIChat = () => {
   const { t, lang } = useLanguage();
-  const SUGGESTIONS = [
-    t('chat.suggestion1'),
-    t('chat.suggestion2'),
-    t('chat.suggestion3'),
-    t('chat.suggestion4'),
-  ];
+  const SUGGESTIONS = [t('chat.suggestion1'), t('chat.suggestion2'), t('chat.suggestion3'), t('chat.suggestion4')];
   const [messages, setMessages] = useState<Msg[]>(() => {
     if (typeof window === "undefined") return [];
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
+    } catch { return []; }
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -229,16 +188,11 @@ const AIChat = () => {
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-30)));
-    } catch { /* ignore */ }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-30))); } catch { /* ignore */ }
   }, [messages]);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isLoading]);
 
   const systemPrompt = lang === 'ar' ? SYSTEM_PROMPT_AR : SYSTEM_PROMPT_EN;
@@ -246,10 +200,7 @@ const AIChat = () => {
   const send = async (text: string) => {
     const trimmed = sanitizeString(text, 2000);
     if (!trimmed || isLoading) return;
-    if (trimmed.length > 2000) {
-      toast.error(t('chat.tooLong'));
-      return;
-    }
+    if (trimmed.length > 2000) { toast.error(t('chat.tooLong')); return; }
 
     const userMsg: Msg = { role: "user", content: trimmed };
     const nextHistory = [...messages, userMsg];
@@ -260,28 +211,18 @@ const AIChat = () => {
 
     const controller = new AbortController();
     abortRef.current = controller;
-
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-      toast.error(t('chat.timeout'));
-    }, 30_000);
+    const timeoutId = setTimeout(() => { controller.abort(); toast.error(t('chat.timeout')); }, 30_000);
 
     let assistantSoFar = "";
     let flushTimer: ReturnType<typeof setTimeout> | null = null;
-
     const scheduleFlush = () => {
       if (flushTimer) return;
       flushTimer = setTimeout(() => {
         flushTimer = null;
-        const content = assistantSoFar;
         setMessages((prev) => {
           const last = prev[prev.length - 1];
-          if (last?.role === "assistant") {
-            return prev.map((m, i) =>
-              i === prev.length - 1 ? { ...m, content } : m
-            );
-          }
-          return [...prev, { role: "assistant", content }];
+          if (last?.role === "assistant") return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
+          return [...prev, { role: "assistant", content: assistantSoFar }];
         });
       }, BATCH_INTERVAL_MS);
     };
@@ -290,112 +231,57 @@ const AIChat = () => {
     const sp = systemPrompt;
 
     try {
-      // 1. Try proxy (non-streaming) first
+      // 1) Proxy (non-streaming)
       const proxyText = await tryProxy(nextHistory, controller.signal, sp);
-      if (proxyText) {
-        setProvider("proxy");
-        setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]);
-        clearTimeout(timeoutId);
-        setIsLoading(false);
-        return;
-      }
+      if (proxyText) { setProvider("proxy"); setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]); clearTimeout(timeoutId); setIsLoading(false); return; }
 
-      // 2. Try OpenRouter (primary provider — free & fast)
+      // 2) OpenRouter (primary)
       let resp: Response | null = await tryOpenRouter(nextHistory, controller.signal, sp);
-      if (resp && resp.ok) {
-        usedProvider = "openrouter";
-      }
+      if (resp && resp.ok) { usedProvider = "openrouter"; }
 
-      // 3. Fallback: Groq (non-streaming-aware)
+      // 3) Groq (fallback)
       if (!resp || !resp.ok) {
-        if (resp && !resp.ok) {
-          const body = await resp.text().catch(() => "");
-          console.warn("OpenRouter failed:", resp.status, body.slice(0, 200));
-        }
+        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("OpenRouter failed:", resp.status, body.slice(0, 200)); }
         resp = await tryGroq(nextHistory, controller.signal, sp);
-        if (resp && resp.ok) {
-          usedProvider = "groq";
-        }
+        if (resp && resp.ok) usedProvider = "groq";
       }
 
-      // 4. Fallback: DeepSeek
+      // 4) DeepSeek (last resort)
       if (!resp || !resp.ok) {
-        if (resp && !resp.ok) {
-          const body = await resp.text().catch(() => "");
-          console.warn("Groq failed:", resp.status, body.slice(0, 200));
-        }
+        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("Groq failed:", resp.status, body.slice(0, 200)); }
         resp = await tryDeepSeek(nextHistory, controller.signal, sp);
-        if (resp && resp.ok) {
-          usedProvider = "deepseek";
-        }
+        if (resp && resp.ok) usedProvider = "deepseek";
       }
 
-      if (!resp) {
-        clearTimeout(timeoutId);
-        controller.abort();
-        toast.error(t('chat.noProvider'));
-        return;
-      }
-
+      if (!resp) { clearTimeout(timeoutId); controller.abort(); toast.error(t('chat.noProvider')); return; }
       if (!resp.ok) {
-        clearTimeout(timeoutId);
-        controller.abort();
-        if (resp.status === 429) {
-          toast.error(t('chat.busy'));
-        } else if (resp.status === 401 || resp.status === 403) {
-          toast.error(t('chat.invalidKey'));
-        } else if (resp.status === 402) {
-          toast.error(t('chat.outOfCredit'));
-        } else {
-          toast.error(t('chat.unknownError') + ` (${resp.status})`);
-        }
+        clearTimeout(timeoutId); controller.abort();
+        if (resp.status === 429) toast.error(t('chat.busy'));
+        else if (resp.status === 401 || resp.status === 403) toast.error(t('chat.invalidKey'));
+        else if (resp.status === 402) toast.error(t('chat.outOfCredit'));
+        else toast.error(t('chat.unknownError') + ` (${resp.status})`);
         setMessages(nextHistory);
         return;
       }
 
       setProvider(usedProvider);
-
-      await streamResponse(resp, (token) => {
-        assistantSoFar += token;
-        scheduleFlush();
-      }, controller.signal);
-
-      if (flushTimer) {
-        clearTimeout(flushTimer);
-        flushTimer = null;
-      }
+      await streamResponse(resp, (token) => { assistantSoFar += token; scheduleFlush(); }, controller.signal);
+      if (flushTimer) clearTimeout(flushTimer);
       if (assistantSoFar) {
         setMessages((prev) => {
           const last = prev[prev.length - 1];
-          if (last?.role === "assistant") {
-            return prev.map((m, i) =>
-              i === prev.length - 1 ? { ...m, content: assistantSoFar } : m
-            );
-          }
+          if (last?.role === "assistant") return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
           return [...prev, { role: "assistant", content: assistantSoFar }];
         });
-      } else {
-        setMessages(nextHistory);
-        toast.error(t('chat.noResponse'));
-      }
+      } else { setMessages(nextHistory); toast.error(t('chat.noResponse')); }
     } catch (e) {
-      if ((e as Error).name !== "AbortError") {
-        console.error(e);
-        toast.error(t('chat.connectionError'));
-        setMessages(nextHistory);
-      }
+      if ((e as Error).name !== "AbortError") { console.error(e); toast.error(t('chat.connectionError')); setMessages(nextHistory); }
     } finally {
-      clearTimeout(timeoutId);
-      if (flushTimer) clearTimeout(flushTimer);
-      setIsLoading(false);
-      abortRef.current = null;
+      clearTimeout(timeoutId); if (flushTimer) clearTimeout(flushTimer); setIsLoading(false); abortRef.current = null;
     }
   };
 
-  const clearChat = () => {
-    setMessages([]);
-    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
-  };
+  const clearChat = () => { setMessages([]); try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ } };
 
   const providerLabel = () => {
     switch (provider) {
@@ -419,13 +305,7 @@ const AIChat = () => {
               <h2 className="font-bold text-base leading-tight">{t('chat.title')}</h2>
               <p className="text-xs text-muted-foreground">
                 <AnimatePresence mode="wait">
-                  <motion.span
-                    key={lang}
-                    initial={{ y: -10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 10, opacity: 0 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                  >
+                  <motion.span key={lang} initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }} transition={{ duration: 0.15, ease: "easeOut" }}>
                     {providerLabel()}
                   </motion.span>
                 </AnimatePresence>
@@ -433,11 +313,7 @@ const AIChat = () => {
             </div>
           </div>
           {messages.length > 0 && (
-            <button
-              onClick={clearChat}
-              className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-full hover:bg-secondary"
-              aria-label={t('chat.clear')}
-            >
+            <button onClick={clearChat} className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-full hover:bg-secondary" aria-label={t('chat.clear')}>
               <Trash2 className="size-4" />
             </button>
           )}
@@ -451,19 +327,11 @@ const AIChat = () => {
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-2">{t('chat.greeting')}</h3>
-                <p className="text-muted-foreground text-sm max-w-[40ch] mx-auto leading-relaxed">
-                  {t('chat.greetingText')}
-                </p>
+                <p className="text-muted-foreground text-sm max-w-[40ch] mx-auto leading-relaxed">{t('chat.greetingText')}</p>
               </div>
               <div className="grid sm:grid-cols-2 gap-2 max-w-[480px] mx-auto">
                 {SUGGESTIONS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => send(s)}
-                    className="text-right text-sm p-3 rounded-2xl border border-border bg-background hover:border-primary hover:bg-primary/5 transition-all"
-                  >
-                    {s}
-                  </button>
+                  <button key={s} onClick={() => send(s)} className="text-right text-sm p-3 rounded-2xl border border-border bg-background hover:border-primary hover:bg-primary/5 transition-all">{s}</button>
                 ))}
               </div>
             </div>
@@ -471,21 +339,8 @@ const AIChat = () => {
 
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`flex ${
-                  m.role === "user" ? "justify-start" : "justify-end"
-                }`}
-              >
-                <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-secondary-foreground"
-                  }`}
-                >
+              <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === "user" ? "justify-start" : "justify-end"}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${m.role === "user" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}>
                   {m.role === "assistant" ? (
                     <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-headings:my-2 prose-strong:text-foreground">
                       <ReactMarkdown>{sanitizeString(m.content || "", 5000)}</ReactMarkdown>
@@ -498,67 +353,29 @@ const AIChat = () => {
             ))}
           </AnimatePresence>
 
-          {isLoading &&
-            messages[messages.length - 1]?.role === "user" && (
-              <div className="flex justify-end">
-                <div className="bg-secondary rounded-2xl px-4 py-3 flex items-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="size-4 animate-spin" />
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={lang}
-                      initial={{ y: -10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: 10, opacity: 0 }}
-                      transition={{ duration: 0.15, ease: "easeOut" }}
-                    >
-                      {t('chat.typing')}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
+          {isLoading && messages[messages.length - 1]?.role === "user" && (
+            <div className="flex justify-end">
+              <div className="bg-secondary rounded-2xl px-4 py-3 flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="size-4 animate-spin" />
+                <AnimatePresence mode="wait">
+                  <motion.span key={lang} initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }} transition={{ duration: 0.15, ease: "easeOut" }}>
+                    {t('chat.typing')}
+                  </motion.span>
+                </AnimatePresence>
               </div>
-            )}
+            </div>
+          )}
         </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            send(input);
-          }}
-          className="border-t border-border p-3 md:p-4 bg-background"
-        >
+        <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="border-t border-border p-3 md:p-4 bg-background">
           <div className="flex items-end gap-2">
-            <textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  send(input);
-                }
-              }}
-              placeholder={t('chat.placeholder')}
-              rows={1}
-              maxLength={2000}
-              disabled={isLoading}
-              className="flex-1 resize-none bg-secondary/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 max-h-32 disabled:opacity-50"
-              style={{ minHeight: "48px" }}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !input.trim()}
-              className="size-12 shrink-0 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              aria-label={t('chat.send')}
-            >
-              {isLoading ? (
-                <Loader2 className="size-5 animate-spin" />
-              ) : (
-                <Send className="size-5 -scale-x-100" />
-              )}
+            <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }} placeholder={t('chat.placeholder')} rows={1} maxLength={2000} disabled={isLoading}
+              className="flex-1 resize-none bg-secondary/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 max-h-32 disabled:opacity-50" style={{ minHeight: "48px" }} />
+            <button type="submit" disabled={isLoading || !input.trim()} className="size-12 shrink-0 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all" aria-label={t('chat.send')}>
+              {isLoading ? <Loader2 className="size-5 animate-spin" /> : <Send className="size-5 -scale-x-100" />}
             </button>
           </div>
-          <p className="text-xs text-muted-foreground mt-2 text-center">
-            {t('chat.disclaimer')}
-          </p>
+          <p className="text-xs text-muted-foreground mt-2 text-center">{t('chat.disclaimer')}</p>
         </form>
       </div>
     </div>
