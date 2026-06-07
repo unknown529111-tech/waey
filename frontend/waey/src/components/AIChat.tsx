@@ -9,14 +9,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY || "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";
+const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY || "gsk_0g...U4bc";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
 const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
 const AI_PROXY = import.meta.env.VITE_AI_PROXY_URL;
 
-const SYSTEM_PROMPT = `أنت "مساعد وعي" — مساعد ذكي عربي يجيب على أسئلة المستخدمين في أربعة مجالات فقط:
+const SYSTEM_PROMPT_AR = `أنت "مساعد وعي" — مساعد ذكي عربي يجيب على أسئلة المستخدمين في أربعة مجالات فقط:
 1. الصحة (نصائح عامة، عادات صحية، تغذية، نوم، رياضة)
 2. المال (الادخار، الميزانية الشخصية، التخطيط المالي، أفكار الدخل الإضافي)
 3. البيئة (توفير الطاقة والماء، إعادة التدوير، الزراعة المنزلية)
@@ -33,12 +33,29 @@ const SYSTEM_PROMPT = `أنت "مساعد وعي" — مساعد ذكي عربي
 - إذا سأل المستخدم عن صانع الموقع أو مالكه، أجب حرفياً بما يلي:
 صانع الموقع هو محمود احمد محمد خليل طالب في الصف الاول الثانوي و مهتم بالبرمجه و الذكاء الاصطناعي و التطوع , متطوع مع برنامج انا متطوع في قسم الميديا و قائد في مجموعه مركز تنمية شبابية الكشفية و الارشادية و متطوع مع مؤسسه اخلاق مصريه في قسم التصوير و مبرمج و مصمم في منصه متلقي الكشافة العربية , و هدف محمود من هذا الموقع هو نشر الوعي بين كل الناس`;
 
+const SYSTEM_PROMPT_EN = `You are "Waey Assistant" — an intelligent assistant that answers users' questions in only four areas:
+1. Health (general tips, healthy habits, nutrition, sleep, exercise)
+2. Finance (saving, personal budget, financial planning, extra income ideas)
+3. Environment (energy & water conservation, recycling, home gardening)
+4. Education (study tips, time management, learning skills, self-development)
+
+Important rules:
+- Keep your answers short and direct (3-6 sentences).
+- Use numbered lists or bullet points when needed.
+- If the question is a serious medical concern, advise consulting a specialist.
+- If the question is outside health/finance/environment/education, politely decline.
+- Use simple emojis sparingly (🌱 💰 ❤️ 📚).
+- Respond in simple, clear English.
+
+- If the user asks about the site's creator or owner, answer literally as follows:
+The site creator is Mahmoud Ahmed Mohamed Khalil, a first-year high school student interested in programming, artificial intelligence, and volunteering. He volunteers with the "Ana Motawe" program in the media department, is a leader in a scouting and guiding youth center group, volunteers with "Akhlaq Masreya" foundation in the photography department, and is a programmer and designer for the Arab Scouts platform (Motaqi). Mahmoud's goal from this site is to spread awareness among all people.`;
+
 const BATCH_INTERVAL_MS = 80;
 
-async function tryGroq(history: Msg[], signal: AbortSignal): Promise<Response | null> {
+async function tryGroq(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
   if (!GROQ_KEY) return null;
   const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: systemPrompt },
     ...history.map((m) => ({ role: m.role, content: m.content })),
   ];
   try {
@@ -62,29 +79,31 @@ async function tryGroq(history: Msg[], signal: AbortSignal): Promise<Response | 
   }
 }
 
-async function tryProxy(history: Msg[], signal: AbortSignal): Promise<string | null> {
+async function tryProxy(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<string | null> {
   if (!AI_PROXY) return null;
   try {
     const resp = await fetch(`${AI_PROXY}?stream=false`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, content: m.content })) }),
+      body: JSON.stringify({
+        system: systemPrompt,
+        messages: history.map((m) => ({ role: m.role, content: m.content }))
+      }),
       signal,
     });
     if (!resp.ok) return null;
     const j = await resp.json().catch(() => null);
     if (!j) return null;
-    // Look for common fields
     return (j.content || j.text || j.answer || j.output || (j.choices && j.choices[0] && (j.choices[0].message?.content || j.choices[0].text)) || null) as string | null;
   } catch (e) {
     return null;
   }
 }
 
-async function tryDeepSeek(history: Msg[], signal: AbortSignal): Promise<Response | null> {
+async function tryDeepSeek(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
   if (!DEEPSEEK_KEY) return null;
   const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: systemPrompt },
     ...history.map((m) => ({ role: m.role, content: m.content })),
   ];
   try {
@@ -153,7 +172,7 @@ async function streamResponse(
 }
 
 const AIChat = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const SUGGESTIONS = [
     t('chat.suggestion1'),
     t('chat.suggestion2'),
@@ -188,11 +207,13 @@ const AIChat = () => {
     });
   }, [messages, isLoading]);
 
+  const systemPrompt = lang === 'ar' ? SYSTEM_PROMPT_AR : SYSTEM_PROMPT_EN;
+
   const send = async (text: string) => {
     const trimmed = sanitizeString(text, 2000);
     if (!trimmed || isLoading) return;
     if (trimmed.length > 2000) {
-      toast.error("الرسالة طويلة جداً (الحد 2000 حرف)");
+      toast.error(t('chat.tooLong'));
       return;
     }
 
@@ -208,8 +229,7 @@ const AIChat = () => {
 
     const timeoutId = setTimeout(() => {
       controller.abort();
-      toast.error("استغرقت الخدمة وقتاً طويلاً، حاول مرة أخرى.");
-      // let the catch/finally handle state cleanup
+      toast.error(t('chat.timeout'));
     }, 30_000);
 
     let assistantSoFar = "";
@@ -233,10 +253,10 @@ const AIChat = () => {
     };
 
     let usedProvider: "groq" | "deepseek" | null = null;
+    const sp = systemPrompt;
 
     try {
-      // Try server-side proxy (non-streaming) first, if configured
-      const proxyText = await tryProxy(nextHistory, controller.signal);
+      const proxyText = await tryProxy(nextHistory, controller.signal, sp);
       if (proxyText) {
         setProvider("proxy");
         setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]);
@@ -245,7 +265,7 @@ const AIChat = () => {
         return;
       }
 
-      let resp: Response | null = await tryGroq(nextHistory, controller.signal);
+      let resp: Response | null = await tryGroq(nextHistory, controller.signal, sp);
       if (resp && resp.ok) {
         usedProvider = "groq";
       } else {
@@ -253,7 +273,7 @@ const AIChat = () => {
           const body = await resp.text().catch(() => "");
           console.warn("Groq failed:", resp.status, body.slice(0, 200));
         }
-        resp = await tryDeepSeek(nextHistory, controller.signal);
+        resp = await tryDeepSeek(nextHistory, controller.signal, sp);
         if (resp && resp.ok) {
           usedProvider = "deepseek";
         }
@@ -262,7 +282,7 @@ const AIChat = () => {
       if (!resp) {
         clearTimeout(timeoutId);
         controller.abort();
-        toast.error("لم يتم إعداد أي مزود ذكاء اصطناعي. أضف VITE_AI_PROXY_URL أو VITE_GROQ_API_KEY/VITE_DEEPSEEK_API_KEY في ملف .env");
+        toast.error(t('chat.noProvider'));
         return;
       }
 
@@ -270,13 +290,13 @@ const AIChat = () => {
         clearTimeout(timeoutId);
         controller.abort();
         if (resp.status === 429) {
-          toast.error("الخدمة مشغولة، حاول بعد دقيقة.");
+          toast.error(t('chat.busy'));
         } else if (resp.status === 401 || resp.status === 403) {
-          toast.error("مفتاح API غير صالح، تحقق من الإعدادات.");
+          toast.error(t('chat.invalidKey'));
         } else if (resp.status === 402) {
-          toast.error("نفد رصيد المساعد الذكي. يرجى التواصل مع الإدارة.");
+          toast.error(t('chat.outOfCredit'));
         } else {
-          toast.error(`حدث خطأ (${resp.status})، حاول مرة أخرى.`);
+          toast.error(t('chat.unknownError') + ` (${resp.status})`);
         }
         setMessages(nextHistory);
         return;
@@ -305,12 +325,12 @@ const AIChat = () => {
         });
       } else {
         setMessages(nextHistory);
-        toast.error("لم أتمكن من توليد رد، حاول مرة أخرى.");
+        toast.error(t('chat.noResponse'));
       }
     } catch (e) {
       if ((e as Error).name !== "AbortError") {
         console.error(e);
-        toast.error("حدث خطأ في الاتصال");
+        toast.error(t('chat.connectionError'));
         setMessages(nextHistory);
       }
     } finally {
@@ -337,13 +357,23 @@ const AIChat = () => {
             <div>
               <h2 className="font-bold text-base leading-tight">{t('chat.title')}</h2>
               <p className="text-xs text-muted-foreground">
-                {provider === "groq"
-                  ? "Groq (Llama 3.3)"
-                  : provider === "deepseek"
-                  ? "DeepSeek"
-                  : provider === "proxy"
-                  ? "Proxy (خادم)"
-                  : "صحه • مال • بيئه • تعليم"}
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={lang}
+                    initial={{ y: -10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                  >
+                    {provider === "groq"
+                      ? "Groq (Llama 3.3)"
+                      : provider === "deepseek"
+                      ? "DeepSeek"
+                      : provider === "proxy"
+                      ? t('chat.proxy')
+                      : t('chat.scope')}
+                  </motion.span>
+                </AnimatePresence>
               </p>
             </div>
           </div>
@@ -351,7 +381,7 @@ const AIChat = () => {
             <button
               onClick={clearChat}
               className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-full hover:bg-secondary"
-              aria-label="مسح المحادثة"
+              aria-label={t('chat.clear')}
             >
               <Trash2 className="size-4" />
             </button>
@@ -418,7 +448,17 @@ const AIChat = () => {
               <div className="flex justify-end">
                 <div className="bg-secondary rounded-2xl px-4 py-3 flex items-center gap-2 text-sm text-muted-foreground">
                   <Loader2 className="size-4 animate-spin" />
-                  يكتب...
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={lang}
+                      initial={{ y: -10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: 10, opacity: 0 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                    >
+                      {t('chat.typing')}
+                    </motion.span>
+                  </AnimatePresence>
                 </div>
               </div>
             )}
@@ -452,7 +492,7 @@ const AIChat = () => {
               type="submit"
               disabled={isLoading || !input.trim()}
               className="size-12 shrink-0 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              aria-label="إرسال"
+              aria-label={t('chat.send')}
             >
               {isLoading ? (
                 <Loader2 className="size-5 animate-spin" />
