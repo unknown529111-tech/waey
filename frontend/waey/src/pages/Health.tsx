@@ -108,7 +108,7 @@ const Health = () => {
             {t('health.firstAid')}
           </h2>
           <p className="text-muted-foreground mb-6 -mt-4 text-sm">
-            دقيقة واحدة ممكن تنقذ حياة — احفظ الخطوات دي أو شاركها مع أهلك
+            {t('health.firstAidSub')}
           </p>
           <FirstAidGuide />
         </div>
@@ -135,7 +135,7 @@ const Health = () => {
             {t('health.checkups')}
           </h2>
           <p className="text-muted-foreground mb-6 -mt-4 text-sm">
-            الوقاية خير من العلاج — زي ما بتعمل صيانة للعربية، جسمك محتاج صيانة كل سنة
+            {t('health.checkupsSub')}
           </p>
           <CheckupsTable />
         </div>
@@ -164,7 +164,7 @@ const Health = () => {
             {t('health.grounding')}
           </h2>
           <p className="text-muted-foreground mb-6 -mt-4">
-            لو حاسس بقلق أو هلع، استخدم الحواس الخمسة عشان ترجع للحظة اللي أنت فيها:
+            {t('health.groundingDesc')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             {groundingSteps.map((g, i) => (

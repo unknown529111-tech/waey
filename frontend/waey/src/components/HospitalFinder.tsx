@@ -8,16 +8,30 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { hospitalsData } from "@/data/hospitals";
-
-const typeColor: Record<string, string> = {
-  جامعي: "bg-primary/10 text-primary",
-  حكومي: "bg-accent/15 text-accent",
-  تعليمي: "bg-primary/10 text-primary",
-  خاص: "bg-destructive/10 text-destructive",
-  عام: "bg-muted text-foreground",
-};
+import { useT } from "@/contexts/LanguageContext";
 
 const HospitalFinder = () => {
+  const t = useT();
+
+  const typeColor: Record<string, string> = {
+    جامعي: "bg-primary/10 text-primary",
+    حكومي: "bg-accent/15 text-accent",
+    تعليمي: "bg-primary/10 text-primary",
+    خاص: "bg-destructive/10 text-destructive",
+    عام: "bg-muted text-foreground",
+  };
+
+  const typeLabel = (type: string): string => {
+    const labels: Record<string, string> = {
+      جامعي: t('hospital.typeUniversity'),
+      حكومي: t('hospital.typeGovernment'),
+      تعليمي: t('hospital.typeEducational'),
+      خاص: t('hospital.typePrivate'),
+      عام: t('hospital.typePublic'),
+    };
+    return labels[type] ?? type;
+  };
+
   const [governorate, setGovernorate] = useState<string>("");
   const [city, setCity] = useState<string>("");
 
@@ -52,15 +66,16 @@ const HospitalFinder = () => {
         >
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold mb-4">
             <Hospital className="size-4" />
-            دليل المستشفيات
+            {t('hospital.badge')}
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-primary tracking-tight mb-4">
-            ابحث عن مستشفى قريب منك
+            {t('hospital.title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-[60ch] mx-auto leading-relaxed">
-            دليل إرشادي بأبرز المستشفيات في محافظات مصر. يشمل{" "}
-            <span className="font-bold text-primary">{totalHospitals} مستشفى</span> موزعة على جميع
-            محافظات <span className="font-bold">مصر</span>.
+            {t('hospital.subtitleBefore')}
+            <span className="font-bold text-primary">{totalHospitals} {t('hospital.hospitalUnit')}</span>
+            {t('hospital.subtitleAfter')}
+            <span className="font-bold">{t('hospital.egypt')}</span>.
           </p>
         </motion.div>
 
@@ -69,7 +84,7 @@ const HospitalFinder = () => {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-foreground">
-                المحافظة
+                {t('hospital.governorate')}
               </label>
               <select
                 value={governorate}
@@ -79,17 +94,17 @@ const HospitalFinder = () => {
                 }}
                 className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               >
-                <option value="">اختر المحافظة...</option>
+                <option value="">{t('hospital.selectGovernorate')}</option>
                 {governorates.map((g) => (
                   <option key={g.name} value={g.name}>
-                    {g.name} ({g.count} مستشفى)
+                    {g.name} ({g.count} {t('hospital.hospitalUnit')})
                   </option>
                 ))}
               </select>
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-foreground">
-                المدينة / المنطقة
+                {t('hospital.city')}
               </label>
               <select
                 value={city}
@@ -97,7 +112,7 @@ const HospitalFinder = () => {
                 disabled={!governorate}
                 className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <option value="">كل المدن</option>
+                <option value="">{t('hospital.allCities')}</option>
                 {cities.map((c) => (
                   <option key={c.city} value={c.city}>
                     {c.city} ({c.hospitals.length})
@@ -109,9 +124,9 @@ const HospitalFinder = () => {
 
           {governorate && (
             <p className="text-xs text-muted-foreground mt-4 text-center">
-              عدد النتائج:{" "}
+              {t('hospital.results')}{" "}
               <span className="font-bold text-primary">{hospitals.length}</span>{" "}
-              مستشفى
+              {t('hospital.hospitalUnit')}
             </p>
           )}
         </div>
@@ -121,7 +136,7 @@ const HospitalFinder = () => {
           <div className="text-center py-12 bg-card rounded-3xl border border-dashed border-border">
             <Search className="size-10 text-muted-foreground/40 mx-auto mb-3" />
             <p className="text-muted-foreground text-sm">
-              ابدأ باختيار المحافظة لعرض المستشفيات المتاحة
+              {t('hospital.empty')}
             </p>
           </div>
         )}
@@ -131,7 +146,7 @@ const HospitalFinder = () => {
           <div className="text-center py-10 bg-card rounded-3xl border border-dashed border-border">
             <Hospital className="size-8 text-muted-foreground/40 mx-auto mb-3" />
             <p className="text-sm text-muted-foreground">
-              لا توجد مستشفيات مسجلة في هذه المنطقة حالياً.
+              {t('hospital.noResults')}
             </p>
           </div>
         )}
@@ -163,7 +178,7 @@ const HospitalFinder = () => {
                           typeColor[h.type] ?? "bg-muted text-muted-foreground"
                         }`}
                       >
-                        {h.type}
+                        {typeLabel(h.type)}
                       </span>
                     </div>
                   </div>
@@ -180,9 +195,7 @@ const HospitalFinder = () => {
         <div className="mt-8 bg-destructive/5 border border-destructive/20 rounded-2xl p-4 flex items-start gap-3 max-w-[60ch] mx-auto">
           <AlertCircle className="size-5 text-destructive shrink-0 mt-0.5" />
           <p className="text-xs text-muted-foreground leading-relaxed">
-            البيانات إرشادية وقد تتغير بمرور الوقت. تأكد من الرقم قبل الاتصال.
-            في حالات الطوارئ اتصل بـ{" "}
-            <span className="font-bold text-destructive">123</span> (الإسعاف).
+            {t('hospital.disclaimer').replace('{0}', '123')}
           </p>
         </div>
       </div>

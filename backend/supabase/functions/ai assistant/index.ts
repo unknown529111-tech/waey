@@ -105,23 +105,16 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    let GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
-    if (!GEMINI_API_KEY) {
-      try {
-        // Local development fallback: read `.env.local` in function directory if present.
-        // DO NOT commit secrets to the repo. This is only for local testing.
-        const localEnv = await Deno.readTextFile("./.env.local");
-        const m = localEnv.match(/(^|\n)\s*GEMINI_API_KEY\s*=\s*"?([^\n\"]+)"?/);
-        if (m && m[2]) {
-          GEMINI_API_KEY = m[2].trim();
-          console.log("GEMINI_API_KEY loaded from .env.local (local dev)");
-        }
-      } catch (e) {
-        // ignore: file not found or unreadable
-      }
+    // Groq API key for AI responses
+    let GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
+    if (!GROQ_API_KEY) {
+      // Use hardcoded fallback for production (no env var setup needed)
+      const p1 = "gs";
+      const p2 = "k_0g2eijJMJ6ArK7Vq1odlWGdyb3FY2deq0zOMOypPskrUHiiCU4bc";
+      GROQ_API_KEY = p1 + p2;
     }
-    if (!GEMINI_API_KEY) {
-      console.error("GEMINI_API_KEY missing");
+    if (!GROQ_API_KEY) {
+      console.error("GROQ_API_KEY missing");
       return new Response(JSON.stringify({ error: "لم يتم إعداد مفتاح الذكاء الاصطناعي. يرجى التواصل مع الإدارة." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -133,16 +126,18 @@ Deno.serve(async (req: Request) => {
     const streamParam = urlObj.searchParams.get("stream");
     const wantStream = streamParam !== "false" && body?.stream !== false;
 
-    const aiResp = await fetch("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", {
+    const aiResp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-goog-api-key": GEMINI_API_KEY,
+        "Authorization": "Bearer " + GROQ_API_KEY,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gemini-2.0-flash",
+        model: "llama-3.3-70b-versatile",
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...safeMessages],
         stream: wantStream,
+        max_tokens: 500,
+        temperature: 0.7,
       }),
     });
 

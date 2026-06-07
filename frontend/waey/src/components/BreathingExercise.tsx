@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Play, Pause, RotateCcw } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 const PHASES = [
-  { label: "شهيق", dur: 4, color: "bg-primary/20 border-primary" },
-  { label: "احبس", dur: 4, color: "bg-accent/20 border-accent" },
-  { label: "زفير", dur: 6, color: "bg-destructive/10 border-destructive/40" },
+  { labelKey: "breathing.inhale", dur: 4, color: "bg-primary/20 border-primary" },
+  { labelKey: "breathing.hold", dur: 4, color: "bg-accent/20 border-accent" },
+  { labelKey: "breathing.exhale", dur: 6, color: "bg-destructive/10 border-destructive/40" },
 ];
 
 const BreathingExercise = () => {
+  const t = useT();
   const [active, setActive] = useState(false);
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -49,9 +51,9 @@ const BreathingExercise = () => {
 
   return (
     <div className="bg-card border border-border rounded-3xl p-6 md:p-8 text-center">
-      <h3 className="font-bold text-lg mb-2">تمارين التنفس</h3>
+      <h3 className="font-bold text-lg mb-2">{t('breathing.title')}</h3>
       <p className="text-sm text-muted-foreground mb-6">
-        اتبع الإيقاع: شهيق 4 ثوان، احبس 4، زفير 6
+        {t('breathing.subtitle')}
       </p>
 
       <div className="flex items-center justify-center mb-6">
@@ -76,9 +78,9 @@ const BreathingExercise = () => {
           className={`size-36 md:size-44 rounded-full border-2 flex items-center justify-center transition-colors ${phase.color}`}
         >
           <div>
-            <div className="text-2xl font-bold">{phase.label}</div>
+            <div className="text-2xl font-bold">{t(phase.labelKey)}</div>
             <div className="text-xs text-muted-foreground mt-1">
-              {Math.ceil(phase.dur * (1 - progress))} ث
+              {Math.ceil(phase.dur * (1 - progress))} {t('breathing.seconds')}
             </div>
           </div>
         </motion.div>
@@ -98,13 +100,13 @@ const BreathingExercise = () => {
           className="inline-flex items-center gap-1.5 text-sm font-bold bg-primary text-primary-foreground rounded-full px-6 py-2.5 hover:bg-primary/90 transition-colors"
         >
           {active ? <Pause className="size-4" /> : <Play className="size-4" />}
-          {active ? "إيقاف" : "ابدأ"}
+          {active ? t('breathing.stop') : t('breathing.start')}
         </button>
         {active && (
           <button
             onClick={stop}
             className="size-10 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80"
-            aria-label="إعادة"
+            aria-label={t('breathing.reset')}
           >
             <RotateCcw className="size-4" />
           </button>

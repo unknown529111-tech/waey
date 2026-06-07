@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { HeartPulse } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 const ResultCard = ({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) => (
   <div className={`rounded-3xl p-5 text-center ${accent ? "bg-primary text-primary-foreground" : "bg-background border border-border"}`}>
@@ -9,6 +10,7 @@ const ResultCard = ({ label, value, accent = false }: { label: string; value: st
 );
 
 const HealthCalculator = () => {
+  const t = useT();
   const [drinks, setDrinks] = useState(2);
   const [sweets, setSweets] = useState(1);
   const [fastFood, setFastFood] = useState(1);
@@ -22,13 +24,13 @@ const HealthCalculator = () => {
       <div className="max-w-[1000px] mx-auto text-center mb-12">
         <div className="inline-flex items-center gap-2 bg-primary-foreground/10 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold mb-4">
           <HeartPulse className="size-4" />
-          أداة تفاعلية
+          {t('healthCalc.badge')}
         </div>
         <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-primary-foreground">
-          حاسبة الصحة
+          {t('healthCalc.title')}
         </h2>
         <p className="text-primary-foreground/70 text-lg max-w-[50ch] mx-auto leading-relaxed">
-          احسب استهلاكك اليومي من السكر واعرف إذا كان ضمن الحد الصحي الموصى به.
+          {t('healthCalc.desc')}
         </p>
       </div>
 
@@ -37,35 +39,38 @@ const HealthCalculator = () => {
           <div className="space-y-6">
             <div>
               <label className="flex justify-between text-sm font-bold mb-3">
-                <span>المشروبات المحلاة يومياً</span>
-                <span className="text-destructive tabular-nums">{drinks} مشروبات ({drinks * 35}غ سكر)</span>
+                <span>{t('healthCalc.drinks.label')}</span>
+                <span className="text-destructive tabular-nums">{drinks} {t('healthCalc.drinks.unit')} ({drinks * 35}{t('healthCalc.gramSugar')})</span>
               </label>
               <input type="range" min={0} max={8} value={drinks} onChange={(e) => setDrinks(Number(e.target.value))} className="w-full accent-destructive" />
             </div>
             <div>
               <label className="flex justify-between text-sm font-bold mb-3">
-                <span>الحلويات والشوكولاتة</span>
-                <span className="text-accent tabular-nums">{sweets} قطع ({sweets * 25}غ سكر)</span>
+                <span>{t('healthCalc.sweets.label')}</span>
+                <span className="text-accent tabular-nums">{sweets} {t('healthCalc.sweets.unit')} ({sweets * 25}{t('healthCalc.gramSugar')})</span>
               </label>
               <input type="range" min={0} max={6} value={sweets} onChange={(e) => setSweets(Number(e.target.value))} className="w-full accent-accent" />
             </div>
             <div>
               <label className="flex justify-between text-sm font-bold mb-3">
-                <span>وجبات سريعة</span>
-                <span className="text-accent tabular-nums">{fastFood} وجبات ({fastFood * 15}غ سكر)</span>
+                <span>{t('healthCalc.fastfood.label')}</span>
+                <span className="text-accent tabular-nums">{fastFood} {t('healthCalc.fastfood.unit')} ({fastFood * 15}{t('healthCalc.gramSugar')})</span>
               </label>
               <input type="range" min={0} max={5} value={fastFood} onChange={(e) => setFastFood(Number(e.target.value))} className="w-full accent-accent" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ResultCard label="إجمالي السكر اليومي" value={`${totalSugar}غ`} />
-            <ResultCard label="الحد الموصى به" value={`${recommended}غ`} />
-            <ResultCard label="نقاط الصحة" value={`${points}/100`} accent={points >= 60} />
+            <ResultCard label={t('healthCalc.result.total')} value={`${totalSugar}${t('healthCalc.gram')}`} />
+            <ResultCard label={t('healthCalc.result.recommended')} value={`${recommended}${t('healthCalc.gram')}`} />
+            <ResultCard label={t('healthCalc.result.points')} value={`${points}/100`} accent={points >= 60} />
           </div>
 
           <p className="text-sm text-muted-foreground text-center">
-            {totalSugar <= recommended ? "🌿 رائع! استهلاكك ضمن الحد الصحي الموصى به." : `⚠️ استهلاكك يتجاوز الحد بمقدار ${totalSugar - recommended}غ. حاول استبدال مشروب محلى بالماء!`}
+            {totalSugar <= recommended
+              ? t('healthCalc.warning.good')
+              : t('healthCalc.warning.bad').replace('{diff}', String(totalSugar - recommended))
+            }
           </p>
         </div>
       </div>
