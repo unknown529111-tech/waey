@@ -1,10 +1,12 @@
 import { useStreak } from "@/hooks/useStreak";
 import { useAuth } from "@/contexts/useAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Trophy, Zap } from "lucide-react";
 
 export function StreakDisplay() {
   const { isAuthenticated } = useAuth();
+  const { lang, t } = useLanguage();
   const { count, accumulated, newStreakFlash, prizeWinner, lastStreakDate } = useStreak();
 
   if (!isAuthenticated) return null;
@@ -25,7 +27,7 @@ export function StreakDisplay() {
             className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-l from-amber-500/90 to-orange-500/90 text-white px-6 py-3 rounded-full shadow-float-lg flex items-center gap-3 text-sm font-bold"
           >
             <Flame className="size-5" />
-            <span>أحسنت! رصيدك الآن {count} نقاط استمرار</span>
+            <span> {t('streak.flash')} {count} {t('streak.points')}</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -44,7 +46,19 @@ export function StreakDisplay() {
           </div>
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-foreground leading-none">{count}</span>
-            <span className="text-[10px] font-bold text-muted-foreground tracking-wide">نقاط الاستمرار</span>
+            <span className="text-[10px] font-bold text-muted-foreground tracking-wide">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={lang}
+                  initial={{ y: -12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: 12, opacity: 0 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                >
+                  {t('streak.points')}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </div>
         </div>
 
@@ -71,7 +85,19 @@ export function StreakDisplay() {
               className="bg-gradient-to-l from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-[2rem] px-4 py-2 flex items-center gap-2 shadow-soft"
             >
               <Trophy className="size-4 text-amber-600" />
-              <span className="text-xs font-bold text-amber-700 dark:text-amber-300">أنت الرابح! تواصل معنا</span>
+              <span className="text-xs font-bold text-amber-700 dark:text-amber-300">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={lang}
+                    initial={{ y: -12, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 12, opacity: 0 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                  >
+                    {t('streak.winner')}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
             </motion.div>
           )}
         </AnimatePresence>
