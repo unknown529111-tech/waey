@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Smile } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 import { getMood, setMood, bumpStreak } from "@/lib/dailyStorage";
 
 const MOODS = [
-  { v: 1, e: "😞", label: "سيئ" },
-  { v: 2, e: "😕", label: "تعبان" },
-  { v: 3, e: "😐", label: "عادي" },
-  { v: 4, e: "🙂", label: "كويس" },
-  { v: 5, e: "😄", label: "ممتاز" },
+  { v: 1, e: "😞", key: "tracker.mood.bad" },
+  { v: 2, e: "😕", key: "tracker.mood.tired" },
+  { v: 3, e: "😐", key: "tracker.mood.okay" },
+  { v: 4, e: "🙂", key: "tracker.mood.good" },
+  { v: 5, e: "😄", key: "tracker.mood.excellent" },
 ];
 
 const MoodTracker = () => {
+  const t = useT();
   const [val, setVal] = useState(getMood());
   const choose = (v: number) => {
     setVal(v);
@@ -22,7 +24,7 @@ const MoodTracker = () => {
     <div className="bg-card border border-border rounded-3xl p-5">
       <div className="flex items-center gap-2 mb-3">
         <Smile className="size-5 text-accent" />
-        <h3 className="font-bold">مزاج اليوم</h3>
+        <h3 className="font-bold">{t("tracker.mood.title")}</h3>
       </div>
       <div className="flex justify-between gap-1">
         {MOODS.map((m) => (
@@ -34,10 +36,10 @@ const MoodTracker = () => {
                 ? "bg-primary/15 ring-2 ring-primary"
                 : "hover:bg-secondary"
             }`}
-            aria-label={m.label}
+            aria-label={t(m.key)}
           >
             <span className="text-2xl">{m.e}</span>
-            <span className="text-[10px] text-muted-foreground">{m.label}</span>
+            <span className="text-[10px] text-muted-foreground">{t(m.key)}</span>
           </button>
         ))}
       </div>

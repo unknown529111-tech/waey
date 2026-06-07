@@ -8,8 +8,10 @@ import {
   bumpStreak,
 } from "@/lib/dailyStorage";
 import { toast } from "sonner";
+import { useT } from "@/contexts/LanguageContext";
 
 const DailyChallenge = () => {
+  const t = useT();
   const challenge = getDailyChallenge();
   const [done, setDone] = useState(isChallengeDone());
 
@@ -18,7 +20,7 @@ const DailyChallenge = () => {
     markChallengeDone();
     bumpStreak();
     setDone(true);
-    toast.success("أحسنت! تم تسجيل تحدي اليوم 🎉");
+    toast.success(t('challenge.toast'));
   };
 
   return (
@@ -29,7 +31,7 @@ const DailyChallenge = () => {
     >
       <div className="flex items-center gap-2 text-xs font-bold text-primary mb-3">
         <Trophy className="size-4" />
-        تحدي اليوم
+        {t('challenge.title')}
       </div>
       <div className="flex items-start gap-4">
         <div className="text-5xl">{challenge.emoji}</div>
@@ -52,7 +54,7 @@ const DailyChallenge = () => {
         }`}
       >
         <Check className="size-4" />
-        {done ? "تم إنجازه ✓" : "أنجزته!"}
+        {done ? t('challenge.done') : t('challenge.do')}
       </button>
     </motion.div>
   );

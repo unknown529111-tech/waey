@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Minus, Plus } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
 
 interface Props {
@@ -24,6 +25,7 @@ const SimpleTracker = ({
   goal,
   max = 24,
 }: Props) => {
+  const t = useT();
   const [val, setVal] = useState(getDailyValue(storageKey));
 
   const update = (n: number) => {
@@ -56,7 +58,7 @@ const SimpleTracker = ({
         <button
           onClick={() => update(val - step)}
           className="size-10 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground flex items-center justify-center"
-          aria-label="نقص"
+          aria-label={t("tracker.simple.decrease")}
         >
           <Minus className="size-4" />
         </button>
@@ -64,7 +66,7 @@ const SimpleTracker = ({
         <button
           onClick={() => update(val + step)}
           className={`size-10 rounded-full text-white flex items-center justify-center bg-primary hover:bg-primary/90`}
-          aria-label="أضف"
+          aria-label={t("tracker.simple.add")}
         >
           <Plus className="size-4" />
         </button>

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Battery, BatteryWarning, BatteryCharging, Zap } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 const MentalEnergy = () => {
+  const t = useT();
   const [energy, setEnergy] = useState(70);
 
   const getColor = () => {
@@ -18,17 +20,17 @@ const MentalEnergy = () => {
   };
 
   const getAdvice = () => {
-    if (energy <= 20) return "طاقتك منخفضة جداً — خد راحة، بلاش ضغط.";
-    if (energy <= 40) return "طاقتك متوسطة — حاول تبدأ بمهمة سهلة.";
-    if (energy <= 60) return "طاقتك كويسة — وقت المهام المتوسطة.";
-    return "طاقتك عالية — ركز على المهام الصعبة!";
+    if (energy <= 20) return t("tracker.energy.veryLow");
+    if (energy <= 40) return t("tracker.energy.low");
+    if (energy <= 60) return t("tracker.energy.medium");
+    return t("tracker.energy.high");
   };
 
   return (
     <div className="bg-card rounded-3xl p-5 border border-border">
       <div className="flex items-center gap-2 mb-3">
         <Zap className="size-4 text-primary" />
-        <h3 className="font-bold text-sm">بطارية الطاقة العقلية</h3>
+        <h3 className="font-bold text-sm">{t("energy.title")}</h3>
       </div>
       <div className="flex items-center gap-3 mb-2">
         {getIcon()}

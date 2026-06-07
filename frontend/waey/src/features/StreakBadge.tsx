@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { getStreak } from "@/lib/dailyStorage";
 import { useEffect, useState } from "react";
 import { getFreezeCount } from "./useFreeze";
+import { useT } from "@/contexts/LanguageContext";
 
 const StreakBadge = () => {
+  const t = useT();
   const [streak, setStreak] = useState(getStreak());
   const [freezes, setFreezes] = useState(getFreezeCount());
 
@@ -24,7 +26,7 @@ const StreakBadge = () => {
       >
         <Flame className="size-5 text-accent" />
         <span className="font-bold text-sm text-accent">
-          {streak.count > 0 ? `${streak.count} يوم متتالي` : "ابدأ سلسلتك اليوم"}
+          {streak.count > 0 ? t('streak.count').replace('{n}', String(streak.count)) : t('streak.start')}
         </span>
       </motion.div>
       <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/50 rounded-full px-3 py-2 border border-border">

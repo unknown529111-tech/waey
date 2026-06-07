@@ -8,30 +8,30 @@ const Education = () => {
   const t = useT();
 
   const studyMethods = [
-    { id: "pomodoro", icon: Timer, title: "تقنية بومودورو", desc: "ذاكر 25 دقيقة بتركيز كامل، ثم استرح 5 دقائق. بعد 4 جلسات خد راحة 20–30 دقيقة. بتساعدك تركز من غير ما تتعب." },
-    { id: "active-recall", icon: BookOpen, title: "الاستدعاء النشط (Active Recall)", desc: "بدل ما تقرا تاني وتاني، اقفل الكتاب وحاول تفتكر المعلومة بنفسك أو اشرحها بصوت عالي. ده بيثبّت المعلومة أضعاف." },
-    { id: "spaced", icon: Target, title: "المراجعة المتباعدة (Spaced Repetition)", desc: "راجع المادة بعد يوم، ثم بعد 3 أيام، ثم أسبوع. كل مرة بتقوي الذاكرة بدل ما تنسى قبل الامتحان." },
-    { id: "feynman", icon: Brain, title: "اشرح اللي فهمته (Feynman)", desc: "اشرح الموضوع كأنك بتعلّمه لطفل. لو لخبطت في حتة يبقى دي اللي محتاج تذاكرها تاني." },
-    { id: "mindmap", icon: Sparkles, title: "خرائط ذهنية", desc: "ارسم أفكار الدرس على ورقة بسهم وألوان. مفيدة جدًا للمواد اللي فيها ترابط زي التاريخ والأحياء." },
-    { id: "plan", icon: Compass, title: "خطة يوم بسيطة", desc: "اكتب 3 مهام بس تخلصهم النهارده. أهم من قائمة طويلة بتفشل تكملها. ابدأ بالأصعب وانت لسه طاقتك حلوة." },
+    { id: "pomodoro", icon: Timer, title: t('edu.studyMethods.0.title'), desc: t('edu.studyMethods.0.desc') },
+    { id: "active-recall", icon: BookOpen, title: t('edu.studyMethods.1.title'), desc: t('edu.studyMethods.1.desc') },
+    { id: "spaced", icon: Target, title: t('edu.studyMethods.2.title'), desc: t('edu.studyMethods.2.desc') },
+    { id: "feynman", icon: Brain, title: t('edu.studyMethods.3.title'), desc: t('edu.studyMethods.3.desc') },
+    { id: "mindmap", icon: Sparkles, title: t('edu.studyMethods.4.title'), desc: t('edu.studyMethods.4.desc') },
+    { id: "plan", icon: Compass, title: t('edu.studyMethods.5.title'), desc: t('edu.studyMethods.5.desc') },
   ];
 
   const focusTips = [
-    { id: "phone-off", title: "قفل الموبايل في أوضة تانية", desc: "مش الصامت، قفله أو سيبه برّه. الإشعار الواحد بيكسر تركيزك 15–20 دقيقة." },
-    { id: "two-min", title: "اعمل قاعدة الـ 2 دقيقة", desc: "لو تايه ومش عارف تبدأ، قول لنفسك: هذاكر دقيقتين بس. غالبًا هتلاقي نفسك كملت." },
-    { id: "change-place", title: "غيّر المكان", desc: "لما دماغك تقفل، قوم اتحرك أو غيّر الأوضة. المخ بيشتغل أحسن مع التغيير البسيط." },
-    { id: "water-breath", title: "اشرب مية وخد نفس عميق", desc: "كوباية مية وخمس أنفاس بطيئة بتعيد تركيزك أكتر من قهوة تانية." },
-    { id: "write-down", title: "اكتب اللي بيشغلك", desc: "لو فيه قلق أو فكرة بتقطعك، اكتبها على ورقة وارجع لها بعدين. بكده تفضي دماغك." },
-    { id: "sleep", title: "نام كويس", desc: "السهر يلغي اللي ذاكرته. 7–8 ساعات نوم أهم من ساعتين مذاكرة زيادة." },
+    { id: "phone-off", title: t('edu.focusTips.0.title'), desc: t('edu.focusTips.0.desc') },
+    { id: "two-min", title: t('edu.focusTips.1.title'), desc: t('edu.focusTips.1.desc') },
+    { id: "change-place", title: t('edu.focusTips.2.title'), desc: t('edu.focusTips.2.desc') },
+    { id: "water-breath", title: t('edu.focusTips.3.title'), desc: t('edu.focusTips.3.desc') },
+    { id: "write-down", title: t('edu.focusTips.4.title'), desc: t('edu.focusTips.4.desc') },
+    { id: "sleep", title: t('edu.focusTips.5.title'), desc: t('edu.focusTips.5.desc') },
   ];
 
   const lostTips = [
-    "ابدأ بأي حاجة صغيرة. الحركة بتولّد الدافع، مش العكس.",
-    "متقارنش نفسك بحد. كل واحد له سرعته وطريقه.",
-    "حدد هدف واحد للأسبوع، مش 10 أهداف للسنة.",
-    "لو فشلت في يوم، كمل في اللي بعده. فشل اليوم مش فشل العمر.",
-    "اطلب مساعدة. صديق، مدرس، أو حتى محادثة مع المساعد الذكي هنا.",
-    "افتكر إنك مش لوحدك—كلنا بنحس بالتيه أحيانًا.",
+    t('edu.lostTips.0'),
+    t('edu.lostTips.1'),
+    t('edu.lostTips.2'),
+    t('edu.lostTips.3'),
+    t('edu.lostTips.4'),
+    t('edu.lostTips.5'),
   ];
 
   return (
@@ -89,7 +89,7 @@ const Education = () => {
               {t('edu.learningStyle')}
             </h2>
             <p className="text-muted-foreground mb-6 -mt-4">
-              خد الاختبار ده عشان تعرف أنت فين، وبعدها هتتعلم إزاي تذاكر بطريقتك.
+              {t('edu.varkDesc')}
             </p>
             <VarkTest />
           </div>
@@ -118,17 +118,17 @@ const Education = () => {
           <div className="bg-gradient-to-l from-primary/15 via-leaf-light/40 to-sun-warm/30 rounded-[2rem] p-8 md:p-12 border border-primary/20 text-center shadow-soft">
             <Heart className="size-10 text-accent mx-auto mb-4" />
             <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
-              فكّر في مستقبلك
+              {t('edu.futureTitle')}
             </h2>
             <p className="text-base md:text-lg leading-loose max-w-[700px] mx-auto text-foreground/90">
-              اللي بتعمله النهارده—حتى لو حاسس إنه قليل—هو الأساس اللي بكرة هيقف عليه.
+              {t('edu.futureBody1')}
               <br />
-              اعمل اللي عليك بإخلاص، وذاكر، وحاول، واصبر،
+              {t('edu.futureBody2')}
               <br />
-              <span className="font-bold text-primary">والباقي على ربنا.</span>
+              <span className="font-bold text-primary">{t('edu.futureBody3')}</span>
               <br />
               <br />
-              متخافش من البطء، خاف بس من الوقوف. خطوة كل يوم أحسن من قفزة كل سنة.
+              {t('edu.futureBody4')}
             </p>
           </div>
         </section>

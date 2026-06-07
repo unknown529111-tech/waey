@@ -9,45 +9,45 @@ const Finance = () => {
   const t = useT();
 
   const principles = [
-    { icon: PiggyBank, title: "قاعدة 50/30/20", desc: "50% من دخلك للأساسيات (إيجار، أكل، فواتير)، 30% لرغباتك، و20% ادخار واستثمار. ابدأ بالنسبة وعدّلها على حسب وضعك." },
-    { icon: Shield, title: "صندوق طوارئ", desc: "ادخر ما يعادل 3 إلى 6 شهور مصاريف في حساب توفير سهل الوصول. ده اللي بيحميك من القروض وقت الأزمات." },
-    { icon: Target, title: "اكتب أهدافك بفلوس", desc: "بدل 'عايز أوفر'، قول 'هوفر 10,000 جنيه خلال 6 شهور بـ 1,700 شهريًا'. الهدف الواضح بيتحقق." },
-    { icon: TrendingUp, title: "ادفع لنفسك الأول", desc: "أول ما المرتب ينزل، حوّل نسبة الادخار فورًا قبل أي مصروف. لا تنتظر آخر الشهر، مفيش هيفضل." },
-    { icon: AlertTriangle, title: "اوعى الديون الاستهلاكية", desc: "تقسيط موبايل أو ملابس بفوايد مرتفعة بيأكل دخلك. لو هتقسط، يبقى لأصل بينمو (تعليم، شغل)." },
-    { icon: Coins, title: "تتبع كل جنيه", desc: "أول شهرين سجّل كل مصروف. هتتفاجئ بحجم المصاريف الصغيرة (قهوة، توصيل، اشتراكات) لما تتجمع." },
+    { icon: PiggyBank, title: t('finance.principles.0.title'), desc: t('finance.principles.0.desc') },
+    { icon: Shield, title: t('finance.principles.1.title'), desc: t('finance.principles.1.desc') },
+    { icon: Target, title: t('finance.principles.2.title'), desc: t('finance.principles.2.desc') },
+    { icon: TrendingUp, title: t('finance.principles.3.title'), desc: t('finance.principles.3.desc') },
+    { icon: AlertTriangle, title: t('finance.principles.4.title'), desc: t('finance.principles.4.desc') },
+    { icon: Coins, title: t('finance.principles.5.title'), desc: t('finance.principles.5.desc') },
   ];
 
   const everydayTips = [
-    "اعمل قائمة قبل ما تنزل تتسوّق وملتزمش بحاجة برّاها.",
-    "استنى 24 ساعة قبل أي شراء فوق 500 جنيه — غالبًا الرغبة بتقل.",
-    "قارن سعر المنتج في 3 محلات/مواقع قبل ما تشتري.",
-    "اطبخ في البيت 5 أيام في الأسبوع — بيوفر آلاف شهريًا.",
-    "ألغي أي اشتراك مش بتستخدمه فعلًا (Netflix، Gym، تطبيقات).",
-    "اشتري الأساسيات بكميات أكبر لما يكون فيه عرض (أرز، زيت، صابون).",
-    "خلي عندك ميزانية أسبوعية كاش — لما تخلص بطلت تصرف.",
-    "متروحش السوبرماركت وانت جعان، هتشتري ضعف اللي محتاجه.",
-    "قلل التوصيل (Talabat/Mrsool) لمرة في الأسبوع كحد أقصى.",
-    "بدل قهوة بره يوميًا (40+ جنيه)، اعملها في البيت بـ 5 جنيه.",
+    t('finance.tips.0'),
+    t('finance.tips.1'),
+    t('finance.tips.2'),
+    t('finance.tips.3'),
+    t('finance.tips.4'),
+    t('finance.tips.5'),
+    t('finance.tips.6'),
+    t('finance.tips.7'),
+    t('finance.tips.8'),
+    t('finance.tips.9'),
   ];
 
   const earnTips = [
-    { title: "نمّي مهارة بتباع", desc: "تعلم مهارة (تصميم، برمجة، كتابة، لغة) — راتب أعلى أو شغل إضافي." },
-    { title: "ابدأ Side Hustle صغير", desc: "Freelance، بيع أونلاين، تدريس خصوصي. حتى 1000-2000 جنيه إضافي شهريًا فرق كبير." },
-    { title: "اطلب علاوة بذكاء", desc: "وثّق إنجازاتك بأرقام، قارن بسوق الشغل، واطلب بثقة كل سنة." },
-    { title: "استثمر بدل ما تخزّن", desc: "الفلوس النايمة بيأكلها التضخم. ابحث عن صناديق استثمار، ذهب، أو شهادات بنكية." },
+    { title: t('finance.earnTips.0.title'), desc: t('finance.earnTips.0.desc') },
+    { title: t('finance.earnTips.1.title'), desc: t('finance.earnTips.1.desc') },
+    { title: t('finance.earnTips.2.title'), desc: t('finance.earnTips.2.desc') },
+    { title: t('finance.earnTips.3.title'), desc: t('finance.earnTips.3.desc') },
   ];
 
   const warnings = [
-    "البعد عن مخططات 'اربح بسرعة' والعملات المشبوهة — أغلبها نصب.",
-    "لا تقرض حد فلوس مش قادر تخسرها كلها.",
-    "اقرأ شروط أي تمويل أو تقسيط — الفايدة الحقيقية غالبًا ضعف المعلنة.",
-    "متحطش بياناتك البنكية على مواقع مش موثوقة.",
+    t('finance.warnings.0'),
+    t('finance.warnings.1'),
+    t('finance.warnings.2'),
+    t('finance.warnings.3'),
   ];
 
   const buyQuestions = [
-    { question: "هل أحتاج هذا المنتج فعلاً؟", icon: HelpCircle, tip: "انتظر 24 ساعة قبل الشراء. معظم الرغبات تتلاشى." },
-    { question: "هل يوجد بديل أرخص وبنفس الجودة؟", icon: CheckCircle, tip: "قارن بين 3 خيارات على الأقل قبل اتخاذ القرار." },
-    { question: "هل سأستخدمه أكثر من 30 مرة؟", icon: XCircle, tip: "قاعدة الـ 30: إذا لن تستخدمه 30 مرة، فهو ليس ضرورياً." },
+    { question: t('finance.buyQuestions.0.question'), icon: HelpCircle, tip: t('finance.buyQuestions.0.tip') },
+    { question: t('finance.buyQuestions.1.question'), icon: CheckCircle, tip: t('finance.buyQuestions.1.tip') },
+    { question: t('finance.buyQuestions.2.question'), icon: XCircle, tip: t('finance.buyQuestions.2.tip') },
   ];
 
   return (
@@ -169,12 +169,12 @@ const Finance = () => {
           <div className="rounded-[2rem] p-8 md:p-12 border border-primary/10 bg-card text-center shadow-soft">
             <Coins className="size-10 text-accent mx-auto mb-4" />
             <p className="text-base md:text-lg leading-loose max-w-[700px] mx-auto text-foreground/90">
-              مش الفلوس اللي بتربحها هي اللي بتغنيك،
+              {t('finance.footerQuote1')}
               <br />
-              <span className="font-bold text-accent">دي اللي بتعرف تحافظ عليها.</span>
+              <span className="font-bold text-accent">{t('finance.footerQuote2')}</span>
               <br />
               <br />
-              ابدأ صغير، اتعلم باستمرار، واصبر — التراكم بيعمل المعجزات.
+              {t('finance.footerQuote3')}
             </p>
           </div>
         </section>

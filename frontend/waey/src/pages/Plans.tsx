@@ -23,21 +23,21 @@ const Plans = () => {
 
   const handleStart = () => {
     startPlan(plan.id);
-    toast.success(`بدأت ${plan.title} 🎉`);
+    toast.success(t('plans.started').replace('{title}', plan.title) + ' 🎉');
     refresh();
   };
 
   const handleToggle = (idx: number) => {
     const s = togglePlanDay(plan.id, idx);
     if (s.completed.length === 30) {
-      toast.success("🏆 مبروك! أكملت كل أيام الخطة!");
+      toast.success(t('plans.completed'));
     }
     refresh();
   };
 
   const handleReset = () => {
     resetPlan(plan.id);
-    toast("تمت إعادة الخطة");
+    toast(t('plans.resetMessage'));
     refresh();
   };
 

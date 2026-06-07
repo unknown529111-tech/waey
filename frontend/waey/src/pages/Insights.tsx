@@ -21,17 +21,19 @@ import {
 } from "@/lib/dailyStorage";
 import { Droplet, Moon, Wallet, Flame, Footprints, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useT } from "@/contexts/LanguageContext";
-
-const dayLabel = (iso: string) => {
-  const d = new Date(iso);
-  return d.toLocaleDateString("ar-EG", { weekday: "short", day: "numeric" });
-};
+import { useT, useLanguage } from "@/contexts/LanguageContext";
 
 const COLORS = ["#5D7052", "#C18C5D", "#7BA98F", "#D4A656", "#8C7A6B", "#E6DCCD", "#9CC1A8"];
 
 const Insights = () => {
   const t = useT();
+  const { lang } = useLanguage();
+
+  const dayLabel = (iso: string) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'ar-EG', { weekday: "short", day: "numeric" });
+  };
+
   const days = lastNDays(7);
 
   const water = getDailyMap("water");
@@ -43,18 +45,18 @@ const Insights = () => {
   const weekly = days.map((d) => ({
     day: dayLabel(d),
     iso: d,
-    مياه: water[d] ?? 0,
-    نوم: sleep[d] ?? 0,
-    نشاط: steps[d] ?? 0,
-    مزاج: mood[d] ?? 0,
-    بيئة: eco[d] ?? 0,
+    water: water[d] ?? 0,
+    sleep: sleep[d] ?? 0,
+    steps: steps[d] ?? 0,
+    mood: mood[d] ?? 0,
+    eco: eco[d] ?? 0,
   }));
 
   const expensesByDay = days.map((d) => {
     const list = getExpenses(d);
     return {
       day: dayLabel(d),
-      المصروف: +list.reduce((s, e) => s + e.amount, 0).toFixed(2),
+      expenses: +list.reduce((s, e) => s + e.amount, 0).toFixed(2),
     };
   });
 
@@ -85,11 +87,11 @@ const Insights = () => {
   const summary = useMemo(() => {
     const lines: string[] = [];
     const avgSleep = totals.sleep / 7;
-    if (avgSleep < 6) lines.push("نومك قليل — حاول تنام بدري ربع ساعة كل يوم.");
-    else if (avgSleep < 7) lines.push("نومك متوسط — كويس إنك قريب من المعدل الصحي.");
-    else lines.push("نومك ممتاز — جسمك وعقلك بينعموا براحة كافية 👏");
-    if (totals.water < 21) lines.push("مياهك أقل من الموصى به (3 لتر/يوم). جيب زجاجة معاك.");
-    else lines.push("شرب مية كويس — مستمر في الترطيب 💧");
+    if (avgSleep < 6) lines.push(t('insights.sleep.low'));
+    else if (avgSleep < 7) lines.push(t('insights.sleep.medium'));
+    else lines.push(t('insights.sleep.good'));
+    if (totals.water < 21) lines.push(t('insights.water.low'));
+    else lines.push(t('insights.water.good'));
     return lines;
   }, [totals.sleep, totals.water]);
 
@@ -137,16 +139,16 @@ const Insights = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {stat(<Droplet className="size-4 text-blue-500" />, "إجمالي المياه", `${totals.water} كوب`)}
-        {stat(<Moon className="size-4 text-indigo-500" />, "إجمالي النوم", `${totals.sleep.toFixed(1)} س`)}
-        {stat(<Wallet className="size-4 text-accent" />, "مصاريف الأسبوع", `${totals.expenses.toFixed(0)} ج`)}
-        {stat(<Flame className="size-4 text-accent" />, "أيام متتالية", `${streak.count}`)}
+        {stat(<Droplet className="size-4 text-blue-500" />, t('insights.totalWater'), `${totals.water} ${t('insights.cups')}`)}
+        {stat(<Moon className="size-4 text-indigo-500" />, t('insights.totalSleep'), `${totals.sleep.toFixed(1)} ${t('insights.hours')}`)}
+        {stat(<Wallet className="size-4 text-accent" />, t('insights.weeklyExpenses'), `${totals.expenses.toFixed(0)} ${t('insights.egp')}`)}
+        {stat(<Flame className="size-4 text-accent" />, t('insights.streakDays'), `${streak.count}`)}
       </div>
 
       <div className="grid lg:grid-cols-2 gap-5">
         <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
-            <Droplet className="size-4 text-blue-500" /> المياه (آخر 7 أيام)
+            <Droplet className="size-4 text-blue-500" /> {t('insights.waterChart')}
           </h3>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={weekly}>
@@ -154,14 +156,14 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Bar dataKey="مياه" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="water" fill="#3B82F6" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
-            <Wallet className="size-4 text-accent" /> المصاريف اليومية
+            <Wallet className="size-4 text-accent" /> {t('insights.expensesChart')}
           </h3>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={expensesByDay}>
@@ -169,14 +171,14 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Line type="monotone" dataKey="المصروف" stroke="#C18C5D" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="expenses" stroke="#C18C5D" strokeWidth={3} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
-            <Moon className="size-4 text-indigo-500" /> النوم والمزاج
+            <Moon className="size-4 text-indigo-500" /> {t('insights.sleepChart')}
           </h3>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={weekly}>
@@ -184,19 +186,19 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Line type="monotone" dataKey="نوم" stroke="#6366F1" strokeWidth={2} />
-              <Line type="monotone" dataKey="مزاج" stroke="#5D7052" strokeWidth={2} />
+              <Line type="monotone" dataKey="sleep" stroke="#6366F1" strokeWidth={2} />
+              <Line type="monotone" dataKey="mood" stroke="#5D7052" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
-            <Wallet className="size-4 text-accent" /> توزيع المصاريف
+            <Wallet className="size-4 text-accent" /> {t('insights.expenseDistribution')}
           </h3>
           {expensesByCategory.length === 0 ? (
             <div className="h-[220px] flex items-center justify-center text-sm text-muted-foreground">
-              لا توجد مصاريف مسجلة هذا الأسبوع.
+              {t('insights.noExpenses')}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={220}>
@@ -214,7 +216,7 @@ const Insights = () => {
 
         <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft lg:col-span-2">
           <h3 className="font-bold mb-4 flex items-center gap-2">
-            <Footprints className="size-4 text-primary" /> النشاط البدني والأفعال البيئية
+            <Footprints className="size-4 text-primary" /> {t('insights.dailyActivity')}
           </h3>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={weekly}>
@@ -222,8 +224,8 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Bar dataKey="نشاط" fill="#5D7052" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="بيئة" fill="#C18C5D" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="steps" fill="#5D7052" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="eco" fill="#C18C5D" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

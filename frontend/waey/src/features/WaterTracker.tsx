@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Droplet, Minus, Plus } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
 
 const GOAL = 8;
 
 const WaterTracker = () => {
+  const t = useT();
   const [cups, setCups] = useState(getDailyValue("water"));
 
   const update = (n: number) => {
@@ -21,9 +23,9 @@ const WaterTracker = () => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Droplet className="size-5 text-[#3B82F6]" />
-          <h3 className="font-bold">المياه</h3>
+          <h3 className="font-bold">{t("tracker.water.title")}</h3>
         </div>
-        <span className="text-xs text-muted-foreground">{cups}/{GOAL} كوب</span>
+        <span className="text-xs text-muted-foreground">{cups}/{GOAL} {t("tracker.water.cups")}</span>
       </div>
       <div className="h-2 bg-secondary rounded-full overflow-hidden mb-4">
         <div
@@ -35,7 +37,7 @@ const WaterTracker = () => {
         <button
           onClick={() => update(cups - 1)}
           className="size-10 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground flex items-center justify-center"
-          aria-label="نقص"
+          aria-label={t("tracker.water.decrease")}
         >
           <Minus className="size-4" />
         </button>
@@ -50,7 +52,7 @@ const WaterTracker = () => {
         <button
           onClick={() => update(cups + 1)}
           className="size-10 rounded-full bg-[#3B82F6] text-white hover:bg-[#3B82F6]/80 flex items-center justify-center"
-          aria-label="أضف"
+          aria-label={t("tracker.water.add")}
         >
           <Plus className="size-4" />
         </button>

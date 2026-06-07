@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, CheckCircle, RotateCcw } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 interface Question {
   question: string;
@@ -52,12 +53,6 @@ const categoryColors = {
   environment: "text-primary",
 };
 
-const categoryLabels = {
-  health: "صحة",
-  finance: "مال",
-  environment: "بيئة",
-};
-
 const getDayIndex = () => {
   const start = new Date("2025-01-01").getTime();
   const now = Date.now();
@@ -79,6 +74,7 @@ const getDailyQuestions = (count: number): Question[] => {
 };
 
 const AwarenessQuiz = () => {
+  const t = useT();
   const questions = useMemo(() => getDailyQuestions(10), []);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -124,11 +120,11 @@ const AwarenessQuiz = () => {
           <div className="inline-flex items-center gap-2 mb-4">
             <Brain className="size-6 text-primary" />
             <h2 className="text-3xl md:text-5xl font-bold text-primary tracking-tight">
-              اختبر وعيك
+              {t('quiz.heading')}
             </h2>
           </div>
           <p className="text-muted-foreground text-lg max-w-[50ch] mx-auto leading-relaxed">
-            10 أسئلة تفاعلية تتجدد يومياً لقياس مستوى وعيك الصحي والمالي والبيئي.
+            {t('quiz.description')}
           </p>
         </div>
 
@@ -147,13 +143,13 @@ const AwarenessQuiz = () => {
                 </div>
                 <p className="text-xl font-bold">
                   {percent >= 80
-                    ? "🌟 ممتاز! وعيك عالي جداً!"
+                    ? t('quiz.resultExcellent')
                     : percent >= 50
-                    ? "👍 جيد! لكن يمكنك التحسن أكثر."
-                    : "📚 تحتاج لمعرفة المزيد. تابع منصة وعي!"}
+                    ? t('quiz.resultGood')
+                    : t('quiz.resultLow')}
                 </p>
                 <p className="text-muted-foreground">
-                  أجبت على {score} من {questions.length} أسئلة بشكل صحيح
+                  {t('quiz.resultScore').replace('{score}', String(score)).replace('{total}', String(questions.length))}
                 </p>
                 <div>
                   <button
@@ -161,7 +157,7 @@ const AwarenessQuiz = () => {
                     className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-full font-bold hover:bg-primary/90 transition-colors"
                   >
                     <RotateCcw className="size-4" />
-                    أعد الاختبار
+                    {t('quiz.retry')}
                   </button>
                 </div>
               </motion.div>
@@ -175,7 +171,7 @@ const AwarenessQuiz = () => {
               >
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
                   <span className={`font-bold ${categoryColors[q.category]}`}>
-                    {categoryLabels[q.category]}
+                    {t('quiz.category.' + q.category)}
                   </span>
                   <span className="tabular-nums">
                     {currentQ + 1} / {questions.length}
@@ -234,7 +230,7 @@ const AwarenessQuiz = () => {
                       onClick={handleNext}
                       className="w-full bg-primary text-primary-foreground py-3 rounded-2xl font-bold hover:bg-primary/90 transition-colors"
                     >
-                      {currentQ + 1 >= questions.length ? "عرض النتيجة" : "السؤال التالي"}
+                      {currentQ + 1 >= questions.length ? t('quiz.showResult') : t('quiz.nextQuestion')}
                     </button>
                   </motion.div>
                 )}

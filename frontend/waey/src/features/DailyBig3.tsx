@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { CheckCircle2, Circle, Target } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 const DailyBig3 = () => {
+  const t = useT();
   const today = new Date().toDateString();
   const [tasks, setTasks] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem("waey_big3") || "{}")[today] || ["", "", ""]; } catch { return ["", "", ""]; }
@@ -32,9 +34,9 @@ const DailyBig3 = () => {
     <div className="bg-card rounded-3xl p-5 border border-border">
       <div className="flex items-center gap-2 mb-3">
         <Target className="size-5 text-primary" />
-        <h3 className="font-bold text-sm">أهم 3 مهام النهارده</h3>
+        <h3 className="font-bold text-sm">{t('big3.title')}</h3>
       </div>
-      <p className="text-xs text-muted-foreground mb-3">حدد 3 مهام بس — لو خلصتهم يعتبر يومك ناجح</p>
+      <p className="text-xs text-muted-foreground mb-3">{t('big3.subtitle')}</p>
       <div className="space-y-2">
         {tasks.map((task, i) => (
           <div key={i} className="flex items-center gap-2">
@@ -48,7 +50,7 @@ const DailyBig3 = () => {
                 next[i] = e.target.value;
                 setTasks(next);
               }}
-              placeholder={`مهمة ${i + 1}`}
+              placeholder={t('big3.task').replace('{n}', String(i + 1))}
               className={`flex-1 bg-transparent border-b border-border py-1.5 text-sm outline-none focus:border-primary/40 transition-colors ${done[i] ? "line-through text-muted-foreground" : ""}`}
             />
           </div>

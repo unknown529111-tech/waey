@@ -6,10 +6,16 @@ import { getAdminRecipes, type AdminItem } from "@/lib/adminContent";
 import { getFavorites, toggleFavorite } from "@/lib/favorites";
 import { useT } from "@/contexts/LanguageContext";
 
-const ALL_TAGS: Recipe["tags"][number][] = ["نباتي", "سريع", "اقتصادي", "صحي", "بروتين عالي"];
-
 const Recipes = () => {
   const t = useT();
+  const ALL_TAGS: Recipe["tags"][number][] = ["نباتي", "سريع", "اقتصادي", "صحي", "بروتين عالي"];
+  const TAG_LABELS: Record<string, string> = {
+    نباتي: t('recipes.tag.vegan'),
+    سريع: t('recipes.tag.quick'),
+    اقتصادي: t('recipes.tag.economic'),
+    صحي: t('recipes.tag.healthy'),
+    'بروتين عالي': t('recipes.tag.highProtein'),
+  };
   const [maxCal, setMaxCal] = useState(1000);
   const [maxCost, setMaxCost] = useState(200);
   const [activeTags, setActiveTags] = useState<string[]>([]);
@@ -60,8 +66,8 @@ const Recipes = () => {
           <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft mb-8 space-y-5">
             <div>
               <div className="flex justify-between text-sm font-bold mb-2">
-                <span>الحد الأقصى للسعرات</span>
-                <span className="text-primary tabular-nums">{maxCal} سعرة</span>
+                <span>{t('recipes.maxCalories')}</span>
+                <span className="text-primary tabular-nums">{maxCal} {t('recipes.calorieUnit')}</span>
               </div>
               <input
                 type="range"
@@ -75,8 +81,8 @@ const Recipes = () => {
             </div>
             <div>
               <div className="flex justify-between text-sm font-bold mb-2">
-                <span>الحد الأقصى للتكلفة</span>
-                <span className="text-accent tabular-nums">{maxCost} ج.م</span>
+                <span>{t('recipes.maxCost')}</span>
+                <span className="text-accent tabular-nums">{maxCost} {t('recipes.costUnit')}</span>
               </div>
               <input
                 type="range"
@@ -100,17 +106,17 @@ const Recipes = () => {
                 <Heart className={`size-3.5 ${favOnly ? "fill-current" : ""}`} />
                 {t('recipes.favorites')} ({favs.length})
               </button>
-              {ALL_TAGS.map((t) => (
+              {ALL_TAGS.map((tag) => (
                 <button
-                  key={t}
-                  onClick={() => toggleTag(t)}
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-300 hover:scale-105 active:scale-95 ${
-                    activeTags.includes(t)
+                    activeTags.includes(tag)
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-foreground hover:bg-muted"
                   }`}
                 >
-                  {t}
+                  {TAG_LABELS[tag]}
                 </button>
               ))}
             </div>
@@ -144,7 +150,7 @@ const Recipes = () => {
                       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-3">
                         <span className="flex items-center gap-1">
                           <Flame className="size-3.5 text-destructive" />
-                          <span className="tabular-nums">{r.calories}</span> سعرة
+                          <span className="tabular-nums">{r.calories}</span> {t('recipes.calorieUnit')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Coins className="size-3.5 text-accent" />
@@ -195,18 +201,18 @@ const Recipes = () => {
               <div className="text-6xl mb-4">{open.emoji}</div>
               <h2 className="text-2xl font-bold mb-2">{open.name}</h2>
               <div className="flex flex-wrap gap-3 text-sm text-muted-foreground mb-6">
-                <span>🔥 {open.calories} سعرة</span>
-                <span>💰 {open.costEGP} ج/فرد</span>
-                <span>⏱ {open.prepMin} دقيقة</span>
-                <span>👥 {open.servings} أفراد</span>
+                <span>🔥 {open.calories} {t('recipes.calorieUnit')}</span>
+                <span>💰 {open.costEGP} {t('recipes.costUnitServing')}</span>
+                <span>⏱ {open.prepMin} {t('recipes.prepMinUnit')}</span>
+                <span>👥 {open.servings} {t('recipes.servingsUnit')}</span>
               </div>
-              <h3 className="font-bold mb-2">المكونات:</h3>
+              <h3 className="font-bold mb-2">{t('recipes.ingredients')}:</h3>
               <ul className="list-disc list-inside space-y-1 text-sm mb-6 marker:text-primary">
                 {open.ingredients.map((i) => (
                   <li key={i}>{i}</li>
                 ))}
               </ul>
-              <h3 className="font-bold mb-2">طريقة التحضير:</h3>
+              <h3 className="font-bold mb-2">{t('recipes.instructions')}:</h3>
               <ol className="space-y-2 text-sm">
                 {open.steps.map((s, i) => (
                   <li key={i} className="flex gap-3">

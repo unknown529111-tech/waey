@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
 import { Recycle } from "lucide-react";
-
-const diyIdeas = [
-  { title: "تحويل البرطمان الزجاجي", description: "حوّل البرطمانات الفارغة إلى حاملات شموع أنيقة أو أوعية لتخزين التوابل.", emoji: "🫙" },
-  { title: "إعادة استخدام الأقمشة", description: "قص الملابس القديمة إلى مناديل تنظيف بدلاً من شراء المناديل الورقية.", emoji: "👕" },
-  { title: "أصص من العلب", description: "استخدم علب الطعام المعدنية كأصص صغيرة للنباتات المنزلية.", emoji: "🌱" },
-  { title: "ورق التغليف", description: "أعد استخدام أكياس الورق وصحف الجرائد لتغليف الهدايا بأسلوب عصري.", emoji: "🎁" },
-];
+import { useT } from "@/contexts/LanguageContext";
 
 const RecycleSection = () => {
+  const t = useT();
+
+  const diyIdeas = [
+    { title: t('recycle.idea.0.title'), description: t('recycle.idea.0.desc'), emoji: "🫙" },
+    { title: t('recycle.idea.1.title'), description: t('recycle.idea.1.desc'), emoji: "👕" },
+    { title: t('recycle.idea.2.title'), description: t('recycle.idea.2.desc'), emoji: "🌱" },
+    { title: t('recycle.idea.3.title'), description: t('recycle.idea.3.desc'), emoji: "🎁" },
+  ];
+
   return (
     <section id="recycle" className="px-6 md:px-12 py-24">
       <div className="max-w-[1200px] mx-auto">
@@ -19,10 +22,10 @@ const RecycleSection = () => {
         >
           <div className="flex items-center gap-3 mb-8">
             <Recycle className="size-8 text-primary" />
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">أفكار إعادة التدوير</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary">{t('recycle.title')}</h2>
           </div>
           <p className="text-muted-foreground text-lg mb-10 max-w-[55ch] leading-relaxed">
-            حوّل النفايات إلى كنوز! أفكار بسيطة وعملية يمكنك تطبيقها في المنزل.
+            {t('recycle.subtitle')}
           </p>
         </motion.div>
 
