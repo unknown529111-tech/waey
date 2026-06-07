@@ -8,15 +8,6 @@ import { useAuth } from "@/contexts/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthModal } from "./AuthModal";
 
-const links = [
-  { to: "/", label: t("nav.home"), end: true },
-  { to: "/health", label: t("nav.health") },
-  { to: "/finance", label: t("nav.finance") },
-  { to: "/environment", label: t("nav.environment") },
-  { to: "/education", label: t("nav.education") },
-  { to: "/dashboard", label: t("nav.dashboard") },
-];
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
@@ -30,6 +21,14 @@ const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { isAuthenticated, user, signOut } = useAuth();
   const { lang, toggleLang, t } = useLanguage();
+  const links = [
+    { to: "/", label: t("nav.home"), end: true },
+    { to: "/health", label: t("nav.health") },
+    { to: "/finance", label: t("nav.finance") },
+    { to: "/environment", label: t("nav.environment") },
+    { to: "/education", label: t("nav.education") },
+    { to: "/dashboard", label: t("nav.dashboard") },
+  ];
 
   useEffect(() => {
     if (isDark) document.documentElement.classList.add("dark");
