@@ -70,7 +70,17 @@ const Navbar = () => {
                   }`
                 }
               >
-                {link.label}
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={lang}
+                    initial={{ y: -12, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 12, opacity: 0 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                  >
+                    {link.label}
+                  </motion.span>
+                </AnimatePresence>
               </NavLink>
             ))}
           </div>
@@ -102,7 +112,17 @@ const Navbar = () => {
                         className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-destructive hover:bg-destructive/5 rounded-xl transition-all"
                       >
                         <LogOut className="size-4" />
-                        تسجيل الخروج
+                        <AnimatePresence mode="wait">
+                          <motion.span
+                            key={lang}
+                            initial={{ y: -12, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 12, opacity: 0 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                          >
+                            {t('nav.logout')}
+                          </motion.span>
+                        </AnimatePresence>
                       </button>
                     </motion.div>
                   </>
@@ -113,8 +133,18 @@ const Navbar = () => {
                 onClick={() => setAuthOpen(true)}
                 className="hidden md:inline-flex h-10 px-5 items-center gap-2 text-sm font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-soft"
               >
-                <User className="size-4" />
-                تسجيل الدخول
+                <User className="size-4 shrink-0" />
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={lang}
+                    initial={{ y: -12, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 12, opacity: 0 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                  >
+                    {t('nav.login')}
+                  </motion.span>
+                </AnimatePresence>
               </button>
             )}
             <button
@@ -164,41 +194,71 @@ const Navbar = () => {
             className="md:hidden mx-auto max-w-sm mt-2 bg-white/90 dark:bg-[#1E1C18]/90 backdrop-blur-md border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] shadow-soft overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-1">
-              {links.map((link) => (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  end={link.end}
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `text-sm font-bold py-3 px-4 rounded-xl transition-all duration-200 ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-foreground/70 hover:bg-muted/60"
-                    }`
-                  }
-                >
-                  {link.label}
-                </NavLink>
-              ))}
-              {isAuthenticated ? (
-                <button
-                  onClick={() => { signOut(); setIsOpen(false); }}
-                  className="flex items-center gap-3 text-sm font-bold py-3 px-4 rounded-xl text-destructive hover:bg-destructive/5 transition-all"
-                >
-                  <LogOut className="size-4" />
-                  تسجيل الخروج
-                </button>
-              ) : (
-                <button
-                  onClick={() => { setAuthOpen(true); setIsOpen(false); }}
-                  className="flex items-center gap-3 text-sm font-bold py-3 px-4 rounded-xl text-primary hover:bg-primary/5 transition-all"
-                >
-                  <User className="size-4" />
-                  تسجيل الدخول
-                </button>
-              )}
-            </div>
+                        {links.map((link) => (
+                          <NavLink
+                            key={link.to}
+                            to={link.to}
+                            end={link.end}
+                            onClick={() => setIsOpen(false)}
+                            className={({ isActive }) =>
+                              `text-sm font-bold py-3 px-4 rounded-xl transition-all duration-200 ${
+                                isActive
+                                  ? "bg-primary/10 text-primary"
+                                  : "text-foreground/70 hover:bg-muted/60"
+                              }`
+                            }
+                          >
+                            <AnimatePresence mode="wait">
+                              <motion.span
+                                key={lang}
+                                initial={{ y: -12, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 12, opacity: 0 }}
+                                transition={{ duration: 0.15, ease: "easeOut" }}
+                              >
+                                {link.label}
+                              </motion.span>
+                            </AnimatePresence>
+                          </NavLink>
+                        ))}
+                        {isAuthenticated ? (
+                          <button
+                            onClick={() => { signOut(); setIsOpen(false); }}
+                            className="flex items-center gap-3 text-sm font-bold py-3 px-4 rounded-xl text-destructive hover:bg-destructive/5 transition-all"
+                          >
+                            <LogOut className="size-4 shrink-0" />
+                            <AnimatePresence mode="wait">
+                              <motion.span
+                                key={lang}
+                                initial={{ y: -12, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 12, opacity: 0 }}
+                                transition={{ duration: 0.15, ease: "easeOut" }}
+                              >
+                                {t('nav.logout')}
+                              </motion.span>
+                            </AnimatePresence>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => { setAuthOpen(true); setIsOpen(false); }}
+                            className="flex items-center gap-3 text-sm font-bold py-3 px-4 rounded-xl text-primary hover:bg-primary/5 transition-all"
+                          >
+                            <User className="size-4 shrink-0" />
+                            <AnimatePresence mode="wait">
+                              <motion.span
+                                key={lang}
+                                initial={{ y: -12, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 12, opacity: 0 }}
+                                transition={{ duration: 0.15, ease: "easeOut" }}
+                              >
+                                {t('nav.login')}
+                              </motion.span>
+                            </AnimatePresence>
+                          </button>
+                        )}
+                      </div>
           </motion.div>
         )}
       </AnimatePresence>
