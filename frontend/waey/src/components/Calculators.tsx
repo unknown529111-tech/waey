@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Zap, Wallet, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 type CalcTab = "electricity" | "budget";
 type Currency = "EGP" | "SAR" | "AED";
@@ -10,46 +11,48 @@ const currencies: Record<Currency, { label: string; symbol: string; rate: number
   AED: { label: "🇦🇪 درهم إماراتي", symbol: "د.إ", rate: 0.076 },
 };
 
+// names are translation keys; render via t()
 const devicesList = [
-  { name: "تكييف", watts: 1500 },
-  { name: "سخان مياه", watts: 2000 },
-  { name: "غسالة ملابس", watts: 500 },
-  { name: "ثلاجة", watts: 150 },
-  { name: "تلفزيون", watts: 100 },
-  { name: "كمبيوتر/لابتوب", watts: 200 },
-  { name: "مكواة", watts: 1200 },
-  { name: "كاتل (غلاية)", watts: 1800 },
-  { name: "ميكروويف", watts: 1000 },
-  { name: "مروحة", watts: 75 },
-  { name: "إضاءة LED (لمبة)", watts: 10 },
-  { name: "إضاءة عادية (لمبة)", watts: 60 },
-  { name: "شاحن هاتف", watts: 5 },
-  { name: "راوتر إنترنت", watts: 12 },
-  { name: "فرن كهربائي", watts: 2500 },
-  { name: "غسالة أطباق", watts: 1800 },
-  { name: "مجفف ملابس", watts: 3000 },
-  { name: "مكنسة كهربائية", watts: 1400 },
+  { name: "calc.device.0", watts: 1500 },
+  { name: "calc.device.1", watts: 2000 },
+  { name: "calc.device.2", watts: 500 },
+  { name: "calc.device.3", watts: 150 },
+  { name: "calc.device.4", watts: 100 },
+  { name: "calc.device.5", watts: 200 },
+  { name: "calc.device.6", watts: 1200 },
+  { name: "calc.device.7", watts: 1800 },
+  { name: "calc.device.8", watts: 1000 },
+  { name: "calc.device.9", watts: 75 },
+  { name: "calc.device.10", watts: 10 },
+  { name: "calc.device.11", watts: 60 },
+  { name: "calc.device.12", watts: 5 },
+  { name: "calc.device.13", watts: 12 },
+  { name: "calc.device.14", watts: 2500 },
+  { name: "calc.device.15", watts: 1800 },
+  { name: "calc.device.16", watts: 3000 },
+  { name: "calc.device.17", watts: 1400 },
 ];
 
 const Calculators = () => {
+  const t = useT();
   const [activeTab, setActiveTab] = useState<CalcTab>("electricity");
 
   return (
     <section id="calculators" className="py-24 px-6 md:px-12 bg-gradient-to-b from-primary/90 to-primary">
       <div className="max-w-[1000px] mx-auto text-center mb-16">
         <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-primary-foreground">
-          الأدوات التفاعلية
+          {t('calc.title')}
         </h2>
         <p className="text-primary-foreground/70 text-lg max-w-[50ch] mx-auto leading-relaxed">
-          حاسبات ذكية تساعدك على فهم استهلاكك واتخاذ قرارات أفضل كل يوم.
+          {t('calc.subtitle')}
         </p>
       </div>
 
       <div className="max-w-[900px] mx-auto bg-card rounded-4xl p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
         <div className="flex gap-2 mb-10 flex-wrap justify-center">
           {[
-          { id: "electricity" as CalcTab, label: "حاسبة الكهرباء", icon: Zap },
-            { id: "budget" as CalcTab, label: "المصروف الشهري", icon: Wallet },
+          { id: "electricity" as CalcTab, label: t('calc.electricity'), icon: Zap },
+            { id: "budget" as CalcTab, label: t('calc.budget'), icon: Wallet },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -92,10 +95,11 @@ const CurrencySwitcher = ({ currency, setCurrency }: { currency: Currency; setCu
 );
 
 const ElectricityCalc = () => {
+  const t = useT();
   const [selectedDevices, setSelectedDevices] = useState<{ name: string; watts: number; hours: number }[]>([
-    { name: "تكييف", watts: 1500, hours: 6 },
-    { name: "ثلاجة", watts: 150, hours: 24 },
-    { name: "تلفزيون", watts: 100, hours: 5 },
+    { name: "calc.device.0", watts: 1500, hours: 6 },
+    { name: "calc.device.3", watts: 150, hours: 24 },
+    { name: "calc.device.4", watts: 100, hours: 5 },
   ]);
   const [currency, setCurrency] = useState<Currency>("EGP");
   const [showInfo, setShowInfo] = useState(false);
@@ -136,12 +140,12 @@ const ElectricityCalc = () => {
           onChange={(e) => setAddDevice(e.target.value)}
           className="flex-1 min-w-[180px] bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
         >
-          <option value="">أضف جهاز...</option>
+          <option value="">{t('calc.addDevice')}</option>
           {devicesList
             .filter((d) => !selectedDevices.find((s) => s.name === d.name))
             .map((d) => (
               <option key={d.name} value={d.name}>
-                {d.name} ({d.watts}W)
+                {t(d.name)} ({d.watts}W)
               </option>
             ))}
         </select>
@@ -151,7 +155,7 @@ const ElectricityCalc = () => {
           className="bg-primary text-primary-foreground px-4 py-3 rounded-2xl font-bold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-1"
         >
           <Plus className="size-4" />
-          أضف
+          {t('calc.add')}
         </button>
       </div>
 
@@ -161,8 +165,8 @@ const ElectricityCalc = () => {
           <div key={device.name} className="flex items-center gap-3 bg-background rounded-2xl p-4 border border-border">
             <div className="flex-1">
               <div className="flex justify-between text-sm font-bold mb-2">
-                <span>{device.name} ({device.watts}W)</span>
-                <span className="text-primary tabular-nums">{device.hours} ساعة/يوم</span>
+                <span>{t(device.name)} ({device.watts}W)</span>
+                <span className="text-primary tabular-nums">{device.hours} {t('calc.hourDay')}</span>
               </div>
               <input
                 type="range"
@@ -181,9 +185,9 @@ const ElectricityCalc = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <ResultCard label="الاستهلاك اليومي" value={`${totalDailyKwh.toFixed(1)} kWh`} />
-        <ResultCard label="التكلفة الشهرية" value={`${convert(monthlyCost).toLocaleString()} ${cur.symbol}`} />
-        <ResultCard label="يمكنك توفير" value={`${convert(savedCost).toLocaleString()} ${cur.symbol}`} accent />
+        <ResultCard label={t('calc.dailyConsumption')} value={`${totalDailyKwh.toFixed(1)} kWh`} />
+        <ResultCard label={t('calc.monthlyCost')} value={`${convert(monthlyCost).toLocaleString()} ${cur.symbol}`} />
+        <ResultCard label={t('calc.youCanSave')} value={`${convert(savedCost).toLocaleString()} ${cur.symbol}`} accent />
       </div>
 
       {/* Know More */}
@@ -192,22 +196,22 @@ const ElectricityCalc = () => {
         className="flex items-center gap-2 mx-auto text-sm font-bold text-primary hover:text-primary/80 transition-colors"
       >
         {showInfo ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
-        اعرف المزيد عن استهلاك الأجهزة
+        {t('calc.knowMore')}
       </button>
 
       {showInfo && (
         <div className="bg-background rounded-2xl p-6 border border-border">
-          <h4 className="font-bold mb-4 text-sm">متوسط استهلاك الأجهزة الشائعة:</h4>
+          <h4 className="font-bold mb-4 text-sm">{t('calc.avgConsumption')}</h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-xs">
             {devicesList.map((d) => (
               <div key={d.name} className="flex justify-between bg-card rounded-xl p-3 border border-border">
-                <span className="font-bold">{d.name}</span>
+                <span className="font-bold">{t(d.name)}</span>
                 <span className="text-muted-foreground tabular-nums">{d.watts}W</span>
               </div>
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
-            💡 الكاتل والسخان من أعلى الأجهزة استهلاكاً رغم استخدامهما لفترات قصيرة. السخان الكهربائي (2000W) يعمل لمدة ساعة يكلف حوالي {(2 * costPerKwh).toFixed(1)} {currencies.EGP.symbol} يومياً.
+            {t('calc.tip').replace('{cost}', (2 * costPerKwh).toFixed(1) + ' ' + currencies.EGP.symbol)}
           </p>
         </div>
       )}
@@ -216,6 +220,7 @@ const ElectricityCalc = () => {
 };
 
 const BudgetCalc = () => {
+  const t = useT();
   const [currency, setCurrency] = useState<Currency>("EGP");
   const [income, setIncome] = useState(10000);
   const [essentials, setEssentials] = useState(5000);
@@ -251,7 +256,7 @@ const BudgetCalc = () => {
 
       <div className="space-y-6">
         <NumberField
-          label="الدخل الشهري"
+          label={t('calc.income')}
           value={income}
           onChange={setIncome}
           min={0}
@@ -262,7 +267,7 @@ const BudgetCalc = () => {
           accentColor="primary"
         />
         <NumberField
-          label="النفقات الأساسية (إيجار، فواتير، طعام)"
+          label={t('calc.essentials')}
           value={essentials}
           onChange={(v) => setEssentials(Math.min(v, income))}
           min={0}
@@ -273,7 +278,7 @@ const BudgetCalc = () => {
           accentColor="accent"
         />
         <NumberField
-          label="الرغبات (ترفيه، تسوق)"
+          label={t('calc.wants')}
           value={wants}
           onChange={(v) => setWants(Math.min(v, Math.max(income - essentials, 0)))}
           min={0}
@@ -287,11 +292,11 @@ const BudgetCalc = () => {
 
       {/* Manual expenses */}
       <div className="bg-background rounded-2xl p-5 border border-border space-y-4">
-        <h4 className="font-bold text-sm">أضف مصروفات إضافية يدوياً:</h4>
+        <h4 className="font-bold text-sm">{t('calc.addExpenses')}</h4>
         <div className="flex gap-2 flex-wrap">
           <input
             type="text"
-            placeholder="اسم المصروف"
+            placeholder={t('calc.expenseName')}
             value={newExpName}
             onChange={(e) => setNewExpName(e.target.value)}
             maxLength={50}
@@ -299,7 +304,7 @@ const BudgetCalc = () => {
           />
           <input
             type="number"
-            placeholder="المبلغ"
+            placeholder={t('calc.expenseAmount')}
             value={newExpAmount}
             onChange={(e) => setNewExpAmount(e.target.value)}
             min={0}
@@ -331,18 +336,18 @@ const BudgetCalc = () => {
       </div>
 
       <div className="bg-background rounded-3xl p-6 text-center border-2 border-border">
-        <span className="text-sm font-bold text-muted-foreground block mb-2">المبلغ المتبقي للادخار</span>
+        <span className="text-sm font-bold text-muted-foreground block mb-2">{t('calc.remaining')}</span>
         <span className={`text-4xl font-bold tabular-nums ${savings >= 0 ? "text-primary" : "text-destructive"}`}>
           {convert(savings).toLocaleString()} {cur.symbol}
         </span>
         <div className="flex items-center gap-2 mt-4 justify-center">
           <div className={`size-2 rounded-full ${Number(savingsPercent) >= 20 ? "bg-primary" : "bg-accent"}`} />
-          <span className="text-sm font-bold text-muted-foreground tabular-nums">{savingsPercent}% من الدخل</span>
+          <span className="text-sm font-bold text-muted-foreground tabular-nums">{savingsPercent}% {t('calc.incomePercent')}</span>
         </div>
       </div>
 
       <p className="text-sm text-muted-foreground text-center">
-        {Number(savingsPercent) >= 20 ? "🎯 ممتاز! أنت تتبع قاعدة 50/30/20 بنجاح!" : "📊 حاول الوصول إلى 20% ادخار شهري لاستقرار مالي أفضل."}
+        {Number(savingsPercent) >= 20 ? t('calc.tip.good') : t('calc.tip.bad')}
       </p>
     </div>
   );

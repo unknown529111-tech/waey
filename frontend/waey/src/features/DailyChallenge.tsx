@@ -37,10 +37,10 @@ const DailyChallenge = () => {
         <div className="text-5xl">{challenge.emoji}</div>
         <div className="flex-1">
           <p className="text-lg md:text-xl font-bold leading-relaxed mb-1">
-            {challenge.text}
+            {t(challenge.text)}
           </p>
           <span className="inline-block text-xs bg-secondary px-2 py-0.5 rounded-full text-muted-foreground">
-            {challenge.area}
+            {t(challenge.area)}
           </span>
         </div>
       </div>

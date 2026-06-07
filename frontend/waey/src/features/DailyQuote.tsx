@@ -11,7 +11,7 @@ const DailyQuote = () => {
         <div>
           <div className="text-xs font-bold text-accent mb-1">{t('quote.title')}</div>
           <p className="text-sm md:text-base leading-relaxed font-medium">
-            {getDailyQuote()}
+            {t(getDailyQuote())}
           </p>
         </div>
       </div>

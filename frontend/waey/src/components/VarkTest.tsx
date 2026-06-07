@@ -1,6 +1,7 @@
 ﻿import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, Headphones, BookOpen, Hand, ArrowLeft, RotateCcw } from "lucide-react";
+import { useT } from "@/contexts/LanguageContext";
 
 type Style = "visual" | "auditory" | "readwrite" | "kinesthetic" | null;
 
@@ -8,106 +9,6 @@ interface Question {
   text: string;
   options: { text: string; style: Style }[];
 }
-
-const questions: Question[] = [
-  {
-    text: "لما تحفز نفسك بالمذاكرة أفضل حاجة تشغلك؟",
-    options: [
-      { text: "فيديو أو إنفوجرافيك يشرح الموضوع", style: "visual" },
-      { text: "تسمع حد يشرحه أو تناقشه مع صديق", style: "auditory" },
-      { text: "تقراه في كتاب أو مقال مكتوب", style: "readwrite" },
-      { text: "تجرب بنفسك أو تحل مسائل عملية", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "أثناء المحاضرة، إيه اللي بيخليك تفهم أكتر؟",
-    options: [
-      { text: "الشرائح والصور اللي بتوضح الكلام", style: "visual" },
-      { text: "شرح الدكتور أو تسجيل الصوت", style: "auditory" },
-      { text: "تكتب الملاحظات وتقراها بعدين", style: "readwrite" },
-      { text: "تطبق اللي اتشرح على طول", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "لما تجرب تتعلم حاجة جديدة على النت، بتروح لـ...",
-    options: [
-      { text: "فيديوهات يوتيوب ورسومات توضيحية", style: "visual" },
-      { text: "بودكاست أو شرح صوتي", style: "auditory" },
-      { text: "أرتيكل أو مدونة بتشرح بالتفصيل", style: "readwrite" },
-      { text: "تجارب تفاعلية أو محاكاة عملية", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "إيه الطريقة اللي بتثبت بيه المعلومة في دماغك؟",
-    options: [
-      { text: "لون معين أو شكل معين في خريطة ذهنية", style: "visual" },
-      { text: "لما تسمعها في أغنية أو قافية", style: "auditory" },
-      { text: "لما تكتبها أكتر من مرة", style: "readwrite" },
-      { text: "لما تجربها بنفسك على أرض الواقع", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "لما تروح مكان جديد، إزاي بتعرف الطريق؟",
-    options: [
-      { text: "بتتذكر معالم بصرية زي مباني أو لافتات", style: "visual" },
-      { text: "بتسأل الناس وتتذكر التعليمات الصوتية", style: "auditory" },
-      { text: "بتقرا الخريطة أو اللافتات المكتوبة", style: "readwrite" },
-      { text: "بتدور بنفسك وتجرب طرق مختلفة", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "في الإجازة، إيه أحسن نشاط بالنسبالك؟",
-    options: [
-      { text: "فيلم وثائقي أو رسم أو تصوير", style: "visual" },
-      { text: "سماع موسيقى أو بودكاست أو مقابلة صحاب", style: "auditory" },
-      { text: "قراية كتاب أو مجلة أو كتابة مذكرات", style: "readwrite" },
-      { text: "رياضة أو مشوار أو حاجة عملية بإيديك", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "لما تذاكر عايز تذاكر بذكاء، أول حاجة تعملها؟",
-    options: [
-      { text: "ترتب المعلومات في جدول أو رسم بياني", style: "visual" },
-      { text: "تسمع شرح للموضوع وأنت مغمض عينيك", style: "auditory" },
-      { text: "تلخص الدرس وتكتب النقاط المهمة", style: "readwrite" },
-      { text: "تحل أسئلة وتمارين من أولها", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "لما تسمع كلمة 'تفاحة'، إيه أول حاجة تجي في دماغك؟",
-    options: [
-      { text: "شكل التفاحة ولونها الأحمر", style: "visual" },
-      { text: "صوت الكلمة نفسها أو أكل التفاح", style: "auditory" },
-      { text: "كلمة Apple بطريقة كتابتها", style: "readwrite" },
-      { text: "ملمس التفاحة وطعمها في فمك", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "إيه أسهل حاجة تفهم منها شرح جديد؟",
-    options: [
-      { text: "رسم توضيحي أو ماب", style: "visual" },
-      { text: "مناقشة جماعية أو شرح مسموع", style: "auditory" },
-      { text: "نقطة مكتوبة بـ bullets", style: "readwrite" },
-      { text: "نموذج تطبيقي أو لعبة تعليمية", style: "kinesthetic" },
-    ],
-  },
-  {
-    text: "لما تذاكر كلمات إنجليزية جديدة، بتعمل إيه؟",
-    options: [
-      { text: "تكتب الكلمة جنب صورة معبرة عنها", style: "visual" },
-      { text: "تسمع نطقها وتكرره بصوت عالي", style: "auditory" },
-      { text: "تكتب الكلمة ومعناها أكتر من مرة", style: "readwrite" },
-      { text: "تستخدم الكلمة في جملة عملية أو موقف حقيقي", style: "kinesthetic" },
-    ],
-  },
-];
-
-const labels: Record<string, string> = {
-  visual: "بصري (Visual)",
-  auditory: "سمعي (Auditory)",
-  readwrite: "قراءة وكتابة (Read/Write)",
-  kinesthetic: "حركي (Kinesthetic)",
-};
 
 const icons: Record<string, React.ElementType> = {
   visual: Eye,
@@ -130,76 +31,177 @@ const bgColors: Record<string, string> = {
   kinesthetic: "from-green-500/20 to-green-500/5",
 };
 
-const advice: Record<string, { strategies: string[]; improve: string[] }> = {
-  visual: {
-    strategies: [
-      "استخدم الخرائط الذهنية والرسوم البيانية لكل باب",
-      "لون الملاحظات بألوان مختلفة حسب الموضوع",
-      "حول المعلومات لجداول ومخططات بصرية",
-      "شاهد فيديوهات تعليمية ووثائقيات عن المادة",
-      "استخدم البطاقات التعليمية المصورة (Flashcards)",
-      "ارسم أفكار الدرس بدل ما تكتبها طول الوقت",
-    ],
-    improve: [
-      "جرب تشرح المعلومات بصوت عالي عشان تنشط الذاكرة السمعية",
-      "اكتب ملخصات قصيرة بأسلوبك لتدريب الذاكرة القرائية",
-      "درب نفسك على حل تمارين عملية عشان تنوع أسلوبك",
-    ],
-  },
-  auditory: {
-    strategies: [
-      "سجل المحاضرات واستمع ليها تاني",
-      "ناقش اللي ذاكرته مع زميل أو اشرحه لحد",
-      "استخدم التكرار الصوتي (قل المعلومة بصوت عالي)",
-      "اسمع بودكاست أو فيديوهات شرح لنفس الموضوع",
-      "اقرأ الدرس بصوت عالي وانت بتذاكر",
-      "استخدم القوافي والأغاني لحفظ المعلومات الصعبة",
-    ],
-    improve: [
-      "حول ملاحظاتك لخرائط ذهنية عشان تشغل حاسة البصر",
-      "اكتب النقاط المهمة في دفتر عشان ترسخها",
-      "جرب تطبق المعلومات بشكل عملي عشان تثبت أكتر",
-    ],
-  },
-  readwrite: {
-    strategies: [
-      "اكتب ملخصات ومذكرات بخط إيدك لكل درس",
-      "استخدم القوائم والنقاط (bullet points) في المذاكرة",
-      "اقرأ المصادر المكتوبة: كتب، أبحاث، مقالات",
-      "حول المعلومات لأسئلة وأجوبة مكتوبة",
-      "أعد كتابة اللي فهمته من غير ما تشوف الكتاب",
-      "استخدم القواميس والمعاجم لفهم المصطلحات",
-    ],
-    improve: [
-      "حاول تسمع شرح سريع للموضوع عشان تتنوع",
-      "استخدم الصور والرسوم عشان تكسر الروتين",
-      "طبق اللي قرأته بحل تمارين أو تطبيق عملي",
-    ],
-  },
-  kinesthetic: {
-    strategies: [
-      "طبّق اللي بتذاكره بحل مسائل وتمارين كتير",
-      "استخدم التجارب العملية والنماذج المجسمة",
-      "قم أو امشي وانت بتذاكر—الحركة بتساعدك تركز",
-      "اقسم المذاكرة لجلسات قصيرة وحركية",
-      "استخدم أدوات زي العداد أو البطاقات المتحركة",
-      "ادرس في أماكن عملية زي المعمل أو ورشة العمل",
-    ],
-    improve: [
-      "جرب تشوف فيديوهات تعليمية عشان تضيف الجانب البصري",
-      "ناقش الموضوع مع زمايلك عشان تشغل الجانب السمعي",
-      "اكتب خطوات العمل عشان ترسخها في دماغك",
-    ],
-  },
-};
-
 const VarkTest = () => {
+  const t = useT();
   const [step, setStep] = useState<number>(0);
   const [scores, setScores] = useState<Record<string, number>>({
     visual: 0, auditory: 0, readwrite: 0, kinesthetic: 0,
   });
   const [result, setResult] = useState<Style>(null);
   const [selected, setSelected] = useState<number | null>(null);
+
+  const questions: Question[] = [
+    {
+      text: t('vark.q1.text'),
+      options: [
+        { text: t('vark.q1.o1'), style: "visual" },
+        { text: t('vark.q1.o2'), style: "auditory" },
+        { text: t('vark.q1.o3'), style: "readwrite" },
+        { text: t('vark.q1.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q2.text'),
+      options: [
+        { text: t('vark.q2.o1'), style: "visual" },
+        { text: t('vark.q2.o2'), style: "auditory" },
+        { text: t('vark.q2.o3'), style: "readwrite" },
+        { text: t('vark.q2.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q3.text'),
+      options: [
+        { text: t('vark.q3.o1'), style: "visual" },
+        { text: t('vark.q3.o2'), style: "auditory" },
+        { text: t('vark.q3.o3'), style: "readwrite" },
+        { text: t('vark.q3.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q4.text'),
+      options: [
+        { text: t('vark.q4.o1'), style: "visual" },
+        { text: t('vark.q4.o2'), style: "auditory" },
+        { text: t('vark.q4.o3'), style: "readwrite" },
+        { text: t('vark.q4.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q5.text'),
+      options: [
+        { text: t('vark.q5.o1'), style: "visual" },
+        { text: t('vark.q5.o2'), style: "auditory" },
+        { text: t('vark.q5.o3'), style: "readwrite" },
+        { text: t('vark.q5.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q6.text'),
+      options: [
+        { text: t('vark.q6.o1'), style: "visual" },
+        { text: t('vark.q6.o2'), style: "auditory" },
+        { text: t('vark.q6.o3'), style: "readwrite" },
+        { text: t('vark.q6.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q7.text'),
+      options: [
+        { text: t('vark.q7.o1'), style: "visual" },
+        { text: t('vark.q7.o2'), style: "auditory" },
+        { text: t('vark.q7.o3'), style: "readwrite" },
+        { text: t('vark.q7.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q8.text'),
+      options: [
+        { text: t('vark.q8.o1'), style: "visual" },
+        { text: t('vark.q8.o2'), style: "auditory" },
+        { text: t('vark.q8.o3'), style: "readwrite" },
+        { text: t('vark.q8.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q9.text'),
+      options: [
+        { text: t('vark.q9.o1'), style: "visual" },
+        { text: t('vark.q9.o2'), style: "auditory" },
+        { text: t('vark.q9.o3'), style: "readwrite" },
+        { text: t('vark.q9.o4'), style: "kinesthetic" },
+      ],
+    },
+    {
+      text: t('vark.q10.text'),
+      options: [
+        { text: t('vark.q10.o1'), style: "visual" },
+        { text: t('vark.q10.o2'), style: "auditory" },
+        { text: t('vark.q10.o3'), style: "readwrite" },
+        { text: t('vark.q10.o4'), style: "kinesthetic" },
+      ],
+    },
+  ];
+
+  const labels: Record<string, string> = {
+    visual: t('vark.label.visual'),
+    auditory: t('vark.label.auditory'),
+    readwrite: t('vark.label.readwrite'),
+    kinesthetic: t('vark.label.kinesthetic'),
+  };
+
+  const advice: Record<string, { strategies: string[]; improve: string[] }> = {
+    visual: {
+      strategies: [
+        t('vark.advice.visual.s1'),
+        t('vark.advice.visual.s2'),
+        t('vark.advice.visual.s3'),
+        t('vark.advice.visual.s4'),
+        t('vark.advice.visual.s5'),
+        t('vark.advice.visual.s6'),
+      ],
+      improve: [
+        t('vark.advice.visual.i1'),
+        t('vark.advice.visual.i2'),
+        t('vark.advice.visual.i3'),
+      ],
+    },
+    auditory: {
+      strategies: [
+        t('vark.advice.auditory.s1'),
+        t('vark.advice.auditory.s2'),
+        t('vark.advice.auditory.s3'),
+        t('vark.advice.auditory.s4'),
+        t('vark.advice.auditory.s5'),
+        t('vark.advice.auditory.s6'),
+      ],
+      improve: [
+        t('vark.advice.auditory.i1'),
+        t('vark.advice.auditory.i2'),
+        t('vark.advice.auditory.i3'),
+      ],
+    },
+    readwrite: {
+      strategies: [
+        t('vark.advice.readwrite.s1'),
+        t('vark.advice.readwrite.s2'),
+        t('vark.advice.readwrite.s3'),
+        t('vark.advice.readwrite.s4'),
+        t('vark.advice.readwrite.s5'),
+        t('vark.advice.readwrite.s6'),
+      ],
+      improve: [
+        t('vark.advice.readwrite.i1'),
+        t('vark.advice.readwrite.i2'),
+        t('vark.advice.readwrite.i3'),
+      ],
+    },
+    kinesthetic: {
+      strategies: [
+        t('vark.advice.kinesthetic.s1'),
+        t('vark.advice.kinesthetic.s2'),
+        t('vark.advice.kinesthetic.s3'),
+        t('vark.advice.kinesthetic.s4'),
+        t('vark.advice.kinesthetic.s5'),
+        t('vark.advice.kinesthetic.s6'),
+      ],
+      improve: [
+        t('vark.advice.kinesthetic.i1'),
+        t('vark.advice.kinesthetic.i2'),
+        t('vark.advice.kinesthetic.i3'),
+      ],
+    },
+  };
 
   const handleAnswer = (style: Style) => {
     if (!style) return;
@@ -237,7 +239,7 @@ const VarkTest = () => {
       >
         <div className="text-center mb-6">
           <Icon className={`size-14 mx-auto mb-3 ${colors[result]}`} />
-          <h3 className="text-2xl font-bold mb-1">نمطك هو</h3>
+          <h3 className="text-2xl font-bold mb-1">{t('vark.result.heading')}</h3>
           <p className={`text-xl font-bold ${colors[result]}`}>{labels[result]}</p>
         </div>
 
@@ -245,7 +247,7 @@ const VarkTest = () => {
           <div>
             <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
               <BookOpen className="size-5 text-primary" />
-              إزاي تتعلم بذكاء حسب نمطك
+              {t('vark.result.strategyTitle')}
             </h4>
             <ul className="space-y-2">
               {adv.strategies.map((s, i) => (
@@ -262,7 +264,7 @@ const VarkTest = () => {
           <div>
             <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
               <ArrowLeft className="size-5 text-accent" />
-              عشان تطور نفسك—جرب كمان
+              {t('vark.result.improveTitle')}
             </h4>
             <ul className="space-y-2">
               {adv.improve.map((s, i) => (
@@ -282,7 +284,7 @@ const VarkTest = () => {
           className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-bold px-6 py-3 hover:opacity-90 transition-all"
         >
           <RotateCcw className="size-4" />
-          اختبر مرة تانية
+          {t('vark.result.restart')}
         </button>
       </motion.div>
     );
@@ -291,7 +293,7 @@ const VarkTest = () => {
   return (
     <div className="rounded-3xl p-6 md:p-8 border border-border bg-card">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="font-bold text-lg">اختبر نمط تعلمك</h3>
+        <h3 className="font-bold text-lg">{t('vark.title')}</h3>
         <span className="text-sm text-muted-foreground">
           {step + 1} / {questions.length}
         </span>

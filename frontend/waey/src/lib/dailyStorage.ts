@@ -92,20 +92,20 @@ export const bumpStreak = (): StreakState => {
 export type ChallengeDef = { emoji: string; text: string; area: string };
 
 export const CHALLENGES: ChallengeDef[] = [
-  { emoji: "💧", text: "اشرب 8 أكواب مياه اليوم.", area: "صحة" },
-  { emoji: "💰", text: "وفّر 20 جنيه ولا تشتري قهوة جاهزة.", area: "مال" },
-  { emoji: "💡", text: "أطفئ الأنوار في كل غرفة فاضية.", area: "بيئة" },
-  { emoji: "🚶", text: "امشِ 20 دقيقة متواصلة.", area: "صحة" },
-  { emoji: "♻️", text: "افصل البلاستيك عن باقي القمامة اليوم.", area: "بيئة" },
-  { emoji: "📒", text: "اكتب كل مصاريف اليوم بدون استثناء.", area: "مال" },
-  { emoji: "😴", text: "نَم 7 ساعات على الأقل الليلة.", area: "صحة" },
-  { emoji: "🌿", text: "اروِ نبتة أو ازرع بذرة في البلكونة.", area: "بيئة" },
-  { emoji: "🍎", text: "استبدل الوجبة الخفيفة بفاكهة.", area: "صحة" },
-  { emoji: "💵", text: "حوّل 5% من دخلك اليوم لحساب التوفير.", area: "مال" },
-  { emoji: "🧘", text: "خصص 5 دقائق لتنفس عميق وهدوء.", area: "صحة" },
-  { emoji: "🚿", text: "قلّل وقت الاستحمام لـ 5 دقائق.", area: "بيئة" },
-  { emoji: "📵", text: "ابتعد عن الموبايل ساعة قبل النوم.", area: "صحة" },
-  { emoji: "🥤", text: "استخدم زجاجة قابلة لإعادة الاستخدام.", area: "بيئة" },
+  { emoji: "💧", text: "challenge.item.0.text", area: "challenge.item.0.area" },
+  { emoji: "💰", text: "challenge.item.1.text", area: "challenge.item.1.area" },
+  { emoji: "💡", text: "challenge.item.2.text", area: "challenge.item.2.area" },
+  { emoji: "🚶", text: "challenge.item.3.text", area: "challenge.item.3.area" },
+  { emoji: "♻️", text: "challenge.item.4.text", area: "challenge.item.4.area" },
+  { emoji: "📒", text: "challenge.item.5.text", area: "challenge.item.5.area" },
+  { emoji: "😴", text: "challenge.item.6.text", area: "challenge.item.6.area" },
+  { emoji: "🌿", text: "challenge.item.7.text", area: "challenge.item.7.area" },
+  { emoji: "🍎", text: "challenge.item.8.text", area: "challenge.item.8.area" },
+  { emoji: "💵", text: "challenge.item.9.text", area: "challenge.item.9.area" },
+  { emoji: "🧘", text: "challenge.item.10.text", area: "challenge.item.10.area" },
+  { emoji: "🚿", text: "challenge.item.11.text", area: "challenge.item.11.area" },
+  { emoji: "📵", text: "challenge.item.12.text", area: "challenge.item.12.area" },
+  { emoji: "🥤", text: "challenge.item.13.text", area: "challenge.item.13.area" },
 ];
 
 function getMergedChallenges(): ChallengeDef[] {
@@ -142,14 +142,14 @@ export const getMood = () => getDailyValue("mood");
 
 // ==================== QUOTES (daily) ====================
 export const QUOTES: string[] = [
-  "الصحة تاج على رؤوس الأصحاء.",
-  "القرش الأبيض ينفع في اليوم الأسود.",
-  "التغيير الحقيقي يبدأ بخطوة صغيرة كل يوم.",
-  "الأرض ليست ميراثًا من آبائنا، بل أمانة من أبنائنا.",
-  "من جدّ وجد، ومن زرع حصد.",
-  "ادّخر قرشًا اليوم، تجد جنيهًا غدًا.",
-  "اشرب الماء يصفو ذهنك.",
-  "ابتسم، فالابتسامة صدقة.",
+  "quote.item.0",
+  "quote.item.1",
+  "quote.item.2",
+  "quote.item.3",
+  "quote.item.4",
+  "quote.item.5",
+  "quote.item.6",
+  "quote.item.7",
 ];
 
 function getMergedQuotes(): string[] {

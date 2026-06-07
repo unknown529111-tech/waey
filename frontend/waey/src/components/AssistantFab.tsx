@@ -10,7 +10,7 @@ const AssistantFab = () => {
   return (
     <Link
       to="/assistant"
-      aria-label="افتح المساعد الذكي"
+      aria-label={t('assistant.open')}
       className="fixed bottom-6 left-6 z-40 group"
     >
       <div className="absolute inset-0 rounded-full bg-primary/40 blur-xl group-hover:bg-primary/60 transition-all duration-500 animate-gentle-pulse" />
