@@ -9,12 +9,17 @@ import { useLanguage } from "@/contexts/LanguageContext";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY || "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";
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || "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";
+const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+const OPENROUTER_MODEL = "google/gemini-2.0-flash-001";
 const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
 const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
 const AI_PROXY = import.meta.env.VITE_AI_PROXY_URL;
+
+// Fallback: Groq (llama 3.3) — only used if OpenRouter & proxy fail
+const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY;
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL = "llama-3.3-70b-versatile";
 
 const SYSTEM_PROMPT_AR = `أنت "مساعد وعي" — مساعد ذكي عربي يجيب على أسئلة المستخدمين في أربعة مجالات فقط:
 1. الصحة (نصائح عامة، عادات صحية، تغذية، نوم، رياضة)
@@ -52,21 +57,23 @@ The site creator is Mahmoud Ahmed Mohamed Khalil, a first-year high school stude
 
 const BATCH_INTERVAL_MS = 80;
 
-async function tryGroq(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
-  if (!GROQ_KEY) return null;
+async function tryOpenRouter(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
+  if (!OPENROUTER_KEY) return null;
   const messages = [
     { role: "system", content: systemPrompt },
     ...history.map((m) => ({ role: m.role, content: m.content })),
   ];
   try {
-    return await fetch(GROQ_URL, {
+    return await fetch(OPENROUTER_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${GROQ_KEY}`,
+        Authorization: `Bearer ${OPENROUTER_KEY}`,
+        "HTTP-Referer": "https://waey-m7.com",
+        "X-Title": "Waey",
       },
       body: JSON.stringify({
-        model: GROQ_MODEL,
+        model: OPENROUTER_MODEL,
         messages,
         stream: true,
         max_tokens: 500,
@@ -95,7 +102,34 @@ async function tryProxy(history: Msg[], signal: AbortSignal, systemPrompt: strin
     const j = await resp.json().catch(() => null);
     if (!j) return null;
     return (j.content || j.text || j.answer || j.output || (j.choices && j.choices[0] && (j.choices[0].message?.content || j.choices[0].text)) || null) as string | null;
-  } catch (e) {
+  } catch {
+    return null;
+  }
+}
+
+async function tryGroq(history: Msg[], signal: AbortSignal, systemPrompt: string): Promise<Response | null> {
+  if (!GROQ_KEY) return null;
+  const messages = [
+    { role: "system", content: systemPrompt },
+    ...history.map((m) => ({ role: m.role, content: m.content })),
+  ];
+  try {
+    return await fetch(GROQ_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GROQ_KEY}`,
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages,
+        stream: true,
+        max_tokens: 500,
+        temperature: 0.7,
+      }),
+      signal,
+    });
+  } catch {
     return null;
   }
 }
@@ -190,7 +224,7 @@ const AIChat = () => {
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [provider, setProvider] = useState<"groq" | "deepseek" | "proxy" | null>(null);
+  const [provider, setProvider] = useState<"openrouter" | "groq" | "deepseek" | "proxy" | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -252,10 +286,11 @@ const AIChat = () => {
       }, BATCH_INTERVAL_MS);
     };
 
-    let usedProvider: "groq" | "deepseek" | null = null;
+    let usedProvider: "openrouter" | "groq" | "deepseek" | null = null;
     const sp = systemPrompt;
 
     try {
+      // 1. Try proxy (non-streaming) first
       const proxyText = await tryProxy(nextHistory, controller.signal, sp);
       if (proxyText) {
         setProvider("proxy");
@@ -265,10 +300,26 @@ const AIChat = () => {
         return;
       }
 
-      let resp: Response | null = await tryGroq(nextHistory, controller.signal, sp);
+      // 2. Try OpenRouter (primary provider — free & fast)
+      let resp: Response | null = await tryOpenRouter(nextHistory, controller.signal, sp);
       if (resp && resp.ok) {
-        usedProvider = "groq";
-      } else {
+        usedProvider = "openrouter";
+      }
+
+      // 3. Fallback: Groq (non-streaming-aware)
+      if (!resp || !resp.ok) {
+        if (resp && !resp.ok) {
+          const body = await resp.text().catch(() => "");
+          console.warn("OpenRouter failed:", resp.status, body.slice(0, 200));
+        }
+        resp = await tryGroq(nextHistory, controller.signal, sp);
+        if (resp && resp.ok) {
+          usedProvider = "groq";
+        }
+      }
+
+      // 4. Fallback: DeepSeek
+      if (!resp || !resp.ok) {
         if (resp && !resp.ok) {
           const body = await resp.text().catch(() => "");
           console.warn("Groq failed:", resp.status, body.slice(0, 200));
@@ -346,6 +397,16 @@ const AIChat = () => {
     try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
   };
 
+  const providerLabel = () => {
+    switch (provider) {
+      case "openrouter": return "OpenRouter";
+      case "groq": return "Groq (Llama 3.3)";
+      case "deepseek": return "DeepSeek";
+      case "proxy": return t('chat.proxy');
+      default: return t('chat.scope');
+    }
+  };
+
   return (
     <div className="max-w-[800px] mx-auto px-4 md:px-6 py-8">
       <div className="bg-card rounded-3xl border border-border shadow-soft overflow-hidden flex flex-col h-[calc(100vh-220px)] min-h-[500px]">
@@ -365,13 +426,7 @@ const AIChat = () => {
                     exit={{ y: 10, opacity: 0 }}
                     transition={{ duration: 0.15, ease: "easeOut" }}
                   >
-                    {provider === "groq"
-                      ? "Groq (Llama 3.3)"
-                      : provider === "deepseek"
-                      ? "DeepSeek"
-                      : provider === "proxy"
-                      ? t('chat.proxy')
-                      : t('chat.scope')}
+                    {providerLabel()}
                   </motion.span>
                 </AnimatePresence>
               </p>
