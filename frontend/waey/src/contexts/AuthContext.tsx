@@ -27,8 +27,24 @@ function saveUsers(users: Record<string, { name: string; password: string }>) {
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
 }
 
+const STORAGE_VERSION_KEY = "waey_storage_v2";
+const STORAGE_VERSION_VAL = "2";
+
 export function AuthProvider({ children }: { children: ReactNode }) {
+  // Reset old storage so everyone must re-register
   const [user, setUser] = useState<User | null>(() => {
+    const v = localStorage.getItem(STORAGE_VERSION_KEY);
+    if (v !== STORAGE_VERSION_VAL) {
+      // Wipe all old user data
+      localStorage.removeItem("waey_users");
+      localStorage.removeItem("waey_streaks");
+      localStorage.removeItem("waey_prize");
+      localStorage.removeItem("waey_session");
+      localStorage.removeItem("waey_session_id");
+      localStorage.removeItem("waey_ai_chat");
+      localStorage.setItem(STORAGE_VERSION_KEY, STORAGE_VERSION_VAL);
+      return null;
+    }
     try {
       const saved = localStorage.getItem(SESSION_KEY);
       return saved ? JSON.parse(saved) : null;
