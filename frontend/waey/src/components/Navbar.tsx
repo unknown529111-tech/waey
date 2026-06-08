@@ -154,25 +154,42 @@ const Navbar = () => {
             >
               {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </button>
-            <motion.button
+            <motion.div
               onClick={toggleLang}
-              className="size-10 rounded-full bg-muted/60 flex items-center justify-center hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300 text-foreground/70 hover:text-foreground overflow-hidden"
+              className="relative h-9 w-[4.5rem] rounded-full bg-muted/80 flex items-center cursor-pointer select-none overflow-hidden"
+              whileTap={{ scale: 0.92 }}
+              role="switch"
+              aria-checked={lang === "en"}
               aria-label={t("nav.toggleLang")}
-              whileTap={{ scale: 0.9 }}
             >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={lang}
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 20, opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="text-[10px] font-bold tracking-wider"
-                >
-                  {lang === "ar" ? "EN" : "AR"}
-                </motion.span>
+              <AnimatePresence initial={false}>
+                {lang === "ar" ? (
+                  <motion.span
+                    key="ar"
+                    initial={{ x: -12, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 12, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute inset-0 flex items-center justify-between px-2 text-[11px] font-bold tracking-wider"
+                  >
+                    <span className="size-6 rounded-full bg-background shadow-sm flex items-center justify-center">AR</span>
+                    <span className="text-muted-foreground/60">EN</span>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="en"
+                    initial={{ x: 12, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -12, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute inset-0 flex items-center justify-between px-2 text-[11px] font-bold tracking-wider"
+                  >
+                    <span className="text-muted-foreground/60">AR</span>
+                    <span className="size-6 rounded-full bg-background shadow-sm flex items-center justify-center">EN</span>
+                  </motion.span>
+                )}
               </AnimatePresence>
-            </motion.button>
+            </motion.div>
             <button
               className="md:hidden size-10 rounded-full bg-muted/60 flex items-center justify-center hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300 text-foreground/70 hover:text-foreground"
               onClick={() => setIsOpen(!isOpen)}
