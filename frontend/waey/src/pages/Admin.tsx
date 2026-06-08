@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { CHALLENGES, QUOTES } from "@/lib/dailyStorage";
-import { getAllStreaks, getPrizeInfo, resetPrize, getUsers, fetchSupabaseUsers, fetchSupabasePrize } from "@/lib/streak";
+import { fetchSupabaseUsers, fetchSupabasePrize } from "@/lib/streak";
 import { getOnlineCount, getSignedInCount, getMinSessionDuration, getOnlineList } from "@/lib/presence";
 import { PLANS } from "@/lib/plansData";
 import {
@@ -191,21 +191,32 @@ export default function Admin() {
 
 // ==================== DASHBOARD ====================
 function DashboardTab() {
-  const users = getUsers();
-  const streaks = getAllStreaks();
-  const prize = getPrizeInfo();
+  const [cloudUsers, setCloudUsers] = useState<number>(0);
+  const [cloudTopStreak, setCloudTopStreak] = useState<number>(0);
+  const [cloudPrize, setCloudPrize] = useState<{ winner: string | null }>({ winner: null });
+
+  useEffect(() => {
+    fetchSupabaseUsers().then((data) => {
+      if (data) {
+        setCloudUsers(data.length);
+        const top = data.reduce((m, u) => Math.max(m, u.streak_count || 0), 0);
+        setCloudTopStreak(top);
+      }
+    });
+    fetchSupabasePrize().then((p) => {
+      if (p) setCloudPrize({ winner: p.winner_email });
+    });
+  }, []);
+
   const adminRecipes = getAdminRecipes();
   const adminChallenges = getAdminChallenges();
   const adminQuotes = getAdminQuotes();
 
-  const streakValues = Object.values(streaks).map((s) => s.count);
-  const topStreak = streakValues.length > 0 ? Math.max(...streakValues) : 0;
-
   const cards = [
-    { icon: <Users className="size-5" />, label: "إجمالي المستخدمين", value: Object.keys(users).length, color: "" },
+    { icon: <Users className="size-5" />, label: "إجمالي المستخدمين", value: cloudUsers, color: "" },
     { icon: <ChefHat className="size-5" />, label: "الوصفات", value: RECIPES.length + adminRecipes.length, sub: `${adminRecipes.length} مضافة`, color: "" },
-    { icon: <Flame className="size-5 text-orange-500" />, label: "أعلى نقاط", value: topStreak, sub: topStreak >= 100 ? "🏆 فائز!" : "", color: topStreak >= 100 ? "text-amber-500" : "" },
-    { icon: <Trophy className="size-5" />, label: "الفائز بالجائزة", value: prize.winner ? "تم" : "لا يوجد", sub: prize.winner || "", color: prize.winner ? "text-amber-500" : "" },
+    { icon: <Flame className="size-5 text-orange-500" />, label: "أعلى نقاط", value: cloudTopStreak, sub: cloudTopStreak >= 100 ? "🏆 فائز!" : "", color: cloudTopStreak >= 100 ? "text-amber-500" : "" },
+    { icon: <Trophy className="size-5" />, label: "الفائز بالجائزة", value: cloudPrize.winner ? "تم" : "لا يوجد", sub: cloudPrize.winner || "", color: cloudPrize.winner ? "text-amber-500" : "" },
     { icon: <BookOpen className="size-5" />, label: "التحديات", value: CHALLENGES.length + adminChallenges.length, sub: `${adminChallenges.length} مضافة`, color: "" },
     { icon: <MessageSquareQuote className="size-5" />, label: "الحكم", value: QUOTES.length + adminQuotes.length, sub: `${adminQuotes.length} مضافة`, color: "" },
   ];
@@ -813,105 +824,49 @@ function QuotesTab() {
 
 // ==================== USERS TAB ====================
 function UsersTab() {
-  const [users, setUsers] = useState<{ email: string; name: string; password: string; streakCount: number }[]>([]);
-  const [prize, setPrizeState] = useState(getPrizeInfo());
-  const [onlineList, setOnlineList] = useState(() => getOnlineList());
-  const [source, setSource] = useState<"local" | "supabase">("local");
-  const [sbConnected, setSbConnected] = useState<boolean | null>(null);
+  const [users, setUsers] = useState<{ email: string; name: string; streakCount: number }[]>([]);
+  const [prize, setPrizeState] = useState<{ winner: string | null }>({ winner: null });
+  const [loading, setLoading] = useState(true);
 
-  const refreshLocal = () => {
-    const records = getUsers();
-    const streaks = getAllStreaks();
-    const rows = Object.entries(records).map(([email, data]) => ({
-      email, name: data.name, password: data.password,
-      streakCount: streaks[email]?.count || 0,
-    }));
-    rows.sort((a, b) => b.streakCount - a.streakCount);
-    setUsers(rows);
-    setPrizeState(getPrizeInfo());
-  };
-
-  const refreshSupabase = async () => {
-    const sbUsers = await fetchSupabaseUsers();
-    const sbPrize = await fetchSupabasePrize();
-    setUsers(sbUsers.map((u) => ({
-      email: u.email, name: u.name, password: "", streakCount: u.streak_count,
-    })));
-    if (sbPrize) {
-      setPrizeState({ winner: sbPrize.winner_email, claimedAt: new Date(sbPrize.claimed_at).getTime() });
+  const refresh = async () => {
+    setLoading(true);
+    const data = await fetchSupabaseUsers();
+    const p = await fetchSupabasePrize();
+    if (data) {
+      const rows = data.map((u) => ({
+        email: u.email, name: u.name, streakCount: u.streak_count || 0,
+      }));
+      rows.sort((a, b) => b.streakCount - a.streakCount);
+      setUsers(rows);
     }
-    setSbConnected(true);
+    if (p) setPrizeState({ winner: p.winner_email });
+    setLoading(false);
   };
 
-  const refresh = () => {
-    if (source === "supabase") refreshSupabase();
-    else refreshLocal();
-  };
-
-  useEffect(() => {
-    refresh();
-    // Check Supabase connection
-    fetchSupabaseUsers().then((data) => setSbConnected(data ? true : false));
-  }, [source]);
-
-  useEffect(() => {
-    const t = setInterval(() => setOnlineList(getOnlineList()), 3000);
-    return () => clearInterval(t);
-  }, []);
-
-  const switchSource = (s: "local" | "supabase") => {
-    setSource(s);
-  };
-
-  const deleteUser = (email: string) => {
-    const records = getUsers();
-    delete records[email];
-    localStorage.setItem("waey_users", JSON.stringify(records));
-    const streaks = getAllStreaks();
-    delete streaks[email];
-    localStorage.setItem("waey_streaks", JSON.stringify(streaks));
-    refreshLocal();
-  };
+  useEffect(() => { refresh(); }, []);
 
   return (
     <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
       <div className="px-6 py-4 border-b border-border/50">
         <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm font-bold">متصلون الآن: {onlineList.length}</div>
-            <div className="text-xs text-muted-foreground">{onlineList.map((o) => o.name).slice(0, 6).join("، ") || "لا أحد"}</div>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Supabase status */}
-            {sbConnected === true && <span className="text-[10px] text-green-600 font-bold">Supabase ✓</span>}
-            {sbConnected === false && <span className="text-[10px] text-muted-foreground">Supabase ✗</span>}
-            {/* Source toggle */}
-            <div className="relative h-7 w-28 rounded-full bg-muted flex items-center p-0.5 cursor-pointer" onClick={() => switchSource(source === "local" ? "supabase" : "local")}>
-              <div className={`absolute h-6 w-[3.35rem] rounded-full bg-background shadow-sm transition-all duration-200 ${source === "supabase" ? "translate-x-[3.35rem]" : "translate-x-0"}`} />
-              <div className={`relative z-10 flex items-center justify-center w-[3.35rem] h-full text-[10px] font-bold ${source === "local" ? "text-foreground" : "text-muted-foreground"}`}>
-                محلي
-              </div>
-              <div className={`relative z-10 flex items-center justify-center w-[3.35rem] h-full text-[10px] font-bold ${source === "supabase" ? "text-foreground" : "text-muted-foreground"}`}>
-                سحابي
-              </div>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="text-green-600 text-[10px] font-bold">Supabase ✓</span>
+            <div className="text-xs text-muted-foreground">بيانات سحابية مباشرة</div>
           </div>
         </div>
       </div>
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
         <h2 className="text-lg font-bold">المستخدمين ({users.length})</h2>
-        <div className="flex gap-2">
-          <button
-            onClick={() => {
-              const text = users.map((u, i) => `${i + 1}. ${u.name} (${u.email}) — ${u.streakCount} نقطة`).join("\n");
-              navigator.clipboard.writeText(text);
-            }}
-            className="h-9 px-4 text-xs font-bold rounded-full bg-muted hover:bg-muted/80 transition-all flex items-center gap-1.5"
-          >
-            <Copy className="size-3" />
-            نسخ
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            const text = users.map((u, i) => `${i + 1}. ${u.name} (${u.email}) — ${u.streakCount} نقطة`).join("\n");
+            navigator.clipboard.writeText(text);
+          }}
+          className="h-9 px-4 text-xs font-bold rounded-full bg-muted hover:bg-muted/80 transition-all flex items-center gap-1.5"
+        >
+          <Copy className="size-3" />
+          نسخ
+        </button>
       </div>
 
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto">
@@ -922,16 +877,13 @@ function UsersTab() {
               <th className="text-right px-4 py-3 font-bold">الاسم</th>
               <th className="text-right px-4 py-3 font-bold hidden sm:table-cell">البريد</th>
               <th className="text-center px-4 py-3 font-bold">النقاط</th>
-              <th className="text-center px-4 py-3 font-bold w-20">إجراءات</th>
             </tr>
           </thead>
           <tbody>
-            {users.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="text-center py-12 text-muted-foreground">
-                  {source === "supabase" ? "اضغط على سحابي للاتصال أو شغل SQL Editor أولاً" : "لا يوجد مستخدمين بعد"}
-                </td>
-              </tr>
+            {loading ? (
+              <tr><td colSpan={4} className="text-center py-12 text-muted-foreground">جاري التحميل...</td></tr>
+            ) : users.length === 0 ? (
+              <tr><td colSpan={4} className="text-center py-12 text-muted-foreground">لا يوجد مستخدمين بعد</td></tr>
             ) : (
               users.map((u, i) => (
                 <tr key={u.email} className={`border-b border-border/30 hover:bg-muted/30 transition-colors ${
@@ -945,15 +897,6 @@ function UsersTab() {
                       <Flame className="size-3.5 text-orange-500" />
                       {u.streakCount}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <button
-                      onClick={() => deleteUser(u.email)}
-                      className="size-7 rounded-full bg-muted hover:bg-red-100 dark:hover:bg-red-900/30 flex items-center justify-center transition-colors"
-                      title="حذف المستخدم"
-                    >
-                      <Trash2 className="size-3 text-red-500" />
-                    </button>
                   </td>
                 </tr>
               ))
@@ -974,15 +917,6 @@ function UsersTab() {
               </p>
             </div>
           </div>
-          {prize.winner && (
-            <button
-              onClick={() => { resetPrize(); refresh(); }}
-              className="h-8 px-4 text-xs font-bold rounded-full bg-amber-200 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-300 dark:hover:bg-amber-900/50 transition-all flex items-center gap-1.5"
-            >
-              <RefreshCw className="size-3" />
-              إعادة ضبط الجائزة
-            </button>
-          )}
         </div>
       </div>
     </div>
