@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { CHALLENGES, QUOTES } from "@/lib/dailyStorage";
-import { getAllStreaks, getPrizeInfo, resetPrize, getUsers } from "@/lib/streak";
+import { getAllStreaks, getPrizeInfo, resetPrize, getUsers, fetchSupabaseUsers, fetchSupabasePrize } from "@/lib/streak";
 import { getOnlineCount, getSignedInCount, getMinSessionDuration, getOnlineList } from "@/lib/presence";
 import { PLANS } from "@/lib/plansData";
 import {
@@ -816,8 +816,10 @@ function UsersTab() {
   const [users, setUsers] = useState<{ email: string; name: string; password: string; streakCount: number }[]>([]);
   const [prize, setPrizeState] = useState(getPrizeInfo());
   const [onlineList, setOnlineList] = useState(() => getOnlineList());
+  const [source, setSource] = useState<"local" | "supabase">("local");
+  const [sbConnected, setSbConnected] = useState<boolean | null>(null);
 
-  const refresh = () => {
+  const refreshLocal = () => {
     const records = getUsers();
     const streaks = getAllStreaks();
     const rows = Object.entries(records).map(([email, data]) => ({
@@ -829,12 +831,37 @@ function UsersTab() {
     setPrizeState(getPrizeInfo());
   };
 
-  useEffect(() => { refresh(); }, []);
+  const refreshSupabase = async () => {
+    const sbUsers = await fetchSupabaseUsers();
+    const sbPrize = await fetchSupabasePrize();
+    setUsers(sbUsers.map((u) => ({
+      email: u.email, name: u.name, password: "", streakCount: u.streak_count,
+    })));
+    if (sbPrize) {
+      setPrizeState({ winner: sbPrize.winner_email, claimedAt: new Date(sbPrize.claimed_at).getTime() });
+    }
+    setSbConnected(true);
+  };
+
+  const refresh = () => {
+    if (source === "supabase") refreshSupabase();
+    else refreshLocal();
+  };
+
+  useEffect(() => {
+    refresh();
+    // Check Supabase connection
+    fetchSupabaseUsers().then((data) => setSbConnected(data ? true : false));
+  }, [source]);
 
   useEffect(() => {
     const t = setInterval(() => setOnlineList(getOnlineList()), 3000);
     return () => clearInterval(t);
   }, []);
+
+  const switchSource = (s: "local" | "supabase") => {
+    setSource(s);
+  };
 
   const deleteUser = (email: string) => {
     const records = getUsers();
@@ -843,7 +870,7 @@ function UsersTab() {
     const streaks = getAllStreaks();
     delete streaks[email];
     localStorage.setItem("waey_streaks", JSON.stringify(streaks));
-    refresh();
+    refreshLocal();
   };
 
   return (
@@ -854,7 +881,21 @@ function UsersTab() {
             <div className="text-sm font-bold">متصلون الآن: {onlineList.length}</div>
             <div className="text-xs text-muted-foreground">{onlineList.map((o) => o.name).slice(0, 6).join("، ") || "لا أحد"}</div>
           </div>
-          <div className="text-xs text-muted-foreground">تحديث تلقائي</div>
+          <div className="flex items-center gap-3">
+            {/* Supabase status */}
+            {sbConnected === true && <span className="text-[10px] text-green-600 font-bold">Supabase ✓</span>}
+            {sbConnected === false && <span className="text-[10px] text-muted-foreground">Supabase ✗</span>}
+            {/* Source toggle */}
+            <div className="relative h-7 w-28 rounded-full bg-muted flex items-center p-0.5 cursor-pointer" onClick={() => switchSource(source === "local" ? "supabase" : "local")}>
+              <div className={`absolute h-6 w-[3.35rem] rounded-full bg-background shadow-sm transition-all duration-200 ${source === "supabase" ? "translate-x-[3.35rem]" : "translate-x-0"}`} />
+              <div className={`relative z-10 flex items-center justify-center w-[3.35rem] h-full text-[10px] font-bold ${source === "local" ? "text-foreground" : "text-muted-foreground"}`}>
+                محلي
+              </div>
+              <div className={`relative z-10 flex items-center justify-center w-[3.35rem] h-full text-[10px] font-bold ${source === "supabase" ? "text-foreground" : "text-muted-foreground"}`}>
+                سحابي
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
@@ -887,7 +928,9 @@ function UsersTab() {
           <tbody>
             {users.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center py-12 text-muted-foreground">لا يوجد مستخدمين بعد</td>
+                <td colSpan={5} className="text-center py-12 text-muted-foreground">
+                  {source === "supabase" ? "اضغط على سحابي للاتصال أو شغل SQL Editor أولاً" : "لا يوجد مستخدمين بعد"}
+                </td>
               </tr>
             ) : (
               users.map((u, i) => (

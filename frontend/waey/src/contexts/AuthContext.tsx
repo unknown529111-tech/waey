@@ -4,6 +4,7 @@ import { startSession, pingSession, endSession } from "@/lib/presence";
 import { isRateLimited, recordAttempt, resetAttempts } from "@/lib/rateLimit";
 import { sanitizeString, sanitizeEmail, sanitizePassword, isValidEmail } from "@/lib/sanitize";
 import { sha256hex } from "@/lib/hash";
+import { initStreak, saveUser } from "@/lib/streak";
 
 interface User {
   name: string;
@@ -163,8 +164,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const hashed = await sha256hex(sPassword);
-    users[sEmail] = { name: sName, password: hashed };
-    saveUsers(users);
+    saveUser(sEmail, { name: sName, password: hashed });
+    initStreak(sEmail);
     resetAttempts(rlKey);
     setUser({ name: sName, email: sEmail });
     return null;

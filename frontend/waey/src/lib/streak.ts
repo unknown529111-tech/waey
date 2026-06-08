@@ -15,6 +15,17 @@ interface PrizeData {
   claimedAt: number | null;
 }
 
+// ---- Lazy Supabase client ----
+async function getSupabase() {
+  try {
+    const { supabase } = await import("@/supabase/client");
+    return supabase;
+  } catch {
+    return null;
+  }
+}
+
+// ---- LocalStorage helpers ----
 function getStreaks(): Record<string, StreakData> {
   try {
     return JSON.parse(localStorage.getItem(STREAKS_KEY) || "{}");
@@ -39,6 +50,39 @@ function savePrize(data: PrizeData) {
   localStorage.setItem(PRIZE_KEY, JSON.stringify(data));
 }
 
+// ---- Supabase sync ----
+async function syncProfile(email: string, name: string, streak: StreakData) {
+  const sb = await getSupabase();
+  if (!sb) return;
+  try {
+    await sb.from("profiles").upsert({
+      email,
+      name,
+      streak_count: streak.count,
+      accumulated_ms: streak.accumulatedMs,
+      last_tick: streak.lastTick,
+      last_streak_date: streak.lastStreakDate,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "email" });
+  } catch { /* offline, ignore */ }
+}
+
+async function syncPrize(data: PrizeData) {
+  const sb = await getSupabase();
+  if (!sb) return;
+  try {
+    // Delete old prize row, insert new
+    await sb.from("prize").delete().neq("id", 0);
+    if (data.winner) {
+      await sb.from("prize").insert({
+        winner_email: data.winner,
+        claimed_at: new Date(data.claimedAt!).toISOString(),
+      });
+    }
+  } catch { /* offline, ignore */ }
+}
+
+// ---- Public API ----
 export function initStreak(email: string) {
   const streaks = getStreaks();
   if (!streaks[email]) {
@@ -107,6 +151,7 @@ function tryClaimPrize(email: string, count: number) {
   prize.winner = email;
   prize.claimedAt = Date.now();
   savePrize(prize);
+  syncPrize(prize);
 }
 
 export function getUsers(): Record<string, { name: string; password: string }> {
@@ -116,8 +161,43 @@ export function getUsers(): Record<string, { name: string; password: string }> {
     return {};
   }
 }
+
 export function resetPrize() {
   const key = "waey_prize";
   localStorage.setItem(key, JSON.stringify({ winner: null, claimedAt: null }));
+  syncPrize({ winner: null, claimedAt: null });
 }
 
+// ---- Save user + sync to Supabase ----
+export function saveUser(email: string, data: { name: string; password: string }) {
+  const users = getUsers();
+  users[email] = data;
+  localStorage.setItem("waey_users", JSON.stringify(users));
+  // Sync profile to Supabase
+  const streaks = getStreaks();
+  const streak = streaks[email] || { count: 0, accumulatedMs: 0, lastTick: Date.now(), lastStreakDate: "" };
+  syncProfile(email, data.name, streak);
+}
+
+// ---- Fetch from Supabase (for admin) ----
+export async function fetchSupabaseUsers(): Promise<{ email: string; name: string; streak_count: number }[]> {
+  const sb = await getSupabase();
+  if (!sb) return [];
+  try {
+    const { data } = await sb.from("profiles").select("email, name, streak_count").order("streak_count", { ascending: false });
+    return data || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function fetchSupabasePrize(): Promise<{ winner_email: string; claimed_at: string } | null> {
+  const sb = await getSupabase();
+  if (!sb) return null;
+  try {
+    const { data } = await sb.from("prize").select("winner_email, claimed_at").limit(1).single();
+    return data || null;
+  } catch {
+    return null;
+  }
+}
