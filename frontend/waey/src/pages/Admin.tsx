@@ -909,7 +909,7 @@ function UsersTab() {
             className="h-9 px-4 text-xs font-bold rounded-full bg-muted hover:bg-muted/80 transition-all flex items-center gap-1.5"
           >
             <Copy className="size-3" />
-            {t('common.copy')}
+            نسخ
           </button>
         </div>
       </div>
