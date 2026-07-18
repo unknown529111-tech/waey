@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -47,6 +47,7 @@ const App = () => (
               <Route path="/environment" element={<Environment />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/daily" element={<Navigate to="/dashboard" replace />} />
               <Route path="/insights" element={<Insights />} />
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/education" element={<Education />} />
