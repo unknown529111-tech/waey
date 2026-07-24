@@ -1,8 +1,10 @@
 export function sanitizeString(input: string, maxLen = 1000) {
   if (!input) return "";
-  // remove HTML tags
   let s = input.replace(/<[^>]*>/g, "");
-  // collapse whitespace
+  s = s.replace(/javascript\s*:/gi, "blocked:");
+  s = s.replace(/data\s*:\s*text\/html/gi, "blocked:");
+  s = s.replace(/vbscript\s*:/gi, "blocked:");
+  s = s.replace(/on\w+\s*=/gi, "blocked=");
   s = s.replace(/\s+/g, " ").trim();
   if (s.length > maxLen) s = s.slice(0, maxLen);
   return s;

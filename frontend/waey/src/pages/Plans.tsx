@@ -4,10 +4,15 @@ import PageHero from "@/components/PageHero";
 import { PLANS, getPlanState, startPlan, togglePlanDay, resetPlan } from "@/lib/plansData";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
 
 const Plans = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "plans" });
+  }, []);
   const [selected, setSelected] = useState<string>(PLANS[0].id);
   const [, setTick] = useState(0);
   const refresh = () => setTick((t) => t + 1);
@@ -156,6 +161,60 @@ const Plans = () => {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* Premium Tier Comparison */}
+        <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <span className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-4 py-1.5 rounded-full text-xs font-bold mb-3">
+              ✨ خطط الاشتراك
+            </span>
+            <h2 className="text-2xl font-bold mb-1">اختر الخطة المناسبة لك</h2>
+            <p className="text-sm text-muted-foreground">قريباً — ادعم تطوير منصة وعي واحصل على مميزات حصرية</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { name: "المجاني", price: "٠ ج.م", features: ["تتبع العادات اليومية", "سلسلة الإنجازات", "مساعد ذكي (20 رسالة/يوم)", "تحدي 30 يوم", "نسخ احتياطي يدوي"], highlighted: false },
+              { name: "بلس", price: "٤٩ ج.م/شهر", features: ["كل مميزات المجاني", "مساعد ذكي غير محدود", "تصدير Excel", "ثيمات مخصصة", "أولوية في الدعم"], highlighted: true },
+              { name: "برو", price: "٩٩ ج.م/شهر", features: ["كل مميزات بلس", "تحليلات متقدمة", "دعم أولوية VIP", "وصول مبكر للميزات", "تقارير PDF مخصصة"], highlighted: false },
+            ].map((tier) => (
+              <div
+                key={tier.name}
+                className={`rounded-[2rem] p-6 border-2 transition-all ${
+                  tier.highlighted
+                    ? "bg-primary text-primary-foreground border-primary shadow-lg scale-[1.02]"
+                    : "bg-card border-border/50"
+                }`}
+              >
+                {tier.highlighted && (
+                  <span className="inline-block text-[10px] font-bold px-3 py-0.5 rounded-full bg-primary-foreground/20 text-primary-foreground mb-3">
+                    الأكثر شعبية
+                  </span>
+                )}
+                <h3 className="text-xl font-bold mb-1">{tier.name}</h3>
+                <p className={`text-2xl font-bold mb-4 ${tier.highlighted ? "" : "text-primary"}`}>{tier.price}</p>
+                <ul className="space-y-2 mb-6">
+                  {tier.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2 text-xs">
+                      <Check className="size-3.5 shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  disabled
+                  className={`w-full py-2.5 rounded-full text-xs font-bold transition-all disabled:opacity-60 ${
+                    tier.highlighted
+                      ? "bg-primary-foreground text-primary"
+                      : "bg-primary text-primary-foreground"
+                  }`}
+                >
+                  قريباً
+                </button>
+              </div>
+            ))}
           </div>
         </section>
       </div>

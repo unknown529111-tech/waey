@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Moon, Trophy, Lightbulb, Smartphone } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const NightReview = () => {
   const t = useT();

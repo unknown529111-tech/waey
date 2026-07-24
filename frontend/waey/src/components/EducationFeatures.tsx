@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Play, Pause, RotateCcw, Trash2, Volume2, Download, CheckCircle2, XCircle, Sparkles, Brain, BookOpen, Lightbulb, Apple } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 /* ─── Pomodoro Timer ─── */
 

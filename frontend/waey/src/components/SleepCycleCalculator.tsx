@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Moon, Sunrise, Clock } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const CYCLE = 90;
 const FALL_ASLEEP = 14;

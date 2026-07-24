@@ -1,5 +1,5 @@
 import { Stethoscope } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const CheckupsTable = () => {
   const t = useT();

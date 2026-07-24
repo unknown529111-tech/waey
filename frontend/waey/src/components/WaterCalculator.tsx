@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Droplets } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const WaterCalculator = () => {
   const t = useT();

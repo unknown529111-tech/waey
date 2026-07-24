@@ -2,20 +2,68 @@ import type { Recipe } from "@/data/recipes";
 
 // ==================== ADMIN AUTH ====================
 const ADMIN_KEY = "waey_admin";
-const DEFAULT_PASSWORD = "5112009Asm$$";
+const ADMIN_TOKEN_KEY = "waey_admin_token";
+
+/** Calls Supabase edge function to verify admin password and get a signed token */
+async function callAdminAuth(body: Record<string, string | boolean>): Promise<Record<string, unknown> | null> {
+  try {
+    const { supabase } = await import("@/supabase/client");
+    if (!supabase) return null;
+    const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-auth`;
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      },
+      body: JSON.stringify(body),
+    });
+    if (!resp.ok) return null;
+    return (await resp.json()) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
 
 export function isAdminLoggedIn(): boolean {
-  try { return localStorage.getItem(ADMIN_KEY) === "1"; } catch { return false; }
+  try {
+    const flag = localStorage.getItem(ADMIN_KEY);
+    const token = localStorage.getItem(ADMIN_TOKEN_KEY);
+    return flag === "1" && !!token;
+  } catch { return false; }
 }
-export function adminLogin(password: string): boolean {
-  if (password === DEFAULT_PASSWORD || password === import.meta.env.VITE_ADMIN_PASSWORD) {
+
+/**
+ * Admin login — sends password to edge function, stores returned token.
+ * Returns true on success, false on failure or network error.
+ */
+export async function adminLogin(password: string): Promise<boolean> {
+  const result = await callAdminAuth({ password });
+  if (result && typeof result.token === "string") {
+    localStorage.setItem(ADMIN_TOKEN_KEY, result.token);
     localStorage.setItem(ADMIN_KEY, "1");
     return true;
   }
   return false;
 }
+
+/**
+ * Verify the stored token is still valid (server-side check).
+ * Call this on page load to detect expired tokens.
+ */
+export async function verifyAdminToken(): Promise<boolean> {
+  const token = localStorage.getItem(ADMIN_TOKEN_KEY);
+  if (!token) return false;
+  const result = await callAdminAuth({ token, verify: true });
+  if (result && result.valid === true) return true;
+  // Token expired or invalid — clear it
+  adminLogout();
+  return false;
+}
+
 export function adminLogout() {
   localStorage.removeItem(ADMIN_KEY);
+  localStorage.removeItem(ADMIN_TOKEN_KEY);
 }
 
 // ==================== ADMIN RECIPES ====================
@@ -141,7 +189,7 @@ export function deleteAdminQuote(id: string): QuoteItem[] {
   return list;
 }
 
-// ==================== DATA EXPORT ====================
+// ==================== DATA EXPORT & LAZY XLSX ====================
 export function exportAllData(): string {
   const data: Record<string, unknown> = {};
   for (let i = 0; i < localStorage.length; i++) {
@@ -152,6 +200,28 @@ export function exportAllData(): string {
     }
   }
   return JSON.stringify(data, null, 2);
+}
+
+/** Dynamic lazy import of xlsx library only when user clicks export */
+export async function exportToExcelAsync(fileName = "waey_data.xlsx") {
+  try {
+    const XLSX = await import("xlsx");
+    const data: Record<string, unknown>[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith("waey_")) {
+        data.push({ Key: key, Value: localStorage.getItem(key) });
+      }
+    }
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "WaeyData");
+    XLSX.writeFile(workbook, fileName);
+    return true;
+  } catch (err) {
+    console.error("Failed to load XLSX lazily:", err);
+    return false;
+  }
 }
 
 export function resetAllData(): void {

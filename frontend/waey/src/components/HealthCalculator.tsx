@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { HeartPulse } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const ResultCard = ({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) => (
   <div className={`rounded-3xl p-5 text-center ${accent ? "bg-primary text-primary-foreground" : "bg-background border border-border"}`}>

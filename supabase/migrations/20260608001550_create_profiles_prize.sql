@@ -21,19 +21,20 @@ CREATE TABLE IF NOT EXISTS prize (
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prize ENABLE ROW LEVEL SECURITY;
 
--- Policies: anyone can read/insert/update profiles (anon key access)
+-- Policies: anyone can read public profiles (anon key), but only the authenticated user owning the matching email can insert/update.
+
 CREATE POLICY "Anyone can read profiles"
   ON profiles FOR SELECT
   USING (true);
 
-CREATE POLICY "Anyone can insert profiles"
+CREATE POLICY "Users can insert their own profile"
   ON profiles FOR INSERT
-  WITH CHECK (true);
+  WITH CHECK (auth.email() = email);
 
-CREATE POLICY "Anyone can update profiles"
+CREATE POLICY "Users can update their own profile"
   ON profiles FOR UPDATE
-  USING (true)
-  WITH CHECK (true);
+  USING (auth.email() = email)
+  WITH CHECK (auth.email() = email);
 
 -- Prize: anyone can read, anyone with service_key can manage
 CREATE POLICY "Anyone can read prize"

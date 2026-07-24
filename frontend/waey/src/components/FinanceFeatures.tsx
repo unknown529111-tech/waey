@@ -1,5 +1,5 @@
 import { TrendingUp, AlertTriangle, CheckCircle, BadgePercent, Brain, ShoppingCart, Calendar, GraduationCap, Briefcase, Heart, Skull, Target, DollarSign, Users, MessageCircle, HelpCircle, Wallet } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const FinanceFeatures = () => {
   const t = useT();

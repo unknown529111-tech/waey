@@ -8,7 +8,7 @@ export function recordAttempt(key: string) {
     const now = Date.now();
     arr.push(now);
     localStorage.setItem(k, JSON.stringify(arr));
-  } catch {}
+  } catch { /* best-effort; localStorage may be unavailable */ }
 }
 
 export function isRateLimited(key: string, limit = 5, windowMs = 15 * 60 * 1000) {
@@ -30,5 +30,5 @@ export function isRateLimited(key: string, limit = 5, windowMs = 15 * 60 * 1000)
 export function resetAttempts(key: string) {
   try {
     localStorage.removeItem(RATE_LIMIT_PREFIX + key);
-  } catch {}
+  } catch { /* best-effort */ }
 }

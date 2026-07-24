@@ -1,17 +1,33 @@
 const en: Record<string, string> = {
   // Navbar
   'nav.home': 'Home',
+  'nav.design': 'Design Agency',
   'nav.health': 'Health',
   'nav.finance': 'Finance',
   'nav.environment': 'Environment',
+  'nav.assistant': 'Assistant',
+  'nav.insights': 'Insights',
+  'nav.recipes': 'Recipes',
   'nav.education': 'Education',
+  'nav.quiz': 'Quiz',
+  'nav.plans': 'Plans',
+  'nav.admin': 'Admin',
   'nav.dashboard': 'Daily',
   'nav.login': 'Sign In',
+  'nav.signup': 'Sign Up',
   'nav.account': 'My Account',
   'nav.logout': 'Sign Out',
   'nav.signOut': 'Sign Out',
   'nav.toggleDark': 'Toggle theme',
   'nav.toggleLang': 'العربية',
+  'nav.search': 'Search',
+  'nav.menu': 'Menu',
+  'nav.loggedInAs': 'Signed in as',
+
+  // Auth
+  'auth.name': 'Full Name',
+  'auth.email': 'Email Address',
+  'auth.password': 'Password',
 
   // Footer
   'footer.desc': 'Waey — your journey toward holistic balance in health, finance, environment, and education.',
@@ -948,17 +964,6 @@ const en: Record<string, string> = {
   'notFound.title': 'Page Not Found',
   'notFound.desc': 'Sorry, the page you\'re looking for doesn\'t exist. It may have been deleted or moved.',
   'notFound.back': 'Back to Home',
-
-  // Auth
-  'auth.signIn': 'Sign In',
-  'auth.signUp': 'Create Account',
-  'auth.name': 'Name',
-  'auth.email': 'Email',
-  'auth.password': 'Password',
-  'auth.createAccount': 'Create Account',
-  'auth.noAccount': "Don't have an account? Sign Up",
-  'auth.hasAccount': 'Already have an account? Sign In',
-  'auth.namePlaceholder': 'Ahmed Mohamed',
 
   // Ask section
   'ask.title': 'Ask Waey',

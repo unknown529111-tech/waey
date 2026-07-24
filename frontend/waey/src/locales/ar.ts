@@ -1,17 +1,33 @@
 const ar: Record<string, string> = {
   // Navbar
   'nav.home': 'الرئيسية',
+  'nav.design': 'تصميم الوكالة',
   'nav.health': 'الصحة',
   'nav.finance': 'المالية',
   'nav.environment': 'البيئة',
+  'nav.assistant': 'المساعد',
+  'nav.insights': 'الرؤى',
+  'nav.recipes': 'الوصفات',
   'nav.education': 'التعليم',
+  'nav.quiz': 'الاختبار',
+  'nav.plans': 'الخطط',
+  'nav.admin': 'الإدارة',
   'nav.dashboard': 'يومي',
   'nav.login': 'تسجيل الدخول',
+  'nav.signup': 'إنشاء حساب',
   'nav.account': 'حسابي',
   'nav.logout': 'تسجيل الخروج',
   'nav.signOut': 'تسجيل الخروج',
   'nav.toggleDark': 'تبديل الوضع',
   'nav.toggleLang': 'English',
+  'nav.search': 'بحث',
+  'nav.menu': 'القائمة',
+  'nav.loggedInAs': 'مسجل الدخول كـ',
+
+  // Auth
+  'auth.name': 'الاسم',
+  'auth.email': 'البريد الإلكتروني',
+  'auth.password': 'كلمة المرور',
 
   // Footer
   'footer.desc': 'منصة وعي — رحلتك نحو التوازن الشامل في الصحة، المال، البيئة، والتعليم.',
@@ -949,17 +965,6 @@ const ar: Record<string, string> = {
   'notFound.title': 'الصفحة مش موجودة',
   'notFound.desc': 'عذراً، الصفحة اللي بتدور عليها مش موجودة. ممكن تكون اتحذفت أو اتغيرت.',
   'notFound.back': 'الرجوع للرئيسية',
-
-  // Auth
-  'auth.signIn': 'تسجيل الدخول',
-  'auth.signUp': 'إنشاء حساب',
-  'auth.name': 'الاسم',
-  'auth.email': 'البريد الإلكتروني',
-  'auth.password': 'كلمة المرور',
-  'auth.createAccount': 'إنشاء الحساب',
-  'auth.noAccount': 'ليس لديك حساب؟ إنشاء حساب',
-  'auth.hasAccount': 'لديك حساب بالفعل؟ تسجيل الدخول',
-  'auth.namePlaceholder': 'محمد أحمد',
 
   // Ask section
   'ask.title': 'اسأل وعي',

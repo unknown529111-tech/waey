@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/useLanguage";
 
 const AssistantFab = () => {
   const { t } = useLanguage();

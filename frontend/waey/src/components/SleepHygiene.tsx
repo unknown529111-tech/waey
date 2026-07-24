@@ -1,4 +1,4 @@
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { Sunset, Clock, Apple } from "lucide-react";
 
 const SleepHygiene = () => {

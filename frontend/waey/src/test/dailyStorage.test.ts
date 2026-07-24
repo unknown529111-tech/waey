@@ -12,6 +12,7 @@ import {
   removeExpense,
   getStreak,
   bumpStreak,
+  restoreStreak,
   getDailyChallenge,
   isChallengeDone,
   markChallengeDone,
@@ -184,14 +185,46 @@ describe("streak (getStreak / bumpStreak)", () => {
     expect(s.lastDay).toBe("2025-06-05");
     vi.useRealTimers();
   });
+
+  it("restores streak when user has enough points", () => {
+    vi.useFakeTimers();
+    mockDate("2025-06-01T10:00:00Z");
+    bumpStreak(); // streak count = 1, lastDay = 2025-06-01
+
+    // 5-day gap without activity
+    mockDate("2025-06-06T10:00:00Z");
+
+    // Initially fails with < 50 points
+    expect(restoreStreak()).toBe(false);
+
+    // Give points
+    writeJSON("waey_points", 100);
+
+    // Now restore succeeds
+    expect(restoreStreak()).toBe(true);
+
+    // Points deducted
+    expect(readJSON<number>("waey_points", 0)).toBe(50);
+
+    // Last day set to yesterday (2025-06-05)
+    const current = getStreak();
+    expect(current.lastDay).toBe("2025-06-05");
+
+    // Bumping today (2025-06-06) continues the streak to count = 2
+    const updated = bumpStreak();
+    expect(updated.count).toBe(2);
+    expect(updated.lastDay).toBe("2025-06-06");
+
+    vi.useRealTimers();
+  });
 });
 
 describe("daily challenge", () => {
-  it("returns a challenge with emoji, text, and area", () => {
+  it("returns a challenge with emoji, text, and area (i18n keys)", () => {
     const c = getDailyChallenge();
     expect(c.emoji).toBeTruthy();
-    expect(c.text).toBeTruthy();
-    expect(c.area).toMatch(/صحة|مال|بيئة/);
+    expect(c.text).toMatch(/^challenge\.item\.\d+\.text$/);
+    expect(c.area).toMatch(/^challenge\.item\.\d+\.area$/);
   });
 
   it("is deterministic per day", () => {

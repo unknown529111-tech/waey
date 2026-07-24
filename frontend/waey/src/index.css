@@ -49,6 +49,10 @@
     --sidebar-accent-foreground: 60 7% 27%;
     --sidebar-border: 36 19% 84%;
     --sidebar-ring: 100 15% 38%;
+
+    --ink: 60 10% 16%;
+    --ink-muted: 60 5% 45%;
+    --ink-faint: 50 5% 65%;
   }
 
   .dark {
@@ -65,13 +69,13 @@
     --primary-foreground: 30 6% 10%;
 
     --secondary: 28 35% 38%;
-    --secondary-foreground: 42 10% 88%;
+    --secondary-foreground: 42 10% 93%;
 
     --muted: 35 8% 16%;
-    --muted-foreground: 50 5% 55%;
+    --muted-foreground: 50 5% 63%;
 
     --accent: 36 10% 20%;
-    --accent-foreground: 42 10% 88%;
+    --accent-foreground: 42 12% 92%;
 
     --destructive: 7 35% 42%;
     --destructive-foreground: 0 0% 100%;
@@ -83,6 +87,10 @@
     --leaf-light: 100 10% 18%;
     --sun-warm: 36 10% 18%;
     --sand-deep: 36 6% 16%;
+
+    --ink: 42 10% 88%;
+    --ink-muted: 50 5% 63%;
+    --ink-faint: 40 5% 50%;
   }
 }
 

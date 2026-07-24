@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Wallet, Plus, Trash2 } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import {
   getExpenses,
   addExpense,

@@ -4,10 +4,17 @@ import { Heart, Wallet, TreePine, ArrowLeft, LayoutDashboard, GraduationCap, Spa
 import HeroSection from "@/components/HeroSection";
 import AskSection from "@/components/AskSection";
 import { getCardRadius } from "@/lib/organic";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
+import { SEO } from "@/components/SEO";
+import { trackEvent } from "@/lib/analytics";
+import { useEffect } from "react";
 
 const Index = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "home" });
+  }, []);
 
   const sections = [
     { to: "/health", icon: Heart, title: t('card.health.title'), desc: t('card.health.desc'), color: "from-primary/20 to-leaf-light/40" },
@@ -19,6 +26,10 @@ const Index = () => {
 
   return (
     <div className="relative">
+      <SEO
+        title="وعي — منصة التوازن والصحة الشاملة"
+        description="منصة مصرية متكاملة لرفع التوعية بالصحة البدنية والنفسية، الإدارة المالية الذكية، والوعي البيئي والتعليمي."
+      />
       <HeroSection />
 
       <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16">

@@ -10,7 +10,8 @@
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#5D7052" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="وعي" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
@@ -26,6 +27,16 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      // Immediately unregister any Service Worker in development
+      if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(reg => reg.unregister());
+          });
+        }
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

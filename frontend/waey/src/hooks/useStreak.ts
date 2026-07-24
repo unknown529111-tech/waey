@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useAuth } from "@/contexts/useAuth";
+import { useAuth } from "@/contexts/AuthContext";
 import { initStreak, tickStreak, pauseStreak, getStreak, getPrizeInfo } from "@/lib/streak";
 
 export function useStreak() {

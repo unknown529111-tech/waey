@@ -1,5 +1,5 @@
 import { UtensilsCrossed } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const EgyptianPlate = () => {
   const t = useT();

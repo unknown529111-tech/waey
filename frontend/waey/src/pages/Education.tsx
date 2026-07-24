@@ -2,10 +2,16 @@ import { GraduationCap, BookOpen, Brain, Timer, Target, Sparkles, Compass, Heart
 import PageHero from "@/components/PageHero";
 import VarkTest from "@/components/VarkTest";
 import EducationFeatures from "@/components/EducationFeatures";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
+import { useEffect } from "react";
 
 const Education = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "education" });
+  }, []);
 
   const studyMethods = [
     { id: "pomodoro", icon: Timer, title: t('edu.studyMethods.0.title'), desc: t('edu.studyMethods.0.desc') },

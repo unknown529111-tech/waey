@@ -1,0 +1,28 @@
+# Ignore build outputs
+dist/
+build/
+.next/
+*.log
+
+# Ignore node_modules
+node_modules/
+
+# Ignore IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore OS
+.DS_Store
+Thumbs.db
+
+# Ignore test outputs
+coverage/
+test-results/
+.nyc_output/
+
+# Ignore local env
+.env
+.env.local
+.env.*.local

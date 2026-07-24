@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Zap, Wallet, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 type CalcTab = "electricity" | "budget";
 type Currency = "EGP" | "SAR" | "AED";

@@ -4,10 +4,15 @@ import PageHero from "@/components/PageHero";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { getAdminRecipes, type AdminItem } from "@/lib/adminContent";
 import { getFavorites, toggleFavorite } from "@/lib/favorites";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
 
 const Recipes = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "recipes" });
+  }, []);
   const ALL_TAGS: Recipe["tags"][number][] = ["نباتي", "سريع", "اقتصادي", "صحي", "بروتين عالي"];
   const TAG_LABELS: Record<string, string> = {
     نباتي: t('recipes.tag.vegan'),

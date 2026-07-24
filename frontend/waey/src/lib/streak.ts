@@ -1,4 +1,4 @@
-﻿const STREAKS_KEY = "waey_streaks";
+const STREAKS_KEY = "waey_streaks";
 const PRIZE_KEY = "waey_prize";
 const STREAK_INTERVAL = 300_000;
 const TICK_INTERVAL = 10_000;
@@ -50,21 +50,32 @@ function savePrize(data: PrizeData) {
   localStorage.setItem(PRIZE_KEY, JSON.stringify(data));
 }
 
+import { queueUpsert } from "@/lib/offlineQueue";
+
 // ---- Supabase sync ----
 async function syncProfile(email: string, name: string, streak: StreakData) {
+  const profileRecord = {
+    email,
+    name,
+    streak_count: streak.count,
+    accumulated_ms: streak.accumulatedMs,
+    last_tick: streak.lastTick,
+    last_streak_date: streak.lastStreakDate,
+    updated_at: new Date().toISOString(),
+  };
   const sb = await getSupabase();
-  if (!sb) return;
+  if (!sb) {
+    queueUpsert("profiles", profileRecord, "email");
+    return;
+  }
   try {
-    await sb.from("profiles").upsert({
-      email,
-      name,
-      streak_count: streak.count,
-      accumulated_ms: streak.accumulatedMs,
-      last_tick: streak.lastTick,
-      last_streak_date: streak.lastStreakDate,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: "email" });
-  } catch { /* offline, ignore */ }
+    const { error } = await sb.from("profiles").upsert(profileRecord, { onConflict: "email" });
+    if (error) {
+      queueUpsert("profiles", profileRecord, "email");
+    }
+  } catch {
+    queueUpsert("profiles", profileRecord, "email");
+  }
 }
 
 async function syncPrize(data: PrizeData) {

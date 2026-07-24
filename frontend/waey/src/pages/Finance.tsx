@@ -3,10 +3,16 @@ import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import Calculators from "@/components/Calculators";
 import FinanceFeatures from "@/components/FinanceFeatures";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
+import { useEffect } from "react";
 
 const Finance = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "finance" });
+  }, []);
 
   const principles = [
     { icon: PiggyBank, title: t('finance.principles.0.title'), desc: t('finance.principles.0.desc') },

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Leaf } from "lucide-react";
 import heroImage from "@/assets/hero-nature.jpg";
 import BlobBackground from "./BlobBackground";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/useLanguage";
 
 const HeroSection = () => {
   const { t } = useLanguage();

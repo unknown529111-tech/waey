@@ -14,10 +14,17 @@ import FirstAidGuide from "@/components/FirstAidGuide";
 import SleepHygiene from "@/components/SleepHygiene";
 import DigitalWellness from "@/components/DigitalWellness";
 import CheckupsTable from "@/components/CheckupsTable";
-import { useT } from "@/contexts/LanguageContext";
+import { GuidedMeditation } from "@/features/GuidedMeditation";
+import { useT } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
+import { useEffect } from "react";
 
 const Health = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "health" });
+  }, []);
 
   const stressTips = [
     { icon: Wind, title: t('health.stressTip1'), desc: t('health.stressDesc1') },
@@ -196,6 +203,10 @@ const Health = () => {
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-8">
+        <GuidedMeditation />
       </section>
 
       <HospitalFinder />

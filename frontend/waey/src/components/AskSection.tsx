@@ -4,7 +4,7 @@ import { Send, MessageCircleQuestion, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { sanitizeString, sanitizeEmail } from "@/lib/sanitize";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/useLanguage";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "الاسم مطلوب").max(100, "الاسم طويل جداً"),
@@ -56,6 +56,7 @@ const AskSection = () => {
           message: messageClean,
           _subject: `رسالة جديدة من موقع وعي — ${nameClean}`,
         }),
+        signal: AbortSignal.timeout(10000),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

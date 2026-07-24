@@ -8,7 +8,7 @@ import {
   bumpStreak,
 } from "@/lib/dailyStorage";
 import { toast } from "sonner";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const DailyChallenge = () => {
   const t = useT();

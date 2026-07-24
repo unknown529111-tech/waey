@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { CheckCircle2, Circle, Target } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const DailyBig3 = () => {
   const t = useT();

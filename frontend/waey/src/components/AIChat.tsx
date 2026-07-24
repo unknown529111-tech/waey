@@ -1,15 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, Sparkles, Trash2 } from "lucide-react";
+import { Send, Loader2, Sparkles, Trash2, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { sanitizeString } from "@/lib/sanitize";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/useLanguage";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || "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";
+const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || "";
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const OPENROUTER_MODEL = "qwen/qwen-2.5-72b-instruct:free";
 const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
@@ -20,22 +21,23 @@ const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 
-const SYSTEM_PROMPT_AR = `أنت "مساعد وعي" — مساعد ذكي عربي يجيب على أسئلة المستخدمين في أربعة مجالات فقط:
-1. الصحة (نصائح عامة، عادات صحية، تغذية، نوم، رياضة)
-2. المال (الادخار، الميزانية الشخصية، التخطيط المالي، أفكار الدخل الإضافي)
-3. البيئة (توفير الطاقة والماء، إعادة التدوير، الزراعة المنزلية)
-4. التعليم (نصائح دراسية، تنظيم وقت المذاكرة، مهارات التعلم، تطوير الذات)
+const SYSTEM_PROMPT_AR = `أنت "مساعد وعي الذكي" (Waey AI) — المساعد التفاعلي الرسمي لمنصة "وعي".
+مهمتك الأساسية هي تقديم إجابات دقيقة، عملية، وملهمة للمستخدمين باللغة العربية في أربعة أركان أساسية للحياة:
 
-قواعد مهمة:
-- اجعل إجاباتك قصيرة ومباشرة (3-6 جمل).
-- استخدم نقاطاً مرقمة أو قوائم نقطية عند الحاجة.
-- إذا كان السؤال طبياً خطيراً فاطلب مراجعة طبيب مختص.
-- لا تجيب على أي سؤال خارج المجالات الأربعة — ممنوع تماماً الإجابة عن البرمجة، التكنولوجيا، السيارات، السياسة، الرياضة، أو أي موضوع آخر. فقط الصحة، المال، البيئة، التعليم.
-- استخدم رموزاً تعبيرية بسيطة (🌱 💰 ❤️ 📚) دون مبالغة.
-- الردود بالعربية الفصحى المبسطة.
+1. 🌿 الصحة: (العادات الصحية اليومية، شرب المياه، التغذية المتوازنة، تحسين جودة النوم، التمارين الرياضية، والصحة النفسية والاسترخاء).
+2. 💰 المال: (إدارة الميزانية الشخصية، حيل التوفير والادخار، التخطيط المالي الذكي، أفكار لزيادة الدخل والتصرف المالي الحكيم).
+3. 🌱 البيئة: (ترشيد استهلاك الكهرباء والماء، إعادة التدوير المنزلي، استبدال البلاستيك، الزراعة المنزلية، والحفاظ على الطبيعة).
+4. 📚 التعليم: (مهارات الاستذكار، تنظيم وقت الدراسة، تقنيات التركيز مثل البومودورو، التطوير الذاتي، وبناء الشغف التعلمي).
 
-- إذا سأل المستخدم عن صانع الموقع أو مالكه، أجب حرفياً بما يلي:
-محمود احمد محمد خليل، طالب في الصف الثانوي مهتم بالبرمجة والذكاء الاصطناعي، مؤسس منصة وعي لنشر الوعي بين الناس في مجالات الصحة، المال، البيئة، والتعليم.`;
+قواعد وأخلاقيات العمل:
+- افهم اللهجة المصرية والعامية العربية بشكل ممتاز، واكتب إجاباتك دائماً بلغة عربية فصحى سلسة، واضحة، ومبسطة.
+- صغ الإجابة في نقاط مرقمة أو منظمة (3 إلى 6 جمل)، واجعل أسلوبك مشجعاً وإيجابياً.
+- استخدم الرموز التعبيرية المناسبة لزيادة وضوح النص (🌱 💰 ❤️ 📚 💡 💧).
+- إذا كان السؤال خارج التخصصات الأربعة (مثل البرمجة المعقدة، السيارات، السياسة، الرياضة التنافسية...)، اعتذر بلطف ووجه المستخدم لأسئلة الصحة والمال والبيئة والتعليم.
+- في حالة الاستشارات الطبية أو التشخيصات والجرعات الأدوية، اطلب فوراً مراجعة طبيب أو مختص ولا تقدم تشخيصاً طبياً نائباً.
+
+معلومات مؤسس وصانع المنصة (استخدمها فقط عند السؤال عن صانع الموقع):
+"محمود أحمد محمد خليل — طالب في المرحلة الثانوية وقائد كشفي، مهتم بالبرمجة والذكاء الاصطناعي ومؤسس منصة وعي لنشر التوازن والوعي بين الأفراد بأساليب بسيطة وعملية."`;
 
 const SYSTEM_PROMPT_EN = `You are "Waey Assistant" — an intelligent assistant that answers users' questions in only four areas:
 1. Health (general tips, healthy habits, nutrition, sleep, exercise)
@@ -54,8 +56,24 @@ Important rules:
 - If the user asks about the site's creator or owner, answer literally as follows:
 Mahmoud Ahmed Mohamed Khalil, a high school student interested in programming and artificial intelligence, founder of the Waey platform to spread awareness in health, finance, environment, and education.`;
 
+import { getStreak, getDailyValue } from "@/lib/dailyStorage";
+
+function getUserPersonalizedContext(): string {
+  try {
+    const s = getStreak();
+    const water = getDailyValue("water");
+    const parts: string[] = [];
+    if (s.count > 0) parts.push(`سلسلة الوعي الحالية: ${s.count} يوم/أيام`);
+    if (water > 0) parts.push(`مجموع شرب المياه اليوم: ${water} كوب/أكواب`);
+    if (parts.length === 0) return "";
+    return `\n\nمعلومات عن إنجازات المستخدم الحالية في المنصة (استخدمها لتشجيعه وتخصيص الإجابة عند المناسبة): [${parts.join("، ")}]`;
+  } catch {
+    return "";
+  }
+}
+
 const MAX_TOKENS = 1000;
-const BATCH_INTERVAL_MS = 80;
+const RENDER_INTERVAL_MS = 16;
 
 async function tryOpenRouter(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
   if (!OPENROUTER_KEY) return null;
@@ -184,6 +202,7 @@ const AIChat = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [provider, setProvider] = useState<"openrouter" | "groq" | "deepseek" | "proxy" | null>(null);
+  const [cursorVisible, setCursorVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -195,7 +214,14 @@ const AIChat = () => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const systemPrompt = lang === 'ar' ? SYSTEM_PROMPT_AR : SYSTEM_PROMPT_EN;
+  // Cursor blink effect while loading
+  useEffect(() => {
+    if (!isLoading) { setCursorVisible(false); return; }
+    const id = setInterval(() => setCursorVisible(v => !v), 530);
+    return () => clearInterval(id);
+  }, [isLoading]);
+
+  const systemPrompt = (lang === 'ar' ? SYSTEM_PROMPT_AR : SYSTEM_PROMPT_EN) + getUserPersonalizedContext();
 
   const send = async (text: string) => {
     const trimmed = sanitizeString(text, 2000);
@@ -214,59 +240,70 @@ const AIChat = () => {
     const timeoutId = setTimeout(() => { controller.abort(); toast.error(t('chat.timeout')); }, 30_000);
 
     let assistantSoFar = "";
-    let flushTimer: ReturnType<typeof setTimeout> | null = null;
-    const scheduleFlush = () => {
-      if (flushTimer) return;
-      flushTimer = setTimeout(() => {
-        flushTimer = null;
+    let renderTimer: ReturnType<typeof setInterval> | null = null;
+
+    const startRenderLoop = () => {
+      if (renderTimer) return;
+      renderTimer = setInterval(() => {
         setMessages((prev) => {
           const last = prev[prev.length - 1];
           if (last?.role === "assistant") return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
           return [...prev, { role: "assistant", content: assistantSoFar }];
         });
-      }, BATCH_INTERVAL_MS);
+      }, RENDER_INTERVAL_MS);
+    };
+
+    const stopRenderLoop = () => {
+      if (renderTimer) {
+        clearInterval(renderTimer);
+        renderTimer = null;
+      }
     };
 
     let usedProvider: "openrouter" | "groq" | "deepseek" | null = null;
     const sp = systemPrompt;
 
     try {
-      // 1) Proxy (non-streaming)
-      const proxyText = await tryProxy(nextHistory, controller.signal, sp);
-      if (proxyText) { setProvider("proxy"); setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]); clearTimeout(timeoutId); setIsLoading(false); return; }
+      // 1) Groq (primary — using user VITE_GROQ_API_KEY)
+      let resp: Response | null = await tryGroq(nextHistory, controller.signal, sp);
+      if (resp && resp.ok) { usedProvider = "groq"; }
 
-      // 2) OpenRouter (primary)
-      let resp: Response | null = await tryOpenRouter(nextHistory, controller.signal, sp);
-      if (resp && resp.ok) { usedProvider = "openrouter"; }
-
-      // 3) Groq (fallback)
-      if (!resp || !resp.ok) {
-        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("OpenRouter failed:", resp.status, body.slice(0, 200)); }
-        resp = await tryGroq(nextHistory, controller.signal, sp);
-        if (resp && resp.ok) usedProvider = "groq";
-      }
-
-      // 4) DeepSeek (last resort)
+      // 2) OpenRouter (fallback)
       if (!resp || !resp.ok) {
         if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("Groq failed:", resp.status, body.slice(0, 200)); }
+        resp = await tryOpenRouter(nextHistory, controller.signal, sp);
+        if (resp && resp.ok) usedProvider = "openrouter";
+      }
+
+      // 3) DeepSeek
+      if (!resp || !resp.ok) {
+        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("OpenRouter failed:", resp.status, body.slice(0, 200)); }
         resp = await tryDeepSeek(nextHistory, controller.signal, sp);
         if (resp && resp.ok) usedProvider = "deepseek";
       }
 
-      if (!resp) { clearTimeout(timeoutId); controller.abort(); toast.error(t('chat.noProvider')); return; }
-      if (!resp.ok) {
-        clearTimeout(timeoutId); controller.abort();
-        if (resp.status === 429) toast.error(t('chat.busy'));
-        else if (resp.status === 401 || resp.status === 403) toast.error(t('chat.invalidKey'));
-        else if (resp.status === 402) toast.error(t('chat.outOfCredit'));
-        else toast.error(t('chat.unknownError') + ` (${resp.status})`);
-        setMessages(nextHistory);
+      // 4) Proxy (fallback)
+      if (!resp || !resp.ok) {
+        const proxyText = await tryProxy(nextHistory, controller.signal, sp);
+        if (proxyText) { setProvider("proxy"); setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]); clearTimeout(timeoutId); setIsLoading(false); return; }
+      }
+
+      if (!resp || !resp.ok) {
+        clearTimeout(timeoutId);
+        const fallbackText = generateSmartOfflineResponse(trimmed, lang);
+        setMessages((prev) => [...prev, { role: "assistant", content: fallbackText }]);
         return;
       }
 
       setProvider(usedProvider);
-      await streamResponse(resp, (token) => { assistantSoFar += token; scheduleFlush(); }, controller.signal);
-      if (flushTimer) clearTimeout(flushTimer);
+      startRenderLoop();
+      await streamResponse(resp, (token) => { assistantSoFar += token; }, controller.signal);
+    } catch (e) {
+      if ((e as Error).name !== "AbortError") { console.error(e); toast.error(t('chat.connectionError')); setMessages(nextHistory); }
+    } finally {
+      clearTimeout(timeoutId);
+      stopRenderLoop();
+      // Final flush to ensure complete message is saved
       if (assistantSoFar) {
         setMessages((prev) => {
           const last = prev[prev.length - 1];
@@ -274,10 +311,8 @@ const AIChat = () => {
           return [...prev, { role: "assistant", content: assistantSoFar }];
         });
       } else { setMessages(nextHistory); toast.error(t('chat.noResponse')); }
-    } catch (e) {
-      if ((e as Error).name !== "AbortError") { console.error(e); toast.error(t('chat.connectionError')); setMessages(nextHistory); }
-    } finally {
-      clearTimeout(timeoutId); if (flushTimer) clearTimeout(flushTimer); setIsLoading(false); abortRef.current = null;
+      setIsLoading(false);
+      abortRef.current = null;
     }
   };
 
@@ -286,7 +321,7 @@ const AIChat = () => {
   const providerLabel = () => {
     switch (provider) {
       case "openrouter": return "OpenRouter";
-      case "groq": return "Groq (Llama 3.3)";
+      case "groq": return "";
       case "deepseek": return "DeepSeek";
       case "proxy": return t('chat.proxy');
       default: return t('chat.scope');
@@ -317,6 +352,11 @@ const AIChat = () => {
               <Trash2 className="size-4" />
             </button>
           )}
+          {isLoading && messages[messages.length - 1]?.role === "user" && (
+            <button onClick={() => abortRef.current?.abort()} className="text-destructive hover:text-destructive/80 transition-colors p-2 rounded-full hover:bg-destructive/10" aria-label="إيقاف التوليد">
+              <X className="size-4" />
+            </button>
+          )}
         </div>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 md:px-5 py-5 space-y-4">
@@ -342,8 +382,9 @@ const AIChat = () => {
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === "user" ? "justify-start" : "justify-end"}`}>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${m.role === "user" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}>
                   {m.role === "assistant" ? (
-                    <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-headings:my-2 prose-strong:text-foreground">
-                      <ReactMarkdown>{sanitizeString(m.content || "", 5000)}</ReactMarkdown>
+                    <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-headings:my-2 prose-strong:text-foreground flex items-start gap-1">
+                      <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{sanitizeString(m.content || "", 5000)}</ReactMarkdown>
+                      {isLoading && i === messages.length - 1 && cursorVisible && <span className="text-primary animate-pulse">|</span>}
                     </div>
                   ) : (
                     <div className="whitespace-pre-wrap">{m.content}</div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const GratitudeJournal = () => {
   const t = useT();

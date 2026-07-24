@@ -10,7 +10,7 @@ import {
   TreePine,
   Heart,
 } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 /* ─── Section Wrapper ─── */
 

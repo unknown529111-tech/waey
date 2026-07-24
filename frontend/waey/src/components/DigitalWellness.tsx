@@ -1,4 +1,4 @@
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { Smartphone, Bell } from "lucide-react";
 
 const DigitalWellness = () => {

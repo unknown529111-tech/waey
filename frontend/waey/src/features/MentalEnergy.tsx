@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Battery, BatteryWarning, BatteryCharging, Zap } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const MentalEnergy = () => {
   const t = useT();

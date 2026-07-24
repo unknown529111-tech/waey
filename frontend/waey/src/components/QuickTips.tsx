@@ -1,7 +1,7 @@
 import { Droplets, Footprints, Apple, Bed } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const tipKeys = [
   // Week 1

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Minus, Plus } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
 
 interface Props {

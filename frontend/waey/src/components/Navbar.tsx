@@ -1,287 +1,279 @@
-import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon, User, LogOut, Languages } from "lucide-react";
-import { NavLink, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import logoLight from "@/assets/logo-waey.png";
-import logoDark from "@/assets/logo-waey-dark.png";
-import { useAuth } from "@/contexts/useAuth";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { AuthModal } from "./AuthModal";
+import { Menu, X, Sun, Moon, Search, User, LogOut } from "lucide-react";
+import logo from "@/assets/logo-waey.png";
+import { useLanguage } from "@/contexts/useLanguage";
+import { useAuth } from "@/contexts/AuthContext";
+import SearchModal from "@/components/SearchModal";
+import AuthModal from "@/components/AuthModal";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
       return document.documentElement.classList.contains("dark");
     }
     return false;
   });
-  const [scrolled, setScrolled] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const { isAuthenticated, user, signOut } = useAuth();
-  const { lang, toggleLang, t } = useLanguage();
-  const links = [
-    { to: "/", label: t("nav.home"), end: true },
-    { to: "/health", label: t("nav.health") },
-    { to: "/finance", label: t("nav.finance") },
-    { to: "/environment", label: t("nav.environment") },
-    { to: "/education", label: t("nav.education") },
-    { to: "/dashboard", label: t("nav.dashboard") },
-  ];
-
-  useEffect(() => {
-    if (isDark) document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
-  }, [isDark]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
-    <nav className="relative z-50 pt-4 px-4 sm:px-6 sticky top-4">
-      <div
-        className={`mx-auto max-w-6xl transition-all duration-500 ${
-          scrolled
-            ? "bg-white/70 dark:bg-[#1E1C18]/70 backdrop-blur-md shadow-moss border border-[#DED8CF]/50 dark:border-border/50"
-            : "bg-white/40 dark:bg-[#1E1C18]/40 backdrop-blur-sm border border-transparent"
-        } rounded-full`}
-      >
-        <div className="flex items-center justify-between px-2 md:px-4 h-16">
-          <Link to="/" className="flex items-center shrink-0 group">
-            <img src={logoLight} alt="وعي" className="h-24 w-auto block dark:hidden" />
-            <img src={logoDark} alt="وعي" className="h-24 w-auto hidden dark:block" />
-          </Link>
+    <button
+      onClick={() => {
+        const next = !isDark;
+        setIsDark(next);
+        document.documentElement.classList.toggle("dark", next);
+      }}
+      className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+      aria-label="تبديل الوضع"
+    >
+      {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
+    </button>
+  );
+};
 
-          <div className="hidden md:flex items-center gap-1">
-            {links.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.end}
-                className={({ isActive }) =>
-                  `px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 ${
-                    isActive
-                      ? "bg-primary/10 text-primary shadow-soft"
-                      : "text-foreground/70 hover:text-foreground hover:bg-muted/60"
-                  }`
-                }
-              >
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={lang}
-                    initial={{ y: -12, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 12, opacity: 0 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                  >
-                    {link.label}
-                  </motion.span>
-                </AnimatePresence>
-              </NavLink>
-            ))}
-          </div>
+const Navbar = () => {
+  const { t, lang, setLang } = useLanguage();
+  const { user, isAuthenticated, isLoaded, signOut } = useAuth();
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
 
-          <div className="flex items-center gap-2">
-            {isAuthenticated ? (
-              <div className="relative">
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20 hover:scale-105 active:scale-95 transition-all duration-300"
-                  aria-label="حسابي"
+  const navLinks = [
+    { path: "/", label: "nav.home", icon: null },
+    { path: "/health", label: "nav.health", icon: null },
+    { path: "/finance", label: "nav.finance", icon: null },
+    { path: "/environment", label: "nav.environment", icon: null },
+    { path: "/education", label: "nav.education", icon: null },
+    { path: "/dashboard", label: "nav.dashboard", icon: null },
+  ];
+
+  return (
+    <>
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-sm shadow-soft" : "bg-transparent"}`}>
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" dir="rtl">
+          <div className="flex items-center justify-between h-16">
+            <Link to="/" className="flex items-center gap-2" aria-label="وعي - الرئيسية">
+              <img src={logo} alt="وعي" className="h-20 w-auto" />
+            </Link>
+
+            <div className="hidden md:flex md:items-center md:gap-1">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      isActive
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    }`
+                  }
+                  onClick={() => setIsOpen(false)}
                 >
-                  <User className="size-4" />
-                </button>
-                {showUserMenu && (
-                  <>
-                    <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      className="absolute left-0 top-12 z-50 w-56 bg-card border border-border/50 rounded-[2rem] shadow-float p-2"
-                    >
-                      <div className="px-4 py-3 border-b border-border/50 mb-1">
-                        <p className="text-sm font-bold truncate">{user?.name}</p>
-                        <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                  {link.icon && <link.icon className="size-4 inline-block ml-1" />}
+                  {t(link.label)}
+                </NavLink>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+
+              <button
+                onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-xl bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={t('nav.toggleLang')}
+              >
+                {lang === 'ar' ? 'EN' : 'عربي'}
+              </button>
+
+              <AnimatePresence mode="wait">
+                {isLoaded && isAuthenticated ? (
+                  <motion.div
+                    key="signed-in"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="hidden sm:block text-sm text-muted-foreground">
+                        {t('nav.loggedInAs')} {user?.name}
                       </div>
                       <button
-                        onClick={() => { signOut(); setShowUserMenu(false); }}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-destructive hover:bg-destructive/5 rounded-xl transition-all"
+                        onClick={signOut}
+                        className="px-3 py-1.5 text-sm font-medium rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors flex items-center gap-1.5"
                       >
                         <LogOut className="size-4" />
-                        <AnimatePresence mode="wait">
-                          <motion.span
-                            key={lang}
-                            initial={{ y: -12, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: 12, opacity: 0 }}
-                            transition={{ duration: 0.15, ease: "easeOut" }}
-                          >
-                            {t('nav.logout')}
-                          </motion.span>
-                        </AnimatePresence>
+                        <span className="hidden sm:inline">{t('nav.logout')}</span>
                       </button>
-                    </motion.div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={() => setAuthOpen(true)}
-                className="hidden md:inline-flex h-10 px-5 items-center gap-2 text-sm font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-soft"
-              >
-                <User className="size-4 shrink-0" />
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={lang}
-                    initial={{ y: -12, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 12, opacity: 0 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                  >
-                    {t('nav.login')}
-                  </motion.span>
-                </AnimatePresence>
-              </button>
-            )}
-            <button
-              onClick={() => setIsDark(!isDark)}
-              className="size-10 rounded-full bg-muted/60 flex items-center justify-center hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300 text-foreground/70 hover:text-foreground"
-              aria-label="تبديل الوضع"
-            >
-              {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-            </button>
-            <motion.div
-              onClick={toggleLang}
-              className="relative h-9 w-[4.5rem] rounded-full bg-muted/80 flex items-center cursor-pointer select-none overflow-hidden"
-              whileTap={{ scale: 0.92 }}
-              role="switch"
-              aria-checked={lang === "en"}
-              aria-label={t("nav.toggleLang")}
-            >
-              <AnimatePresence initial={false}>
-                {lang === "ar" ? (
-                  <motion.span
-                    key="ar"
-                    initial={{ x: -12, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: 12, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute inset-0 flex items-center justify-between px-2 text-[11px] font-bold tracking-wider"
-                  >
-                    <span className="size-6 rounded-full bg-background shadow-sm flex items-center justify-center">AR</span>
-                    <span className="text-muted-foreground/60">EN</span>
-                  </motion.span>
+                    </div>
+                  </motion.div>
                 ) : (
-                  <motion.span
-                    key="en"
-                    initial={{ x: 12, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: -12, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute inset-0 flex items-center justify-between px-2 text-[11px] font-bold tracking-wider"
+                  <motion.div
+                    key="signed-out"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
                   >
-                    <span className="text-muted-foreground/60">AR</span>
-                    <span className="size-6 rounded-full bg-background shadow-sm flex items-center justify-center">EN</span>
-                  </motion.span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => { setAuthMode("signin"); setAuthModalOpen(true); }}
+                        className="px-4 py-2 text-sm font-bold rounded-full bg-muted hover:bg-muted/80 transition-colors"
+                      >
+                        {t('nav.login')}
+                      </button>
+                      <button
+                        onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); }}
+                        className="px-4 py-2 text-sm font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
+                      >
+                        {t('nav.signup')}
+                      </button>
+                    </div>
+                  </motion.div>
                 )}
               </AnimatePresence>
-            </motion.div>
-            <button
-              className="md:hidden size-10 rounded-full bg-muted/60 flex items-center justify-center hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300 text-foreground/70 hover:text-foreground"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="القائمة"
-            >
-              {isOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
+
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                aria-label={t('nav.search')}
+              >
+                <Search className="size-5" />
+              </button>
+
+              <button
+                onClick={() => setIsOpen(true)}
+                className="md:hidden p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                aria-label={t('nav.menu')}
+              >
+                <Menu className="size-6" />
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
+        </nav>
+      </header>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="md:hidden mx-auto max-w-sm mt-2 bg-white/90 dark:bg-[#1E1C18]/90 backdrop-blur-md border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] shadow-soft overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 md:hidden"
+            onClick={() => setIsOpen(false)}
           >
-            <div className="px-4 py-4 flex flex-col gap-1">
-                        {links.map((link) => (
-                          <NavLink
-                            key={link.to}
-                            to={link.to}
-                            end={link.end}
-                            onClick={() => setIsOpen(false)}
-                            className={({ isActive }) =>
-                              `text-sm font-bold py-3 px-4 rounded-xl transition-all duration-200 ${
-                                isActive
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-foreground/70 hover:bg-muted/60"
-                              }`
-                            }
-                          >
-                            <AnimatePresence mode="wait">
-                              <motion.span
-                                key={lang}
-                                initial={{ y: -12, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: 12, opacity: 0 }}
-                                transition={{ duration: 0.15, ease: "easeOut" }}
-                              >
-                                {link.label}
-                              </motion.span>
-                            </AnimatePresence>
-                          </NavLink>
-                        ))}
-                        {isAuthenticated ? (
+            <div className="absolute inset-0 bg-black/50" />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="absolute right-0 top-0 h-full w-full max-w-sm bg-card shadow-xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between p-4 border-b border-border">
+                <h3 className="font-bold">{t('nav.menu')}</h3>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 rounded-xl hover:bg-muted transition-colors"
+                >
+                  <X className="size-5" />
+                </button>
+              </div>
+
+              <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      }`
+                    }
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.icon && <link.icon className="size-5" />}
+                    {t(link.label)}
+                  </NavLink>
+                ))}
+
+                <div className="pt-4 border-t border-border space-y-3">
+                  <div className="flex items-center justify-between px-1">
+                    <ThemeToggle />
+                    <button
+                      onClick={() => lang === 'ar' ? setLang('en') : setLang('ar')}
+                      className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      aria-label={t('nav.toggleLang')}
+                    >
+                      <span className="text-sm font-bold">{lang === 'ar' ? 'EN' : 'ع'}</span>
+                    </button>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {isLoaded && isAuthenticated ? (
+                      <motion.div
+                        key="signed-in"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                      >
+                        <div className="text-sm text-muted-foreground px-1">
+                          {t('nav.loggedInAs')} {user?.name}
+                        </div>
+                        <button
+                          onClick={signOut}
+                          className="w-full px-4 py-3 text-base font-bold rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors flex items-center justify-center gap-2"
+                        >
+                          <LogOut className="size-5" />
+                          {t('nav.logout')}
+                        </button>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="signed-out"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                      >
+                        <div className="flex flex-col gap-2">
                           <button
-                            onClick={() => { signOut(); setIsOpen(false); }}
-                            className="flex items-center gap-3 text-sm font-bold py-3 px-4 rounded-xl text-destructive hover:bg-destructive/5 transition-all"
+                            onClick={() => { setAuthMode("signin"); setAuthModalOpen(true); setIsOpen(false); }}
+                            className="w-full px-4 py-3 text-base font-bold rounded-xl bg-muted hover:bg-muted/80 transition-colors"
                           >
-                            <LogOut className="size-4 shrink-0" />
-                            <AnimatePresence mode="wait">
-                              <motion.span
-                                key={lang}
-                                initial={{ y: -12, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: 12, opacity: 0 }}
-                                transition={{ duration: 0.15, ease: "easeOut" }}
-                              >
-                                {t('nav.logout')}
-                              </motion.span>
-                            </AnimatePresence>
+                            {t('nav.login')}
                           </button>
-                        ) : (
                           <button
-                            onClick={() => { setAuthOpen(true); setIsOpen(false); }}
-                            className="flex items-center gap-3 text-sm font-bold py-3 px-4 rounded-xl text-primary hover:bg-primary/5 transition-all"
+                            onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); setIsOpen(false); }}
+                            className="w-full px-4 py-3 text-base font-bold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
                           >
-                            <User className="size-4 shrink-0" />
-                            <AnimatePresence mode="wait">
-                              <motion.span
-                                key={lang}
-                                initial={{ y: -12, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: 12, opacity: 0 }}
-                                transition={{ duration: 0.15, ease: "easeOut" }}
-                              >
-                                {t('nav.login')}
-                              </motion.span>
-                            </AnimatePresence>
+                            {t('nav.signup')}
                           </button>
-                        )}
-                      </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </nav>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
-    </nav>
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        mode={authMode}
+        onSwitchMode={() => setAuthMode(authMode === "signin" ? "signup" : "signin")}
+      />
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+    </>
   );
 };
 

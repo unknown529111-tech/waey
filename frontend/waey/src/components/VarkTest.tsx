@@ -1,7 +1,7 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, Headphones, BookOpen, Hand, ArrowLeft, RotateCcw } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 type Style = "visual" | "auditory" | "readwrite" | "kinesthetic" | null;
 

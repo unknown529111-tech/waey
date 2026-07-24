@@ -1,199 +1,135 @@
-import { useState, useEffect, type ReactNode } from "react";
-import { AuthContext } from "./auth-context";
-import { startSession, pingSession, endSession } from "@/lib/presence";
-import { isRateLimited, recordAttempt, resetAttempts } from "@/lib/rateLimit";
-import { sanitizeString, sanitizeEmail, sanitizePassword, isValidEmail } from "@/lib/sanitize";
-import { sha256hex } from "@/lib/hash";
-import { initStreak, saveUser } from "@/lib/streak";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface User {
   name: string;
   email: string;
 }
 
-const USERS_KEY = "waey_users";
-const SESSION_KEY = "waey_session";
-const SESSION_ID_KEY = "waey_session_id";
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoaded: boolean;
+  signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signUp: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signOut: () => void;
+}
 
-function getUsers(): Record<string, { name: string; password: string }> {
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const STORAGE_KEY = "waey-auth";
+
+function getStoredAuth(): { user: User; token: string } | null {
+  if (typeof window === "undefined") return null;
   try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || "{}");
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : null;
   } catch {
-    return {};
+    return null;
   }
 }
 
-function saveUsers(users: Record<string, { name: string; password: string }>) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+function setStoredAuth(user: User, token: string) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token }));
 }
 
-const STORAGE_VERSION_KEY = "waey_storage_v2";
-const STORAGE_VERSION_VAL = "2";
+function clearStoredAuth() {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(STORAGE_KEY);
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Reset old storage so everyone must re-register
-  const [user, setUser] = useState<User | null>(() => {
-    const v = localStorage.getItem(STORAGE_VERSION_KEY);
-    if (v !== STORAGE_VERSION_VAL) {
-      // Wipe all old user data
-      localStorage.removeItem("waey_users");
-      localStorage.removeItem("waey_streaks");
-      localStorage.removeItem("waey_prize");
-      localStorage.removeItem("waey_session");
-      localStorage.removeItem("waey_session_id");
-      localStorage.removeItem("waey_ai_chat");
-      localStorage.setItem(STORAGE_VERSION_KEY, STORAGE_VERSION_VAL);
-      return null;
-    }
-    try {
-      const saved = localStorage.getItem(SESSION_KEY);
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(user));
-    } else {
-      localStorage.removeItem(SESSION_KEY);
+    const stored = getStoredAuth();
+    if (stored) {
+      setUser(stored.user);
+      setIsAuthenticated(true);
     }
-  }, [user]);
+    setIsLoaded(true);
+  }, []);
 
-  // Presence: start/ping/end session for admin metrics
-  useEffect(() => {
-    let timer: number | undefined;
-
-    const handleBeforeUnload = () => {
-      try {
-        const sid = localStorage.getItem(SESSION_ID_KEY);
-        if (sid) endSession(sid);
-      } catch {}
-    };
-
-    if (user) {
-      let sid = localStorage.getItem(SESSION_ID_KEY);
-      if (!sid) {
-        sid = startSession(user.email, user.name);
-        localStorage.setItem(SESSION_ID_KEY, sid);
-      } else {
-        // ensure presence exists (upsert)
-        startSession(user.email, user.name, sid);
-      }
-      try { pingSession(sid); } catch {}
-
-      timer = window.setInterval(() => {
-        try {
-          const s = localStorage.getItem(SESSION_ID_KEY);
-          if (s) pingSession(s);
-        } catch {}
-      }, 15_000);
-
-      window.addEventListener("beforeunload", handleBeforeUnload);
-      const onVisibility = () => {
-        if (document.visibilityState === "hidden") {
-          try { const s = localStorage.getItem(SESSION_ID_KEY); if (s) pingSession(s); } catch {}
-        }
-      };
-      document.addEventListener("visibilitychange", onVisibility);
-
-      return () => {
-        if (timer) clearInterval(timer);
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-        document.removeEventListener("visibilitychange", onVisibility);
-      };
-    } else {
-      const sid = localStorage.getItem(SESSION_ID_KEY);
-      if (sid) {
-        try { endSession(sid); } catch {}
-        localStorage.removeItem(SESSION_ID_KEY);
-      }
-    }
-  }, [user]);
-
-  const signIn = async (email: string, password: string): Promise<string | null> => {
-    const sEmail = sanitizeEmail(email);
-    const sPassword = sanitizePassword(password);
-
-    if (!isValidEmail(sEmail)) return "بريد إلكتروني غير صالح";
-
-    const rlKey = `signin:${sEmail}`;
-    const rl = isRateLimited(rlKey);
-    if (rl.limited) {
-      const minutes = Math.ceil(rl.retryAfterMs / 60000) || 1;
-      return `الحد الأقصى لمحاولات الدخول تم الوصول إليه. حاول مرة أخرى بعد ${minutes} دقيقة.`;
+  const signUp = async (name: string, email: string, password: string) => {
+    if (!name.trim() || !email.trim() || !password) {
+      return { success: false, error: "يرجى ملء جميع الحقول" };
     }
 
-    const users = getUsers();
-    const record = users[sEmail];
-    if (!record) {
-      recordAttempt(rlKey);
-      return "لا يوجد حساب بهذا البريد الإلكتروني";
+    if (password.length < 6) {
+      return { success: false, error: "كلمة المرور يجب أن تكون 6 أحرف على الأقل" };
     }
 
-    const stored = record.password || "";
-
-    // If stored password looks like a SHA-256 hex (64 chars), compare hashed
-    if (stored.length === 64) {
-      const h = await sha256hex(sPassword);
-      if (h !== stored) {
-        recordAttempt(rlKey);
-        return "كلمة المرور غير صحيحة";
-      }
-    } else {
-      // legacy plaintext password - migrate to hash on successful login
-      if (stored !== sPassword) {
-        recordAttempt(rlKey);
-        return "كلمة المرور غير صحيحة";
-      }
-      const newHash = await sha256hex(sPassword);
-      users[sEmail].password = newHash;
-      saveUsers(users);
+    const users = getStoredUsers();
+    if (users.find((u) => u.email === email)) {
+      return { success: false, error: "هذا البريد الإلكتروني مسجل بالفعل" };
     }
 
-    // successful login -> reset attempts
-    resetAttempts(rlKey);
-    setUser({ name: record.name, email: sEmail });
-    return null;
+    const newUser = { name, email, password };
+    users.push(newUser);
+    saveUsers(users);
+
+    const token = generateToken();
+    setStoredAuth({ name, email }, token);
+    setUser({ name, email });
+    setIsAuthenticated(true);
+
+    return { success: true };
   };
 
-  const signUp = async (name: string, email: string, password: string): Promise<string | null> => {
-    const sName = sanitizeString(name, 100);
-    const sEmail = sanitizeEmail(email);
-    const sPassword = sanitizePassword(password);
-
-    if (!isValidEmail(sEmail)) return "بريد إلكتروني غير صالح";
-    if (sPassword.length < 6) return "كلمة المرور يجب أن تكون 6 أحرف على الأقل";
-
-    const rlKey = `signup:${sEmail}`;
-    const rl = isRateLimited(rlKey);
-    if (rl.limited) {
-      const minutes = Math.ceil(rl.retryAfterMs / 60000) || 1;
-      return `الحد الأقصى لمحاولات إنشاء الحساب تم الوصول إليه. حاول مرة أخرى بعد ${minutes} دقيقة.`;
+  const signIn = async (email: string, password: string) => {
+    const users = getStoredUsers();
+    const found = users.find((u) => u.email === email && u.password === password);
+    
+    if (!found) {
+      return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
     }
 
-    const users = getUsers();
-    if (users[sEmail]) {
-      recordAttempt(rlKey);
-      return "هذا البريد مسجل بالفعل";
-    }
+    const token = generateToken();
+    setStoredAuth({ name: found.name, email: found.email }, token);
+    setUser({ name: found.name, email: found.email });
+    setIsAuthenticated(true);
 
-    const hashed = await sha256hex(sPassword);
-    saveUser(sEmail, { name: sName, password: hashed });
-    initStreak(sEmail);
-    resetAttempts(rlKey);
-    setUser({ name: sName, email: sEmail });
-    return null;
+    return { success: true };
   };
 
   const signOut = () => {
+    clearStoredAuth();
     setUser(null);
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoaded, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
+
+function getStoredUsers(): Array<{ name: string; email: string; password: string }> {
+  if (typeof window === "undefined") return [];
+  try {
+    const stored = localStorage.getItem("waey-users");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveUsers(users: Array<{ name: string; email: string; password: string }>) {
+  if (typeof window === "undefined") return;
+  localStorage.setItem("waey-users", JSON.stringify(users));
+}
+
+function generateToken(): string {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }

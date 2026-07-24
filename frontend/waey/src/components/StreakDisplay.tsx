@@ -1,13 +1,15 @@
 import { useStreak } from "@/hooks/useStreak";
-import { useAuth } from "@/contexts/useAuth";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/useLanguage";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Trophy, Zap } from "lucide-react";
+import { Flame, Trophy, Zap, ShieldAlert } from "lucide-react";
+import { getStreakFreezes } from "@/lib/dailyStorage";
 
 export function StreakDisplay() {
   const { isAuthenticated } = useAuth();
   const { lang, t } = useLanguage();
   const { count, accumulated, newStreakFlash, prizeWinner, lastStreakDate } = useStreak();
+  const freezes = getStreakFreezes();
 
   if (!isAuthenticated) return null;
 
@@ -60,6 +62,12 @@ export function StreakDisplay() {
               </AnimatePresence>
             </span>
           </div>
+
+          {freezes > 0 && (
+            <div className="size-7 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-xs font-bold mr-1" title={`${freezes} تجميد حماية متاح`}>
+              <ShieldAlert className="size-3.5" />
+            </div>
+          )}
         </div>
 
         {!earnedToday && (
@@ -105,3 +113,4 @@ export function StreakDisplay() {
     </>
   );
 }
+

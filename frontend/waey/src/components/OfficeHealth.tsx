@@ -1,4 +1,4 @@
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { Eye, Monitor, Ear } from "lucide-react";
 
 const OfficeHealth = () => {

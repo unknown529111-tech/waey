@@ -1,10 +1,16 @@
 import { Brain } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import AwarenessQuiz from "@/components/AwarenessQuiz";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
+import { useEffect } from "react";
 
 const Quiz = () => {
   const t = useT();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "quiz" });
+  }, []);
   return (
     <div className="relative min-h-[60vh]">
       <div className="absolute inset-0 bg-gradient-to-b from-accent/10 via-background to-primary/5 pointer-events-none" />

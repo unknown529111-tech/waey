@@ -14,8 +14,8 @@
 ## 1. Initial Scan — Every Time You Enter This Project
 
 - [ ] Read `AGENTS.md`, `.agents/marketplace.json`, `opencode.config.json` to understand config
-- [ ] Read `waey - Copy/DESIGN.md` for design tokens (colors, typography, spacing, components)
-- [ ] Read `waey - Copy/package.json` scripts section for available commands
+- [ ] Read `frontend/waey/DESIGN.md` for design tokens (colors, typography, spacing, components)
+- [ ] Read `frontend/waey/package.json` scripts section for available commands
 - [ ] Read recent git log: `git log --oneline -10` to understand recent changes
 - [ ] Run `git status` to check working tree state
 - [ ] Identify which skills under `.agents/skills/` are relevant to the current task
@@ -34,28 +34,18 @@
 
 ### Frontend & Design
 - `frontend-design` — Building UI components, pages, interfaces
-- `impeccable` — Polishing, redesigning, auditing frontend quality
-- `design-review` — Visual audit before shipping UI
-- `stitch-loop` — Iterative design-to-code feedback loop
 - `ui-ux-pro-max` — UI/UX design reference
-- `a11y-debugging` — Accessibility audit and fixes
-- `a11y-audit` — Comprehensive accessibility checking
-
-### API & Backend
-- `api-design-best-practices` — Next.js API routes with Zod validation
-- `api-design-reviewer` — Review API design
-- `api-test-suite-builder` — Build API test suites
-
-### Project Management
+- `verification-before-completion` — Run checks before claiming done
+- `requesting-code-review` — Dispatch reviewer after major features
+- `code-reviewer` — Review for bugs, design issues, edge cases
+- `test-driven-development` — Write tests before implementation
+- `systematic-debugging` — For any bug, test failure, or unexpected behavior
+- `adversarial-reviewer` — Stress-test code for edge cases and security
 - `writing-plans` — Before starting multi-step tasks, write a plan
 - `executing-plans` — Execute written implementation plans
 - `subagent-driven-development` — Dispatch parallel agents for independent tasks
 - `finishing-a-development-branch` — When implementation is complete
-
-### Testing
 - `webapp-testing` — Interact with/test local web app using Playwright
-- `gstack` — Headless browser QA testing
-- `agent-browser` — Browser automation/inspection
 
 ---
 
@@ -65,7 +55,7 @@
 
 ### Build Check
 ```
-cd waey - Copy
+cd frontend/waey
 npm run build
 ```
 - [ ] Build exits with code 0
@@ -74,7 +64,7 @@ npm run build
 
 ### Lint Check
 ```
-cd waey - Copy
+cd frontend/waey
 npm run lint
 ```
 - [ ] Lint exits with code 0
@@ -82,7 +72,7 @@ npm run lint
 
 ### Test Check (if tests exist or were modified)
 ```
-cd waey - Copy
+cd frontend/waey
 npm run test
 ```
 - [ ] All tests pass (0 failures)
@@ -212,7 +202,7 @@ npm run test
 
 ### Design & Visual Check
 - [ ] New components match DESIGN.md tokens (colors, spacing, rounded corners, typography)
-- [ ] All cards use `rounded-3xl` (24px) unless specifically exempted
+- [ ] All cards use `rounded-3xl` (32px) unless specifically exempted
 - [ ] All buttons are `rounded-full` pills
 - [ ] Headings are weight 700, body has 1.9 line-height
 - [ ] RTL layout: `dir="rtl"` on all pages, text-right on content

@@ -1,5 +1,4 @@
 import { Download } from "lucide-react";
-import * as XLSX from "xlsx";
 
 const readAllData = () => {
   const keys = Object.keys(localStorage).filter((k) => k.startsWith("waey_"));
@@ -15,7 +14,13 @@ const readAllData = () => {
 };
 
 const ExportButton = () => {
-  const handleExport = () => {
+  const handleExport = async () => {
+    let XLSX: typeof import("xlsx");
+    try {
+      XLSX = await import("xlsx");
+    } catch {
+      return;
+    }
     const all = readAllData();
     const wb = XLSX.utils.book_new();
 
@@ -63,3 +68,4 @@ const ExportButton = () => {
 };
 
 export default ExportButton;
+

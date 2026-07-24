@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Droplet, Minus, Plus } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
 
 const GOAL = 8;

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Recycle } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const RecycleSection = () => {
   const t = useT();

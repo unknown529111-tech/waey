@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Smile } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { getMood, setMood, bumpStreak } from "@/lib/dailyStorage";
 
 const MOODS = [

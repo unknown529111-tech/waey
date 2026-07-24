@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { getDailyValue } from "@/lib/dailyStorage";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const DailyImpact = () => {
   const t = useT();

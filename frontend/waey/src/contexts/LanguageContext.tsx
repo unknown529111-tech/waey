@@ -1,23 +1,16 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import ar from '@/locales/ar';
 import en from '@/locales/en';
 import type { Lang } from '@/locales';
-
-interface LanguageContextType {
-  lang: Lang;
-  setLang: (lang: Lang) => void;
-  toggleLang: () => void;
-  t: (key: string) => string;
-}
-
-const LanguageContext = createContext<LanguageContextType | null>(null);
+import { LanguageContext } from './useLanguage';
 
 const locales: Record<Lang, Record<string, string>> = { ar, en };
+const langOrder: Lang[] = ['ar', 'en'];
 
 function loadLang(): Lang {
   if (typeof window === 'undefined') return 'ar';
   const stored = localStorage.getItem('waey-lang');
-  if (stored === 'ar' || stored === 'en') return stored;
+  if (langOrder.includes(stored as Lang)) return stored as Lang;
   return 'ar';
 }
 
@@ -28,7 +21,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setLocale(locales[lang]);
 
-    // Set dir on <html>
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
 
@@ -36,7 +28,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [lang]);
 
   const setLang = (newLang: Lang) => setLangState(newLang);
-  const toggleLang = () => setLangState(prev => (prev === 'ar' ? 'en' : 'ar'));
+  const toggleLang = () => setLangState(prev => {
+    const idx = langOrder.indexOf(prev);
+    return langOrder[(idx + 1) % langOrder.length];
+  });
 
   const t = (key: string): string => locale[key] ?? key;
 
@@ -45,14 +40,4 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       {children}
     </LanguageContext.Provider>
   );
-}
-
-export function useLanguage(): LanguageContextType {
-  const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error('useLanguage must be used within LanguageProvider');
-  return ctx;
-}
-
-export function useT(): (key: string) => string {
-  return useLanguage().t;
 }

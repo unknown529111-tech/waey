@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>وعي - Redirecting...</title>
+    <script>
+      // SPA fallback for static hosts (GitHub Pages, etc.)
+      // Redirects to index.html with the original path as a hash
+      var path = window.location.pathname + window.location.search + window.location.hash;
+      if (path !== '/' && path !== '/index.html') {
+        window.location.replace('/index.html#' + encodeURIComponent(path.slice(1)));
+      } else {
+        window.location.replace('/index.html');
+      }
+    </script>
+  </head>
+  <body>
+    <p>جاري التوجيه...</p>
+  </body>
+</html>

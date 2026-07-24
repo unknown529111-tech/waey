@@ -22,7 +22,7 @@ const PRESENCE_KEY = "waey_presence";
 const SESSIONS_KEY = "waey_sessions";
 
 function safeParse<T>(raw: string | null, fallback: T): T {
-  try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; }
+  try { return raw ? JSON.parse(raw) : fallback; } catch { /* ignore parse errors */ return fallback; }
 }
 
 export function getLocalPresence(): Record<string, PresenceEntry> {
@@ -42,10 +42,22 @@ export function saveLocalSessions(s: SessionRecord[]) {
 }
 
 function genId() {
-  if (typeof crypto !== "undefined" && typeof (crypto as any).randomUUID === "function") {
-    try { return (crypto as any).randomUUID(); } catch { /* fallthrough */ }
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    try { return crypto.randomUUID(); } catch { /* fallthrough */ }
   }
   return `sess_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SupabaseAny = any;
+
+function supabaseCall() {
+  return supabase as unknown as SupabaseAny;
+}
+
+function upsertPresence(data: Record<string, unknown>) {
+  if (!supabase) return;
+  supabaseCall().from("presence").upsert(data).then(() => {}).catch(() => { /* best-effort; ignore network errors */ });
 }
 
 export function startSession(email: string, name: string, id?: string) {
@@ -55,13 +67,9 @@ export function startSession(email: string, name: string, id?: string) {
   p[sid] = { id: sid, email, name, startAt: now, lastActive: now, active: true };
   saveLocalPresence(p);
 
-  // try to persist to supabase if available (best-effort)
   try {
-    if (supabase) {
-      // use any to avoid strict typing against Database
-      (supabase as any).from("presence").upsert({ id: sid, email, name, start_at: new Date(now).toISOString(), last_active: new Date(now).toISOString(), active: true }).then(() => {}).catch(() => {});
-    }
-  } catch {}
+    upsertPresence({ id: sid, email, name, start_at: new Date(now).toISOString(), last_active: new Date(now).toISOString(), active: true });
+  } catch { /* best-effort */ }
 
   return sid;
 }
@@ -75,10 +83,8 @@ export function pingSession(id: string) {
     saveLocalPresence(p);
   }
   try {
-    if (supabase) {
-      (supabase as any).from("presence").upsert({ id, last_active: new Date(now).toISOString(), active: true }).then(() => {}).catch(() => {});
-    }
-  } catch {}
+    upsertPresence({ id, last_active: new Date(now).toISOString(), active: true });
+  } catch { /* best-effort */ }
 }
 
 export function endSession(id: string) {
@@ -91,16 +97,15 @@ export function endSession(id: string) {
   sessions.push({ id: entry.id, email: entry.email, name: entry.name, startAt: entry.startAt, endAt: now, durationMs: duration });
   saveLocalSessions(sessions);
 
-  // remove presence entry
   delete p[id];
   saveLocalPresence(p);
 
   try {
     if (supabase) {
-      (supabase as any).from("sessions").insert({ id: entry.id, email: entry.email, name: entry.name, start_at: new Date(entry.startAt).toISOString(), end_at: new Date(now).toISOString(), duration_ms: duration }).then(() => {}).catch(() => {});
-      (supabase as any).from("presence").delete().eq("id", id).then(() => {}).catch(() => {});
+      supabaseCall().from("sessions").insert({ id: entry.id, email: entry.email, name: entry.name, start_at: new Date(entry.startAt).toISOString(), end_at: new Date(now).toISOString(), duration_ms: duration }).then(() => {}).catch(() => { /* best-effort */ });
+      supabaseCall().from("presence").delete().eq("id", id).then(() => {}).catch(() => { /* best-effort */ });
     }
-  } catch {}
+  } catch { /* best-effort */ }
 
   return { id: entry.id, email: entry.email, name: entry.name, startAt: entry.startAt, endAt: now, durationMs: duration } as SessionRecord;
 }

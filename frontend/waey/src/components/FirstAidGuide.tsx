@@ -1,4 +1,4 @@
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 import { Heart, AlertTriangle, Activity } from "lucide-react";
 
 const FirstAidGuide = () => {

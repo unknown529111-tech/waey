@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Bar,
   BarChart,
@@ -21,13 +21,18 @@ import {
 } from "@/lib/dailyStorage";
 import { Droplet, Moon, Wallet, Flame, Footprints, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useT, useLanguage } from "@/contexts/LanguageContext";
+import { useT, useLanguage } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
 
 const COLORS = ["#5D7052", "#C18C5D", "#7BA98F", "#D4A656", "#8C7A6B", "#E6DCCD", "#9CC1A8"];
 
 const Insights = () => {
   const t = useT();
   const { lang } = useLanguage();
+
+  useEffect(() => {
+    trackEvent("page_view", { page: "insights" });
+  }, []);
 
   const dayLabel = (iso: string) => {
     const d = new Date(iso);
@@ -93,6 +98,7 @@ const Insights = () => {
     if (totals.water < 21) lines.push(t('insights.water.low'));
     else lines.push(t('insights.water.good'));
     return lines;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totals.sleep, totals.water]);
 
   const stat = (icon: JSX.Element, label: string, value: string) => (

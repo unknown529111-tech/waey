@@ -60,3 +60,19 @@ Webwright/
 # Debug/test HTML
 iphone-frame.html
 website-snapshot.txt
+
+# Duplicate configs (use eslint.config.js only)
+frontend/waey/eslint.config.mjs
+
+# Duplicate lockfile (use package-lock.json with npm)
+frontend/waey/bun.lock
+
+# Hospitals raw data (generated output is in src/data/hospitals.ts)
+Hospitals data/
+
+# Vendored third-party not ours
+.opencode/.agents/agentskills-docs/
+
+# Frontend screenshot bloat (website-preview.png is enough)
+frontend/waey/website-mental-health.png
+frontend/waey/website-new.png

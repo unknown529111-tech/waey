@@ -1,6 +1,6 @@
 import { Quote } from "lucide-react";
 import { getDailyQuote } from "@/lib/dailyStorage";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const DailyQuote = () => {
   const t = useT();

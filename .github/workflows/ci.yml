@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            frontend/waey/package-lock.json
+
+      - name: Install root deps (Playwright)
+        run: npm ci
+
+      - name: Install frontend deps
+        working-directory: frontend/waey
+        run: npm ci
+
+      - name: Lint
+        working-directory: frontend/waey
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: frontend/waey
+        run: npx tsc --noEmit
+
+      - name: Build
+        working-directory: frontend/waey
+        run: npm run build
+
+      - name: Unit tests
+        working-directory: frontend/waey
+        run: npm run test
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Start dev server
+        working-directory: frontend/waey
+        run: |
+          npm run dev &
+          sleep 5
+
+      - name: E2E tests
+        run: npx playwright test

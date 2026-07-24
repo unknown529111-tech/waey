@@ -8,7 +8,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { hospitalsData } from "@/data/hospitals";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 const HospitalFinder = () => {
   const t = useT();
@@ -34,6 +34,7 @@ const HospitalFinder = () => {
 
   const [governorate, setGovernorate] = useState<string>("");
   const [city, setCity] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<string>("");
 
   const [totalHospitals, governorates] = useMemo(() => {
     const govs = hospitalsData.map((g) => ({
@@ -51,9 +52,10 @@ const HospitalFinder = () => {
 
   const hospitals = useMemo(() => {
     if (!governorate) return [];
-    if (!city) return cities.flatMap((c) => c.hospitals);
-    return cities.find((c) => c.city === city)?.hospitals ?? [];
-  }, [governorate, city, cities]);
+    let list = !city ? cities.flatMap((c) => c.hospitals) : cities.find((c) => c.city === city)?.hospitals ?? [];
+    if (typeFilter) list = list.filter((h) => h.type === typeFilter);
+    return list;
+  }, [governorate, city, cities, typeFilter]);
 
   return (
     <section id="hospitals" className="bg-background px-6 md:px-12 py-20">
@@ -81,7 +83,7 @@ const HospitalFinder = () => {
 
         {/* Selectors */}
         <div className="bg-card rounded-2xl border border-border p-5 md:p-6 mb-6">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-foreground">
                 {t('hospital.governorate')}
@@ -118,6 +120,23 @@ const HospitalFinder = () => {
                     {c.city} ({c.hospitals.length})
                   </option>
                 ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-2 text-foreground">
+                نوع المستشفى
+              </label>
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value)}
+                className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+              >
+                <option value="">الكل</option>
+                <option value="جامعي">جامعي</option>
+                <option value="حكومي">حكومي</option>
+                <option value="تعليمي">تعليمي</option>
+                <option value="خاص">خاص</option>
+                <option value="عام">عام</option>
               </select>
             </div>
           </div>

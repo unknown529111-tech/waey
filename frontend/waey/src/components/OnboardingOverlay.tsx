@@ -30,11 +30,6 @@ const slides = [
     title: "صحتك النفسية مهمة",
     desc: "تمارين تنفس، تقنيات للتوتر، وتأريض — كلها أدوات تساعدك تهدي أعصابك.",
   },
-  {
-    icon: ArrowLeft,
-    title: "كل حاجة Offline",
-    desc: "الموقع شغال بدون نت. بياناتك في جهازك — مش محتاج تسجيل ولا حساب.",
-  },
 ];
 
 const OnboardingOverlay = () => {
@@ -42,12 +37,14 @@ const OnboardingOverlay = () => {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    const done = localStorage.getItem(ONBOARDING_KEY);
-    if (!done) setVisible(true);
+    try {
+      const done = localStorage.getItem(ONBOARDING_KEY);
+      if (!done) setVisible(true);
+    } catch { /* ignore */ }
   }, []);
 
   const finish = () => {
-    localStorage.setItem(ONBOARDING_KEY, "true");
+    try { localStorage.setItem(ONBOARDING_KEY, "true"); } catch { /* ignore */ }
     setVisible(false);
   };
 

@@ -8,6 +8,7 @@ import { PLANS } from "@/lib/plansData";
 import {
   isAdminLoggedIn,
   adminLogin,
+  verifyAdminToken,
   adminLogout,
   getAdminRecipes,
   addAdminRecipe,
@@ -30,7 +31,7 @@ import {
   Plus, Trash2, Edit3, X, Check, Download, AlertTriangle, RefreshCw,
   LayoutDashboard, Flame, Mail, Lock, BookOpen, Save, Copy,
 } from "lucide-react";
-import { useT } from "@/contexts/LanguageContext";
+import { useT } from "@/contexts/useLanguage";
 
 type Tab = "dashboard" | "recipes" | "challenges" | "quotes" | "users" | "system";
 
@@ -47,14 +48,33 @@ const emptyRecipe: Recipe = {
 };
 
 export default function Admin() {
-  const [loggedIn, setLoggedIn] = useState(isAdminLoggedIn());
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const t = useT();
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const [tab, setTab] = useState<Tab>("dashboard");
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => { if (isAdminLoggedIn()) setLoggedIn(true); }, []);
+  // Verify token on mount — if expired/invalid, force re-login
+  useEffect(() => {
+    if (isAdminLoggedIn()) {
+      verifyAdminToken().then((valid) => {
+        setLoggedIn(valid);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="size-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+      </div>
+    );
+  }
 
   if (!loggedIn) {
     return (
@@ -74,11 +94,12 @@ export default function Admin() {
             </div>
           </div>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              if (adminLogin(password)) {
+              setLoginError(false);
+              const success = await adminLogin(password);
+              if (success) {
                 setLoggedIn(true);
-                setLoginError(false);
               } else {
                 setLoginError(true);
               }
