@@ -48,7 +48,7 @@ const Layout = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
-          className="relative z-10 flex-1"
+          className="relative z-10 flex-1 pt-16"
         >
           <Outlet />
         </motion.main>
