@@ -10,9 +10,6 @@ import { useLanguage } from "@/contexts/useLanguage";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || "";
-const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const OPENROUTER_MODEL = "qwen/qwen-2.5-72b-instruct:free";
 const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
 const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
 const AI_PROXY = import.meta.env.VITE_AI_PROXY_URL;
@@ -20,6 +17,10 @@ const AI_PROXY = import.meta.env.VITE_AI_PROXY_URL;
 const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
+
+const NVIDIA_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
+const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
+const NVIDIA_MODEL = "meta/llama-3.1-70b-instruct";
 
 const SYSTEM_PROMPT_AR = `أنت "مساعد وعي الذكي" (Waey AI) — المساعد التفاعلي الرسمي لمنصة "وعي".
 مهمتك الأساسية هي تقديم إجابات دقيقة، عملية، وملهمة للمستخدمين باللغة العربية في أربعة أركان أساسية للحياة:
@@ -156,6 +157,27 @@ async function tryDeepSeek(history: Msg[], signal: AbortSignal, sp: string): Pro
   } catch { return null; }
 }
 
+async function tryNvidia(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
+  if (!NVIDIA_KEY) return null;
+  try {
+    return await fetch(NVIDIA_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${NVIDIA_KEY}`,
+      },
+      body: JSON.stringify({
+        model: NVIDIA_MODEL,
+        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
+        stream: true,
+        max_tokens: MAX_TOKENS,
+        temperature: 0.7,
+      }),
+      signal,
+    });
+  } catch { return null; }
+}
+
 function parseOpenaiSSE(line: string): string | null {
   if (!line.startsWith("data: ")) return null;
   const jsonStr = line.slice(6).trim();
@@ -201,7 +223,7 @@ const AIChat = () => {
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [provider, setProvider] = useState<"openrouter" | "groq" | "deepseek" | "proxy" | null>(null);
+  const [provider, setProvider] = useState<"groq" | "nvidia" | "deepseek" | "proxy" | null>(null);
   const [cursorVisible, setCursorVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -260,7 +282,7 @@ const AIChat = () => {
       }
     };
 
-    let usedProvider: "openrouter" | "groq" | "deepseek" | null = null;
+    let usedProvider: "groq" | "nvidia" | "deepseek" | null = null;
     const sp = systemPrompt;
 
     try {
@@ -268,16 +290,16 @@ const AIChat = () => {
       let resp: Response | null = await tryGroq(nextHistory, controller.signal, sp);
       if (resp && resp.ok) { usedProvider = "groq"; }
 
-      // 2) OpenRouter (fallback)
+      // 2) NVIDIA (fallback)
       if (!resp || !resp.ok) {
         if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("Groq failed:", resp.status, body.slice(0, 200)); }
-        resp = await tryOpenRouter(nextHistory, controller.signal, sp);
-        if (resp && resp.ok) usedProvider = "openrouter";
+        resp = await tryNvidia(nextHistory, controller.signal, sp);
+        if (resp && resp.ok) usedProvider = "nvidia";
       }
 
-      // 3) DeepSeek
+      // 3) DeepSeek (last resort)
       if (!resp || !resp.ok) {
-        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("OpenRouter failed:", resp.status, body.slice(0, 200)); }
+        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("NVIDIA failed:", resp.status, body.slice(0, 200)); }
         resp = await tryDeepSeek(nextHistory, controller.signal, sp);
         if (resp && resp.ok) usedProvider = "deepseek";
       }
@@ -320,8 +342,8 @@ const AIChat = () => {
 
   const providerLabel = () => {
     switch (provider) {
-      case "openrouter": return "OpenRouter";
-      case "groq": return "";
+      case "groq": return "Groq";
+      case "nvidia": return "NVIDIA";
       case "deepseek": return "DeepSeek";
       case "proxy": return t('chat.proxy');
       default: return t('chat.scope');
