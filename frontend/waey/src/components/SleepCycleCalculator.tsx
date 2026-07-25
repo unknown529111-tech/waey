@@ -9,13 +9,13 @@ const SleepCycleCalculator = () => {
   const t = useT();
   const [mode, setMode] = useState<"bed" | "wake">("bed");
   const [time, setTime] = useState("23:00");
-  const [results, setResults] = useState<string[]>([]);
+  const [results, setResults] = useState<{ label: string; value: string }[]>([]);
 
   const calculate = () => {
     const [h, m] = time.split(":").map(Number);
     const base = new Date();
     base.setHours(h, m, 0, 0);
-    const times: string[] = [];
+    const times: { label: string; value: string }[] = [];
     const start = mode === "bed" ? 5 : 4;
     const end = mode === "bed" ? 7 : 6;
     for (let cycles = start; cycles <= end; cycles++) {
@@ -23,7 +23,10 @@ const SleepCycleCalculator = () => {
       const d = mode === "bed"
         ? new Date(base.getTime() + total * 60000)
         : new Date(base.getTime() - total * 60000);
-      times.push(d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit", hour12: false }));
+      times.push({
+        label: `${t('sleepCalc.cycle')} ${cycles}`,
+        value: d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit", hour12: true }),
+      });
     }
     setResults(times);
   };
@@ -66,10 +69,10 @@ const SleepCycleCalculator = () => {
             {mode === "bed" ? t('sleepCalc.bestWake') : t('sleepCalc.bestSleep')}
           </p>
           <div className="space-y-2">
-            {results.map((timeStr, i) => (
+            {results.map((r, i) => (
               <div key={i} className="flex items-center justify-between bg-card rounded-xl px-4 py-2.5 border border-border">
-                <span className="text-sm">{t('sleepCalc.cycle')} {i + 5}</span>
-                <span className="text-lg font-bold tabular-nums text-primary">{timeStr}</span>
+                <span className="text-sm">{r.label}</span>
+                <span className="text-lg font-bold tabular-nums text-primary">{r.value}</span>
               </div>
             ))}
           </div>
