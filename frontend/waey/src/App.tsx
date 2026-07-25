@@ -65,11 +65,9 @@ function AppRoutes() {
         <Route path="/privacy" element={<ErrorBoundary><Privacy /></ErrorBoundary>} />
         <Route path="/terms" element={<ErrorBoundary><Terms /></ErrorBoundary>} />
         <Route path="/admin" element={<ErrorBoundary><Admin /></ErrorBoundary>} />
-        <Route element={<RequireAuth />}>
-          <Route path="/dashboard" element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
-          <Route path="/daily" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/insights" element={<ErrorBoundary><Insights /></ErrorBoundary>} />
-        </Route>
+        <Route path="/dashboard" element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="/daily" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/insights" element={<ErrorBoundary><Insights /></ErrorBoundary>} />
       </Route>
       <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
     </Routes>
