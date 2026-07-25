@@ -101,14 +101,14 @@ const App = () => {
             </BrowserRouter>
           </AuthProvider>
         </LanguageProvider>
+        <Sonner
+          position="bottom-right"
+          theme="system"
+          className="toaster-group"
+          toastOptions={{ className: "bg-card text-card-foreground" }}
+        />
         </ThemeProvider>
       </TooltipProvider>
-      <Sonner
-        position="bottom-right"
-        theme="system"
-        className="toaster-group"
-        toastOptions={{ className: "bg-card text-card-foreground" }}
-      />
     </QueryClientProvider>
   );
 };
