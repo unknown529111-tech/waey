@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import QuickTips from "@/components/QuickTips";
 import HealthCalculator from "@/components/HealthCalculator";
+import DidYouKnow from "@/components/DidYouKnow";
+import CalorieCalculator from "@/components/CalorieCalculator";
 import HospitalFinder from "@/components/HospitalFinder";
 import BreathingExercise from "@/components/BreathingExercise";
 import SleepCycleCalculator from "@/components/SleepCycleCalculator";
@@ -54,6 +56,7 @@ const Health = () => {
       />
       <QuickTips />
       <HealthCalculator />
+      <DidYouKnow />
 
       <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-8">
         <motion.div
@@ -209,6 +212,7 @@ const Health = () => {
         <GuidedMeditation />
       </section>
 
+      <CalorieCalculator />
       <HospitalFinder />
       </div>
     </div>

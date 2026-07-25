@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import { Minus, Plus } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 interface Props {
   storageKey: string;
@@ -28,11 +29,19 @@ const SimpleTracker = ({
   const t = useT();
   const [val, setVal] = useState(getDailyValue(storageKey));
 
+  const getActivityType = (key: string): "water" | "challenge" => {
+    if (key === "water") return "water";
+    return "challenge";
+  };
+
   const update = (n: number) => {
     const next = Math.max(0, Math.min(max, +n.toFixed(1)));
     setVal(next);
     setDailyValue(storageKey, next);
-    if (next > 0) bumpStreak();
+    if (next > 0) {
+      bumpStreak();
+      recordActivity(getActivityType(storageKey), 1);
+    }
   };
 
   return (

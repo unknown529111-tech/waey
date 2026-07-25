@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Heart } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity, evaluateBadges } from "@/lib/gamification";
 
 const GratitudeJournal = () => {
   const t = useT();
@@ -8,6 +10,16 @@ const GratitudeJournal = () => {
   const [text, setText] = useState(() => {
     try { return JSON.parse(localStorage.getItem("waey_gratitude") || "{}")[today] || ""; } catch { return ""; }
   });
+  const rewardedRef = useRef(false);
+
+  useEffect(() => {
+    if (text.trim().length > 0 && !rewardedRef.current) {
+      rewardedRef.current = true;
+      bumpStreak();
+      recordActivity("gratitude");
+      evaluateBadges();
+    }
+  }, [text]);
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("waey_gratitude") || "{}");

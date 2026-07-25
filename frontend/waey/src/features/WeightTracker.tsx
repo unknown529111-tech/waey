@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Scale, Minus, Plus } from "lucide-react";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const STORAGE_KEY = "weight";
 
@@ -9,9 +10,11 @@ const WeightTracker = () => {
 
   const update = (n: number) => {
     const next = Math.max(0, Math.min(300, +n.toFixed(1)));
+    const prev = val;
     setVal(next);
     setDailyValue(STORAGE_KEY, next);
     if (next > 0) bumpStreak();
+    if (next !== prev) recordActivity("challenge");
   };
 
   return (

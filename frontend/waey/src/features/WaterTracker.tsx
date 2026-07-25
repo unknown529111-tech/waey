@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Droplet, Minus, Plus } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const GOAL = 8;
 
@@ -11,9 +12,11 @@ const WaterTracker = () => {
 
   const update = (n: number) => {
     const next = Math.max(0, Math.min(20, n));
+    const prev = cups;
     setCups(next);
     setDailyValue("water", next);
     if (next > 0) bumpStreak();
+    if (next > prev) recordActivity("water", next - prev);
   };
 
   const pct = Math.min(100, (cups / GOAL) * 100);

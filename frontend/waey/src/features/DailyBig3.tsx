@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { CheckCircle2, Circle, Target } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const DailyBig3 = () => {
   const t = useT();
@@ -28,6 +30,10 @@ const DailyBig3 = () => {
     const next = [...done];
     next[i] = !next[i];
     setDone(next);
+    if (next[i]) {
+      bumpStreak();
+      recordActivity("challenge");
+    }
   };
 
   return (

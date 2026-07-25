@@ -7,6 +7,7 @@ import {
   removeExpense,
   bumpStreak,
 } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const CATEGORIES = [
   { value: "طعام", key: "tracker.expense.cat.food" },
@@ -38,6 +39,7 @@ const ExpenseTracker = () => {
     setAmount("");
     setNote("");
     bumpStreak();
+    recordActivity("expense");
   };
 
   const remove = (id: string) => {

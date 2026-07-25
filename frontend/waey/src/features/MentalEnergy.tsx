@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Battery, BatteryWarning, BatteryCharging, Zap } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const MentalEnergy = () => {
   const t = useT();
-  const [energy, setEnergy] = useState(70);
+  const [energy, setEnergy] = useState(() => getDailyValue("energy"));
+
+  useEffect(() => {
+    setDailyValue("energy", energy);
+  }, [energy]);
 
   const getColor = () => {
     if (energy <= 20) return "bg-red-500";
@@ -26,6 +32,15 @@ const MentalEnergy = () => {
     return t("tracker.energy.high");
   };
 
+  const handleChange = (value: number) => {
+    const prev = energy;
+    setEnergy(value);
+    if (value > 0 && value !== prev) {
+      bumpStreak();
+      recordActivity("challenge");
+    }
+  };
+
   return (
     <div className="bg-card rounded-3xl p-5 border border-border">
       <div className="flex items-center gap-2 mb-3">
@@ -44,7 +59,7 @@ const MentalEnergy = () => {
         min={0}
         max={100}
         value={energy}
-        onChange={(e) => setEnergy(Number(e.target.value))}
+        onChange={(e) => handleChange(Number(e.target.value))}
         className="w-full accent-primary mb-2"
       />
       <p className="text-xs text-muted-foreground">{getAdvice()}</p>

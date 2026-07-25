@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Moon, Footprints, Recycle, Target, Brain, Sparkles, BarChart3, Database, Printer } from "lucide-react";
+import { Moon, Footprints, Recycle, Target, Brain, Sparkles, BarChart3, Database, Printer, Bell, Snowflake } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useT } from "@/contexts/useLanguage";
 import StreakBadge from "@/features/StreakBadge";
@@ -21,14 +21,22 @@ import { ReportPrintModal } from "@/components/ReportPrintModal";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { WhatsNewModal } from "@/components/WhatsNewModal";
 import { SEO } from "@/components/SEO";
+import ExportButton from "@/components/ExportButton";
+import NotificationSettings from "@/components/NotificationSettings";
+import { CommunityChallenges } from "@/features/CommunityChallenges";
+import { SeasonalCampaign } from "@/features/SeasonalCampaign";
+import { useFreeze } from "@/features/useFreeze";
 import { GoalSetting } from "@/features/GoalSetting";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const t = useT();
   const [backupOpen, setBackupOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const { freezes, freeze } = useFreeze();
 
   useEffect(() => {
     trackEvent("page_view", { page: "dashboard" });
@@ -50,6 +58,9 @@ const Dashboard = () => {
             <p className="text-sm text-muted-foreground mt-1">
               {t('dash.subtitle')}
             </p>
+            <div className="mt-3">
+              <StreakBadge />
+            </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <button
@@ -68,6 +79,23 @@ const Dashboard = () => {
               <Database className="size-3.5 text-primary" />
               نسخ واستعادة
             </button>
+            <ExportButton />
+            <button
+              onClick={() => setNotifOpen(!notifOpen)}
+              className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
+              title="إعدادات الإشعارات"
+            >
+              <Bell className="size-3.5 text-primary" />
+              الإشعارات
+            </button>
+            <button
+              onClick={() => { freeze(); toast.success("تم تجميد السلسلة! 🔥"); }}
+              className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
+              title="تجميد سلسلة التتابع"
+            >
+              <Snowflake className="size-3.5 text-primary" />
+              تجميد ({freezes})
+            </button>
             <Link
               to="/insights"
               className="inline-flex items-center gap-1.5 text-sm font-bold bg-secondary hover:bg-muted hover:text-foreground hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-4 py-2"
@@ -78,8 +106,18 @@ const Dashboard = () => {
           </div>
         </header>
 
+        {/* Notification Settings */}
+        {notifOpen && (
+          <div className="mb-8">
+            <NotificationSettings />
+          </div>
+        )}
+
         {/* Milestone Badges & Points Showcase */}
         <BadgeShowcase />
+
+        <CommunityChallenges />
+        <SeasonalCampaign />
 
         <GoalSetting />
 

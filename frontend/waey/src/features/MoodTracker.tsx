@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Smile } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 import { getMood, setMood, bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const MOODS = [
   { v: 1, e: "😞", key: "tracker.mood.bad" },
@@ -18,6 +19,7 @@ const MoodTracker = () => {
     setVal(v);
     setMood(v);
     bumpStreak();
+    recordActivity("challenge");
   };
 
   return (

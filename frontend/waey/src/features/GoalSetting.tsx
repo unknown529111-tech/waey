@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Target, Plus, CheckCircle2, Trash2, TrendingUp, X } from "lucide-react";
+import { bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 interface Goal {
   id: string;
@@ -64,11 +66,15 @@ export function GoalSetting() {
   };
 
   const incrementGoal = (id: string) => {
+    const goal = goals.find((g) => g.id === id);
+    if (!goal || goal.current >= goal.target) return;
     const updated = goals.map((g) =>
       g.id === id ? { ...g, current: Math.min(g.current + 1, g.target) } : g
     );
     setGoals(updated);
     saveGoals(updated);
+    bumpStreak();
+    recordActivity("challenge");
   };
 
   const deleteGoal = (id: string) => {

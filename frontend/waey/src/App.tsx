@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { initOfflineSync } from "@/lib/offlineQueue";
 import Layout from "./components/Layout";
@@ -88,6 +89,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
             <BrowserRouter future={futureFlags}>
@@ -99,6 +101,7 @@ const App = () => {
             </BrowserRouter>
           </AuthProvider>
         </LanguageProvider>
+        </ThemeProvider>
       </TooltipProvider>
       <Sonner
         position="bottom-right"

@@ -1,35 +1,13 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Search, User, LogOut } from "lucide-react";
+import { Menu, X, Search, User, LogOut } from "lucide-react";
 import logo from "@/assets/logo-waey.png";
 import { useLanguage } from "@/contexts/useLanguage";
 import { useAuth } from "@/contexts/AuthContext";
 import SearchModal from "@/components/SearchModal";
 import AuthModal from "@/components/AuthModal";
-
-const ThemeToggle = () => {
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window !== "undefined") {
-      return document.documentElement.classList.contains("dark");
-    }
-    return false;
-  });
-
-  return (
-    <button
-      onClick={() => {
-        const next = !isDark;
-        setIsDark(next);
-        document.documentElement.classList.toggle("dark", next);
-      }}
-      className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-      aria-label="تبديل الوضع"
-    >
-      {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
-    </button>
-  );
-};
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
@@ -48,6 +26,11 @@ const Navbar = () => {
     { path: "/environment", label: "nav.environment", icon: null },
     { path: "/education", label: "nav.education", icon: null },
     { path: "/dashboard", label: "nav.dashboard", icon: null },
+    { path: "/assistant", label: "nav.assistant", icon: null },
+    { path: "/recipes", label: "nav.recipes", icon: null },
+    { path: "/quiz", label: "nav.quiz", icon: null },
+    { path: "/plans", label: "nav.plans", icon: null },
+    { path: "/insights", label: "nav.insights", icon: null },
   ];
 
   return (

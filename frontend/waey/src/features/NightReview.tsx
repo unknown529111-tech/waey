@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Moon, Trophy, Lightbulb, Smartphone } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const NightReview = () => {
   const t = useT();
   const today = new Date().toDateString();
+  const rewardedRef = useRef(false);
   const [achievement, setAchievement] = useState(() => {
     try { return JSON.parse(localStorage.getItem("waey_review_achievement") || "{}")[today] || ""; } catch { return ""; }
   });
@@ -32,6 +35,14 @@ const NightReview = () => {
     stored[today] = screensOff;
     localStorage.setItem("waey_screens_off", JSON.stringify(stored));
   }, [screensOff, today]);
+
+  useEffect(() => {
+    if (!rewardedRef.current && (achievement.trim().length > 0 || lesson.trim().length > 0 || screensOff)) {
+      rewardedRef.current = true;
+      bumpStreak();
+      recordActivity("challenge");
+    }
+  }, [achievement, lesson, screensOff]);
 
   return (
     <div className="bg-card rounded-3xl p-5 border border-border">

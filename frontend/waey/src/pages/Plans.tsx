@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { Target, Check, RotateCcw, Play } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { PLANS, getPlanState, startPlan, togglePlanDay, resetPlan } from "@/lib/plansData";
+import { TIER_FEATURES } from "@/lib/premiumTier";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { useT } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
+import { bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 const Plans = () => {
   const t = useT();
@@ -33,7 +36,12 @@ const Plans = () => {
   };
 
   const handleToggle = (idx: number) => {
+    const wasCompleted = completed.includes(idx);
     const s = togglePlanDay(plan.id, idx);
+    if (!wasCompleted && s.completed.includes(idx)) {
+      bumpStreak();
+      recordActivity("challenge");
+    }
     if (s.completed.length === 30) {
       toast.success(t('plans.completed'));
     }
@@ -175,11 +183,7 @@ const Plans = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
-            {[
-              { name: "المجاني", price: "٠ ج.م", features: ["تتبع العادات اليومية", "سلسلة الإنجازات", "مساعد ذكي (20 رسالة/يوم)", "تحدي 30 يوم", "نسخ احتياطي يدوي"], highlighted: false },
-              { name: "بلس", price: "٤٩ ج.م/شهر", features: ["كل مميزات المجاني", "مساعد ذكي غير محدود", "تصدير Excel", "ثيمات مخصصة", "أولوية في الدعم"], highlighted: true },
-              { name: "برو", price: "٩٩ ج.م/شهر", features: ["كل مميزات بلس", "تحليلات متقدمة", "دعم أولوية VIP", "وصول مبكر للميزات", "تقارير PDF مخصصة"], highlighted: false },
-            ].map((tier) => (
+            {TIER_FEATURES.map((tier) => (
               <div
                 key={tier.name}
                 className={`rounded-[2rem] p-6 border-2 transition-all ${

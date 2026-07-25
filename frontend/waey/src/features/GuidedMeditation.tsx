@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Headphones, Play, Pause, RotateCcw, Wind, Moon, Sun, Cloud } from "lucide-react";
+import { recordActivity } from "@/lib/gamification";
 
 type Soundscape = {
   id: string;
@@ -46,6 +47,18 @@ export function GuidedMeditation() {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [playing, duration]);
+
+  const breathingRewarded = useRef(false);
+
+  useEffect(() => {
+    if (phase === "done" && !breathingRewarded.current) {
+      breathingRewarded.current = true;
+      recordActivity("breathing");
+    }
+    if (phase === "idle") {
+      breathingRewarded.current = false;
+    }
+  }, [phase]);
 
   const start = () => {
     setSeconds(0);

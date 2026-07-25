@@ -1,7 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, CheckCircle, RotateCcw } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { bumpStreak } from "@/lib/dailyStorage";
+import { recordActivity } from "@/lib/gamification";
 
 interface Question {
   question: string;
@@ -81,6 +83,7 @@ const AwarenessQuiz = () => {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [answered, setAnswered] = useState(false);
+  const quizRewarded = useRef(false);
 
   const q = questions[currentQ];
 
@@ -96,6 +99,11 @@ const AwarenessQuiz = () => {
   const handleNext = () => {
     if (currentQ + 1 >= questions.length) {
       setFinished(true);
+      if (!quizRewarded.current) {
+        quizRewarded.current = true;
+        bumpStreak();
+        recordActivity("challenge");
+      }
     } else {
       setCurrentQ((c) => c + 1);
       setSelected(null);

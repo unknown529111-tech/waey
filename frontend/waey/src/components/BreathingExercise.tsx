@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Play, Pause, RotateCcw } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { recordActivity } from "@/lib/gamification";
 
 const PHASES = [
   { labelKey: "breathing.inhale", dur: 4, color: "bg-primary/20 border-primary" },
@@ -16,12 +17,19 @@ const BreathingExercise = () => {
   const [progress, setProgress] = useState(0);
   const timerRef = useRef<number>(0);
   const startRef = useRef(0);
+  const cyclesRef = useRef(0);
+  const rewardedRef = useRef(false);
 
   const stop = useCallback(() => {
     setActive(false);
     setPhaseIdx(0);
     setProgress(0);
     cancelAnimationFrame(timerRef.current);
+    if (cyclesRef.current >= 1 && !rewardedRef.current) {
+      rewardedRef.current = true;
+      recordActivity("breathing");
+    }
+    cyclesRef.current = 0;
   }, []);
 
   useEffect(() => {
@@ -38,6 +46,7 @@ const BreathingExercise = () => {
         const next = (phaseIdx + 1) % PHASES.length;
         setPhaseIdx(next);
         setProgress(0);
+        if (next === 0) cyclesRef.current += 1;
       }
 
       timerRef.current = requestAnimationFrame(tick);
@@ -96,7 +105,10 @@ const BreathingExercise = () => {
 
       <div className="flex items-center justify-center gap-3">
         <button
-          onClick={() => setActive((p) => !p)}
+          onClick={() => {
+            if (!active) { rewardedRef.current = false; cyclesRef.current = 0; }
+            setActive((p) => !p);
+          }}
           className="inline-flex items-center gap-1.5 text-sm font-bold bg-primary text-primary-foreground rounded-full px-6 py-2.5 hover:bg-primary/90 transition-colors"
         >
           {active ? <Pause className="size-4" /> : <Play className="size-4" />}
