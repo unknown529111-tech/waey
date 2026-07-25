@@ -77,9 +77,6 @@ const Navbar = () => {
                     exit={{ opacity: 0, scale: 0.9 }}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="hidden sm:block text-sm text-muted-foreground">
-                        {t('nav.loggedInAs')} {user?.name}
-                      </div>
                       <button
                         onClick={signOut}
                         className="px-3 py-1.5 text-sm font-medium rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors flex items-center gap-1.5"
@@ -201,9 +198,6 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                       >
-                        <div className="text-sm text-muted-foreground px-1">
-                          {t('nav.loggedInAs')} {user?.name}
-                        </div>
                         <button
                           onClick={signOut}
                           className="w-full px-4 py-3 text-base font-bold rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors flex items-center justify-center gap-2"
