@@ -26,11 +26,6 @@ const Navbar = () => {
     { path: "/environment", label: "nav.environment", icon: null },
     { path: "/education", label: "nav.education", icon: null },
     { path: "/dashboard", label: "nav.dashboard", icon: null },
-    { path: "/assistant", label: "nav.assistant", icon: null },
-    { path: "/recipes", label: "nav.recipes", icon: null },
-    { path: "/quiz", label: "nav.quiz", icon: null },
-    { path: "/plans", label: "nav.plans", icon: null },
-    { path: "/insights", label: "nav.insights", icon: null },
   ];
 
   return (
