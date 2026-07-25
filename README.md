@@ -2,7 +2,7 @@
 
 awareness platform for Egyptian Arabic users. RTL, localStorage-first, zero backend for user data.
 
-Stack: Vite + React 18 + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion + Recharts.  
+Stack: Vite, React 18, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Recharts.  
 Backend: Supabase Edge Functions (contact form + AI chat proxy).  
 Domain: https://waey-m7.com
 
@@ -27,11 +27,11 @@ npm run dev
 
 | Command | What it does |
 |---------|-------------|
-| `npm run dev` | Dev server |
-| `npm run build` | Production build |
-| `npm run lint` | ESLint |
-| `npm run test` | Vitest (79 tests) |
-| `npm run preview` | Preview build |
+| npm run dev | Dev server |
+| npm run build | Production build |
+| npm run lint | ESLint |
+| npm run test | Vitest (79 tests) |
+| npm run preview | Preview build |
 
 ---
 
@@ -123,7 +123,7 @@ frontend/waey/
 
 ---
 
-## Known issues
+## Some issues in the website
 
 - Passwords stored in plaintext in localStorage (mock auth, not production-grade)
 - Two competing streak systems (`dailyStorage.ts` day-based + `streak.ts` accumulated-time)
