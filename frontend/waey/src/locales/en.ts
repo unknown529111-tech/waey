@@ -12,7 +12,7 @@ const en: Record<string, string> = {
   'nav.quiz': 'Quiz',
   'nav.plans': 'Plans',
   'nav.admin': 'Admin',
-  'nav.dashboard': 'My Day in Waey',
+  'nav.dashboard': 'Daily',
   'nav.login': 'Sign In',
   'nav.signup': 'Sign Up',
   'nav.account': 'My Account',

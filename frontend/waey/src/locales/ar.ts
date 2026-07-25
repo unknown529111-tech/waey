@@ -12,7 +12,7 @@ const ar: Record<string, string> = {
   'nav.quiz': 'الاختبار',
   'nav.plans': 'الخطط',
   'nav.admin': 'الإدارة',
-  'nav.dashboard': 'يومي في وعي',
+  'nav.dashboard': 'يومي',
   'nav.login': 'تسجيل الدخول',
   'nav.signup': 'إنشاء حساب',
   'nav.account': 'حسابي',
