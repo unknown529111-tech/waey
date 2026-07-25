@@ -1,5 +1,5 @@
 // Gamification & Milestone Badges Engine for Waey (وعي)
-import { getStreak, getDailyValue, readJSON, writeJSON, todayKey } from "./dailyStorage";
+import { getDailyValue, readJSON, writeJSON, todayKey } from "./dailyStorage";
 
 export interface Badge {
   id: string;
@@ -151,12 +151,41 @@ export function deductPoints(pts: number): boolean {
   return true;
 }
 
+// Read the effective streak count from the email-based streak system (waey_streaks)
+// Falls back to the simple daily streak (waey_streak) if no email auth found.
+export function getEffectiveStreakCount(): number {
+  try {
+    const authRaw = localStorage.getItem("waey-auth");
+    if (authRaw) {
+      const auth = JSON.parse(authRaw);
+      const email = auth?.user?.email;
+      if (email) {
+        const streaksRaw = localStorage.getItem("waey_streaks");
+        if (streaksRaw) {
+          const streaks = JSON.parse(streaksRaw);
+          const s = streaks[email];
+          if (s && typeof s.count === "number") return s.count;
+        }
+      }
+    }
+  } catch { /* ignore */ }
+  // Fallback to simple daily streak
+  try {
+    const raw = localStorage.getItem("waey_streak");
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s && typeof s.count === "number") return s.count;
+    }
+  } catch { /* ignore */ }
+  return 0;
+}
+
 // Evaluate unlocked badges based on current activity
 export function evaluateBadges(): string[] {
   const unlocked = getUnlockedBadgeIds();
   const newlyUnlocked: string[] = [];
 
-  const streak = getStreak();
+  const streakCount = getEffectiveStreakCount();
   const stats = getUserStats();
   const todayWater = getDailyValue("water");
 
@@ -166,16 +195,16 @@ export function evaluateBadges(): string[] {
     let qualifies = false;
     switch (b.id) {
       case "first_step":
-        qualifies = streak.count >= 1 || stats.totalWaterCups > 0 || stats.gratitudeDone > 0;
+        qualifies = streakCount >= 1 || stats.totalWaterCups > 0 || stats.gratitudeDone > 0;
         break;
       case "streak_7":
-        qualifies = streak.count >= 7;
+        qualifies = streakCount >= 7;
         break;
       case "streak_30":
-        qualifies = streak.count >= 30;
+        qualifies = streakCount >= 30;
         break;
       case "streak_100":
-        qualifies = streak.count >= 100;
+        qualifies = streakCount >= 100;
         break;
       case "water_8":
         qualifies = todayWater >= 8;

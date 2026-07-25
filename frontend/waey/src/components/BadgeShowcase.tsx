@@ -6,10 +6,11 @@ import {
   getUnlockedBadgeIds,
   getUserPoints,
   getUserStats,
+  getEffectiveStreakCount,
+  deductPoints,
   type Badge,
 } from "@/lib/gamification";
-import { getStreakFreezes, addStreakFreeze, getStreak, getDailyValue } from "@/lib/dailyStorage";
-import { deductPoints } from "@/lib/gamification";
+import { getStreakFreezes, addStreakFreeze, getDailyValue } from "@/lib/dailyStorage";
 import { StreakRecoveryModal } from "@/components/StreakRecoveryModal";
 import { generateAchievementsShareText, shareContent, downloadBlob, generateBadgesPDF } from "@/lib/share";
 import { toast } from "sonner";
@@ -25,7 +26,7 @@ const CATEGORY_ORDER: { id: Badge["category"]; icon: string; title: string }[] =
 
 // Returns 0..1 progress toward unlocking the given badge based on live stats.
 function badgeProgress(b: Badge): number {
-  const streak = getStreak().count;
+  const streak = getEffectiveStreakCount();
   const stats = getUserStats();
   const todayWater = getDailyValue("water");
   switch (b.id) {
