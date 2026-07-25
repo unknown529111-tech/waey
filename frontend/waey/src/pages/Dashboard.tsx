@@ -23,8 +23,6 @@ import { WhatsNewModal } from "@/components/WhatsNewModal";
 import { SEO } from "@/components/SEO";
 import ExportButton from "@/components/ExportButton";
 import NotificationSettings from "@/components/NotificationSettings";
-import { CommunityChallenges } from "@/features/CommunityChallenges";
-import { SeasonalCampaign } from "@/features/SeasonalCampaign";
 import { useFreeze } from "@/features/useFreeze";
 import { GoalSetting } from "@/features/GoalSetting";
 import { trackEvent } from "@/lib/analytics";
@@ -115,9 +113,6 @@ const Dashboard = () => {
 
         {/* Milestone Badges & Points Showcase */}
         <BadgeShowcase />
-
-        <CommunityChallenges />
-        <SeasonalCampaign />
 
         <GoalSetting />
 
