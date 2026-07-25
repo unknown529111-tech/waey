@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { initStreak, tickStreak, pauseStreak, getStreak, getPrizeInfo } from "@/lib/streak";
+import { evaluateBadges } from "@/lib/gamification";
 
 export function useStreak() {
   const { user, isAuthenticated } = useAuth();
@@ -34,6 +35,7 @@ export function useStreak() {
 
     initStreak(email);
     sync();
+    evaluateBadges();
 
     const handleVisibility = () => {
       if (document.hidden) {
@@ -49,6 +51,7 @@ export function useStreak() {
       if (result.newStreak) {
         setNewStreakFlash(true);
         setTimeout(() => setNewStreakFlash(false), 4000);
+        evaluateBadges();
       }
     }, TICK_INTERVAL);
 
