@@ -1,11 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
   initStreak,
-  tickStreak,
-  getStreak,
-  getAllStreaks,
-  pauseStreak,
+  getStreakState,
+  getStreakFreezes,
+  addStreakFreeze,
+  consumeStreakFreeze,
+  bumpStreak,
+  restoreStreak,
   getPrizeInfo,
+  tryClaimPrize,
 } from "@/lib/streak";
 
 beforeEach(() => {
@@ -13,187 +16,139 @@ beforeEach(() => {
 });
 
 function mockDate(iso: string) {
-  const now = new Date(iso).getTime();
-  vi.setSystemTime(now);
+  vi.setSystemTime(new Date(iso));
 }
 
 describe("initStreak", () => {
-  it("creates a streak entry for a new user", () => {
-    vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("user@test.com");
-    const s = getStreak("user@test.com");
+  it("is a no-op", () => {
+    expect(initStreak()).toBeUndefined();
+  });
+});
+
+describe("getStreakState", () => {
+  it("returns zero state by default", () => {
+    const s = getStreakState();
     expect(s.count).toBe(0);
-    expect(s.accumulatedMs).toBe(0);
-    expect(s.lastTick).toBeGreaterThan(0);
+    expect(s.lastDay).toBeNull();
+  });
+});
+
+describe("freeze functions", () => {
+  it("getStreakFreezes returns 0 initially", () => {
+    expect(getStreakFreezes()).toBe(0);
+  });
+
+  it("addStreakFreeze increases count", () => {
+    addStreakFreeze(3);
+    expect(getStreakFreezes()).toBe(3);
+  });
+
+  it("consumeStreakFreeze returns false when none available", () => {
+    expect(consumeStreakFreeze()).toBe(false);
+  });
+
+  it("consumeStreakFreeze deducts one freeze", () => {
+    addStreakFreeze(2);
+    expect(consumeStreakFreeze()).toBe(true);
+    expect(getStreakFreezes()).toBe(1);
+  });
+});
+
+describe("bumpStreak", () => {
+  it("sets count to 1 on first bump", () => {
+    vi.useFakeTimers();
+    mockDate("2025-06-15T00:00:00Z");
+    const s = bumpStreak();
+    expect(s.count).toBe(1);
+    expect(s.lastDay).toBe("2025-06-15");
     vi.useRealTimers();
   });
 
-  it("does not overwrite an existing streak", () => {
+  it("increments count on consecutive days", () => {
     vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("user@test.com");
-    const streaks = getAllStreaks();
-    const originalTick = streaks["user@test.com"].lastTick;
+    mockDate("2025-06-15T00:00:00Z");
+    bumpStreak();
 
-    mockDate("2025-01-02T00:00:00Z");
-    initStreak("user@test.com");
-    const after = getAllStreaks();
-    expect(after["user@test.com"].lastTick).toBe(originalTick);
+    mockDate("2025-06-16T00:00:00Z");
+    const s = bumpStreak();
+    expect(s.count).toBe(2);
+    vi.useRealTimers();
+  });
+
+  it("resets to 1 after missing more than 1 day", () => {
+    vi.useFakeTimers();
+    mockDate("2025-06-15T00:00:00Z");
+    bumpStreak();
+
+    mockDate("2025-06-17T00:00:00Z");
+    const s = bumpStreak();
+    expect(s.count).toBe(1);
+    vi.useRealTimers();
+  });
+
+  it("freeze protects a 1-day gap", () => {
+    vi.useFakeTimers();
+    mockDate("2025-06-15T00:00:00Z");
+    bumpStreak();
+    addStreakFreeze(1);
+
+    mockDate("2025-06-17T00:00:00Z");
+    const s = bumpStreak();
+    expect(s.count).toBe(2);
+    expect(s.freezeUsed).toBe(true);
+    expect(getStreakFreezes()).toBe(0);
+    vi.useRealTimers();
+  });
+
+  it("does not double-bump same day", () => {
+    vi.useFakeTimers();
+    mockDate("2025-06-15T00:00:00Z");
+    bumpStreak();
+    const s = bumpStreak();
+    expect(s.count).toBe(1);
     vi.useRealTimers();
   });
 });
 
-describe("tickStreak", () => {
-  it("returns zero for uninitialized user", () => {
-    const result = tickStreak("ghost@test.com");
-    expect(result).toEqual({ newStreak: false, count: 0 });
+describe("restoreStreak", () => {
+  it("returns false when not enough points", () => {
+    expect(restoreStreak()).toBe(false);
   });
 
-  it("grants a streak after accumulating 5 minutes (300s) via frequent ticks", () => {
+  it("restores streak for 50 points", () => {
     vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("user@test.com");
+    mockDate("2025-06-15T00:00:00Z");
+    bumpStreak();
+    localStorage.setItem("waey_points", JSON.stringify(100));
 
-    // Tick every 60 seconds (under 2min threshold) to accumulate 5 minutes
-    for (let s = 60; s <= 300; s += 60) {
-      mockDate(`2025-01-01T00:${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}Z`);
-      const result = tickStreak("user@test.com");
-      if (s >= 300) {
-        expect(result.newStreak).toBe(true);
-        expect(result.count).toBe(1);
-      }
-    }
-    vi.useRealTimers();
-  });
-
-  it("ignores gaps longer than 2 minutes", () => {
-    vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("user@test.com");
-
-    // First tick after 1 minute (under 2min)
-    mockDate("2025-01-01T00:01:00Z");
-    tickStreak("user@test.com");
-
-    // Then a 10-minute gap
-    mockDate("2025-01-01T00:11:00Z");
-    const result = tickStreak("user@test.com");
-    expect(result.newStreak).toBe(false);
-    expect(result.count).toBe(0);
-    vi.useRealTimers();
-  });
-
-  it("only grants one streak per day", () => {
-    vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("user@test.com");
-
-    // Accumulate enough across several ticks
-    for (let i = 0; i < 6; i++) {
-      mockDate(`2025-01-01T00:0${i}:00Z`);
-      tickStreak("user@test.com");
-    }
-
-    // Now count should be 1 (accumulated 5min of <2min intervals in 1 day)
-    const result = getStreak("user@test.com");
-    expect(result.count).toBe(1);
-    vi.useRealTimers();
-  });
-
-  it("accumulates across multiple days", () => {
-    vi.useFakeTimers();
-    for (let day = 1; day <= 3; day++) {
-      const dayStr = String(day).padStart(2, "0");
-      mockDate(`2025-01-${dayStr}T00:00:00Z`);
-      initStreak(`user@test.com`); // init only first time
-
-      // Rapid ticks to accumulate 5+ minutes
-      for (let m = 0; m < 6; m++) {
-        mockDate(`2025-01-${dayStr}T00:0${m}:00Z`);
-        tickStreak("user@test.com");
-      }
-    }
-
-    const s = getStreak("user@test.com");
-    expect(s.count).toBe(3);
-    vi.useRealTimers();
-  });
-});
-
-describe("getStreak", () => {
-  it("returns a default for unknown user", () => {
-    const s = getStreak("unknown");
-    expect(s.count).toBe(0);
-    expect(s.accumulatedMs).toBe(0);
-  });
-
-  it("returns data for initialized user", () => {
-    vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("known@test.com");
-    const s = getStreak("known@test.com");
-    expect(s.lastTick).toBeGreaterThan(0);
-    vi.useRealTimers();
-  });
-});
-
-describe("getAllStreaks", () => {
-  it("returns empty object when none exist", () => {
-    expect(getAllStreaks()).toEqual({});
-  });
-
-  it("returns all streaks", () => {
-    vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("a@test.com");
-    initStreak("b@test.com");
-    const all = getAllStreaks();
-    expect(Object.keys(all).sort()).toEqual(["a@test.com", "b@test.com"]);
-    vi.useRealTimers();
-  });
-});
-
-describe("pauseStreak", () => {
-  it("updates lastTick to now", () => {
-    vi.useFakeTimers();
-    mockDate("2025-01-01T00:00:00Z");
-    initStreak("user@test.com");
-    const before = getStreak("user@test.com").lastTick;
-
-    mockDate("2025-01-01T05:00:00Z");
-    pauseStreak("user@test.com");
-    const after = getStreak("user@test.com").lastTick;
-    expect(after).toBeGreaterThan(before);
+    mockDate("2025-06-17T00:00:00Z");
+    expect(restoreStreak()).toBe(true);
+    const s = getStreakState();
+    expect(s.count).toBe(1);
+    expect(s.lastDay).toBe("2025-06-16");
+    expect(JSON.parse(localStorage.getItem("waey_points")!)).toBe(50);
     vi.useRealTimers();
   });
 });
 
 describe("getPrizeInfo", () => {
-  it("returns default state", () => {
-    const p = getPrizeInfo();
-    expect(p.winner).toBeNull();
-    expect(p.claimedAt).toBeNull();
+  it("returns null winner by default", () => {
+    expect(getPrizeInfo().winner).toBeNull();
   });
+});
 
-  it("awards prize at 100 streaks across separate days", () => {
+describe("prize claim at 100", () => {
+  it("claims prize when streak reaches 100", () => {
     vi.useFakeTimers();
-    // Simulate 100 separate days of streaks
-    const base = new Date("2025-01-01T00:00:00Z").getTime();
-    for (let day = 0; day < 100; day++) {
-      vi.setSystemTime(base + day * 86400000); // each day + 1 day in ms
-      if (day === 0) initStreak("champ@test.com");
-
-      // Accumulate 5+ minutes via rapid ticks
-      for (let m = 0; m < 6; m++) {
-        vi.setSystemTime(base + day * 86400000 + m * 60000); // each minute
-        tickStreak("champ@test.com");
-      }
-    }
-
-    const p = getPrizeInfo();
-    expect(p.winner).toBe("champ@test.com");
-    expect(p.claimedAt).toBeGreaterThan(0);
+    localStorage.setItem("waey_streak", JSON.stringify({ count: 99, lastDay: "2025-04-09" }));
+    mockDate("2025-04-10T00:00:00Z");
+    const s = bumpStreak();
+    expect(s.count).toBe(100);
+    // Manually trigger prize claim (no email to avoid async Supabase sync)
+    tryClaimPrize("champ@test.com", 100);
+    const prize = getPrizeInfo();
+    expect(prize.winner).toBe("champ@test.com");
+    expect(prize.claimedAt).toBeGreaterThan(0);
     vi.useRealTimers();
   });
 });

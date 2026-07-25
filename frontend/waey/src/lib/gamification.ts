@@ -1,5 +1,6 @@
 // Gamification & Milestone Badges Engine for Waey (وعي)
 import { getDailyValue, readJSON, writeJSON, todayKey } from "./dailyStorage";
+import { getStreakState } from "@/lib/streak";
 
 export interface Badge {
   id: string;
@@ -151,33 +152,8 @@ export function deductPoints(pts: number): boolean {
   return true;
 }
 
-// Read the effective streak count from the email-based streak system (waey_streaks)
-// Falls back to the simple daily streak (waey_streak) if no email auth found.
 export function getEffectiveStreakCount(): number {
-  try {
-    const authRaw = localStorage.getItem("waey-auth");
-    if (authRaw) {
-      const auth = JSON.parse(authRaw);
-      const email = auth?.user?.email;
-      if (email) {
-        const streaksRaw = localStorage.getItem("waey_streaks");
-        if (streaksRaw) {
-          const streaks = JSON.parse(streaksRaw);
-          const s = streaks[email];
-          if (s && typeof s.count === "number") return s.count;
-        }
-      }
-    }
-  } catch { /* ignore */ }
-  // Fallback to simple daily streak
-  try {
-    const raw = localStorage.getItem("waey_streak");
-    if (raw) {
-      const s = JSON.parse(raw);
-      if (s && typeof s.count === "number") return s.count;
-    }
-  } catch { /* ignore */ }
-  return 0;
+  return getStreakState().count;
 }
 
 // Evaluate unlocked badges based on current activity

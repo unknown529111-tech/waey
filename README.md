@@ -2,7 +2,7 @@
 
 awareness platform for Egyptian Arabic users. RTL, localStorage-first, zero backend for user data.
 
-Stack: Vite, React 18, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, Recharts.  
+Stack: Vite + React 18 + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion + Recharts.  
 Backend: Supabase Edge Functions (contact form + AI chat proxy).  
 Domain: https://waey-m7.com
 
@@ -27,11 +27,11 @@ npm run dev
 
 | Command | What it does |
 |---------|-------------|
-| npm run dev | Dev server |
-| npm run build | Production build |
-| npm run lint | ESLint |
-| npm run test | Vitest (79 tests) |
-| npm run preview | Preview build |
+| `npm run dev` | Dev server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest (215 tests) |
+| `npm run preview` | Preview build |
 
 ---
 
@@ -97,7 +97,7 @@ Motion: Framer Motion page transitions (fade + translateY 20px, 0.4s), scroll-tr
 frontend/waey/
 ├── src/
 │   ├── pages/            16 pages
-│   ├── components/       50+ custom + 30 shadcn/ui primitives
+│   ├── components/       50+ custom + 3 shadcn/ui primitives
 │   ├── features/         18 feature widgets (trackers, challenges)
 │   ├── lib/              19 utilities (storage, streak, badges, analytics)
 │   ├── contexts/         Auth, Theme, Language (ar/en)
@@ -105,7 +105,7 @@ frontend/waey/
 │   ├── data/             hospitals.ts, recipes.ts
 │   ├── hooks/            use-mobile, useStreak
 │   ├── supabase/         client.ts, types.ts
-│   └── test/             10 test files
+│   └── test/             23 test files
 ├── supabase/
 │   ├── functions/        3 Edge Functions (ai-assistant, send-contact, admin-auth)
 │   └── migrations/       4 SQL migrations
@@ -123,14 +123,9 @@ frontend/waey/
 
 ---
 
-## Some issues in the website
+## Known issues
 
-- Passwords stored in plaintext in localStorage (mock auth, not production-grade)
-- Two competing streak systems (`dailyStorage.ts` day-based + `streak.ts` accumulated-time)
-- `App.css` contains unused Vite boilerplate
-- `src/themes/` is empty
-- `backend/supabase/` duplicates `supabase/`
-- IndexedDB fallback (`indexedDBStorage.ts`) exists but is never called
+- IndexedDB read fallback (`readJSONWithFallback`) exists but is never imported by callers
 
 
 ## Author

@@ -11,7 +11,6 @@ import { initOfflineSync } from "@/lib/offlineQueue";
 import Layout from "./components/Layout";
 import Index from "./pages/Index.tsx";
 
-const DesignAgency = lazy(() => import("./pages/DesignAgency.tsx"));
 const Health = lazy(() => import("./pages/Health.tsx"));
 const Finance = lazy(() => import("./pages/Finance.tsx"));
 const Environment = lazy(() => import("./pages/Environment.tsx"));
@@ -54,7 +53,6 @@ function AppRoutes() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<ErrorBoundary><Index /></ErrorBoundary>} />
-        <Route path="/design-agency" element={<ErrorBoundary><DesignAgency /></ErrorBoundary>} />
         <Route path="/health" element={<ErrorBoundary><Health /></ErrorBoundary>} />
         <Route path="/finance" element={<ErrorBoundary><Finance /></ErrorBoundary>} />
         <Route path="/environment" element={<ErrorBoundary><Environment /></ErrorBoundary>} />

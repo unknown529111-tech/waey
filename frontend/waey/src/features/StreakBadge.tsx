@@ -1,6 +1,6 @@
 import { Flame } from "lucide-react";
 import { motion } from "framer-motion";
-import { getStreak } from "@/lib/dailyStorage";
+import { getStreakState as getStreak } from "@/lib/streak";
 import { useEffect, useState } from "react";
 import { useT } from "@/contexts/useLanguage";
 

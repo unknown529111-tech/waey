@@ -1,8 +1,16 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { sha256hex } from "@/lib/hash";
 
 interface User {
   name: string;
   email: string;
+}
+
+interface StoredUser {
+  name: string;
+  email: string;
+  password: string;
+  passwordHash?: string;
 }
 
 interface AuthContextType {
@@ -66,7 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { success: false, error: "هذا البريد الإلكتروني مسجل بالفعل" };
     }
 
-    const newUser = { name, email, password };
+    const passwordHash = await sha256hex(password);
+    const newUser: StoredUser = { name, email, password: "", passwordHash };
     users.push(newUser);
     saveUsers(users);
 
@@ -80,9 +89,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     const users = getStoredUsers();
-    const found = users.find((u) => u.email === email && u.password === password);
-    
+    const found = users.find((u) => u.email === email);
     if (!found) {
+      return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
+    }
+
+    let match = false;
+    if (found.passwordHash) {
+      const inputHash = await sha256hex(password);
+      match = inputHash === found.passwordHash;
+    }
+
+    if (!match && found.password) {
+      match = password === found.password;
+      if (match) {
+        const passwordHash = await sha256hex(password);
+        found.passwordHash = passwordHash;
+        found.password = "";
+        saveUsers(users);
+      }
+    }
+
+    if (!match) {
       return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
     }
 
@@ -115,7 +143,7 @@ export function useAuth() {
   return context;
 }
 
-function getStoredUsers(): Array<{ name: string; email: string; password: string }> {
+function getStoredUsers(): StoredUser[] {
   if (typeof window === "undefined") return [];
   try {
     const stored = localStorage.getItem("waey-users");
@@ -125,7 +153,7 @@ function getStoredUsers(): Array<{ name: string; email: string; password: string
   }
 }
 
-function saveUsers(users: Array<{ name: string; email: string; password: string }>) {
+function saveUsers(users: StoredUser[]) {
   if (typeof window === "undefined") return;
   localStorage.setItem("waey-users", JSON.stringify(users));
 }

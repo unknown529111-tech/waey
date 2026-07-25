@@ -1,3 +1,13 @@
+// Streak delegated to streak.ts (single source of truth)
+import * as streak from "./streak";
+export type { StreakState } from "./streak";
+export const getStreak = () => streak.getStreakState();
+export const getStreakFreezes = () => streak.getStreakFreezes();
+export const addStreakFreeze = (count?: number) => streak.addStreakFreeze(count);
+export const consumeStreakFreeze = () => streak.consumeStreakFreeze();
+export const bumpStreak = () => streak.bumpStreak();
+export const restoreStreak = () => streak.restoreStreak();
+
 // Lightweight localStorage utilities for daily trackers
 // All values are namespaced and stored per-day where relevant
 
@@ -28,12 +38,36 @@ export function readJSON<T>(key: string, fallback: T): T {
   }
 }
 
+export async function readJSONWithFallback<T>(key: string, fallback: T): Promise<T> {
+  const fromLS = readJSON<T | null>(key, null);
+  if (fromLS !== null) return fromLS;
+  try {
+    const { getIDBItem } = await import("./indexedDBStorage");
+    return await getIDBItem(key, fallback);
+  } catch {
+    return fallback;
+  }
+}
+
+const FALLBACK_KEYS = "waey_idb_fallback";
+
+function markFallback(key: string) {
+  try {
+    const set = new Set(JSON.parse(localStorage.getItem(FALLBACK_KEYS) || "[]"));
+    set.add(key);
+    localStorage.setItem(FALLBACK_KEYS, JSON.stringify([...set]));
+  } catch { /* ignore */ }
+}
+
 export function writeJSON<T>(key: string, value: T) {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    /* ignore */
+    import("./indexedDBStorage").then(({ setIDBItem }) => {
+      setIDBItem(key, value);
+      markFallback(key);
+    });
   }
 }
 
@@ -67,78 +101,6 @@ export const removeExpense = (id: string, date = todayKey()) => {
     getExpenses(date).filter((x) => x.id !== id)
   );
 };
-
-// Streak: increments when user completes any tracker on a new day
-const STREAK_KEY = "waey_streak";
-const FREEZES_KEY = "waey_streak_freezes";
-
-export type StreakState = { count: number; lastDay: string | null; freezeUsed?: boolean };
-
-export const getStreak = (): StreakState =>
-  readJSON<StreakState>(STREAK_KEY, { count: 0, lastDay: null });
-
-export function getStreakFreezes(): number {
-  return readJSON<number>(FREEZES_KEY, 0);
-}
-
-export function addStreakFreeze(count = 1) {
-  writeJSON(FREEZES_KEY, getStreakFreezes() + count);
-}
-
-export function consumeStreakFreeze(): boolean {
-  const current = getStreakFreezes();
-  if (current <= 0) return false;
-  writeJSON(FREEZES_KEY, current - 1);
-  return true;
-}
-
-export const bumpStreak = (): StreakState => {
-  const today = todayKey();
-  const s = getStreak();
-  if (s.lastDay === today) return s;
-
-  const yesterday = todayKey(new Date(Date.now() - 86400000));
-  const dayBeforeYesterday = todayKey(new Date(Date.now() - 2 * 86400000));
-
-  let count = 1;
-  let freezeUsed = false;
-
-  if (s.lastDay === yesterday) {
-    count = s.count + 1;
-  } else if (s.lastDay === dayBeforeYesterday && getStreakFreezes() > 0) {
-    // 1-day grace period protected by a streak freeze!
-    consumeStreakFreeze();
-    count = s.count + 1;
-    freezeUsed = true;
-  }
-
-  const next: StreakState = {
-    count,
-    lastDay: today,
-    freezeUsed,
-  };
-  writeJSON(STREAK_KEY, next);
-  return next;
-};
-
-export function restoreStreak(): boolean {
-  const pointsKey = "waey_points";
-  const points = readJSON<number>(pointsKey, 0);
-  if (points < 50) return false;
-
-  const current = getStreak();
-  const yesterday = todayKey(new Date(Date.now() - 86400000));
-  const restoredCount = Math.max(current.count, 1);
-
-  const next: StreakState = {
-    count: restoredCount,
-    lastDay: yesterday,
-    freezeUsed: false,
-  };
-  writeJSON(STREAK_KEY, next);
-  writeJSON(pointsKey, points - 50);
-  return true;
-}
 
 // ==================== CHALLENGES (daily) ====================
 export type ChallengeDef = { emoji: string; text: string; area: string };

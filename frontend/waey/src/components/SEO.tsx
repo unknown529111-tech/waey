@@ -12,7 +12,7 @@ interface SEOProps {
 export function SEO({
   title = "وعي — منصة التوازن والصحة الشاملة",
   description = "منصة مصرية عربية للتوازن الشامل في الصحة البدنية والنفسية، الميزانية المالية، والوعي البيئي والتعليمي.",
-  canonical = "https://waey.app",
+  canonical = "https://waey-m7.com",
   ogType = "website",
   ogImage = "/website-new.png",
   schema,

@@ -1,14 +1,10 @@
-const STREAKS_KEY = "waey_streaks";
-const PRIZE_KEY = "waey_prize";
-const STREAK_INTERVAL = 300_000;
-const TICK_INTERVAL = 10_000;
+import { queueUpsert } from "@/lib/offlineQueue";
 
-interface StreakData {
-  count: number;
-  accumulatedMs: number;
-  lastTick: number;
-  lastStreakDate: string;
-}
+const STREAK_KEY = "waey_streak";
+const FREEZES_KEY = "waey_streak_freezes";
+const PRIZE_KEY = "waey_prize";
+
+export type StreakState = { count: number; lastDay: string | null; freezeUsed?: boolean };
 
 interface PrizeData {
   winner: string | null;
@@ -26,16 +22,24 @@ async function getSupabase() {
 }
 
 // ---- LocalStorage helpers ----
-function getStreaks(): Record<string, StreakData> {
+function localDateString(d: Date = new Date()): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function getStreak(): StreakState {
   try {
-    return JSON.parse(localStorage.getItem(STREAKS_KEY) || "{}");
+    const raw = localStorage.getItem(STREAK_KEY);
+    return raw ? JSON.parse(raw) : { count: 0, lastDay: null };
   } catch {
-    return {};
+    return { count: 0, lastDay: null };
   }
 }
 
-function saveStreaks(data: Record<string, StreakData>) {
-  localStorage.setItem(STREAKS_KEY, JSON.stringify(data));
+function saveStreak(s: StreakState) {
+  localStorage.setItem(STREAK_KEY, JSON.stringify(s));
 }
 
 function getPrize(): PrizeData {
@@ -50,17 +54,13 @@ function savePrize(data: PrizeData) {
   localStorage.setItem(PRIZE_KEY, JSON.stringify(data));
 }
 
-import { queueUpsert } from "@/lib/offlineQueue";
-
 // ---- Supabase sync ----
-async function syncProfile(email: string, name: string, streak: StreakData) {
+async function syncProfile(email: string, name: string, streak: StreakState) {
   const profileRecord = {
     email,
     name,
     streak_count: streak.count,
-    accumulated_ms: streak.accumulatedMs,
-    last_tick: streak.lastTick,
-    last_streak_date: streak.lastStreakDate,
+    last_streak_date: streak.lastDay,
     updated_at: new Date().toISOString(),
   };
   const sb = await getSupabase();
@@ -70,9 +70,7 @@ async function syncProfile(email: string, name: string, streak: StreakData) {
   }
   try {
     const { error } = await sb.from("profiles").upsert(profileRecord, { onConflict: "email" });
-    if (error) {
-      queueUpsert("profiles", profileRecord, "email");
-    }
+    if (error) queueUpsert("profiles", profileRecord, "email");
   } catch {
     queueUpsert("profiles", profileRecord, "email");
   }
@@ -82,7 +80,6 @@ async function syncPrize(data: PrizeData) {
   const sb = await getSupabase();
   if (!sb) return;
   try {
-    // Delete old prize row, insert new
     await sb.from("prize").delete().neq("id", 0);
     if (data.winner) {
       await sb.from("prize").insert({
@@ -93,69 +90,97 @@ async function syncPrize(data: PrizeData) {
   } catch { /* offline, ignore */ }
 }
 
-// ---- Public API ----
-export function initStreak(email: string) {
-  const streaks = getStreaks();
-  if (!streaks[email]) {
-    streaks[email] = { count: 0, accumulatedMs: 0, lastTick: Date.now(), lastStreakDate: "" };
-    saveStreaks(streaks);
+// ---- Public streak API ----
+
+/** No-op for backward compat */
+export function initStreak(): void {}
+
+/** Get current streak state */
+export const getStreakState = (): StreakState => getStreak();
+
+/** Freeze functions */
+export function getStreakFreezes(): number {
+  try {
+    return JSON.parse(localStorage.getItem(FREEZES_KEY) || "0");
+  } catch {
+    return 0;
   }
 }
 
-export function tickStreak(email: string): { newStreak: boolean; count: number } {
-  const streaks = getStreaks();
-  const data = streaks[email];
-  if (!data) return { newStreak: false, count: 0 };
-
-  const now = Date.now();
-  const elapsed = now - data.lastTick;
-  if (elapsed > 0 && elapsed < 120_000) {
-    data.accumulatedMs += elapsed;
-  }
-  data.lastTick = now;
-
-  let newStreak = false;
-  const today = new Date().toISOString().slice(0, 10);
-  while (data.accumulatedMs >= STREAK_INTERVAL) {
-    if (today !== data.lastStreakDate) {
-      data.count += 1;
-      data.lastStreakDate = today;
-      newStreak = true;
-    }
-    data.accumulatedMs -= STREAK_INTERVAL;
-  }
-
-  saveStreaks(streaks);
-
-  if (newStreak) {
-    tryClaimPrize(email, data.count);
-  }
-
-  return { newStreak, count: data.count };
+export function addStreakFreeze(count = 1) {
+  localStorage.setItem(FREEZES_KEY, JSON.stringify(getStreakFreezes() + count));
 }
 
-export function getStreak(email: string): StreakData {
-  const streaks = getStreaks();
-  return streaks[email] || { count: 0, accumulatedMs: 0, lastTick: 0, lastStreakDate: "" };
+export function consumeStreakFreeze(): boolean {
+  const current = getStreakFreezes();
+  if (current <= 0) return false;
+  localStorage.setItem(FREEZES_KEY, JSON.stringify(current - 1));
+  return true;
 }
 
-export function getAllStreaks(): Record<string, StreakData> {
-  return getStreaks();
-}
+/** Bump the streak for a new active day */
+export const bumpStreak = (email?: string): StreakState => {
+  const today = localDateString();
+  const s = getStreak();
+  if (s.lastDay === today) return s;
 
-export function pauseStreak(email: string) {
-  const streaks = getStreaks();
-  if (streaks[email]) {
-    streaks[email].lastTick = Date.now();
-    saveStreaks(streaks);
+  const yesterday = localDateString(new Date(Date.now() - 86400000));
+  const dayBeforeYesterday = localDateString(new Date(Date.now() - 2 * 86400000));
+
+  let count = 1;
+  let freezeUsed = false;
+
+  if (s.lastDay === yesterday) {
+    count = s.count + 1;
+  } else if (s.lastDay === dayBeforeYesterday && getStreakFreezes() > 0) {
+    consumeStreakFreeze();
+    count = s.count + 1;
+    freezeUsed = true;
   }
+
+  const next = { count, lastDay: today, freezeUsed };
+  saveStreak(next);
+
+  if (email) {
+    tryClaimPrize(email, count);
+    syncProfile(email, "", next);
+  }
+
+  return next;
+};
+
+/** Restore streak using points */
+export function restoreStreak(email?: string): boolean {
+  const pointsKey = "waey_points";
+  let points = 0;
+  try {
+    const raw = localStorage.getItem(pointsKey);
+    if (!raw) return false;
+    points = JSON.parse(raw);
+  } catch {
+    return false;
+  }
+  if (points < 50) return false;
+
+  const current = getStreak();
+  const yesterday = localDateString(new Date(Date.now() - 86400000));
+  const restoredCount = Math.max(current.count, 1);
+
+  const next: StreakState = { count: restoredCount, lastDay: yesterday };
+  saveStreak(next);
+  localStorage.setItem(pointsKey, JSON.stringify(points - 50));
+
+  if (email) syncProfile(email, "", next);
+  return true;
 }
+
+// ---- Prize system ----
 
 export function getPrizeInfo(): PrizeData {
   return getPrize();
 }
 
-function tryClaimPrize(email: string, count: number) {
+export function tryClaimPrize(email: string, count: number) {
   if (count < 100) return;
   const prize = getPrize();
   if (prize.winner) return;
@@ -165,32 +190,8 @@ function tryClaimPrize(email: string, count: number) {
   syncPrize(prize);
 }
 
-export function getUsers(): Record<string, { name: string; password: string }> {
-  try {
-    return JSON.parse(localStorage.getItem("waey_users") || "{}");
-  } catch {
-    return {};
-  }
-}
-
-export function resetPrize() {
-  const key = "waey_prize";
-  localStorage.setItem(key, JSON.stringify({ winner: null, claimedAt: null }));
-  syncPrize({ winner: null, claimedAt: null });
-}
-
-// ---- Save user + sync to Supabase ----
-export function saveUser(email: string, data: { name: string; password: string }) {
-  const users = getUsers();
-  users[email] = data;
-  localStorage.setItem("waey_users", JSON.stringify(users));
-  // Sync profile to Supabase
-  const streaks = getStreaks();
-  const streak = streaks[email] || { count: 0, accumulatedMs: 0, lastTick: Date.now(), lastStreakDate: "" };
-  syncProfile(email, data.name, streak);
-}
-
 // ---- Fetch from Supabase (for admin) ----
+
 export async function fetchSupabaseUsers(): Promise<{ email: string; name: string; streak_count: number }[]> {
   const sb = await getSupabase();
   if (!sb) return [];

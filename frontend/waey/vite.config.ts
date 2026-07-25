@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('recharts')) return 'vendor-recharts';
             if (id.includes('@radix-ui') || id.includes('@tanstack/react-query')) return 'vendor-radix-query';
             if (id.includes('@supabase')) return 'vendor-supabase';
-            if (id.includes('lucide-react') || id.includes('embla-carousel-react') || id.includes('date-fns') || id.includes('zod') || id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority') || id.includes('react-hook-form') || id.includes('@hookform/resolvers')) return 'vendor-ui';
+            if (id.includes('lucide-react') || id.includes('zod') || id.includes('clsx') || id.includes('tailwind-merge')) return 'vendor-ui';
             return 'vendor';
           }
           const pagesMatch = id.match(/src[/\\]pages[/\\]([^/\\]+)\.tsx$/);

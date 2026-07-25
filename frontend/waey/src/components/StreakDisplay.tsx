@@ -2,20 +2,16 @@ import { useStreak } from "@/hooks/useStreak";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/useLanguage";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Trophy, Zap, ShieldAlert } from "lucide-react";
-import { getStreakFreezes } from "@/lib/dailyStorage";
+import { Flame, Trophy, ShieldAlert } from "lucide-react";
+import { getStreakFreezes } from "@/lib/streak";
 
 export function StreakDisplay() {
   const { isAuthenticated } = useAuth();
   const { lang, t } = useLanguage();
-  const { count, accumulated, newStreakFlash, prizeWinner, lastStreakDate } = useStreak();
+  const { count, newStreakFlash, prizeWinner } = useStreak();
   const freezes = getStreakFreezes();
 
   if (!isAuthenticated) return null;
-
-  const today = new Date().toISOString().slice(0, 10);
-  const earnedToday = lastStreakDate === today;
-  const progress = Math.min((accumulated / 300_000) * 100, 100);
 
   return (
     <>
@@ -70,21 +66,6 @@ export function StreakDisplay() {
           )}
         </div>
 
-        {!earnedToday && (
-          <div className="w-full bg-card border border-border/50 rounded-full shadow-soft p-1">
-            <div className="flex items-center gap-2 px-2">
-              <Zap className="size-3 text-amber-500 shrink-0" />
-              <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-l from-amber-500 to-orange-500"
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         <AnimatePresence>
           {count >= 100 && !prizeWinner && (
             <motion.div
@@ -113,4 +94,3 @@ export function StreakDisplay() {
     </>
   );
 }
-

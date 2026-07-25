@@ -10,9 +10,6 @@ import {
   getExpenses,
   addExpense,
   removeExpense,
-  getStreak,
-  bumpStreak,
-  restoreStreak,
   getDailyChallenge,
   isChallengeDone,
   markChallengeDone,
@@ -20,6 +17,7 @@ import {
   setMood,
   getMood,
 } from "@/lib/dailyStorage";
+import { getStreakState, bumpStreak, restoreStreak } from "@/lib/streak";
 
 beforeEach(() => {
   localStorage.clear();
@@ -139,85 +137,7 @@ describe("expenses (getExpenses / addExpense / removeExpense)", () => {
   });
 });
 
-describe("streak (getStreak / bumpStreak)", () => {
-  it("starts at 0 with null lastDay", () => {
-    const s = getStreak();
-    expect(s.count).toBe(0);
-    expect(s.lastDay).toBeNull();
-  });
 
-  it("bumps to 1 on first completion", () => {
-    vi.useFakeTimers();
-    mockDate("2025-06-01T10:00:00Z");
-    const s = bumpStreak();
-    expect(s.count).toBe(1);
-    expect(s.lastDay).toBe("2025-06-01");
-    vi.useRealTimers();
-  });
-
-  it("does not double-bump same day", () => {
-    vi.useFakeTimers();
-    mockDate("2025-06-01T10:00:00Z");
-    bumpStreak();
-    const s2 = bumpStreak();
-    expect(s2.count).toBe(1);
-    vi.useRealTimers();
-  });
-
-  it("increments on consecutive days", () => {
-    vi.useFakeTimers();
-    mockDate("2025-06-01T10:00:00Z");
-    bumpStreak();
-    mockDate("2025-06-02T10:00:00Z");
-    const s = bumpStreak();
-    expect(s.count).toBe(2);
-    expect(s.lastDay).toBe("2025-06-02");
-    vi.useRealTimers();
-  });
-
-  it("resets to 1 after a gap", () => {
-    vi.useFakeTimers();
-    mockDate("2025-06-01T10:00:00Z");
-    bumpStreak();
-    mockDate("2025-06-05T10:00:00Z"); // 4-day gap
-    const s = bumpStreak();
-    expect(s.count).toBe(1);
-    expect(s.lastDay).toBe("2025-06-05");
-    vi.useRealTimers();
-  });
-
-  it("restores streak when user has enough points", () => {
-    vi.useFakeTimers();
-    mockDate("2025-06-01T10:00:00Z");
-    bumpStreak(); // streak count = 1, lastDay = 2025-06-01
-
-    // 5-day gap without activity
-    mockDate("2025-06-06T10:00:00Z");
-
-    // Initially fails with < 50 points
-    expect(restoreStreak()).toBe(false);
-
-    // Give points
-    writeJSON("waey_points", 100);
-
-    // Now restore succeeds
-    expect(restoreStreak()).toBe(true);
-
-    // Points deducted
-    expect(readJSON<number>("waey_points", 0)).toBe(50);
-
-    // Last day set to yesterday (2025-06-05)
-    const current = getStreak();
-    expect(current.lastDay).toBe("2025-06-05");
-
-    // Bumping today (2025-06-06) continues the streak to count = 2
-    const updated = bumpStreak();
-    expect(updated.count).toBe(2);
-    expect(updated.lastDay).toBe("2025-06-06");
-
-    vi.useRealTimers();
-  });
-});
 
 describe("daily challenge", () => {
   it("returns a challenge with emoji, text, and area (i18n keys)", () => {

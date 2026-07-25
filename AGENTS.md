@@ -242,7 +242,7 @@ npm run test
 - **No auth/DB for user data**: All trackers, streaks, favorites go in localStorage. Supabase is only for contact form + AI chat proxy.
 - **Alexandria font**: The only typeface. Weight 700 for headings/buttons, 400 for body.
 - **Body leading**: Always 1.9 line-height on body text.
-- **Card radius**: Default is `rounded-3xl` (24px). NEVER use square corners on cards.
+- **Card radius**: Default is `rounded-3xl` (32px). NEVER use square corners on cards.
 - **Button shape**: Always `rounded-full` (pill). NEVER square buttons.
 - **Colors**: Use DESIGN.md tokens, never raw hex. Text uses warm `#392B21` ink, never pure black.
 - **Gradient blobs**: Decorate pages with blurred circles in primary/accent tints.
