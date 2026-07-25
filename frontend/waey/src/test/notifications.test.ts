@@ -1,7 +1,21 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { requestNotificationPermission, startNotificationScheduler } from "@/lib/notifications";
 
+interface MockNotification {
+  permission: NotificationPermission;
+  requestPermission?: (...args: unknown[]) => unknown;
+  (title: string, opts?: NotificationOptions): void;
+}
+
 let origNotification: PropertyDescriptor | undefined;
+
+function setMockNotification(mock: Partial<MockNotification>) {
+  (window as unknown as Record<string, unknown>).Notification = mock;
+}
+
+function deleteNotification() {
+  delete (window as unknown as Record<string, unknown>).Notification;
+}
 
 beforeEach(() => {
   localStorage.clear();
@@ -17,40 +31,40 @@ afterEach(() => {
 
 describe("requestNotificationPermission", () => {
   it('returns "unsupported" when Notification is not available', async () => {
-    delete (window as any).Notification;
+    deleteNotification();
     expect(await requestNotificationPermission()).toBe("unsupported");
   });
 
   it('returns "denied" when requestPermission throws', async () => {
-    (window as any).Notification = {
+    setMockNotification({
       permission: "default",
       requestPermission: vi.fn().mockRejectedValue(new Error("fail")),
-    };
+    });
     expect(await requestNotificationPermission()).toBe("denied");
   });
 
   it('returns "granted" when permission is already granted', async () => {
-    (window as any).Notification = {
+    setMockNotification({
       permission: "granted",
       requestPermission: vi.fn(),
-    };
+    });
     expect(await requestNotificationPermission()).toBe("granted");
   });
 
   it('returns "denied" when permission is already denied', async () => {
-    (window as any).Notification = {
+    setMockNotification({
       permission: "denied",
       requestPermission: vi.fn(),
-    };
+    });
     expect(await requestNotificationPermission()).toBe("denied");
   });
 
   it('calls requestPermission when permission is "default"', async () => {
     const requestPermission = vi.fn().mockResolvedValue("granted" as NotificationPermission);
-    (window as any).Notification = {
+    setMockNotification({
       permission: "default",
       requestPermission,
-    };
+    });
     expect(await requestNotificationPermission()).toBe("granted");
     expect(requestPermission).toHaveBeenCalledOnce();
   });
@@ -58,7 +72,7 @@ describe("requestNotificationPermission", () => {
 
 describe("startNotificationScheduler", () => {
   it("returns a cleanup function", () => {
-    (window as any).Notification = { permission: "granted" };
+    setMockNotification({ permission: "granted" });
     vi.useFakeTimers();
     const cleanup = startNotificationScheduler();
     expect(cleanup).toBeInstanceOf(Function);
@@ -67,20 +81,19 @@ describe("startNotificationScheduler", () => {
 
   it("cleanup clears timers and no Notification is created after cleanup", () => {
     const notify = vi.fn();
-    (window as any).Notification = function Notification(title: string, opts?: NotificationOptions) {
+    const MockCtor = function Notification(title: string, opts?: NotificationOptions) {
       notify(title, opts);
-    };
-    (window as any).Notification.permission = "granted";
+    } as unknown as MockNotification;
+    MockCtor.permission = "granted";
+    setMockNotification(MockCtor);
 
     localStorage.setItem("waey_last_notif_ts", "0");
     vi.useFakeTimers();
     const cleanup = startNotificationScheduler();
 
-    // Advance past the 15s initial timer
     vi.advanceTimersByTime(16_000);
     expect(notify).toHaveBeenCalled();
 
-    // Cleanup and reset
     cleanup();
     notify.mockClear();
     vi.advanceTimersByTime(5 * 60 * 1000 + 1000);
@@ -90,11 +103,11 @@ describe("startNotificationScheduler", () => {
   });
 
   it("cleanup function is a no-op when Notification not available", () => {
-    const orig = (window as any).Notification;
-    (window as any).Notification = undefined;
+    const orig = (window as unknown as Record<string, unknown>).Notification;
+    deleteNotification();
     const cleanup = startNotificationScheduler();
     expect(cleanup).toBeInstanceOf(Function);
     cleanup();
-    (window as any).Notification = orig;
+    (window as unknown as Record<string, unknown>).Notification = orig;
   });
 });
