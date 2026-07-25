@@ -214,33 +214,27 @@ export function evaluateBadges(): string[] {
 // Helper to track activity completion and add points
 export function recordActivity(type: "water" | "expense" | "challenge" | "breathing" | "gratitude", count = 1) {
   const stats = getUserStats();
-  let ptsEarned = 10;
 
   switch (type) {
     case "water":
       stats.totalWaterCups += count;
-      ptsEarned = count * 5;
       break;
     case "expense":
       stats.totalExpensesCount += count;
-      ptsEarned = 10;
       break;
     case "challenge":
       stats.totalChallengesDone += count;
-      ptsEarned = 20;
       break;
     case "breathing":
       stats.breathingDone += count;
-      ptsEarned = 15;
       break;
     case "gratitude":
       stats.gratitudeDone += count;
-      ptsEarned = 15;
       break;
   }
 
   saveUserStats(stats);
-  addPoints(ptsEarned);
+  addPoints(25);
   const newlyUnlocked = evaluateBadges();
   if (newlyUnlocked.length > 0) {
     if (typeof window !== "undefined") {
