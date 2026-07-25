@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, LogOut } from "lucide-react";
@@ -16,8 +16,25 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const prevScroll = useRef(0);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const cur = window.scrollY;
+      setScrolled(cur > 20);
+      if (cur > 80 && cur > prevScroll.current) {
+        setHidden(true);
+      } else if (cur < prevScroll.current || cur < 80) {
+        setHidden(false);
+      }
+      prevScroll.current = cur;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { path: "/", label: "nav.home", icon: null },
@@ -30,11 +47,11 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-sm shadow-soft" : "bg-transparent"}`}>
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-sm shadow-soft" : "bg-transparent"} ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" dir="rtl">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             <Link to="/" className="flex items-center gap-2" aria-label="وعي - الرئيسية">
-              <img src={logo} alt="وعي" className="h-20 w-auto" />
+              <img src={logo} alt="وعي" className="h-24 w-auto" />
             </Link>
 
             <div className="hidden md:flex md:items-center md:gap-1">
