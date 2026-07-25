@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Award, Lock, Sparkles, Share2, Check, Coins, ShieldAlert, RotateCcw, Download } from "lucide-react";
 import {
@@ -83,12 +83,24 @@ function progressLabel(b: Badge): string {
 }
 
 export function BadgeShowcase() {
-  const unlockedIds = getUnlockedBadgeIds();
+  const [unlockedIds, setUnlockedIds] = useState(() => getUnlockedBadgeIds());
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
   const [copied, setCopied] = useState(false);
   const [points, setPoints] = useState(() => getUserPoints());
   const [freezes, setFreezes] = useState(() => getStreakFreezes());
   const [recoveryOpen, setRecoveryOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<string[]>).detail;
+      setUnlockedIds(getUnlockedBadgeIds());
+      setPoints(getUserPoints());
+      const names = detail.map((id) => BADGES.find((b) => b.id === id)?.title || id);
+      toast.success(`🎉 أوسمة جديدة: ${names.join("، ")}`);
+    };
+    window.addEventListener("waey-badges-updated", handler);
+    return () => window.removeEventListener("waey-badges-updated", handler);
+  }, []);
 
   const handleBuyFreeze = () => {
     if (deductPoints(50)) {

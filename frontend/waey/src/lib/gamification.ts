@@ -236,5 +236,10 @@ export function recordActivity(type: "water" | "expense" | "challenge" | "breath
 
   saveUserStats(stats);
   addPoints(ptsEarned);
-  evaluateBadges();
+  const newlyUnlocked = evaluateBadges();
+  if (newlyUnlocked.length > 0) {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("waey-badges-updated", { detail: newlyUnlocked }));
+    }
+  }
 }
