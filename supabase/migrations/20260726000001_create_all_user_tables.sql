@@ -214,16 +214,137 @@ ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_items ENABLE ROW LEVEL SECURITY;
 
 -- ===== RLS Policies: users can CRUD only their own data =====
-DO $$
-DECLARE
-  tbl TEXT;
-BEGIN
-  FOREACH tbl IN ARRAY ARRAY['user_settings','gamification','streaks','daily_entries','expenses','big3_entries','journal_entries','screens_off','goals','challenge_records','favorites','plans','ai_chat_messages','analytics_events','admin_items']
-  LOOP
-    EXECUTE format('CREATE POLICY IF NOT EXISTS "users_select_%s" ON %I FOR SELECT USING (auth.uid() = user_id);', tbl, tbl);
-    EXECUTE format('CREATE POLICY IF NOT EXISTS "users_insert_%s" ON %I FOR INSERT WITH CHECK (auth.uid() = user_id);', tbl, tbl);
-    EXECUTE format('CREATE POLICY IF NOT EXISTS "users_update_%s" ON %I FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);', tbl, tbl);
-    EXECUTE format('CREATE POLICY IF NOT EXISTS "users_delete_%s" ON %I FOR DELETE USING (auth.uid() = user_id);', tbl, tbl);
-  END LOOP;
-END;
-$$;
+DROP POLICY IF EXISTS "users_select_user_settings" ON user_settings;
+DROP POLICY IF EXISTS "users_insert_user_settings" ON user_settings;
+DROP POLICY IF EXISTS "users_update_user_settings" ON user_settings;
+DROP POLICY IF EXISTS "users_delete_user_settings" ON user_settings;
+CREATE POLICY "users_select_user_settings" ON user_settings FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_user_settings" ON user_settings FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_user_settings" ON user_settings FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_user_settings" ON user_settings FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_gamification" ON gamification;
+DROP POLICY IF EXISTS "users_insert_gamification" ON gamification;
+DROP POLICY IF EXISTS "users_update_gamification" ON gamification;
+DROP POLICY IF EXISTS "users_delete_gamification" ON gamification;
+CREATE POLICY "users_select_gamification" ON gamification FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_gamification" ON gamification FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_gamification" ON gamification FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_gamification" ON gamification FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_streaks" ON streaks;
+DROP POLICY IF EXISTS "users_insert_streaks" ON streaks;
+DROP POLICY IF EXISTS "users_update_streaks" ON streaks;
+DROP POLICY IF EXISTS "users_delete_streaks" ON streaks;
+CREATE POLICY "users_select_streaks" ON streaks FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_streaks" ON streaks FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_streaks" ON streaks FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_streaks" ON streaks FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_daily_entries" ON daily_entries;
+DROP POLICY IF EXISTS "users_insert_daily_entries" ON daily_entries;
+DROP POLICY IF EXISTS "users_update_daily_entries" ON daily_entries;
+DROP POLICY IF EXISTS "users_delete_daily_entries" ON daily_entries;
+CREATE POLICY "users_select_daily_entries" ON daily_entries FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_daily_entries" ON daily_entries FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_daily_entries" ON daily_entries FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_daily_entries" ON daily_entries FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_expenses" ON expenses;
+DROP POLICY IF EXISTS "users_insert_expenses" ON expenses;
+DROP POLICY IF EXISTS "users_update_expenses" ON expenses;
+DROP POLICY IF EXISTS "users_delete_expenses" ON expenses;
+CREATE POLICY "users_select_expenses" ON expenses FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_expenses" ON expenses FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_expenses" ON expenses FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_expenses" ON expenses FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_big3_entries" ON big3_entries;
+DROP POLICY IF EXISTS "users_insert_big3_entries" ON big3_entries;
+DROP POLICY IF EXISTS "users_update_big3_entries" ON big3_entries;
+DROP POLICY IF EXISTS "users_delete_big3_entries" ON big3_entries;
+CREATE POLICY "users_select_big3_entries" ON big3_entries FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_big3_entries" ON big3_entries FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_big3_entries" ON big3_entries FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_big3_entries" ON big3_entries FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_journal_entries" ON journal_entries;
+DROP POLICY IF EXISTS "users_insert_journal_entries" ON journal_entries;
+DROP POLICY IF EXISTS "users_update_journal_entries" ON journal_entries;
+DROP POLICY IF EXISTS "users_delete_journal_entries" ON journal_entries;
+CREATE POLICY "users_select_journal_entries" ON journal_entries FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_journal_entries" ON journal_entries FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_journal_entries" ON journal_entries FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_journal_entries" ON journal_entries FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_screens_off" ON screens_off;
+DROP POLICY IF EXISTS "users_insert_screens_off" ON screens_off;
+DROP POLICY IF EXISTS "users_update_screens_off" ON screens_off;
+DROP POLICY IF EXISTS "users_delete_screens_off" ON screens_off;
+CREATE POLICY "users_select_screens_off" ON screens_off FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_screens_off" ON screens_off FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_screens_off" ON screens_off FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_screens_off" ON screens_off FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_goals" ON goals;
+DROP POLICY IF EXISTS "users_insert_goals" ON goals;
+DROP POLICY IF EXISTS "users_update_goals" ON goals;
+DROP POLICY IF EXISTS "users_delete_goals" ON goals;
+CREATE POLICY "users_select_goals" ON goals FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_goals" ON goals FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_goals" ON goals FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_goals" ON goals FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_challenge_records" ON challenge_records;
+DROP POLICY IF EXISTS "users_insert_challenge_records" ON challenge_records;
+DROP POLICY IF EXISTS "users_update_challenge_records" ON challenge_records;
+DROP POLICY IF EXISTS "users_delete_challenge_records" ON challenge_records;
+CREATE POLICY "users_select_challenge_records" ON challenge_records FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_challenge_records" ON challenge_records FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_challenge_records" ON challenge_records FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_challenge_records" ON challenge_records FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_favorites" ON favorites;
+DROP POLICY IF EXISTS "users_insert_favorites" ON favorites;
+DROP POLICY IF EXISTS "users_update_favorites" ON favorites;
+DROP POLICY IF EXISTS "users_delete_favorites" ON favorites;
+CREATE POLICY "users_select_favorites" ON favorites FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_favorites" ON favorites FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_favorites" ON favorites FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_favorites" ON favorites FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_plans" ON plans;
+DROP POLICY IF EXISTS "users_insert_plans" ON plans;
+DROP POLICY IF EXISTS "users_update_plans" ON plans;
+DROP POLICY IF EXISTS "users_delete_plans" ON plans;
+CREATE POLICY "users_select_plans" ON plans FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_plans" ON plans FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_plans" ON plans FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_plans" ON plans FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_ai_chat_messages" ON ai_chat_messages;
+DROP POLICY IF EXISTS "users_insert_ai_chat_messages" ON ai_chat_messages;
+DROP POLICY IF EXISTS "users_update_ai_chat_messages" ON ai_chat_messages;
+DROP POLICY IF EXISTS "users_delete_ai_chat_messages" ON ai_chat_messages;
+CREATE POLICY "users_select_ai_chat_messages" ON ai_chat_messages FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_ai_chat_messages" ON ai_chat_messages FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_ai_chat_messages" ON ai_chat_messages FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_ai_chat_messages" ON ai_chat_messages FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_analytics_events" ON analytics_events;
+DROP POLICY IF EXISTS "users_insert_analytics_events" ON analytics_events;
+DROP POLICY IF EXISTS "users_update_analytics_events" ON analytics_events;
+DROP POLICY IF EXISTS "users_delete_analytics_events" ON analytics_events;
+CREATE POLICY "users_select_analytics_events" ON analytics_events FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_analytics_events" ON analytics_events FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_analytics_events" ON analytics_events FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_analytics_events" ON analytics_events FOR DELETE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "users_select_admin_items" ON admin_items;
+DROP POLICY IF EXISTS "users_insert_admin_items" ON admin_items;
+DROP POLICY IF EXISTS "users_update_admin_items" ON admin_items;
+DROP POLICY IF EXISTS "users_delete_admin_items" ON admin_items;
+CREATE POLICY "users_select_admin_items" ON admin_items FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "users_insert_admin_items" ON admin_items FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_update_admin_items" ON admin_items FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "users_delete_admin_items" ON admin_items FOR DELETE USING (auth.uid() = user_id);
