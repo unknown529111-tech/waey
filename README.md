@@ -1,137 +1,132 @@
-# Waey (وعي) — Awareness Platform
+# Waey (وعي) Awareness Platform
 
-awareness platform for Egyptian Arabic users. RTL, localStorage-first, zero backend for user data.
+Waey platform help people build better habits in health, finance, education, and environment, all in one place.
 
-Stack: Vite + React 18 + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion + Recharts.  
-Backend: Supabase Edge Functions (contact form + AI chat proxy).  
-Domain: https://waey-m7.com
+[Waey website:](https://waey-m7.com)
+## What is Waey?
 
+Waey platform gives users daily tools to track habits, manage money, learn new things, and take care of their mental health. Unlike other apps that focus on only one area
+waey have 4 fields and its:
+- **Health** — Water tracker, sleep tracker,  weight tracker, sugar calculator, health tips
+- **Finance** — Expense tracker, budget planning, saving challenges, financial tips
+- **Environment** — Eco habits tracker, recycling tips, energy saving challenges
+- **Education** — Daily learning tips, 30-day plans
 
+## Why I built it
 
-## The idea of the website
+I noticed that awareness is decreasing aroud the world and people are becoming more lazy every day and Most awareness apps available today focus on only one field like environment or education only. So I created Waey to have all four fields in one place
 
-An website for health and finance and environment and education. Daily trackers. Streaks. Badges. 30-day plans. Quizzes. Calculators. AI assistant. All in Egyptian Arabic, RTL, with a warm nature palette.
+## Features
 
-Took 2+ months. Built with AI assistance (Claude, OpenCode). Every choice went through family review — the result is meant for our community, not for investors.
+- Daily habit tracking
+- Expense tracking with categories
+- Streak system with freeze options
+- Gamification — points, badges, achievements
+- 30-day plans 
+- AI assistant
+- Daily challenges and quotes
+- Night review journal
+- Big 3 daily priorities
+- Full RTL Arabic support
+- Light / dark theme
+- Offline support with sync queue
+- PDF report export
+- PWA — installable on mobile and desktop
 
----
+## Tech Stack
 
-## Quick start
+Frontend:  React , TypeScript, Vite, Tailwind CSS, shadcn/ui, Framer Motion
+Backend: Supabase
+Storage:  Supabase DB
+AI:  Groq API
+PDF:  jsPDF, jspdf-autotable
+Charts:  Recharts
+Deploy:  Cloudflare Pages
 
-```bash
+### Development
+
+## Requirements
+
+Node.js 18+
+npm
+Supabase account
+
+1. Clone the source code to your device
+
+```sh
+git clone https://github.com/unknown529111-tech/waey.git
+cd waey
+```
+
+2. Install the project's dependencies
+
+```sh
 cd frontend/waey
 npm install
+```
+
+3. Start the development server on `localhost:5173`
+
+```sh
 npm run dev
-# → http://localhost:8080
 ```
 
-| Command | What it does |
-|---------|-------------|
-| `npm run dev` | Dev server |
-| `npm run build` | Production build |
-| `npm run lint` | ESLint |
-| `npm run test` | Vitest (215 tests) |
-| `npm run preview` | Preview build |
+4. Build the site to:
 
----
-
-## Pages
-
-| Route | Page | What's there |
-|-------|------|-------------|
-| `/` | Home | Hero, prize banner, 5 section cards |
-| `/health` | Health | BMI/water/sleep/calorie calculators, hospital finder, first aid, Egyptian plate, breathing exercise, office health, checkups |
-| `/finance` | Finance | Budget calculator, envelope system, debt payoff, inflation protection, electricity/water cost, special budgets |
-| `/environment` | Environment | Natural cleaners, zero-waste, energy/water tips, recycling |
-| `/education` | Education | Study methods (Pomodoro, Active Recall, Feynman), focus tips, VARK quiz |
-| `/dashboard` | Dashboard | Water/sleep/activity trackers, mood, weight, expenses, daily challenge, gratitude journal, night review, big 3, badges, streak |
-| `/insights` | Insights | Weekly charts (Recharts), expense pie, sleep/mood correlation |
-| `/recipes` | Recipes | Egyptian recipes with calorie/cost/time filters, favorites |
-| `/quiz` | Quiz | 10-question daily quiz with feedback |
-| `/plans` | Plans | 30-day habit plans with daily check-off |
-| `/assistant` | Assistant | AI chat via Groq (llama-3.3-70b), streaming, Arabic system prompt |
-| `/admin` | Admin | Content management, challenge/quote/recipe CRUD |
-| `/privacy` | Privacy | Privacy policy |
-| `/terms` | Terms | Terms of use |
-
----
-
-## Architecture
-
-```
-User → Component → dailyStorage.ts / gamification.ts
-                       ↓
-                 localStorage (waey_* keys)
-                       ↓
-                 offlineQueue → Supabase (optional sync)
+```sh
+npm run build
 ```
 
-| Data | Where |
-|------|-------|
-| Auth | localStorage (plain mock, no real backend) |
-| Trackers | localStorage |
-| Streaks | localStorage (+ optional Supabase sync) |
-| Favorites | localStorage |
-| Plans | localStorage |
-| Quiz history | localStorage |
-| Contact form | Supabase Edge Function → Resend email |
-| AI chat | Supabase Edge Function → Groq API |
+5. Push database migrations
 
-Supabase is only for contact form and AI proxy. Everything else works offline.
+```sh
+supabase db push
+```
 
+6. Deploy edge functions
 
-## Design system
+```sh
+supabase functions deploy admin-auth
+supabase functions deploy ai-assistant
+supabase functions deploy send-contact
+```
 
-Palette: Moss green `#5D7052`, terracotta `#C18C5D`, sand `#E6DCCD`, warm ink `#2C2C24`. Dark mode: warm deep brown base `#1A1915` (not blue-navy).
+## Project Structure
 
-Font: Alexandria (Arabic geometric sans, 300–800). Headings at 700. Body at 400 with 1.9 line-height.
-
-Shapes: `rounded-3xl` (32px) on all cards. `rounded-full` on all buttons. SVG noise grain overlay at 4% opacity. Blurred gradient blobs as decoration. Tinted shadows (moss/clay), never black.
-
-Motion: Framer Motion page transitions (fade + translateY 20px, 0.4s), scroll-triggered reveals, hover micro-interactions.
-
-
-
-## Structure
-
-frontend/waey/
-├── src/
-│   ├── pages/            16 pages
-│   ├── components/       50+ custom + 3 shadcn/ui primitives
-│   ├── features/         18 feature widgets (trackers, challenges)
-│   ├── lib/              19 utilities (storage, streak, badges, analytics)
-│   ├── contexts/         Auth, Theme, Language (ar/en)
-│   ├── locales/          ar.ts (1157 keys), en.ts
-│   ├── data/             hospitals.ts, recipes.ts
-│   ├── hooks/            use-mobile, useStreak
-│   ├── supabase/         client.ts, types.ts
-│   └── test/             23 test files
+```
+waey/
+├── frontend/waey/          # React app
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── contexts/       # React contexts (Auth, Theme, Language)
+│   │   ├── features/       # Feature components (trackers, journal, etc.)
+│   │   ├── lib/            # Utilities, storage, gamification
+│   │   ├── pages/          # Route pages
+│   │   ├── supabase/       # Supabase client and types
+│   │   └── test/           # Vitest tests
+│   └── package.json
 ├── supabase/
-│   ├── functions/        3 Edge Functions (ai-assistant, send-contact, admin-auth)
-│   └── migrations/       4 SQL migrations
-└── tests/                Playwright E2E
+│   ├── migrations/         # Database migrations
+│   └── functions/          # Edge functions (admin-auth, ai-assistant, send-contact)
+└── README.md
+```
 
+## AI uasge
 
+AI was used in this project for:
 
-## Edge Functions
+- **Code generation** — Claude (opencode CLI) was used to write components, hooks, utility functions, and tests
+- **Problem solving** — AI helped debug the production white screen caused by circular Vite chunk dependencies, and the AI chat crash from undefined offline response function
+- **Database design** — AI assisted in designing the Supabase schema for 16+ tables
+- **Refactoring** — AI helped move from localStorage-only to Supabase
 
-| Function | Role | Provider |
-|----------|------|----------|
-| `ai-assistant`  | AI chat proxy | Groq (llama-3.3-70b), streaming, rate-limited (20 req/min) |
-| `send-contact`  | Contact form → email | Resend + DB backup, rate-limited (5 req/min) |
-| `admin-auth`    | Admin token auth | HMAC-SHA256, 4-hour expiry, rate-limited (10 req/min) |
+## Tests
 
----
+```sh
+npm run test
+```
 
-## Known issues
-
-- IndexedDB read fallback (`readJSONWithFallback`) exists but is never imported by callers
-
+215+ tests across 23 test files covering storage, gamification, streaks, analytics, presence, plans, admin, favorites, rate limiting, and more.
 
 ## Author
-**Mahmoud Ahmed Mohamed Khalil** — founder & developer.  
-Student, scout leader, photographer since age 13. Built this to help people improve their lives through small, practical steps.
-
-- Email: waey.official.mk@gmail.com
-- Facebook: [waey.official.mk](https://www.facebook.com/profile.php?id=61589322916820)
-- LinkedIn: [mahmoud-k](https://www.linkedin.com/in/mahmoud-k-15780939b/)
+Mahmoud Ahmed Mohamed Khalil Im 16 years old I love codingz AI and volunteering.
