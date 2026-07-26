@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Moon, Trophy, Lightbulb, Smartphone } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
-import { bumpStreak } from "@/lib/dailyStorage";
+import { bumpStreak, todayKey } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
+import { getUserId, syncJournalEntry, syncScreenOff } from "@/lib/supabaseStorage";
 
 const NightReview = () => {
   const t = useT();
@@ -22,18 +23,24 @@ const NightReview = () => {
     const stored = JSON.parse(localStorage.getItem("waey_review_achievement") || "{}");
     stored[today] = achievement;
     localStorage.setItem("waey_review_achievement", JSON.stringify(stored));
+    const uid = getUserId();
+    if (uid && achievement.trim()) syncJournalEntry(uid, todayKey(), "achievement", achievement);
   }, [achievement, today]);
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("waey_review_lesson") || "{}");
     stored[today] = lesson;
     localStorage.setItem("waey_review_lesson", JSON.stringify(stored));
+    const uid = getUserId();
+    if (uid && lesson.trim()) syncJournalEntry(uid, todayKey(), "lesson", lesson);
   }, [lesson, today]);
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("waey_screens_off") || "{}");
     stored[today] = screensOff;
     localStorage.setItem("waey_screens_off", JSON.stringify(stored));
+    const uid = getUserId();
+    if (uid) syncScreenOff(uid, todayKey(), screensOff);
   }, [screensOff, today]);
 
   useEffect(() => {

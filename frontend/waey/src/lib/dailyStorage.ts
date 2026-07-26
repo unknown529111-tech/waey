@@ -1,5 +1,6 @@
 // Streak delegated to streak.ts (single source of truth)
 import * as streak from "./streak";
+import { getUserId, syncDailyEntry, syncExpense, syncChallengeRecord, syncJournalEntry, syncScreenOff, syncBig3 } from "@/lib/supabaseStorage";
 export type { StreakState } from "./streak";
 export const getStreak = () => streak.getStreakState();
 export const getStreakFreezes = () => streak.getStreakFreezes();
@@ -81,6 +82,8 @@ export const setDailyValue = (key: string, value: number, date = todayKey()) => 
   const map = getDailyMap(key);
   map[date] = value;
   writeJSON(`waey_${key}`, map);
+  const uid = getUserId();
+  if (uid) syncDailyEntry(uid, date, key, value);
 };
 
 export const getDailyValue = (key: string, date = todayKey()): number =>
@@ -92,8 +95,11 @@ export const getExpenses = (date = todayKey()): ExpenseEntry[] =>
   readJSON<ExpenseEntry[]>(`waey_expenses_${date}`, []);
 export const addExpense = (e: Omit<ExpenseEntry, "id" | "ts">, date = todayKey()) => {
   const list = getExpenses(date);
-  list.push({ ...e, id: crypto.randomUUID(), ts: Date.now() });
+  const entry = { ...e, id: crypto.randomUUID(), ts: Date.now() };
+  list.push(entry);
   writeJSON(`waey_expenses_${date}`, list);
+  const uid = getUserId();
+  if (uid) syncExpense(uid, date, entry);
 };
 export const removeExpense = (id: string, date = todayKey()) => {
   writeJSON(
@@ -148,6 +154,8 @@ export const markChallengeDone = (date = todayKey()) => {
   const map = readJSON<Record<string, boolean>>(CHALLENGE_DONE_KEY, {});
   map[date] = true;
   writeJSON(CHALLENGE_DONE_KEY, map);
+  const uid = getUserId();
+  if (uid) syncChallengeRecord(uid, date, true);
 };
 
 // Mood: per day store value 1..5

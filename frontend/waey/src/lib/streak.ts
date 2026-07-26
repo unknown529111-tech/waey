@@ -1,4 +1,5 @@
 import { queueUpsert } from "@/lib/offlineQueue";
+import { getUserId, syncStreak, loadStreakFromSupabase } from "@/lib/supabaseStorage";
 
 const STREAK_KEY = "waey_streak";
 const FREEZES_KEY = "waey_streak_freezes";
@@ -98,6 +99,11 @@ export function initStreak(): void {}
 /** Get current streak state */
 export const getStreakState = (): StreakState => getStreak();
 
+function syncStreakData() {
+  const uid = getUserId();
+  if (uid) syncStreak(uid);
+}
+
 /** Freeze functions */
 export function getStreakFreezes(): number {
   try {
@@ -109,12 +115,14 @@ export function getStreakFreezes(): number {
 
 export function addStreakFreeze(count = 1) {
   localStorage.setItem(FREEZES_KEY, JSON.stringify(getStreakFreezes() + count));
+  syncStreakData();
 }
 
 export function consumeStreakFreeze(): boolean {
   const current = getStreakFreezes();
   if (current <= 0) return false;
   localStorage.setItem(FREEZES_KEY, JSON.stringify(current - 1));
+  syncStreakData();
   return true;
 }
 
@@ -140,6 +148,7 @@ export const bumpStreak = (email?: string): StreakState => {
 
   const next = { count, lastDay: today, freezeUsed };
   saveStreak(next);
+  syncStreakData();
 
   if (email) {
     tryClaimPrize(email, count);
@@ -168,6 +177,7 @@ export function restoreStreak(email?: string): boolean {
 
   const next: StreakState = { count: restoredCount, lastDay: yesterday };
   saveStreak(next);
+  syncStreakData();
   localStorage.setItem(pointsKey, JSON.stringify(points - 50));
 
   if (email) syncProfile(email, "", next);

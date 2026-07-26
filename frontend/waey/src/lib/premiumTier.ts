@@ -1,5 +1,6 @@
 // Premium Tier Feature Flags & Client-Side Gating
 // When Stripe is integrated, replace localStorage checks with server-validated tokens
+import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
 
 const PREMIUM_KEY = "waey_premium_tier";
 
@@ -23,6 +24,8 @@ export function setPremiumTier(tier: PremiumTier): void {
     PREMIUM_KEY,
     JSON.stringify({ tier, activatedAt: new Date().toISOString() })
   );
+  const uid = getUserId();
+  if (uid) syncUserSettings(uid);
 }
 
 export function isPremiumFeature(feature: string): boolean {

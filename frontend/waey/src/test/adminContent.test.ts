@@ -135,15 +135,15 @@ describe("exportAllData", () => {
 describe("resetAllData", () => {
   beforeEach(() => { localStorage.clear(); });
 
-  it("preserves waey_admin, waey_theme, and waey_onboarding_done", () => {
-    localStorage.setItem("waey_theme", "dark");
+  it("preserves waey_admin_token, waey_theme, and waey_onboarding_done", () => {
+    localStorage.setItem("waey-theme", "dark");
     localStorage.setItem("waey_onboarding_done", "true");
-    localStorage.setItem("waey_admin", "1");
+    localStorage.setItem("waey_admin_token", "saved-token");
     localStorage.setItem("waey_something", "delete-me");
     resetAllData();
-    expect(localStorage.getItem("waey_theme")).toBe("dark");
+    expect(localStorage.getItem("waey-theme")).toBe("dark");
     expect(localStorage.getItem("waey_onboarding_done")).toBe("true");
-    expect(localStorage.getItem("waey_admin")).toBe("1");
+    expect(localStorage.getItem("waey_admin_token")).toBe("saved-token");
     expect(localStorage.getItem("waey_something")).toBeNull();
   });
 });

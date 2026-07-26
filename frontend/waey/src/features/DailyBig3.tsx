@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { CheckCircle2, Circle, Target } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
-import { bumpStreak } from "@/lib/dailyStorage";
+import { bumpStreak, todayKey } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
+import { getUserId, syncBig3 } from "@/lib/supabaseStorage";
 
 const DailyBig3 = () => {
   const t = useT();
@@ -18,12 +19,16 @@ const DailyBig3 = () => {
     const stored = JSON.parse(localStorage.getItem("waey_big3") || "{}");
     stored[today] = tasks;
     localStorage.setItem("waey_big3", JSON.stringify(stored));
+    const uid = getUserId();
+    if (uid) syncBig3(uid);
   }, [tasks, today]);
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("waey_big3_done") || "{}");
     stored[today] = done;
     localStorage.setItem("waey_big3_done", JSON.stringify(stored));
+    const uid = getUserId();
+    if (uid) syncBig3(uid);
   }, [done, today]);
 
   const toggleDone = (i: number) => {

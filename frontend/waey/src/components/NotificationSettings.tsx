@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Bell, BellOff } from "lucide-react";
 import { requestNotificationPermission } from "@/lib/notifications";
+import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
 
 const CATEGORIES = [
   { id: "صحة", label: "الصحة", default: true },
@@ -41,6 +42,8 @@ const NotificationSettings = () => {
       : [...selected, id];
     setSelected(next);
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+    const uid = getUserId();
+    if (uid) syncUserSettings(uid);
   };
 
   return (

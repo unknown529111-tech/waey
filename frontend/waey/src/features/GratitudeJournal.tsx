@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Heart } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
-import { bumpStreak } from "@/lib/dailyStorage";
+import { bumpStreak, todayKey } from "@/lib/dailyStorage";
 import { recordActivity, evaluateBadges } from "@/lib/gamification";
+import { getUserId, syncJournalEntry } from "@/lib/supabaseStorage";
 
 const GratitudeJournal = () => {
   const t = useT();
@@ -25,6 +26,8 @@ const GratitudeJournal = () => {
     const stored = JSON.parse(localStorage.getItem("waey_gratitude") || "{}");
     stored[today] = text;
     localStorage.setItem("waey_gratitude", JSON.stringify(stored));
+    const uid = getUserId();
+    if (uid && text.trim()) syncJournalEntry(uid, todayKey(), "gratitude", text);
   }, [text, today]);
 
   return (

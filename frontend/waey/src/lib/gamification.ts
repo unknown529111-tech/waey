@@ -1,6 +1,7 @@
 // Gamification & Milestone Badges Engine for Waey (وعي)
 import { getDailyValue, readJSON, writeJSON, todayKey } from "./dailyStorage";
 import { getStreakState } from "@/lib/streak";
+import { getUserId, syncGamification, loadGamificationFromSupabase } from "@/lib/supabaseStorage";
 
 export interface Badge {
   id: string;
@@ -118,10 +119,17 @@ export function getUserStats(): UserStats {
 
 export function saveUserStats(stats: UserStats) {
   writeJSON(STATS_KEY, stats);
+  const uid = getUserId();
+  if (uid) syncGamification(uid);
 }
 
 export function getUnlockedBadgeIds(): string[] {
   return readJSON<string[]>(UNLOCKED_BADGES_KEY, []);
+}
+
+function syncGamificationData() {
+  const uid = getUserId();
+  if (uid) syncGamification(uid);
 }
 
 export function unlockBadge(badgeId: string): boolean {
@@ -129,7 +137,8 @@ export function unlockBadge(badgeId: string): boolean {
   if (current.includes(badgeId)) return false;
   const updated = [...current, badgeId];
   writeJSON(UNLOCKED_BADGES_KEY, updated);
-  addPoints(25); // Award +25 bonus points per badge unlocked
+  addPoints(25);
+  syncGamificationData();
   return true;
 }
 
@@ -142,6 +151,7 @@ export function addPoints(pts: number): number {
   const current = getUserPoints();
   const next = current + pts;
   writeJSON(POINTS_KEY, next);
+  syncGamificationData();
   return next;
 }
 
@@ -149,6 +159,7 @@ export function deductPoints(pts: number): boolean {
   const current = getUserPoints();
   if (current < pts) return false;
   writeJSON(POINTS_KEY, current - pts);
+  syncGamificationData();
   return true;
 }
 

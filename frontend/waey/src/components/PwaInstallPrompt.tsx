@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, X } from "lucide-react";
+import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -43,11 +44,15 @@ export function PwaInstallPrompt() {
     }
     deferredPrompt = null;
     setVisible(false);
+    const uid = getUserId();
+    if (uid) syncUserSettings(uid);
   };
 
   const handleDismiss = () => {
     try { localStorage.setItem("waey_pwa_dismissed", "true"); } catch { /* ignore */ }
     setVisible(false);
+    const uid = getUserId();
+    if (uid) syncUserSettings(uid);
   };
 
   return (

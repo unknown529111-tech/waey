@@ -1,5 +1,6 @@
 // Privacy-first local analytics helper for Waey platform
 // Collects anonymous feature usage metrics without tracking personal identifiers
+import { getUserId, syncAnalyticsEvents } from "@/lib/supabaseStorage";
 
 const EVENTS_KEY = "waey_analytics_events";
 
@@ -22,6 +23,8 @@ export function trackEvent(eventName: string, properties?: Record<string, unknow
     // Keep last 100 anonymous events locally
     if (events.length > 100) events.splice(0, events.length - 100);
     localStorage.setItem(EVENTS_KEY, JSON.stringify(events));
+    const uid = getUserId();
+    if (uid) syncAnalyticsEvents(uid);
   } catch {
     /* ignore */
   }

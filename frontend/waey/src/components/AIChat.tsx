@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { sanitizeString } from "@/lib/sanitize";
 import { useLanguage } from "@/contexts/useLanguage";
+import { getUserId, syncAIChat } from "@/lib/supabaseStorage";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -244,6 +245,8 @@ const AIChat = () => {
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-30))); } catch { /* ignore */ }
+    const uid = getUserId();
+    if (uid) syncAIChat(uid);
   }, [messages]);
 
   useEffect(() => {
@@ -352,7 +355,12 @@ const AIChat = () => {
     }
   };
 
-  const clearChat = () => { setMessages([]); try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ } };
+  const clearChat = () => {
+    setMessages([]);
+    try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+    const uid = getUserId();
+    if (uid) syncAIChat(uid);
+  };
 
   const providerLabel = () => {
     switch (provider) {

@@ -1,3 +1,5 @@
+import { getUserId, syncStreak } from "@/lib/supabaseStorage";
+
 const FREEZE_KEY = "waey_streak_freeze";
 
 export const getFreezeCount = () => {
@@ -15,6 +17,8 @@ export const useFreeze = () => {
     const raw = JSON.parse(localStorage.getItem(FREEZE_KEY) || "{}");
     raw[month] = (raw[month] ?? 3) - 1;
     localStorage.setItem(FREEZE_KEY, JSON.stringify(raw));
+    const uid = getUserId();
+    if (uid) syncStreak(uid);
   };
   return { freezes: getFreezeCount(), used, freeze };
 };

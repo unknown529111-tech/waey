@@ -127,6 +127,8 @@ export const PLANS: PlanDef[] = [
   },
 ];
 
+import { getUserId, syncPlans } from "@/lib/supabaseStorage";
+
 const KEY = (id: string) => `waey_plan_${id}`;
 type PlanState = { startedAt: string; completed: number[] }; // day indexes 0..29
 
@@ -140,9 +142,15 @@ export const getPlanState = (id: string): PlanState | null => {
   }
 };
 
+function syncPlansData() {
+  const uid = getUserId();
+  if (uid) syncPlans(uid);
+}
+
 export const startPlan = (id: string): PlanState => {
   const s: PlanState = { startedAt: new Date().toISOString(), completed: [] };
   localStorage.setItem(KEY(id), JSON.stringify(s));
+  syncPlansData();
   return s;
 };
 
@@ -152,9 +160,11 @@ export const togglePlanDay = (id: string, dayIdx: number): PlanState => {
   if (i >= 0) s.completed.splice(i, 1);
   else s.completed.push(dayIdx);
   localStorage.setItem(KEY(id), JSON.stringify(s));
+  syncPlansData();
   return s;
 };
 
 export const resetPlan = (id: string) => {
   localStorage.removeItem(KEY(id));
+  syncPlansData();
 };

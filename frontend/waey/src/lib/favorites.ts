@@ -1,3 +1,5 @@
+import { getUserId, syncFavorites } from "@/lib/supabaseStorage";
+
 const KEY = "waey_recipe_favs";
 
 export const getFavorites = (): string[] => {
@@ -13,6 +15,8 @@ export const toggleFavorite = (id: string): string[] => {
   const list = getFavorites();
   const next = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
   localStorage.setItem(KEY, JSON.stringify(next));
+  const uid = getUserId();
+  if (uid) syncFavorites(uid);
   return next;
 };
 

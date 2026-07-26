@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ShieldCheck, Trophy, FileSpreadsheet, Command, Check } from "lucide-react";
 import { readJSON, writeJSON } from "@/lib/dailyStorage";
+import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
 
 const WHATS_NEW_KEY = "waey_whats_new_v2_seen";
 
@@ -20,6 +21,8 @@ export function WhatsNewModal() {
   const handleClose = () => {
     writeJSON(WHATS_NEW_KEY, true);
     setOpen(false);
+    const uid = getUserId();
+    if (uid) syncUserSettings(uid);
   };
 
   if (!open) return null;

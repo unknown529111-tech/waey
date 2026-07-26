@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Wallet, TreePine, Brain, Sparkles, ArrowLeft } from "lucide-react";
+import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
 
 const ONBOARDING_KEY = "waey_onboarding_done";
 
@@ -46,6 +47,8 @@ const OnboardingOverlay = () => {
   const finish = () => {
     try { localStorage.setItem(ONBOARDING_KEY, "true"); } catch { /* ignore */ }
     setVisible(false);
+    const uid = getUserId();
+    if (uid) syncUserSettings(uid);
   };
 
   if (!visible) return null;

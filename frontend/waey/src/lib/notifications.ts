@@ -1,3 +1,5 @@
+import { getUserId, syncLastNotifTs } from "@/lib/supabaseStorage";
+
 const SETTINGS_KEY = "waey_notif_categories";
 
 const TIPS = [
@@ -41,6 +43,8 @@ const fire = () => {
   try {
     new Notification(t.title, { body: t.body, icon: "/icon-192.png", badge: "/icon-192.png" });
     localStorage.setItem(LAST_KEY, String(Date.now()));
+    const uid = getUserId();
+    if (uid) syncLastNotifTs(uid);
   } catch {
     /* ignore */
   }

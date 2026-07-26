@@ -1,20 +1,11 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { sha256hex } from "@/lib/hash";
-
-interface User {
-  name: string;
-  email: string;
-}
-
-interface StoredUser {
-  name: string;
-  email: string;
-  password: string;
-  passwordHash?: string;
-}
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+import { supabase } from "@/supabase/client";
+import type { User } from "@supabase/supabase-js";
+import { importLocalDataToSupabase, setUserId } from "@/lib/supabaseStorage";
 
 interface AuthContextType {
-  user: User | null;
+  user: { name: string; email: string } | null;
+  supabaseUser: User | null;
   isAuthenticated: boolean;
   isLoaded: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
@@ -26,7 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const STORAGE_KEY = "waey-auth";
 
-function getStoredAuth(): { user: User; token: string } | null {
+function getStoredAuth(): { user: { name: string; email: string }; userId?: string } | null {
   if (typeof window === "undefined") return null;
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -36,9 +27,9 @@ function getStoredAuth(): { user: User; token: string } | null {
   }
 }
 
-function setStoredAuth(user: User, token: string) {
+function setStoredAuth(user: { name: string; email: string }, userId?: string) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, userId }));
 }
 
 function clearStoredAuth() {
@@ -47,7 +38,8 @@ function clearStoredAuth() {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -60,76 +52,123 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoaded(true);
   }, []);
 
-  const signUp = async (name: string, email: string, password: string) => {
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setSupabaseUser(session.user);
+        if (!user) {
+          setUser({ name: session.user.user_metadata?.name || session.user.email || "", email: session.user.email || "" });
+          setStoredAuth({ name: session.user.user_metadata?.name || session.user.email || "", email: session.user.email || "" }, session.user.id);
+          setUserId(session.user.id);
+        }
+        setIsAuthenticated(true);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setSupabaseUser(session.user);
+        setUser({ name: session.user.user_metadata?.name || session.user.email || "", email: session.user.email || "" });
+        setStoredAuth({ name: session.user.user_metadata?.name || session.user.email || "", email: session.user.email || "" }, session.user.id);
+        setUserId(session.user.id);
+        setIsAuthenticated(true);
+      } else {
+        setSupabaseUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signUp = useCallback(async (name: string, email: string, password: string) => {
     if (!name.trim() || !email.trim() || !password) {
       return { success: false, error: "يرجى ملء جميع الحقول" };
     }
-
     if (password.length < 6) {
       return { success: false, error: "كلمة المرور يجب أن تكون 6 أحرف على الأقل" };
     }
 
-    const users = getStoredUsers();
-    if (users.find((u) => u.email === email)) {
-      return { success: false, error: "هذا البريد الإلكتروني مسجل بالفعل" };
+    if (!supabase) {
+      return { success: false, error: "خدمة التسجيل غير متاحة حاليًا" };
     }
 
-    const passwordHash = await sha256hex(password);
-    const newUser: StoredUser = { name, email, password: "", passwordHash };
-    users.push(newUser);
-    saveUsers(users);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name } },
+      });
 
-    const token = generateToken();
-    setStoredAuth({ name, email }, token);
-    setUser({ name, email });
-    setIsAuthenticated(true);
+      if (error) {
+        if (error.message.includes("already")) {
+          return { success: false, error: "هذا البريد الإلكتروني مسجل بالفعل" };
+        }
+        return { success: false, error: error.message };
+      }
 
-    return { success: true };
-  };
+      if (data?.user) {
+        setSupabaseUser(data.user);
+        setUser({ name, email });
+        setStoredAuth({ name, email }, data.user.id);
+        setUserId(data.user.id);
+        setIsAuthenticated(true);
 
-  const signIn = async (email: string, password: string) => {
-    const users = getStoredUsers();
-    const found = users.find((u) => u.email === email);
-    if (!found) {
-      return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
+        // Import localStorage data
+        importLocalDataToSupabase(email, data.user.id).catch(() => {});
+      }
+
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: "حدث خطأ في الاتصال" };
+    }
+  }, []);
+
+  const signIn = useCallback(async (email: string, password: string) => {
+    if (!supabase) {
+      return { success: false, error: "خدمة تسجيل الدخول غير متاحة حاليًا" };
     }
 
-    let match = false;
-    if (found.passwordHash) {
-      const inputHash = await sha256hex(password);
-      match = inputHash === found.passwordHash;
-    }
+    let name = "";
 
-    if (!match && found.password) {
-      match = password === found.password;
-      if (match) {
-        const passwordHash = await sha256hex(password);
-        found.passwordHash = passwordHash;
-        found.password = "";
-        saveUsers(users);
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
+        }
+        if (data?.user) {
+          name = data.user.user_metadata?.name || email;
+          setSupabaseUser(data.user);
+          setUser({ name, email });
+          setStoredAuth({ name, email }, data.user.id);
+          setUserId(data.user.id);
+          setIsAuthenticated(true);
+
+          const hasImported = localStorage.getItem("waey_imported_to_supabase");
+          if (!hasImported) {
+            importLocalDataToSupabase(email, data.user.id).catch(() => {});
+          }
+        }
+        return { success: true };
+      } catch {
+        return { success: false, error: "حدث خطأ في الاتصال" };
       }
     }
+  }, []);
 
-    if (!match) {
-      return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
+  const signOut = useCallback(async () => {
+    if (supabase) {
+      await supabase.auth.signOut().catch(() => {});
     }
-
-    const token = generateToken();
-    setStoredAuth({ name: found.name, email: found.email }, token);
-    setUser({ name: found.name, email: found.email });
-    setIsAuthenticated(true);
-
-    return { success: true };
-  };
-
-  const signOut = () => {
-    clearStoredAuth();
+    setSupabaseUser(null);
     setUser(null);
     setIsAuthenticated(false);
-  };
+    clearStoredAuth();
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoaded, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, supabaseUser, isAuthenticated, isLoaded, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
@@ -141,23 +180,4 @@ export function useAuth() {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-}
-
-function getStoredUsers(): StoredUser[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const stored = localStorage.getItem("waey-users");
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveUsers(users: StoredUser[]) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem("waey-users", JSON.stringify(users));
-}
-
-function generateToken(): string {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }

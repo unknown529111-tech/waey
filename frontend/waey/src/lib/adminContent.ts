@@ -1,7 +1,7 @@
 import type { Recipe } from "@/data/recipes";
+import { getUserId, syncAdminItems } from "@/lib/supabaseStorage";
 
 // ==================== ADMIN AUTH ====================
-const ADMIN_KEY = "waey_admin";
 const ADMIN_TOKEN_KEY = "waey_admin_token";
 
 /** Calls Supabase edge function to verify admin password and get a signed token */
@@ -27,9 +27,7 @@ async function callAdminAuth(body: Record<string, string | boolean>): Promise<Re
 
 export function isAdminLoggedIn(): boolean {
   try {
-    const flag = localStorage.getItem(ADMIN_KEY);
-    const token = localStorage.getItem(ADMIN_TOKEN_KEY);
-    return flag === "1" && !!token;
+    return !!localStorage.getItem(ADMIN_TOKEN_KEY);
   } catch { return false; }
 }
 
@@ -41,7 +39,6 @@ export async function adminLogin(password: string): Promise<boolean> {
   const result = await callAdminAuth({ password });
   if (result && typeof result.token === "string") {
     localStorage.setItem(ADMIN_TOKEN_KEY, result.token);
-    localStorage.setItem(ADMIN_KEY, "1");
     return true;
   }
   return false;
@@ -62,7 +59,6 @@ export async function verifyAdminToken(): Promise<boolean> {
 }
 
 export function adminLogout() {
-  localStorage.removeItem(ADMIN_KEY);
   localStorage.removeItem(ADMIN_TOKEN_KEY);
 }
 
@@ -80,6 +76,8 @@ export function getAdminRecipes(): AdminItem<Recipe>[] {
 
 export function saveAdminRecipes(recipes: AdminItem<Recipe>[]) {
   localStorage.setItem(ADMIN_RECIPES_KEY, JSON.stringify(recipes));
+  const uid = getUserId();
+  if (uid) syncAdminItems(uid);
 }
 
 export function addAdminRecipe(r: Recipe): AdminItem<Recipe>[] {
@@ -125,6 +123,8 @@ export function getAdminChallenges(): ChallengeItem[] {
 
 function saveAdminChallenges(list: ChallengeItem[]) {
   localStorage.setItem(ADMIN_CHALLENGES_KEY, JSON.stringify(list));
+  const uid = getUserId();
+  if (uid) syncAdminItems(uid);
 }
 
 export function addAdminChallenge(c: { emoji: string; text: string; area: string }): ChallengeItem[] {
@@ -164,6 +164,8 @@ export function getAdminQuotes(): QuoteItem[] {
 
 function saveAdminQuotes(list: QuoteItem[]) {
   localStorage.setItem(ADMIN_QUOTES_KEY, JSON.stringify(list));
+  const uid = getUserId();
+  if (uid) syncAdminItems(uid);
 }
 
 export function addAdminQuote(text: string): QuoteItem[] {
@@ -225,7 +227,7 @@ export async function exportToExcelAsync(fileName = "waey_data.xlsx") {
 }
 
 export function resetAllData(): void {
-  const preserve = [ADMIN_KEY, "waey_theme", "waey_onboarding_done"];
+  const preserve = [ADMIN_TOKEN_KEY, "waey-theme", "waey_onboarding_done"];
   const keys: string[] = [];
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
