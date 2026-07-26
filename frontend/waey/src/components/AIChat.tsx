@@ -356,9 +356,9 @@ const AIChat = () => {
 
   const providerLabel = () => {
     switch (provider) {
-      case "groq": return "Groq";
-      case "nvidia": return "NVIDIA";
-      case "deepseek": return "DeepSeek";
+      case "groq": return "";
+      case "nvidia": return "";
+      case "deepseek": return "";
       case "proxy": return t('chat.proxy');
       default: return t('chat.scope');
     }
