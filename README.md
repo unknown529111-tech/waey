@@ -1,132 +1,86 @@
-# Waey (وعي) Awareness Platform
+Waey (وعي) Awareness Platform
 
-Waey platform help people build better habits in health, finance, education, and environment, all in one place.
+Waey helps people build better habits in health, finance, education and the environment, all in one place.
 
-[Waey website:](https://waey-m7.com)
-## What is Waey?
+Website: https://waey-m7.com
 
-Waey platform gives users daily tools to track habits, manage money, learn new things, and take care of their mental health. Unlike other apps that focus on only one area
-waey have 4 fields and its:
-- **Health** — Water tracker, sleep tracker,  weight tracker, sugar calculator, health tips
-- **Finance** — Expense tracker, budget planning, saving challenges, financial tips
-- **Environment** — Eco habits tracker, recycling tips, energy saving challenges
-- **Education** — Daily learning tips, 30-day plans
+What is Waey?
 
-## Why I built it
+Waey gives users daily tools to track habits, manage money, learn new things and take care of their mental health. Most apps in this space only focus on one area, an environment app or a finance app, never all of them together. Waey covers four fields:
 
-I noticed that awareness is decreasing aroud the world and people are becoming more lazy every day and Most awareness apps available today focus on only one field like environment or education only. So I created Waey to have all four fields in one place
+Health: water tracker, sleep tracker, weight tracker, sugar calculator, health tips
+Finance: expense tracker, budget planning, saving challenges, financial tips
+Environment: eco habits tracker, recycling tips, energy saving challenges
+Education: daily learning tips, 30-day plans
+Why I built it
 
-## Features
+Awareness is dropping everywhere and people are getting lazier by the day. Most awareness apps out there stick to one field, environment only or education only, and I got tired of switching between five apps just to keep track of my own life. So I built Waey to bring all four fields into one place.
 
-- Daily habit tracking
-- Expense tracking with categories
-- Streak system with freeze options
-- Gamification — points, badges, achievements
-- 30-day plans 
-- AI assistant
-- Daily challenges and quotes
-- Night review journal
-- Big 3 daily priorities
-- Full RTL Arabic support
-- Light / dark theme
-- Offline support with sync queue
-- PDF report export
-- PWA — installable on mobile and desktop
+Features
+Daily habit tracking
+Expense tracking with categories
+Streak system with freeze options
+Gamification (points, badges, achievements)
+30-day plans
+AI assistant
+Daily challenges and quotes
+Night review journal
+Big 3 daily priorities
+Full RTL Arabic support
+Light/dark theme
+Offline support with sync queue
+PDF report export
+PWA, installable on mobile and desktop
+Tech stack
 
-## Tech Stack
+Frontend runs on React, TypeScript, Vite, Tailwind CSS, shadcn/ui and Framer Motion. Backend and storage are on Supabase. The AI assistant calls the Groq API. PDF exports use jsPDF with jspdf-autotable, and charts are built with Recharts. It's deployed on Cloudflare Pages.
 
-Frontend:  React , TypeScript, Vite, Tailwind CSS, shadcn/ui, Framer Motion
-Backend: Supabase
-Storage:  Supabase DB
-AI:  Groq API
-PDF:  jsPDF, jspdf-autotable
-Charts:  Recharts
-Deploy:  Cloudflare Pages
+Running it locally
 
-### Development
+You'll need Node.js 18+, npm and a Supabase account.
 
-## Requirements
+Clone it and move into the project:
 
-Node.js 18+
-npm
-Supabase account
-
-1. Clone the source code to your device
-
-```sh
+sh
 git clone https://github.com/unknown529111-tech/waey.git
-cd waey
-```
+cd waey/frontend/waey
 
-2. Install the project's dependencies
+Install and run:
 
-```sh
-cd frontend/waey
+sh
 npm install
-```
-
-3. Start the development server on `localhost:5173`
-
-```sh
 npm run dev
-```
 
-4. Build the site to:
+This starts the dev server on localhost:5173. To build for production:
 
-```sh
+sh
 npm run build
-```
 
-5. Push database migrations
+For the backend, push the database migrations and deploy the edge functions:
 
-```sh
+sh
 supabase db push
-```
-
-6. Deploy edge functions
-
-```sh
 supabase functions deploy admin-auth
 supabase functions deploy ai-assistant
 supabase functions deploy send-contact
-```
+Project layout
 
-## Project Structure
+Everything frontend-related lives under frontend/waey/src, split into components for shared UI, contexts for auth/theme/language state, features for the actual trackers and journal logic, lib for storage and gamification utilities, pages for routes, and supabase for the client and types. Tests sit in src/test. The supabase/ folder at the root holds the database migrations and the three edge functions (admin-auth, ai-assistant, send-contact).
 
-```
-waey/
-├── frontend/waey/          # React app
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── contexts/       # React contexts (Auth, Theme, Language)
-│   │   ├── features/       # Feature components (trackers, journal, etc.)
-│   │   ├── lib/            # Utilities, storage, gamification
-│   │   ├── pages/          # Route pages
-│   │   ├── supabase/       # Supabase client and types
-│   │   └── test/           # Vitest tests
-│   └── package.json
-├── supabase/
-│   ├── migrations/         # Database migrations
-│   └── functions/          # Edge functions (admin-auth, ai-assistant, send-contact)
-└── README.md
-```
+AI usage
 
-## AI uasge
+I used AI while building this, mainly Claude through the opencode CLI, for a few things:
 
-AI was used in this project for:
-
-- **Code generation** — Claude (opencode CLI) was used to write components, hooks, utility functions, and tests
-- **Problem solving** — AI helped debug the production white screen caused by circular Vite chunk dependencies, and the AI chat crash from undefined offline response function
-- **Database design** — AI assisted in designing the Supabase schema for 16+ tables
-- **Refactoring** — AI helped move from localStorage-only to Supabase
-
-## Tests
-
-```sh
+Writing components, hooks, utility functions and tests
+Debugging a production white screen caused by circular Vite chunk dependencies, and an AI chat crash caused by an undefined offline response function
+Designing the Supabase schema across 16+ tables
+Refactoring the app from localStorage-only to Supabase
+Tests
+sh
 npm run test
-```
 
-215+ tests across 23 test files covering storage, gamification, streaks, analytics, presence, plans, admin, favorites, rate limiting, and more.
+215+ tests across 23 files, covering storage, gamification, streaks, analytics, presence, plans, admin, favorites, rate limiting and more.
 
-## Author
-Mahmoud Ahmed Mohamed Khalil Im 16 years old I love codingz AI and volunteering.
+Author
+
+Mahmoud Ahmed Mohamed Khalil. I'm 16, I love coding, AI and volunteering.
