@@ -1,6 +1,7 @@
 # Waey (وعي) Awareness Platform
 
 Waey helps people build better habits in health, finance, education and the environment, all in one place.
+<img width="1316" height="620" alt="لقطة شاشة 2026-07-28 231557" src="https://github.com/user-attachments/assets/ffd5b480-604c-4a5a-a0eb-28f4ddea8d76" />
 
 Website: https://waey-m7.com
 
