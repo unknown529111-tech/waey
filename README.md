@@ -81,9 +81,7 @@ Everything frontend-related lives under `frontend/waey/src`, split into `compone
 I used AI while building this, mainly Claude through the opencode CLI, for a few things:
 
 - Writing components, hooks, utility functions and tests
-- Debugging a production white screen caused by circular Vite chunk dependencies, and an AI chat crash caused by an undefined offline response function
-- Designing the Supabase schema across 16+ tables
-- Refactoring the app from localStorage-only to Supabase
+- Debugging a production white screen caused by circular Vite chunk dependencies
 
 ## Tests
 
