@@ -4,26 +4,27 @@ import { Send, MessageCircleQuestion, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { sanitizeString, sanitizeEmail } from "@/lib/sanitize";
-import { useLanguage } from "@/contexts/useLanguage";
+import { useT } from "@/contexts/useLanguage";
 
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "الاسم مطلوب").max(100, "الاسم طويل جداً"),
-  email: z
-    .string()
-    .trim()
-    .email("بريد غير صالح")
-    .max(255, "البريد طويل جداً"),
-  message: z
-    .string()
-    .trim()
-    .min(1, "الرسالة مطلوبة")
-    .max(2000, "الرسالة طويلة جداً"),
-});
+const createContactSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z.string().trim().min(1, t('ask.nameRequired')).max(100, t('ask.nameTooLong')),
+    email: z
+      .string()
+      .trim()
+      .email(t('ask.invalidEmail'))
+      .max(255, t('ask.emailTooLong')),
+    message: z
+      .string()
+      .trim()
+      .min(1, t('ask.messageRequired'))
+      .max(2000, t('ask.messageTooLong')),
+  });
 
 const FORM_URL = "https://formsubmit.co/ajax/waey.official.mk@gmail.com";
 
 const AskSection = () => {
-  const { t } = useLanguage();
+  const t = useT();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -34,9 +35,9 @@ const AskSection = () => {
     e.preventDefault();
     if (sending) return;
 
-    const parsed = contactSchema.safeParse({ name, email, message });
+    const parsed = createContactSchema(t).safeParse({ name, email, message });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "بيانات غير صالحة");
+      toast.error(parsed.error.issues[0]?.message ?? t('ask.invalidData'));
       return;
     }
 
@@ -54,7 +55,7 @@ const AskSection = () => {
           name: nameClean,
           email: emailClean,
           message: messageClean,
-          _subject: `رسالة جديدة من موقع وعي — ${nameClean}`,
+          _subject: t('ask.emailSubject').replace('{name}', nameClean),
         }),
         signal: AbortSignal.timeout(10000),
       });
@@ -62,14 +63,14 @@ const AskSection = () => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       setSent(true);
-      toast.success("تم إرسال رسالتك بنجاح! هنرد عليك قريباً.");
+      toast.success(t('ask.success'));
       setName("");
       setEmail("");
       setMessage("");
       setTimeout(() => setSent(false), 4000);
     } catch (err) {
       console.error("send failed:", err);
-      toast.error("تعذر إرسال الرسالة. حاول مجدداً.");
+      toast.error(t('ask.error'));
     } finally {
       setSending(false);
     }

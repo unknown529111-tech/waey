@@ -14,39 +14,39 @@ interface Question {
 }
 
 const allQuestions: Question[] = [
-  // بيئة
-  { question: "كم لتر من الماء يُهدر عند ترك الصنبور مفتوحاً أثناء غسل الأسنان؟", options: ["2 لتر", "6 لترات", "12 لتر", "20 لتر"], correct: 2, explanation: "ترك الصنبور مفتوحاً لمدة دقيقتين يهدر حوالي 12 لتراً من الماء!", category: "environment" },
-  { question: "كم تستهلك الأجهزة في وضع الاستعداد (Standby) من إجمالي فاتورة الكهرباء؟", options: ["1-2%", "5-10%", "15-20%", "25-30%"], correct: 1, explanation: "الأجهزة في وضع الاستعداد تستهلك 5-10% من فاتورة الكهرباء. أطفئها من المصدر!", category: "environment" },
-  { question: "ما المدة التي يحتاجها الكيس البلاستيكي ليتحلل في الطبيعة؟", options: ["10 سنوات", "50 سنة", "200 سنة", "500 سنة"], correct: 3, explanation: "الأكياس البلاستيكية تحتاج حتى 500 سنة للتحلل! استخدم الأكياس القماشية.", category: "environment" },
-  { question: "ما نسبة المياه التي يمكن توفيرها باستخدام رأس دش موفر للمياه؟", options: ["10%", "25%", "40%", "60%"], correct: 2, explanation: "رأس الدش الموفر يقلل استهلاك المياه بنسبة 40% دون التأثير على ضغط المياه.", category: "environment" },
-  { question: "كم تنتج الأسرة الواحدة من النفايات الغذائية سنوياً في المتوسط؟", options: ["50 كيلو", "100 كيلو", "200 كيلو", "300+ كيلو"], correct: 3, explanation: "تنتج الأسرة الواحدة أكثر من 300 كيلو نفايات غذائية سنوياً! خطط وجباتك لتقلل الهدر.", category: "environment" },
-  { question: "كم شجرة يمكن إنقاذها بإعادة تدوير طن واحد من الورق؟", options: ["5 أشجار", "10 أشجار", "17 شجرة", "25 شجرة"], correct: 2, explanation: "إعادة تدوير طن واحد من الورق تنقذ 17 شجرة و26,500 لتر من الماء!", category: "environment" },
-  { question: "ما أكبر مصدر لتلوث المحيطات؟", options: ["النفايات الصناعية", "البلاستيك", "تسرب النفط", "الصرف الصحي"], correct: 1, explanation: "البلاستيك يشكل 80% من نفايات المحيطات. أكثر من 8 مليون طن بلاستيك يصل للمحيطات سنوياً.", category: "environment" },
-  { question: "كم لتر ماء يحتاج إنتاج كيلو لحم بقري واحد؟", options: ["1,000 لتر", "5,000 لتر", "10,000 لتر", "15,000 لتر"], correct: 3, explanation: "إنتاج كيلو لحم بقري يحتاج حوالي 15,000 لتر ماء! تقليل اللحوم يوفر موارد ضخمة.", category: "environment" },
-  { question: "ما نسبة الطاقة التي توفرها لمبات LED مقارنة بالعادية؟", options: ["30%", "50%", "70%", "80%"], correct: 3, explanation: "لمبات LED توفر حتى 80% من الطاقة وتدوم 25 مرة أطول من اللمبات التقليدية.", category: "environment" },
-  { question: "كم درجة يجب ضبط التكييف عليها لتوفير الطاقة؟", options: ["18°C", "20°C", "24°C", "28°C"], correct: 2, explanation: "ضبط التكييف على 24 درجة يوفر حتى 30% من استهلاك الكهرباء مقارنة بـ 20 درجة.", category: "environment" },
+  // Questions are stored with numeric keys; actual text comes from t()
+  { question: "q1", options: ["q1o1", "q1o2", "q1o3", "q1o4"], correct: 2, explanation: "q1e", category: "environment" },
+  { question: "q2", options: ["q2o1", "q2o2", "q2o3", "q2o4"], correct: 1, explanation: "q2e", category: "environment" },
+  { question: "q3", options: ["q3o1", "q3o2", "q3o3", "q3o4"], correct: 3, explanation: "q3e", category: "environment" },
+  { question: "q4", options: ["q4o1", "q4o2", "q4o3", "q4o4"], correct: 2, explanation: "q4e", category: "environment" },
+  { question: "q5", options: ["q5o1", "q5o2", "q5o3", "q5o4"], correct: 3, explanation: "q5e", category: "environment" },
+  { question: "q6", options: ["q6o1", "q6o2", "q6o3", "q6o4"], correct: 2, explanation: "q6e", category: "environment" },
+  { question: "q7", options: ["q7o1", "q7o2", "q7o3", "q7o4"], correct: 1, explanation: "q7e", category: "environment" },
+  { question: "q8", options: ["q8o1", "q8o2", "q8o3", "q8o4"], correct: 3, explanation: "q8e", category: "environment" },
+  { question: "q9", options: ["q9o1", "q9o2", "q9o3", "q9o4"], correct: 3, explanation: "q9e", category: "environment" },
+  { question: "q10", options: ["q10o1", "q10o2", "q10o3", "q10o4"], correct: 2, explanation: "q10e", category: "environment" },
   // صحة
-  { question: "ما الحد الأقصى الموصى به لاستهلاك السكر يومياً للبالغين؟", options: ["50 غرام", "25 غرام", "40 غرام", "15 غرام"], correct: 1, explanation: "توصي منظمة الصحة العالمية بعدم تجاوز 25 غراماً من السكر المضاف يومياً.", category: "health" },
-  { question: "ما أفضل وقت لشرب الماء لتحسين عملية الهضم؟", options: ["أثناء الأكل", "بعد الأكل مباشرة", "قبل الأكل بـ 30 دقيقة", "لا فرق"], correct: 2, explanation: "شرب الماء قبل الأكل بـ 30 دقيقة يساعد في تحسين الهضم والشعور بالشبع.", category: "health" },
-  { question: "كم ساعة نوم يحتاجها البالغ يومياً للحفاظ على صحته؟", options: ["4-5 ساعات", "6 ساعات", "7-9 ساعات", "10+ ساعات"], correct: 2, explanation: "يحتاج البالغ 7-9 ساعات نوم يومياً. قلة النوم تزيد خطر الأمراض المزمنة.", category: "health" },
-  { question: "كم خطوة يُنصح بالمشي يومياً للحفاظ على الصحة؟", options: ["3,000", "5,000", "7,000", "10,000"], correct: 3, explanation: "المشي 10,000 خطوة يومياً يحسن صحة القلب ويقلل خطر السكري والسمنة.", category: "health" },
-  { question: "ما كمية الماء الموصى بشربها يومياً للبالغ؟", options: ["4 أكواب", "6 أكواب", "8 أكواب", "12 كوب"], correct: 2, explanation: "يُنصح بشرب 8 أكواب (حوالي 2 لتر) ماء يومياً للحفاظ على ترطيب الجسم.", category: "health" },
-  { question: "ما أكثر مصدر خفي للسكر في النظام الغذائي اليومي؟", options: ["الفواكه", "العصائر المعلبة", "الأرز", "الخبز"], correct: 1, explanation: "العصائر المعلبة تحتوي على سكر مضاف أكثر من المشروبات الغازية أحياناً!", category: "health" },
-  { question: "كم دقيقة رياضة يومية تكفي للحفاظ على الصحة؟", options: ["10 دقائق", "20 دقيقة", "30 دقيقة", "60 دقيقة"], correct: 2, explanation: "30 دقيقة نشاط بدني معتدل يومياً تكفي لتقليل خطر أمراض القلب بنسبة 35%.", category: "health" },
-  { question: "ما تأثير الجلوس لأكثر من 6 ساعات متواصلة؟", options: ["لا تأثير", "آلام ظهر فقط", "يزيد خطر أمراض القلب", "يضعف النظر"], correct: 2, explanation: "الجلوس المطول يزيد خطر أمراض القلب والسكري. قم كل 30 دقيقة للتحرك!", category: "health" },
-  { question: "ما أفضل بديل صحي للمشروبات الغازية؟", options: ["عصير معلب", "ماء بالليمون والنعناع", "مشروب طاقة", "قهوة بالسكر"], correct: 1, explanation: "الماء بالليمون والنعناع بديل صحي ومنعش بدون سكريات مضافة.", category: "health" },
-  { question: "كم غرام ألياف يحتاجها الجسم يومياً؟", options: ["10 غرام", "15 غرام", "25-30 غرام", "50 غرام"], correct: 2, explanation: "يحتاج الجسم 25-30 غرام ألياف يومياً لتحسين الهضم والشعور بالشبع.", category: "health" },
+  { question: "q11", options: ["q11o1", "q11o2", "q11o3", "q11o4"], correct: 1, explanation: "q11e", category: "health" },
+  { question: "q12", options: ["q12o1", "q12o2", "q12o3", "q12o4"], correct: 2, explanation: "q12e", category: "health" },
+  { question: "q13", options: ["q13o1", "q13o2", "q13o3", "q13o4"], correct: 2, explanation: "q13e", category: "health" },
+  { question: "q14", options: ["q14o1", "q14o2", "q14o3", "q14o4"], correct: 3, explanation: "q14e", category: "health" },
+  { question: "q15", options: ["q15o1", "q15o2", "q15o3", "q15o4"], correct: 2, explanation: "q15e", category: "health" },
+  { question: "q16", options: ["q16o1", "q16o2", "q16o3", "q16o4"], correct: 1, explanation: "q16e", category: "health" },
+  { question: "q17", options: ["q17o1", "q17o2", "q17o3", "q17o4"], correct: 2, explanation: "q17e", category: "health" },
+  { question: "q18", options: ["q18o1", "q18o2", "q18o3", "q18o4"], correct: 2, explanation: "q18e", category: "health" },
+  { question: "q19", options: ["q19o1", "q19o2", "q19o3", "q19o4"], correct: 1, explanation: "q19e", category: "health" },
+  { question: "q20", options: ["q20o1", "q20o2", "q20o3", "q20o4"], correct: 2, explanation: "q20e", category: "health" },
   // مال
-  { question: "ما النسبة المثالية للادخار من الدخل الشهري حسب قاعدة 50/30/20؟", options: ["10%", "15%", "20%", "30%"], correct: 2, explanation: "قاعدة 50/30/20: 50% للاحتياجات، 30% للرغبات، 20% للادخار والاستثمار.", category: "finance" },
-  { question: "ما هو صندوق الطوارئ المالي المثالي؟", options: ["راتب شهر واحد", "راتب 3 أشهر", "راتب 3-6 أشهر", "راتب سنة"], correct: 2, explanation: "يُنصح بتوفير ما يعادل 3-6 أشهر من المصاريف كصندوق طوارئ مالي.", category: "finance" },
-  { question: "ما أفضل استراتيجية للتعامل مع الديون المتعددة؟", options: ["تجاهلها", "سداد الأصغر أولاً", "سداد الأعلى فائدة أولاً", "اقتراض المزيد"], correct: 2, explanation: "طريقة 'كرة الثلج' (سداد الأعلى فائدة أولاً) توفر أكثر على المدى الطويل.", category: "finance" },
-  { question: "كم يوفر تحضير الطعام في المنزل مقارنة بالمطاعم؟", options: ["20%", "40%", "60%", "80%"], correct: 2, explanation: "تحضير الطعام في المنزل يوفر حتى 60% مقارنة بالأكل في المطاعم!", category: "finance" },
-  { question: "ما النسبة المثالية لإنفاق الإيجار من الدخل؟", options: ["50%", "40%", "30%", "20%"], correct: 2, explanation: "يُنصح ألا يتجاوز الإيجار 30% من الدخل الشهري لتحقيق توازن مالي.", category: "finance" },
-  { question: "ما أول خطوة في التخطيط المالي الشخصي؟", options: ["الاستثمار", "تتبع المصاريف", "فتح حساب بنكي", "شراء عقار"], correct: 1, explanation: "تتبع المصاريف لمدة شهر هو الخطوة الأولى لفهم أين تذهب أموالك وكيف توفر.", category: "finance" },
-  { question: "كم تكلفك القهوة اليومية من كافيه سنوياً؟", options: ["3,000 ج.م", "7,000 ج.م", "12,000 ج.م", "18,000+ ج.م"], correct: 3, explanation: "قهوة بـ 50 ج.م يومياً = 18,000+ ج.م سنوياً! حضرها في البيت ووفر أكثر من 15,000 ج.م.", category: "finance" },
-  { question: "ما قاعدة 72 في الاستثمار؟", options: ["نسبة الضرائب", "مدة مضاعفة المال", "حد الاقتراض", "نسبة التأمين"], correct: 1, explanation: "قاعدة 72: اقسم 72 على نسبة العائد = عدد السنوات لمضاعفة أموالك. عائد 8% = 9 سنوات.", category: "finance" },
-  { question: "ما أكبر خطأ مالي يقع فيه الشباب؟", options: ["عدم الادخار مبكراً", "الإنفاق على التعليم", "فتح حساب بنكي", "العمل بوظيفة واحدة"], correct: 0, explanation: "تأخير الادخار هو أكبر خطأ. البدء مبكراً يمنح أموالك وقتاً أطول للنمو بفضل الفائدة المركبة.", category: "finance" },
-  { question: "كم يمكنك توفيره بإلغاء اشتراكات غير مستخدمة؟", options: ["100 ج.م/شهر", "300 ج.م/شهر", "500+ ج.م/شهر", "لا يوجد فرق"], correct: 2, explanation: "الاشتراكات المنسية (تطبيقات، صالات رياضية) تكلف أكثر من 500 ج.م شهرياً في المتوسط!", category: "finance" },
+  { question: "q21", options: ["q21o1", "q21o2", "q21o3", "q21o4"], correct: 2, explanation: "q21e", category: "finance" },
+  { question: "q22", options: ["q22o1", "q22o2", "q22o3", "q22o4"], correct: 2, explanation: "q22e", category: "finance" },
+  { question: "q23", options: ["q23o1", "q23o2", "q23o3", "q23o4"], correct: 2, explanation: "q23e", category: "finance" },
+  { question: "q24", options: ["q24o1", "q24o2", "q24o3", "q24o4"], correct: 2, explanation: "q24e", category: "finance" },
+  { question: "q25", options: ["q25o1", "q25o2", "q25o3", "q25o4"], correct: 2, explanation: "q25e", category: "finance" },
+  { question: "q26", options: ["q26o1", "q26o2", "q26o3", "q26o4"], correct: 1, explanation: "q26e", category: "finance" },
+  { question: "q27", options: ["q27o1", "q27o2", "q27o3", "q27o4"], correct: 3, explanation: "q27e", category: "finance" },
+  { question: "q28", options: ["q28o1", "q28o2", "q28o3", "q28o4"], correct: 1, explanation: "q28e", category: "finance" },
+  { question: "q29", options: ["q29o1", "q29o2", "q29o3", "q29o4"], correct: 0, explanation: "q29e", category: "finance" },
+  { question: "q30", options: ["q30o1", "q30o2", "q30o3", "q30o4"], correct: 2, explanation: "q30e", category: "finance" },
 ];
 
 const categoryColors = {
@@ -195,7 +195,7 @@ const AwarenessQuiz = () => {
                   />
                 </div>
 
-                <h3 className="text-xl font-bold leading-relaxed">{q.question}</h3>
+                <h3 className="text-xl font-bold leading-relaxed">{t(`quiz.${q.question}`)}</h3>
 
                 <div className="space-y-3">
                   {q.options.map((opt, idx) => (
@@ -219,7 +219,7 @@ const AwarenessQuiz = () => {
                         {answered && idx === q.correct && (
                           <CheckCircle className="size-5 text-primary shrink-0" />
                         )}
-                        <span>{opt}</span>
+                        <span>{t(`quiz.${opt}`)}</span>
                       </div>
                     </button>
                   ))}
@@ -232,7 +232,7 @@ const AwarenessQuiz = () => {
                     className="space-y-4"
                   >
                     <p className="text-sm text-muted-foreground bg-secondary/50 p-4 rounded-2xl leading-relaxed">
-                      💡 {q.explanation}
+                      💡 {t(`quiz.${q.explanation}`)}
                     </p>
                     <button
                       onClick={handleNext}

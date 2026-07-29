@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@supabase')) return 'vendor-supabase';
             if (id.includes('lucide-react') || id.includes('zod') || id.includes('clsx') || id.includes('tailwind-merge')) return 'vendor-ui';
             if (id.includes('jspdf') || id.includes('html2canvas') || id.includes('dompurify') || id.includes('canvg')) return 'vendor-pdf';
+            if (id.includes('xlsx')) return 'vendor-xlsx';
           }
           const pagesMatch = id.match(/src[/\\]pages[/\\]([^/\\]+)\.tsx$/);
           if (pagesMatch) return `page-${pagesMatch[1]}`;

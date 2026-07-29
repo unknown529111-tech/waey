@@ -4,13 +4,13 @@ import { Heart, Wallet, TreePine, ArrowLeft, LayoutDashboard, GraduationCap, Spa
 import HeroSection from "@/components/HeroSection";
 import AskSection from "@/components/AskSection";
 import { getCardRadius } from "@/lib/organic";
-import { useT } from "@/contexts/useLanguage";
+import { useT, useLanguage } from "@/contexts/useLanguage";
 import { SEO } from "@/components/SEO";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
 
 const Index = () => {
-  const t = useT();
+  const { t } = useLanguage();
 
   useEffect(() => {
     trackEvent("page_view", { page: "home" });
@@ -27,8 +27,8 @@ const Index = () => {
   return (
     <div className="relative">
       <SEO
-        title="وعي — منصة التوازن والصحة الشاملة"
-        description="منصة مصرية متكاملة لرفع التوعية بالصحة البدنية والنفسية، الإدارة المالية الذكية، والوعي البيئي والتعليمي."
+        title={t('index.seoTitle')}
+        description={t('index.seoDesc')}
       />
       <HeroSection />
 

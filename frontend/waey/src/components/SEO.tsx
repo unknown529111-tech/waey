@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useT } from "@/contexts/useLanguage";
 
 interface SEOProps {
   title?: string;
@@ -10,13 +11,16 @@ interface SEOProps {
 }
 
 export function SEO({
-  title = "وعي — منصة التوازن والصحة الشاملة",
-  description = "منصة مصرية عربية للتوازن الشامل في الصحة البدنية والنفسية، الميزانية المالية، والوعي البيئي والتعليمي.",
+  title: _title,
+  description: _description,
   canonical = "https://waey-m7.com",
   ogType = "website",
   ogImage = "/website-new.png",
   schema,
 }: SEOProps) {
+  const t = useT();
+  const title = _title ?? t('seo.defaultTitle');
+  const description = _description ?? t('seo.defaultDesc');
   useEffect(() => {
     // 1. Update Title
     const fullTitle = title.includes("وعي") ? title : `${title} | وعي`;
@@ -48,7 +52,7 @@ export function SEO({
     const schemaData = schema || {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "وعي - Waey",
+      name: t('seo.siteName'),
       url: canonical,
       description: description,
       inLanguage: "ar-EG",

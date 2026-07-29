@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Scale, Minus, Plus } from "lucide-react";
 import { getDailyValue, setDailyValue, bumpStreak } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
+import { useT } from "@/contexts/useLanguage";
 
 const STORAGE_KEY = "weight";
 
 const WeightTracker = () => {
+  const t = useT();
   const [val, setVal] = useState(getDailyValue(STORAGE_KEY) || 0);
 
   const update = (n: number) => {
@@ -22,15 +24,15 @@ const WeightTracker = () => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Scale className="size-5 text-primary" />
-          <h3 className="font-bold">الوزن</h3>
+          <h3 className="font-bold">{t('weight.title')}</h3>
         </div>
-        <span className="text-xs text-muted-foreground">{val > 0 ? `${val} كجم` : "--"}</span>
+        <span className="text-xs text-muted-foreground">{val > 0 ? `${val} ${t('weight.unit')}` : "--"}</span>
       </div>
       <div className="flex items-center justify-between">
         <button
           onClick={() => update(val - 0.5)}
           className="size-10 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center"
-          aria-label="نقص"
+          aria-label={t('weight.decrease')}
         >
           <Minus className="size-4" />
         </button>
@@ -38,12 +40,12 @@ const WeightTracker = () => {
         <button
           onClick={() => update(val + 0.5)}
           className="size-10 rounded-full text-white flex items-center justify-center bg-primary hover:bg-primary/90"
-          aria-label="أضف"
+          aria-label={t('weight.add')}
         >
           <Plus className="size-4" />
         </button>
       </div>
-      <p className="text-[10px] text-muted-foreground text-center mt-2">سجّل وزنك كل يوم لمتابعة التغير</p>
+      <p className="text-[10px] text-muted-foreground text-center mt-2">{t('weight.footnote')}</p>
     </div>
   );
 };

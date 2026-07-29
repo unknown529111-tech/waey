@@ -1,6 +1,17 @@
 let updateInterval: ReturnType<typeof setInterval> | null = null;
 let updateToastTimer: ReturnType<typeof setTimeout> | null = null;
 
+// Localizable SW update toast texts (Arabic defaults)
+let swToastTexts = {
+  title: "تحديث متاح",
+  desc: "نسخة جديدة من وعي جاهزة",
+  btn: "تحديث الآن",
+};
+
+export function setSWToastTexts(texts: { title: string; desc: string; btn: string }) {
+  swToastTexts = texts;
+}
+
 export function registerSW() {
   // Skip SW registration in development to avoid "Offline" issues
   if (import.meta.env.DEV) {
@@ -53,11 +64,11 @@ function showUpdateToast() {
         </svg>
       </div>
       <div class="flex-1">
-        <p class="text-sm font-bold">تحديث متاح</p>
-        <p class="text-xs text-muted-foreground">نسخة جديدة من وعي جاهزة</p>
+        <p class="text-sm font-bold">${swToastTexts.title}</p>
+        <p class="text-xs text-muted-foreground">${swToastTexts.desc}</p>
       </div>
       <button id="sw-update-btn" class="px-3 py-1.5 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition">
-        تحديث الآن
+${swToastTexts.btn}
       </button>
     </div>
   `;

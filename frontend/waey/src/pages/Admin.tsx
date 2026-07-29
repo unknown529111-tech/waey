@@ -132,12 +132,12 @@ export default function Admin() {
   }
 
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
-    { id: "dashboard", label: "الإحصائيات", icon: <LayoutDashboard className="size-4" /> },
-    { id: "recipes", label: "الوصفات", icon: <ChefHat className="size-4" /> },
-    { id: "challenges", label: "التحديات", icon: <BookOpen className="size-4" /> },
-    { id: "quotes", label: "الحكم", icon: <MessageSquareQuote className="size-4" /> },
-    { id: "users", label: "المستخدمين", icon: <Users className="size-4" /> },
-    { id: "system", label: "النظام", icon: <Settings className="size-4" /> },
+    { id: "dashboard", label: t('admin.tab.dashboard'), icon: <LayoutDashboard className="size-4" /> },
+    { id: "recipes", label: t('admin.tab.recipes'), icon: <ChefHat className="size-4" /> },
+    { id: "challenges", label: t('admin.tab.challenges'), icon: <BookOpen className="size-4" /> },
+    { id: "quotes", label: t('admin.tab.quotes'), icon: <MessageSquareQuote className="size-4" /> },
+    { id: "users", label: t('admin.tab.users'), icon: <Users className="size-4" /> },
+    { id: "system", label: t('admin.tab.system'), icon: <Settings className="size-4" /> },
   ];
 
   return (
@@ -234,12 +234,12 @@ function DashboardTab() {
   const adminQuotes = getAdminQuotes();
 
   const cards = [
-    { icon: <Users className="size-5" />, label: "إجمالي المستخدمين", value: cloudUsers, color: "" },
-    { icon: <ChefHat className="size-5" />, label: "الوصفات", value: RECIPES.length + adminRecipes.length, sub: `${adminRecipes.length} مضافة`, color: "" },
-    { icon: <Flame className="size-5 text-orange-500" />, label: "أعلى نقاط", value: cloudTopStreak, sub: cloudTopStreak >= 100 ? "🏆 فائز!" : "", color: cloudTopStreak >= 100 ? "text-amber-500" : "" },
-    { icon: <Trophy className="size-5" />, label: "الفائز بالجائزة", value: cloudPrize.winner ? "تم" : "لا يوجد", sub: cloudPrize.winner || "", color: cloudPrize.winner ? "text-amber-500" : "" },
-    { icon: <BookOpen className="size-5" />, label: "التحديات", value: CHALLENGES.length + adminChallenges.length, sub: `${adminChallenges.length} مضافة`, color: "" },
-    { icon: <MessageSquareQuote className="size-5" />, label: "الحكم", value: QUOTES.length + adminQuotes.length, sub: `${adminQuotes.length} مضافة`, color: "" },
+    { icon: <Users className="size-5" />, label: t('admin.card.totalUsers'), value: cloudUsers, color: "" },
+    { icon: <ChefHat className="size-5" />, label: t('admin.card.recipes'), value: RECIPES.length + adminRecipes.length, sub: `${adminRecipes.length} ${t('admin.challenge.added')}`, color: "" },
+    { icon: <Flame className="size-5 text-orange-500" />, label: t('admin.card.topStreak'), value: cloudTopStreak, sub: cloudTopStreak >= 100 ? t('admin.card.winnerBadge') : "", color: cloudTopStreak >= 100 ? "text-amber-500" : "" },
+    { icon: <Trophy className="size-5" />, label: t('admin.card.prizeWinner'), value: cloudPrize.winner ? t('admin.card.done') : t('admin.card.none'), sub: cloudPrize.winner || "", color: cloudPrize.winner ? "text-amber-500" : "" },
+    { icon: <BookOpen className="size-5" />, label: t('admin.card.challenges'), value: CHALLENGES.length + adminChallenges.length, sub: `${adminChallenges.length} ${t('admin.challenge.added')}`, color: "" },
+    { icon: <MessageSquareQuote className="size-5" />, label: t('admin.card.quotes'), value: QUOTES.length + adminQuotes.length, sub: `${adminQuotes.length} ${t('admin.challenge.added')}`, color: "" },
   ];
 
   return (
@@ -292,20 +292,20 @@ function LiveMetricsCard() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border/50 rounded-[2rem] p-6">
       <div className="flex items-center gap-3 mb-2">
         <div className="text-primary"><Users className="size-5" /></div>
-        <span className="text-sm font-bold text-muted-foreground">مؤشرات حية</span>
+        <span className="text-sm font-bold text-muted-foreground">{t('admin.live.title')}</span>
       </div>
       <div className="flex gap-4 items-center">
         <div>
           <div className="text-2xl font-bold">{online}</div>
-          <div className="text-xs text-muted-foreground">متصل الآن</div>
+          <div className="text-xs text-muted-foreground">{t('admin.live.online')}</div>
         </div>
         <div>
           <div className="text-2xl font-bold">{signedIn}</div>
-          <div className="text-xs text-muted-foreground">تسجيلات حقيقية</div>
+          <div className="text-xs text-muted-foreground">{t('admin.live.signedIn')}</div>
         </div>
         <div>
           <div className="text-2xl font-bold">{fmt(minMs)}</div>
-          <div className="text-xs text-muted-foreground">أقصر جلسة</div>
+          <div className="text-xs text-muted-foreground">{t('admin.live.minSession')}</div>
         </div>
       </div>
     </motion.div>
@@ -329,7 +329,7 @@ function RecipesTab() {
   return (
     <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
-        <h2 className="text-lg font-bold">الوصفات ({RECIPES.length + adminItems.length})</h2>
+        <h2 className="text-lg font-bold">{t('admin.tab.recipes')} ({RECIPES.length + adminItems.length})</h2>
         <div className="flex gap-2">
           <input
             value={search}
@@ -352,11 +352,11 @@ function RecipesTab() {
           <thead>
             <tr className="border-b border-border/50 text-muted-foreground sticky top-0 bg-card">
               <th className="text-right px-4 py-3 font-bold w-10">#</th>
-              <th className="text-right px-4 py-3 font-bold">الوصفة</th>
-              <th className="text-right px-4 py-3 font-bold hidden md:table-cell">التصنيفات</th>
-              <th className="text-center px-4 py-3 font-bold">سعرات</th>
-              <th className="text-center px-4 py-3 font-bold hidden sm:table-cell">التكلفة</th>
-              <th className="text-center px-4 py-3 font-bold w-20">إجراءات</th>
+              <th className="text-right px-4 py-3 font-bold">{t('admin.recipe.name')}</th>
+              <th className="text-right px-4 py-3 font-bold hidden md:table-cell">{t('admin.recipe.tags')}</th>
+              <th className="text-center px-4 py-3 font-bold">{t('admin.recipe.calories')}</th>
+              <th className="text-center px-4 py-3 font-bold hidden sm:table-cell">{t('admin.recipe.cost')}</th>
+              <th className="text-center px-4 py-3 font-bold w-20">{t('admin.recipe.actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -379,19 +379,19 @@ function RecipesTab() {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-center">{r.calories}</td>
-                <td className="px-4 py-3 text-center hidden sm:table-cell">{r.costEGP} ج</td>
+                <td className="px-4 py-3 text-center hidden sm:table-cell">{r.costEGP} {t('recipes.egp')}</td>
                 <td className="px-4 py-3 text-center">
-                  <span className="text-[10px] text-muted-foreground">أساسية</span>
+                  <span className="text-[10px] text-muted-foreground">{t('admin.recipe.builtin')}</span>
                 </td>
               </tr>
             ))}
             {/* Admin recipes */}
             <tr className="bg-primary/5">
-              <td colSpan={6} className="px-4 py-2 text-xs font-bold text-primary">الوصفات المضافة من المشرف ({adminItems.length})</td>
+              <td colSpan={6} className="px-4 py-2 text-xs font-bold text-primary">{t('admin.recipe.adminAdded', { count: adminItems.length })}</td>
             </tr>
             {adminItems.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground text-sm">لا توجد وصفات مضافة بعد</td>
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground text-sm">{t('admin.recipe.noAdded')}</td>
               </tr>
             ) : (
               adminItems.map((r, i) => (
@@ -411,7 +411,7 @@ function RecipesTab() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">{r.calories}</td>
-                  <td className="px-4 py-3 text-center hidden sm:table-cell">{r.costEGP} ج</td>
+                  <td className="px-4 py-3 text-center hidden sm:table-cell">{r.costEGP} {t('recipes.egp')}</td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-1">
                       <button
@@ -495,12 +495,12 @@ function RecipeModal({ mode, data, onSave, onClose }: {
         className="bg-card border border-border/50 rounded-[2rem] w-full max-w-lg max-h-[90vh] overflow-y-auto p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-bold mb-4">{mode === "add" ? "إضافة وصفة جديدة" : "تعديل الوصفة"}</h3>
+        <h3 className="text-lg font-bold mb-4">{mode === "add" ? t('admin.recipe.addTitle') : t('admin.recipe.editTitle')}</h3>
 
         <div className="space-y-3">
           <div className="grid grid-cols-3 gap-2">
             <div>
-              <label className="text-xs font-bold text-muted-foreground">الإيموجي</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.emoji')}</label>
               <input
                 value={form.emoji || ""}
                 onChange={(e) => setForm({ ...form, emoji: e.target.value })}
@@ -509,7 +509,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-muted-foreground">السعرات</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.calories')}</label>
               <input
                 type="number"
                 value={form.calories ?? 200}
@@ -518,7 +518,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-muted-foreground">التكلفة (ج)</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.cost')}</label>
               <input
                 type="number"
                 value={form.costEGP ?? 15}
@@ -529,17 +529,17 @@ function RecipeModal({ mode, data, onSave, onClose }: {
           </div>
 
           <div>
-            <label className="text-xs font-bold text-muted-foreground">اسم الوصفة</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.name')}</label>
             <input
               value={form.name || ""}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="w-full h-10 rounded-full bg-muted border border-border/50 px-4 text-sm outline-none focus:ring-2 focus:ring-primary/30 mt-1"
-              placeholder="مثال: مكرونة بالبشاميل"
+              placeholder={t('admin.recipe.namePlaceholder')}
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-muted-foreground">التصنيفات</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.tags')}</label>
             <div className="flex flex-wrap gap-1.5 mt-2">
               {allTags.map((t) => {
                 const active = (form.tags || []).includes(t);
@@ -560,7 +560,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-xs font-bold text-muted-foreground">وقت التحضير (دقيقة)</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.prepTime')}</label>
               <input
                 type="number"
                 value={form.prepMin ?? 15}
@@ -569,7 +569,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-muted-foreground">الحصص</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.servings')}</label>
               <input
                 type="number"
                 value={form.servings ?? 2}
@@ -580,22 +580,22 @@ function RecipeModal({ mode, data, onSave, onClose }: {
           </div>
 
           <div>
-            <label className="text-xs font-bold text-muted-foreground">المكونات (واحد في كل سطر)</label>
+            <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.ingredients')}</label>
             <textarea
               value={(form.ingredients || []).join("\n")}
               onChange={(e) => setForm({ ...form, ingredients: e.target.value.split("\n").filter(Boolean) })}
               className="w-full h-20 rounded-2xl bg-muted border border-border/50 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30 mt-1 resize-none"
-              placeholder="دجاج&#10;أرز&#10;طماطم"
+              placeholder={t('admin.recipe.ingredientsPlaceholder')}
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-muted-foreground">خطوات التحضير (واحد في كل سطر)</label>
+            <label className="text-xs font-bold text-muted-foreground">{t('admin.recipe.steps')}</label>
             <textarea
               value={(form.steps || []).join("\n")}
               onChange={(e) => setForm({ ...form, steps: e.target.value.split("\n").filter(Boolean) })}
               className="w-full h-20 rounded-2xl bg-muted border border-border/50 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30 mt-1 resize-none"
-              placeholder="اسلق المكرونة.&#10;حضّر الصلصة.&#10;قدّم ساخن."
+              placeholder={t('admin.recipe.stepsPlaceholder')}
             />
           </div>
         </div>
@@ -626,7 +626,7 @@ function ChallengesTab() {
   const [adminItems, setAdminItems] = useState(getAdminChallenges());
   const [showAdd, setShowAdd] = useState(false);
   const [editForm, setEditForm] = useState<{ id?: string; emoji: string; text: string; area: string }>({
-    emoji: "🌟", text: "", area: "صحة",
+    emoji: "🌟", text: "", area: "صحة", // Data values remain Arabic for compatibility with challenge storage
   });
 
   const refresh = () => setAdminItems(getAdminChallenges());
@@ -639,7 +639,7 @@ function ChallengesTab() {
   return (
     <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
-        <h2 className="text-lg font-bold">التحديات اليومية ({base.length + adminItems.length})</h2>
+        <h2 className="text-lg font-bold">{t('admin.challenge.title')} ({base.length + adminItems.length})</h2>
         <button
           onClick={() => { setEditForm({ emoji: "🌟", text: "", area: "صحة" }); setShowAdd(true); }}
           className="h-9 px-4 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-1.5"
@@ -650,7 +650,7 @@ function ChallengesTab() {
       </div>
 
       <div className="divide-y divide-border/30">
-        <div className="px-6 py-2 text-xs font-bold text-muted-foreground bg-muted/30">التحديات الأساسية ({base.length})</div>
+        <div className="px-6 py-2 text-xs font-bold text-muted-foreground bg-muted/30">{t('admin.challenge.builtin')} ({base.length})</div>
         {base.map((c, i) => (
           <div key={i} className="px-6 py-3 flex items-center gap-3 hover:bg-muted/20 transition-colors">
             <span className="text-xl">{c.emoji}</span>
@@ -660,9 +660,9 @@ function ChallengesTab() {
             </div>
           </div>
         ))}
-        <div className="px-6 py-2 text-xs font-bold text-primary bg-primary/5">المضافة ({adminItems.length})</div>
+        <div className="px-6 py-2 text-xs font-bold text-primary bg-primary/5">{t('admin.challenge.added')} ({adminItems.length})</div>
         {adminItems.length === 0 ? (
-          <div className="px-6 py-8 text-center text-sm text-muted-foreground">لا توجد تحديات مضافة بعد</div>
+          <div className="px-6 py-8 text-center text-sm text-muted-foreground">{t('admin.challenge.noAdded')}</div>
         ) : (
           adminItems.map((c) => (
             <div key={c._adminId} className="px-6 py-3 flex items-center gap-3 hover:bg-primary/5 transition-colors group">
@@ -697,25 +697,25 @@ function ChallengesTab() {
               className="bg-card border border-border/50 rounded-[2rem] w-full max-w-md p-6"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-bold mb-4">{editForm.id ? "تعديل التحدي" : "إضافة تحدي جديد"}</h3>
+              <h3 className="text-lg font-bold mb-4">{editForm.id ? t('admin.challenge.editTitle') : t('admin.challenge.addTitle')}</h3>
               <div className="space-y-3">
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label className="text-xs font-bold text-muted-foreground">الإيموجي</label>
+              <label className="text-xs font-bold text-muted-foreground">{t('admin.challenge.emoji')}</label>
                     <input value={editForm.emoji} onChange={(e) => setEditForm({ ...editForm, emoji: e.target.value })} className="w-full h-10 rounded-full bg-muted border border-border/50 px-4 text-sm text-center mt-1 focus:outline-none focus:ring-2 focus:ring-primary/30" />
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-muted-foreground">المجال</label>
+                    <label className="text-xs font-bold text-muted-foreground">{t('admin.challenge.area')}</label>
                     <select value={editForm.area} onChange={(e) => setEditForm({ ...editForm, area: e.target.value })} className="w-full h-10 rounded-full bg-muted border border-border/50 px-4 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-primary/30">
-                      <option value="صحة">صحة</option>
-                      <option value="مال">مال</option>
-                      <option value="بيئة">بيئة</option>
+                      <option value="صحة">{t('admin.challenge.areaHealth')}</option>
+                      <option value="مال">{t('admin.challenge.areaFinance')}</option>
+                      <option value="بيئة">{t('admin.challenge.areaEnvironment')}</option>
                     </select>
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-muted-foreground">نص التحدي</label>
-                  <textarea value={editForm.text} onChange={(e) => setEditForm({ ...editForm, text: e.target.value })} className="w-full h-20 rounded-2xl bg-muted border border-border/50 px-4 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder="مثال: اشرب 8 أكواب مياه اليوم." />
+                  <label className="text-xs font-bold text-muted-foreground">{t('admin.challenge.text')}</label>
+                  <textarea value={editForm.text} onChange={(e) => setEditForm({ ...editForm, text: e.target.value })} className="w-full h-20 rounded-2xl bg-muted border border-border/50 px-4 py-2 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder={t('admin.challenge.textPlaceholder')} />
                 </div>
               </div>
               <div className="flex gap-2 mt-6">
@@ -758,7 +758,7 @@ function QuotesTab() {
   return (
     <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
-        <h2 className="text-lg font-bold">الحكم اليومية ({base.length + adminItems.length})</h2>
+        <h2 className="text-lg font-bold">{t('admin.quote.title')} ({base.length + adminItems.length})</h2>
         <button
           onClick={() => { setEditText(""); setEditId(undefined); setShowAdd(true); }}
           className="h-9 px-4 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all flex items-center gap-1.5"
@@ -769,16 +769,16 @@ function QuotesTab() {
       </div>
 
       <div className="divide-y divide-border/30">
-        <div className="px-6 py-2 text-xs font-bold text-muted-foreground bg-muted/30">الحكم الأساسية ({base.length})</div>
+        <div className="px-6 py-2 text-xs font-bold text-muted-foreground bg-muted/30">{t('admin.quote.builtin')} ({base.length})</div>
         {base.map((q, i) => (
           <div key={i} className="px-6 py-3 flex items-center gap-3 hover:bg-muted/20 transition-colors">
             <span className="text-muted-foreground shrink-0 w-6 text-center text-xs">{i + 1}</span>
             <p className="text-sm truncate">{q}</p>
           </div>
         ))}
-        <div className="px-6 py-2 text-xs font-bold text-primary bg-primary/5">المضافة ({adminItems.length})</div>
+        <div className="px-6 py-2 text-xs font-bold text-primary bg-primary/5">{t('admin.quote.added')} ({adminItems.length})</div>
         {adminItems.length === 0 ? (
-          <div className="px-6 py-8 text-center text-sm text-muted-foreground">لا توجد حكم مضافة بعد</div>
+          <div className="px-6 py-8 text-center text-sm text-muted-foreground">{t('admin.quote.noAdded')}</div>
         ) : (
           adminItems.map((q) => (
             <div key={q._adminId} className="px-6 py-3 flex items-center gap-3 hover:bg-primary/5 transition-colors group">
@@ -809,12 +809,12 @@ function QuotesTab() {
               className="bg-card border border-border/50 rounded-[2rem] w-full max-w-md p-6"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-bold mb-4">{editId ? "تعديل الحكمة" : "إضافة حكمة جديدة"}</h3>
+              <h3 className="text-lg font-bold mb-4">{editId ? t('admin.quote.editTitle') : t('admin.quote.addTitle')}</h3>
               <textarea
                 value={editText}
                 onChange={(e) => setEditText(e.target.value)}
                 className="w-full h-24 rounded-2xl bg-muted border border-border/50 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
-                placeholder="اكتب الحكمة هنا..."
+                placeholder={t('admin.quote.placeholder')}
               />
               <div className="flex gap-2 mt-4">
                 <button
@@ -872,21 +872,21 @@ function UsersTab() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-green-600 text-[10px] font-bold">Supabase ✓</span>
-            <div className="text-xs text-muted-foreground">بيانات سحابية مباشرة</div>
+            <div className="text-xs text-muted-foreground">{t('admin.users.cloudData')}</div>
           </div>
         </div>
       </div>
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
-        <h2 className="text-lg font-bold">المستخدمين ({users.length})</h2>
+        <h2 className="text-lg font-bold">{t('admin.users.title', { count: users.length })}</h2>
         <button
           onClick={() => {
-            const text = users.map((u, i) => `${i + 1}. ${u.name} (${u.email}) — ${u.streakCount} نقطة`).join("\n");
+            const text = users.map((u, i) => `${i + 1}. ${u.name} (${u.email}) — ${u.streakCount} ${t('admin.users.points')}`).join("\n");
             navigator.clipboard.writeText(text);
           }}
           className="h-9 px-4 text-xs font-bold rounded-full bg-muted hover:bg-muted/80 transition-all flex items-center gap-1.5"
         >
           <Copy className="size-3" />
-          نسخ
+          {t('common.copy')}
         </button>
       </div>
 
@@ -895,16 +895,16 @@ function UsersTab() {
           <thead>
             <tr className="border-b border-border/50 text-muted-foreground sticky top-0 bg-card">
               <th className="text-right px-4 py-3 font-bold">#</th>
-              <th className="text-right px-4 py-3 font-bold">الاسم</th>
-              <th className="text-right px-4 py-3 font-bold hidden sm:table-cell">البريد</th>
-              <th className="text-center px-4 py-3 font-bold">النقاط</th>
+              <th className="text-right px-4 py-3 font-bold">{t('admin.users.name')}</th>
+              <th className="text-right px-4 py-3 font-bold hidden sm:table-cell">{t('admin.users.email')}</th>
+              <th className="text-center px-4 py-3 font-bold">{t('admin.users.points')}</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={4} className="text-center py-12 text-muted-foreground">جاري التحميل...</td></tr>
+              <tr><td colSpan={4} className="text-center py-12 text-muted-foreground">{t('common.loading')}</td></tr>
             ) : users.length === 0 ? (
-              <tr><td colSpan={4} className="text-center py-12 text-muted-foreground">لا يوجد مستخدمين بعد</td></tr>
+              <tr><td colSpan={4} className="text-center py-12 text-muted-foreground">{t('admin.users.empty')}</td></tr>
             ) : (
               users.map((u, i) => (
                 <tr key={u.email} className={`border-b border-border/30 hover:bg-muted/30 transition-colors ${
@@ -932,9 +932,9 @@ function UsersTab() {
           <div className="flex items-center gap-3">
             <Trophy className="size-5 text-amber-500" />
             <div>
-              <p className="text-sm font-bold">الجائزة</p>
+              <p className="text-sm font-bold">{t('admin.users.prize')}</p>
               <p className="text-xs text-muted-foreground">
-                {prize.winner ? `الفائز: ${prize.winner}` : "لم يتم الفوز بعد"}
+                {prize.winner ? t('admin.users.prizeWinner', { email: prize.winner }) : t('admin.users.noWinner')}
               </p>
             </div>
           </div>
@@ -959,10 +959,10 @@ function SystemTab() {
       >
         <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
           <Download className="size-5 text-primary" />
-          تصدير البيانات
+          {t('admin.system.export')}
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
-          تصدير جميع بيانات localStorage كملف JSON للنسخ الاحتياطي.
+          {t('admin.system.exportDesc')}
         </p>
         {exported ? (
           <div className="relative">
@@ -984,10 +984,10 @@ function SystemTab() {
             onClick={() => setExported(exportAllData())}
             className="h-10 px-5 text-xs font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
           >
-            تصدير البيانات
+            {t('admin.system.export')}
           </button>
         )}
-        {copied && <p className="text-xs text-green-600 mt-2">تم النسخ!</p>}
+        {copied && <p className="text-xs text-green-600 mt-2">{t('admin.system.copied')}</p>}
       </motion.div>
 
       <motion.div
@@ -999,9 +999,9 @@ function SystemTab() {
         <div className="flex items-start gap-3">
           <AlertTriangle className="size-5 text-red-500 shrink-0 mt-0.5" />
           <div className="flex-1">
-            <h3 className="font-bold text-lg mb-1">إعادة ضبط النظام</h3>
+            <h3 className="font-bold text-lg mb-1">{t('admin.system.reset')}</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              هذا الإجراء سيمسح جميع بيانات المستخدمين، النقاط، التحديات، والحكم المضافة. لا يمكن التراجع عنه.
+              {t('admin.system.resetDesc')}
             </p>
             {showReset ? (
               <div className="flex gap-2">
@@ -1012,7 +1012,7 @@ function SystemTab() {
                   }}
                   className="h-9 px-4 text-xs font-bold rounded-full bg-red-600 text-white hover:bg-red-700 transition-all"
                 >
-                  تأكيد المسح
+                  {t('admin.system.confirmReset')}
                 </button>
                 <button
                   onClick={() => setShowReset(false)}
@@ -1026,7 +1026,7 @@ function SystemTab() {
                 onClick={() => setShowReset(true)}
                 className="h-9 px-4 text-xs font-bold rounded-full bg-red-50 dark:bg-red-950/20 text-red-600 border border-red-200 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-950/40 transition-all"
               >
-                إعادة ضبط الكل
+                {t('admin.system.resetAll')}
               </button>
             )}
           </div>
@@ -1039,13 +1039,13 @@ function SystemTab() {
         transition={{ delay: 0.1 }}
         className="bg-card border border-border/50 rounded-[2rem] p-6"
       >
-        <h3 className="font-bold text-lg mb-2">معلومات النظام</h3>
+        <h3 className="font-bold text-lg mb-2">{t('admin.system.info')}</h3>
         <div className="space-y-1.5 text-sm text-muted-foreground">
-          <p>إجمالي الوصفات الأساسية: {RECIPES.length}</p>
-          <p>إجمالي التحديات الأساسية: {CHALLENGES.length}</p>
-          <p>إجمالي الحكم الأساسية: {QUOTES.length}</p>
-          <p>الخطط: {PLANS.length}</p>
-          <p>يمكن تغييرها عبر متغير البيئة <code className="text-xs bg-muted px-1 py-0.5 rounded">VITE_ADMIN_PASSWORD</code></p>
+          <p>{t('admin.system.totalRecipes', { count: RECIPES.length })}</p>
+          <p>{t('admin.system.totalChallenges', { count: CHALLENGES.length })}</p>
+          <p>{t('admin.system.totalQuotes', { count: QUOTES.length })}</p>
+          <p>{t('admin.system.totalPlans', { count: PLANS.length })}</p>
+          <p>{t('admin.system.envNote')} <code className="text-xs bg-muted px-1 py-0.5 rounded">VITE_ADMIN_PASSWORD</code></p>
         </div>
       </motion.div>
     </div>

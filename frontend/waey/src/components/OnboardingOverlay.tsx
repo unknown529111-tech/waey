@@ -2,38 +2,40 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Wallet, TreePine, Brain, Sparkles, ArrowLeft } from "lucide-react";
 import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
+import { useT } from "@/contexts/useLanguage";
 
 const ONBOARDING_KEY = "waey_onboarding_done";
 
-const slides = [
-  {
-    icon: Sparkles,
-    title: "أهلاً بك في وعي",
-    desc: "منصتك الشاملة للتوازن — صحة، مال، بيئة، تعليم، وصحة نفسية. كل حاجة في مكان واحد.",
-  },
-  {
-    icon: Heart,
-    title: "تابع عاداتك اليومية",
-    desc: "سجّل مياهك، نومك، نشاطك، ومزاجك كل يوم. وشوف ستريكك وإنجازاتك.",
-  },
-  {
-    icon: Wallet,
-    title: "خطط ميزانيتك",
-    desc: "حاسبات ذكية للميزانية والفواتير، وخطط 30 يوم للادخار والصحة والبيئة.",
-  },
-  {
-    icon: Brain,
-    title: "اختبر نفسك وتعلم",
-    desc: "اختبارات تفاعلية، نصائح يومية، ومساعد ذكي يجوب على أسئلتك.",
-  },
-  {
-    icon: Heart,
-    title: "صحتك النفسية مهمة",
-    desc: "تمارين تنفس، تقنيات للتوتر، وتأريض — كلها أدوات تساعدك تهدي أعصابك.",
-  },
-];
-
 const OnboardingOverlay = () => {
+  const t = useT();
+
+  const slides = [
+    {
+      icon: Sparkles,
+      title: t('onboard.overlay.step1.title'),
+      desc: t('onboard.overlay.step1.desc'),
+    },
+    {
+      icon: Heart,
+      title: t('onboard.overlay.step2.title'),
+      desc: t('onboard.overlay.step2.desc'),
+    },
+    {
+      icon: Wallet,
+      title: t('onboard.overlay.step3.title'),
+      desc: t('onboard.overlay.step3.desc'),
+    },
+    {
+      icon: Brain,
+      title: t('onboard.overlay.step4.title'),
+      desc: t('onboard.overlay.step4.desc'),
+    },
+    {
+      icon: Heart,
+      title: t('onboard.overlay.step5.title'),
+      desc: t('onboard.overlay.step5.desc'),
+    },
+  ];
   const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(0);
 
@@ -88,13 +90,13 @@ const OnboardingOverlay = () => {
                 onClick={finish}
                 className="flex-1 text-xs font-bold text-muted-foreground rounded-full py-2.5 hover:bg-secondary/60 transition-colors"
               >
-                تخطي
+                {t('onboard.skip')}
               </button>
               <button
                 onClick={() => setStep((p) => p + 1)}
                 className="flex-1 bg-primary text-primary-foreground text-xs font-bold rounded-full py-2.5 hover:bg-primary/90 transition-colors"
               >
-                التالي
+                {t('onboard.next')}
               </button>
             </>
           ) : (
@@ -102,7 +104,7 @@ const OnboardingOverlay = () => {
               onClick={finish}
               className="flex-1 bg-primary text-primary-foreground text-xs font-bold rounded-full py-2.5 hover:bg-primary/90 transition-colors"
             >
-              ابدأ
+              {t('onboard.start')}
             </button>
           )}
         </div>

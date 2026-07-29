@@ -60,6 +60,7 @@ Mahmoud Ahmed Mohamed Khalil, a high school student interested in programming an
 
 import { getStreak, getDailyValue } from "@/lib/dailyStorage";
 
+// This function generates context in Arabic for the AI system prompt (internal, not user-facing UI text)
 function getUserPersonalizedContext(): string {
   try {
     const s = getStreak();
@@ -179,18 +180,20 @@ async function tryNvidia(history: Msg[], signal: AbortSignal, sp: string): Promi
   } catch { return null; }
 }
 
-function generateSmartOfflineResponse(text: string, lang: string): string {
+// Fallback responses - hardcoded as they serve as offline/emergency fallbacks when the app is not fully initialized
+// These are used directly as display strings, so they're kept in both languages
+function generateSmartOfflineResponse(text: string, lang: string, _t?: (key: string) => string): string {
   const lower = text.toLowerCase();
   if (lang === 'ar') {
-    if (lower.includes('ماء') || lower.includes('شرب') || lower.includes('كوب')) return "💧 لشرب الماء فوائد رائعة! حاول شرب 8 أكواب يومياً، وابدأ بكوب مع كل وجبة. يمكنك تتبع شربك للماء في صفحة الصحة.";
-    if (lower.includes('نوم') || lower.includes('أرق')) return "😴 لتحسين النوم: حدد موعد نوم ثابت، ابتعد عن الشاشات قبل النوم بساعة، واجعل غرفتك مظلمة وهادئة. النوم الجيد يعزز تركيزك وصحتك.";
-    if (lower.includes('رياض') || lower.includes('تمرين') || lower.includes('مش')) return "🏃 المشي 30 دقيقة يومياً يحسن المزاج والصحة. يمكنك تقسيمها إلى 3 فترات مشي سريع لمدة 10 دقائق. ابدأ بخطوات صغيرة!";
-    return "🌿 وعي هو منصة للتوازن في أربعة مجالات: الصحة 💚، المال 💰، البيئة 🌱، والتعليم 📚. اطرح سؤالك في أي من هذه المجالات وسأجيبك بكل سرور!";
+    if (lower.includes('ماء') || lower.includes('شرب') || lower.includes('كوب')) return "💧 " + (_t ? _t('ai.fallback.water') : "لشرب الماء فوائد رائعة! حاول شرب 8 أكواب يومياً، وابدأ بكوب مع كل وجبة. يمكنك تتبع شربك للماء في صفحة الصحة.");
+    if (lower.includes('نوم') || lower.includes('أرق')) return "😴 " + (_t ? _t('ai.fallback.sleep') : "لتحسين النوم: حدد موعد نوم ثابت، ابتعد عن الشاشات قبل النوم بساعة، واجعل غرفتك مظلمة وهادئة. النوم الجيد يعزز تركيزك وصحتك.");
+    if (lower.includes('رياض') || lower.includes('تمرين') || lower.includes('مش')) return "🏃 " + (_t ? _t('ai.fallback.exercise') : "المشي 30 دقيقة يومياً يحسن المزاج والصحة. يمكنك تقسيمها إلى 3 فترات مشي سريع لمدة 10 دقائق. ابدأ بخطوات صغيرة!");
+    return "🌿 " + (_t ? _t('ai.fallback.general') : "وعي هو منصة للتوازن في أربعة مجالات: الصحة 💚، المال 💰، البيئة 🌱، والتعليم 📚. اطرح سؤالك في أي من هذه المجالات وسأجيبك بكل سرور!");
   }
-  if (lower.includes('water') || lower.includes('drink')) return "💧 Aim for 8 cups of water daily! Try starting with a glass with each meal. Track your water intake on the Health page.";
-  if (lower.includes('sleep') || lower.includes('insomnia')) return "😴 For better sleep: set a fixed bedtime, avoid screens 1 hour before bed, keep your room dark and quiet.";
-  if (lower.includes('exercise') || lower.includes('walk') || lower.includes('workout')) return "🏃 Walking 30 minutes daily boosts mood and health! Split it into 3 brisk 10-minute walks.";
-  return "🌿 Waey is a holistic-awareness platform covering: Health 💚, Finance 💰, Environment 🌱, and Education 📚. Ask me anything in these areas!";
+  if (lower.includes('water') || lower.includes('drink')) return "💧 " + (_t ? _t('ai.fallback.waterEn') : "Aim for 8 cups of water daily! Try starting with a glass with each meal. Track your water intake on the Health page.");
+  if (lower.includes('sleep') || lower.includes('insomnia')) return "😴 " + (_t ? _t('ai.fallback.sleepEn') : "For better sleep: set a fixed bedtime, avoid screens 1 hour before bed, keep your room dark and quiet.");
+  if (lower.includes('exercise') || lower.includes('walk') || lower.includes('workout')) return "🏃 " + (_t ? _t('ai.fallback.exerciseEn') : "Walking 30 minutes daily boosts mood and health! Split it into 3 brisk 10-minute walks.");
+  return "🌿 " + (_t ? _t('ai.fallback.generalEn') : "Waey is a holistic-awareness platform covering: Health 💚, Finance 💰, Environment 🌱, and Education 📚. Ask me anything in these areas!");
 }
 
 function parseOpenaiSSE(line: string): string | null {
@@ -329,7 +332,7 @@ const AIChat = () => {
 
       if (!resp || !resp.ok) {
         clearTimeout(timeoutId);
-        const fallbackText = generateSmartOfflineResponse(trimmed, lang);
+        const fallbackText = generateSmartOfflineResponse(trimmed, lang, t);
         setMessages((prev) => [...prev, { role: "assistant", content: fallbackText }]);
         return;
       }
@@ -397,7 +400,7 @@ const AIChat = () => {
             </button>
           )}
           {isLoading && messages[messages.length - 1]?.role === "user" && (
-            <button onClick={() => abortRef.current?.abort()} className="text-destructive hover:text-destructive/80 transition-colors p-2 rounded-full hover:bg-destructive/10" aria-label="إيقاف التوليد">
+            <button onClick={() => abortRef.current?.abort()} className="text-destructive hover:text-destructive/80 transition-colors p-2 rounded-full hover:bg-destructive/10" aria-label={t('chat.stop')}>
               <X className="size-4" />
             </button>
           )}

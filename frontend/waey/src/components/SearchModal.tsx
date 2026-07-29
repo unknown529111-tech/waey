@@ -3,6 +3,7 @@ import { Search, X, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { RECIPES } from "@/data/recipes";
 import { hospitalsData } from "@/data/hospitals";
+import { useT } from "@/contexts/useLanguage";
 
 const allHospitals = hospitalsData.flatMap((g) =>
   g.cities.flatMap((c) =>
@@ -17,18 +18,18 @@ const allHospitals = hospitalsData.flatMap((g) =>
   )
 );
 
-const staticTips = [
-  { title: "اشرب 8 أكواب مياه يومياً", area: "صحة", path: "/health" },
-  { title: "طبق قاعدة 50/30/20 في ميزانيتك", area: "مال", path: "/finance" },
-  { title: "افصل البلاستيك عن القمامة", area: "بيئة", path: "/environment" },
-  { title: "جرب تقنية البومودورو في المذاكرة", area: "تعليم", path: "/education" },
-  { title: "نم 7-8 ساعات يومياً", area: "صحة", path: "/health" },
-  { title: "وفّر 20 جنيه يومياً", area: "مال", path: "/finance" },
-  { title: "اطفي النور في الغرف الفاضية", area: "بيئة", path: "/environment" },
-  { title: "استخدم الخرائط الذهنية", area: "تعليم", path: "/education" },
-  { title: "مارس التنفس العميق للاسترخاء", area: "صحة", path: "/health" },
-  { title: "جرب تقنية 5-4-3-2-1 للتوتر", area: "صحة", path: "/health" },
-];
+const SUGGESTION_AREAS: Record<number, string> = {
+  1: "goal.category.health",
+  2: "goal.category.finance",
+  3: "goal.category.environment",
+  4: "goal.category.education",
+  5: "goal.category.health",
+  6: "goal.category.finance",
+  7: "goal.category.environment",
+  8: "goal.category.education",
+  9: "goal.category.health",
+  10: "goal.category.health",
+};
 
 type Result = {
   id: string;
@@ -44,7 +45,21 @@ interface Props {
 }
 
 const SearchModal = ({ open, onClose }: Props) => {
+  const t = useT();
   const [query, setQuery] = useState("");
+
+  const staticTips = useMemo(() => [
+    { title: t('search.suggestion1'), area: t(SUGGESTION_AREAS[1]), path: "/health" },
+    { title: t('search.suggestion2'), area: t(SUGGESTION_AREAS[2]), path: "/finance" },
+    { title: t('search.suggestion3'), area: t(SUGGESTION_AREAS[3]), path: "/environment" },
+    { title: t('search.suggestion4'), area: t(SUGGESTION_AREAS[4]), path: "/education" },
+    { title: t('search.suggestion5'), area: t(SUGGESTION_AREAS[5]), path: "/health" },
+    { title: t('search.suggestion6'), area: t(SUGGESTION_AREAS[6]), path: "/finance" },
+    { title: t('search.suggestion7'), area: t(SUGGESTION_AREAS[7]), path: "/environment" },
+    { title: t('search.suggestion8'), area: t(SUGGESTION_AREAS[8]), path: "/education" },
+    { title: t('search.suggestion9'), area: t(SUGGESTION_AREAS[9]), path: "/health" },
+    { title: t('search.suggestion10'), area: t(SUGGESTION_AREAS[10]), path: "/health" },
+  ], [t]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -69,7 +84,7 @@ const SearchModal = ({ open, onClose }: Props) => {
         out.push({
           id: `recipe-${r.id}`,
           title: r.name,
-          subtitle: `${r.calories} سعرة • ${r.costEGP} ج`,
+          subtitle: `${r.calories} ${t('recipes.calorieUnit')} • ${r.costEGP} ${t('recipes.costUnit')}`,
           path: "/recipes",
           type: "recipe",
         });
@@ -119,7 +134,7 @@ const SearchModal = ({ open, onClose }: Props) => {
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="ابحث عن وصفات، مستشفيات، نصائح..."
+            placeholder={t('search.placeholder')}
             className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground"
           />
           <button onClick={onClose} className="size-8 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80">
@@ -129,12 +144,12 @@ const SearchModal = ({ open, onClose }: Props) => {
         <div className="flex-1 overflow-y-auto p-2">
           {results.length === 0 && query.trim() && (
             <div className="p-6 text-center text-sm text-muted-foreground">
-              لا توجد نتائج لـ "{query}"
+              {t('search.noResultsFor').replace('{query}', query)}
             </div>
           )}
           {results.length === 0 && !query.trim() && (
             <div className="p-6 text-center text-sm text-muted-foreground">
-              اكتب كلمة للبحث...
+              {t('search.empty')}
             </div>
           )}
           {results.map((r) => (
@@ -150,7 +165,7 @@ const SearchModal = ({ open, onClose }: Props) => {
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase">
-                  {r.type === "recipe" ? "وصفة" : r.type === "hospital" ? "مستشفى" : "نصيحة"}
+                  {r.type === "recipe" ? t('search.type.recipe') : r.type === "hospital" ? t('search.type.hospital') : t('search.type.tip')}
                 </span>
                 <ArrowLeft className="size-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>

@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ShieldCheck, Trophy, FileSpreadsheet, Command, Check } from "lucide-react";
 import { readJSON, writeJSON } from "@/lib/dailyStorage";
 import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
+import { useT } from "@/contexts/useLanguage";
 
 const WHATS_NEW_KEY = "waey_whats_new_v2_seen";
 
 export function WhatsNewModal() {
+  const t = useT();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -30,18 +32,18 @@ export function WhatsNewModal() {
   const updates = [
     {
       icon: <Trophy className="size-5 text-amber-500" />,
-      title: "نظام الأوسمة وتجميد الستريك 🏆",
-      description: "اكسب نقاط الأنشطة واشترِ 'تجميد الستريك' لحماية تتابعك اليومي إذا يفوتك يوم.",
+      title: t('whatsNew.item1.title'),
+      description: t('whatsNew.item1.desc'),
     },
     {
       icon: <ShieldCheck className="size-5 text-emerald-500" />,
-      title: "ذكاء اصطناعي آمن ومخصص 🤖",
-      description: "المساعد الذكي أصلح آمن تماماً، ويأخذ في الاعتبار إنجازاتك اليومية لتقديم نصائح مخصصة.",
+      title: t('whatsNew.item2.title'),
+      description: t('whatsNew.item2.desc'),
     },
     {
       icon: <FileSpreadsheet className="size-5 text-sky-500" />,
-      title: "تقرير PDF والنسخ الاحتياطي 📄",
-      description: "نزّل تقرير صحتك الأسبوعي بصيغة PDF، واحفظ واسترد ملفات النسخ الاحتياطي بسهولة.",
+      title: t('whatsNew.item3.title'),
+      description: t('whatsNew.item3.desc'),
     },
   ];
 
@@ -61,10 +63,10 @@ export function WhatsNewModal() {
           <div className="text-center mb-6">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
               <Sparkles className="size-3.5 text-amber-500" />
-              تحديث جديد في وعي
+              {t('whatsNew.badge')}
             </span>
-            <h2 className="text-2xl font-bold text-foreground mb-1">إيه الجديد في منصة وعي؟ ✨</h2>
-            <p className="text-xs text-muted-foreground">أضفنا مميزات جديدة لتجربة أسرع وأكثر توازناً في حياتك</p>
+            <h2 className="text-2xl font-bold text-foreground mb-1">{t('whatsNew.title')}</h2>
+            <p className="text-xs text-muted-foreground">{t('whatsNew.subtitle')}</p>
           </div>
 
           {/* Features List */}
@@ -91,7 +93,7 @@ export function WhatsNewModal() {
             className="w-full h-12 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 shadow-sm"
           >
             <Check className="size-4" />
-            فهمت، ابدأ الاستكشاف الآن
+            {t('whatsNew.cta')}
           </button>
         </motion.div>
       </div>

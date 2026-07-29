@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/useLanguage";
 
 type Mode = "signin" | "signup";
@@ -39,10 +39,10 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
       if (result.success) {
         onClose();
       } else {
-        setError(result.error || "حدث خطأ، يرجى المحاولة مرة أخرى");
+        setError(result.error || t('auth.errorGeneric'));
       }
     } catch {
-      setError("حدث خطأ غير متوقع");
+      setError(t('auth.errorUnexpected'));
     } finally {
       setLoading(false);
     }
@@ -69,7 +69,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
           <button
             onClick={onClose}
             className="absolute left-4 top-4 z-10 size-8 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
-            aria-label="إغلاق"
+            aria-label={t('common.close')}
           >
             <X className="size-4" />
           </button>
@@ -79,8 +79,8 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
               <h2 className="text-2xl font-bold">{mode === "signin" ? t('nav.login') : t('nav.signup')}</h2>
               <p className="text-muted-foreground mt-1">
                 {mode === "signin" 
-                  ? "أهلاً بعودتك! سجل دخولك للمتابعة"
-                  : "أنشئ حسابك الجديد وابدأ رحلتك مع وعي"}
+                  ? t('auth.signinGreeting')
+                  : t('auth.signupGreeting')}
               </p>
             </div>
 
@@ -98,7 +98,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
               {mode === "signup" && (
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-1.5">
-                    {t('nav.account') || "الاسم الكامل"}
+                    {t('nav.account')}
                   </label>
                   <div className="relative">
                     <User className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
@@ -107,7 +107,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="محمد أحمد"
+                      placeholder={t('auth.namePlaceholder')}
                       className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                       required
                       autoComplete="name"
@@ -118,7 +118,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium mb-1.5">
-                  {t('nav.email') || "البريد الإلكتروني"}
+                  {t('nav.email')}
                 </label>
                 <div className="relative">
                   <Mail className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
@@ -137,7 +137,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
 
               <div>
                 <label htmlFor="password" className="block text-sm font-medium mb-1.5">
-                  {t('nav.password') || "كلمة المرور"}
+                  {t('nav.password')}
                 </label>
                 <div className="relative">
                   <Lock className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
@@ -155,7 +155,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                    aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
                   >
                     {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
                   </button>
@@ -173,7 +173,7 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
-                    جاري التحميل...
+                    {t('common.loading')}
                   </>
                 ) : (
                   mode === "signin" ? t('nav.login') : t('nav.signup')
@@ -184,8 +184,8 @@ export default function AuthModal({ isOpen, onClose, mode, onSwitchMode }: AuthM
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 {mode === "signin" 
-                  ? `ليس لديك حساب؟ `
-                  : `لديك حساب بالفعل؟ `
+                  ? t('auth.noAccount')
+                  : t('auth.hasAccount')
                 }
                 <button
                   onClick={onSwitchMode}

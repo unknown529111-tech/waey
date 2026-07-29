@@ -1,5 +1,5 @@
 import { useStreak } from "@/hooks/useStreak";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/useLanguage";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Trophy, ShieldAlert } from "lucide-react";

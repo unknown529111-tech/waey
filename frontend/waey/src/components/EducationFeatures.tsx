@@ -204,11 +204,11 @@ const EducationFeatures = () => {
   ];
 
   const groundingItems = [
-    { n: "٥", label: t('eduFeatures.grounding.see') },
-    { n: "٤", label: t('eduFeatures.grounding.touch') },
-    { n: "٣", label: t('eduFeatures.grounding.hear') },
-    { n: "٢", label: t('eduFeatures.grounding.smell') },
-    { n: "١", label: t('eduFeatures.grounding.taste') },
+    { n: "5", label: t('eduFeatures.grounding.see') },
+    { n: "4", label: t('eduFeatures.grounding.touch') },
+    { n: "3", label: t('eduFeatures.grounding.hear') },
+    { n: "2", label: t('eduFeatures.grounding.smell') },
+    { n: "1", label: t('eduFeatures.grounding.taste') },
   ];
 
   return (
@@ -264,10 +264,10 @@ const EducationFeatures = () => {
             </p>
             <div className="flex-1 bg-primary/5 rounded-2xl p-5 border border-primary/15">
               <ol className="space-y-3 text-sm leading-relaxed">
-                <li><span className="font-bold text-primary">١.</span> {t('eduFeatures.blurting.step1')}</li>
-                <li><span className="font-bold text-primary">٢.</span> {t('eduFeatures.blurting.step2')}</li>
-                <li><span className="font-bold text-primary">٣.</span> {t('eduFeatures.blurting.step3')}</li>
-                <li><span className="font-bold text-primary">٤.</span> {t('eduFeatures.blurting.step4')}</li>
+                <li><span className="font-bold text-primary">1.</span> {t('eduFeatures.blurting.step1')}</li>
+                <li><span className="font-bold text-primary">2.</span> {t('eduFeatures.blurting.step2')}</li>
+                <li><span className="font-bold text-primary">3.</span> {t('eduFeatures.blurting.step3')}</li>
+                <li><span className="font-bold text-primary">4.</span> {t('eduFeatures.blurting.step4')}</li>
               </ol>
             </div>
           </div>
@@ -356,10 +356,10 @@ const EducationFeatures = () => {
               {t('eduFeatures.reverse.desc')}
             </p>
             <ol className="space-y-3 text-sm leading-relaxed">
-              <li><span className="font-bold text-primary">١.</span> {t('eduFeatures.reverse.step1')}</li>
-              <li><span className="font-bold text-primary">٢.</span> {t('eduFeatures.reverse.step2')}</li>
-              <li><span className="font-bold text-primary">٣.</span> {t('eduFeatures.reverse.step3')}</li>
-              <li><span className="font-bold text-primary">٤.</span> {t('eduFeatures.reverse.step4')}</li>
+              <li><span className="font-bold text-primary">1.</span> {t('eduFeatures.reverse.step1')}</li>
+              <li><span className="font-bold text-primary">2.</span> {t('eduFeatures.reverse.step2')}</li>
+              <li><span className="font-bold text-primary">3.</span> {t('eduFeatures.reverse.step3')}</li>
+              <li><span className="font-bold text-primary">4.</span> {t('eduFeatures.reverse.step4')}</li>
             </ol>
           </div>
         </div>

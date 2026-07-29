@@ -43,11 +43,24 @@ export function isPremiumFeature(feature: string): boolean {
   return required.includes(state.tier);
 }
 
-export const TIER_FEATURES = [
+export interface TierFeature {
+  name: string;
+  nameKey: string;
+  tier: PremiumTier;
+  price: string;
+  priceKey: string;
+  features: string[];
+  featureKeys: string[];
+  highlighted: boolean;
+}
+
+export const TIER_FEATURES: TierFeature[] = [
   {
     name: "المجاني",
+    nameKey: "premium.free",
     tier: "free" as PremiumTier,
     price: "٠ ج.م / شهرياً",
+    priceKey: "premium.freePrice",
     features: [
       "تتبع العادات اليومية",
       "سلسلة الإنجازات",
@@ -55,12 +68,21 @@ export const TIER_FEATURES = [
       "تحدي 30 يوم",
       "نسخ احتياطي يدوي",
     ],
+    featureKeys: [
+      "premium.freeFeat1",
+      "premium.freeFeat2",
+      "premium.freeFeat3",
+      "premium.freeFeat4",
+      "premium.freeFeat5",
+    ],
     highlighted: false,
   },
   {
     name: "بلس",
+    nameKey: "premium.plus",
     tier: "plus" as PremiumTier,
     price: "٤٩ ج.م / شهرياً",
+    priceKey: "premium.plusPrice",
     features: [
       "كل مميزات المجاني",
       "مساعد ذكي غير محدود",
@@ -68,18 +90,34 @@ export const TIER_FEATURES = [
       "ثيمات مخصصة",
       "أولوية في الدعم",
     ],
+    featureKeys: [
+      "premium.plusFeat1",
+      "premium.plusFeat2",
+      "premium.plusFeat3",
+      "premium.plusFeat4",
+      "premium.plusFeat5",
+    ],
     highlighted: true,
   },
   {
     name: "برو",
+    nameKey: "premium.pro",
     tier: "pro" as PremiumTier,
     price: "٩٩ ج.م / شهرياً",
+    priceKey: "premium.proPrice",
     features: [
       "كل مميزات بلس",
       "تحليلات متقدمة",
       "دعم أولوية VIP",
       "وصول مبكر للميزات الجديدة",
       "تقارير PDF مخصصة",
+    ],
+    featureKeys: [
+      "premium.proFeat1",
+      "premium.proFeat2",
+      "premium.proFeat3",
+      "premium.proFeat4",
+      "premium.proFeat5",
     ],
     highlighted: false,
   },

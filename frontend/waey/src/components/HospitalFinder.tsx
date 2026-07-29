@@ -124,19 +124,19 @@ const HospitalFinder = () => {
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-foreground">
-                نوع المستشفى
+                {t('hospital.typeLabel')}
               </label>
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
                 className="w-full bg-background border border-border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               >
-                <option value="">الكل</option>
-                <option value="جامعي">جامعي</option>
-                <option value="حكومي">حكومي</option>
-                <option value="تعليمي">تعليمي</option>
-                <option value="خاص">خاص</option>
-                <option value="عام">عام</option>
+                <option value="">{t('hospital.all')}</option>
+                <option value="جامعي">{t('hospital.typeUniversity')}</option>
+                <option value="حكومي">{t('hospital.typeGovernment')}</option>
+                <option value="تعليمي">{t('hospital.typeEducational')}</option>
+                <option value="خاص">{t('hospital.typePrivate')}</option>
+                <option value="عام">{t('hospital.typePublic')}</option>
               </select>
             </div>
           </div>

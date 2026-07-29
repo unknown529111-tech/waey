@@ -25,6 +25,7 @@ import ExportButton from "@/components/ExportButton";
 import NotificationSettings from "@/components/NotificationSettings";
 import { useFreeze } from "@/features/useFreeze";
 import { GoalSetting } from "@/features/GoalSetting";
+import { DailyCheckIn } from "@/features/DailyCheckIn";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -43,8 +44,8 @@ const Dashboard = () => {
   return (
     <div className="relative min-h-[60vh]">
       <SEO
-        title="متابعتي اليومية — وعي"
-        description="لوحة متابعة المؤشرات اليومية للمياه، النوم، النشاط، الحالة النفسية، والمصروفات."
+        title={t('dash.seoTitle')}
+        description={t('dash.seoDesc')}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
@@ -64,35 +65,35 @@ const Dashboard = () => {
             <button
               onClick={() => setReportOpen(true)}
               className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title="طباعة التقرير / PDF"
+              title={t('dash.printReport')}
             >
               <Printer className="size-3.5 text-primary" />
-              تقرير PDF
+              {t('dash.pdfReport')}
             </button>
             <button
               onClick={() => setBackupOpen(true)}
               className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title="نسخ احتياطي واستعادة"
+              title={t('dash.backupRestore')}
             >
               <Database className="size-3.5 text-primary" />
-              نسخ واستعادة
+              {t('dash.backup')}
             </button>
             <ExportButton />
             <button
               onClick={() => setNotifOpen(!notifOpen)}
               className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title="إعدادات الإشعارات"
+              title={t('dash.notifSettings')}
             >
               <Bell className="size-3.5 text-primary" />
-              الإشعارات
+              {t('dash.notifications')}
             </button>
             <button
-              onClick={() => { freeze(); toast.success("تم تجميد السلسلة! 🔥"); }}
+              onClick={() => { freeze(); toast.success(t('dash.freezeToast')); }}
               className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title="تجميد سلسلة التتابع"
+              title={t('dash.freezeStreak')}
             >
               <Snowflake className="size-3.5 text-primary" />
-              تجميد ({freezes})
+              {t('dash.freezeCount').replace('{count}', freezes)}
             </button>
             <Link
               to="/insights"
@@ -115,6 +116,8 @@ const Dashboard = () => {
         <BadgeShowcase />
 
         <GoalSetting />
+
+        <DailyCheckIn />
 
         <div className="grid lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 space-y-5">

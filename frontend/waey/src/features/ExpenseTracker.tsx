@@ -10,12 +10,12 @@ import {
 import { recordActivity } from "@/lib/gamification";
 
 const CATEGORIES = [
-  { value: "طعام", key: "tracker.expense.cat.food" },
-  { value: "مواصلات", key: "tracker.expense.cat.transport" },
-  { value: "ترفيه", key: "tracker.expense.cat.entertainment" },
-  { value: "فواتير", key: "tracker.expense.cat.bills" },
-  { value: "صحة", key: "tracker.expense.cat.health" },
-  { value: "أخرى", key: "tracker.expense.cat.other" },
+  { value: "طعام", key: "expense.category.food" },
+  { value: "مواصلات", key: "expense.category.transport" },
+  { value: "ترفيه", key: "expense.category.entertainment" },
+  { value: "فواتير", key: "expense.category.bills" },
+  { value: "صحة", key: "expense.category.health" },
+  { value: "أخرى", key: "expense.category.other" },
 ];
 
 const getCategoryKey = (catValue: string): string =>
@@ -54,7 +54,7 @@ const ExpenseTracker = () => {
           <Wallet className="size-5 text-accent" />
           <h3 className="font-bold">{t("tracker.expense.title")}</h3>
         </div>
-        <span className="text-sm font-bold text-accent">{total.toFixed(2)} ج</span>
+        <span className="text-sm font-bold text-accent">{total.toFixed(2)} {t('tracker.expense.egp')}</span>
       </div>
 
       <form onSubmit={submit} className="grid grid-cols-12 gap-2 mb-3">
@@ -112,7 +112,7 @@ const ExpenseTracker = () => {
               {e.note && <span className="text-xs text-muted-foreground">{e.note}</span>}
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold">{e.amount.toFixed(2)} ج</span>
+              <span className="font-bold">{e.amount.toFixed(2)} {t('tracker.expense.egp')}</span>
               <button
                 onClick={() => remove(e.id)}
                 className="text-muted-foreground hover:text-destructive"

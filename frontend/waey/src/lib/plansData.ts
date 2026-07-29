@@ -3,7 +3,9 @@ export type PlanDef = {
   title: string;
   emoji: string;
   description: string;
-  area: "صحة" | "مال" | "بيئة";
+  area: "health" | "finance" | "environment";
+  titleEn?: string;
+  descriptionEn?: string;
   days: string[]; // 30 daily tasks
 };
 
@@ -13,7 +15,9 @@ export const PLANS: PlanDef[] = [
     title: "30 يوم ادخار",
     emoji: "💰",
     description: "تحدّيات يومية بسيطة توفّر لك مئات الجنيهات في الشهر.",
-    area: "مال",
+    titleEn: "30-Day Savings",
+    descriptionEn: "Simple daily challenges that save you hundreds of pounds monthly.",
+    area: "finance",
     days: [
       "اكتب كل مصاريف اليوم بدقة.",
       "حضّر وجبتك في البيت بدل الطلب.",
@@ -52,7 +56,9 @@ export const PLANS: PlanDef[] = [
     title: "30 يوم صحة",
     emoji: "💪",
     description: "خطوات بسيطة لجسد أقوى ونوم أعمق وطاقة أعلى.",
-    area: "صحة",
+    titleEn: "30-Day Health",
+    descriptionEn: "Simple steps for a stronger body, deeper sleep, and higher energy.",
+    area: "health",
     days: [
       "اشرب 8 أكواب مياه اليوم.",
       "امشِ 20 دقيقة متواصلة.",
@@ -91,7 +97,9 @@ export const PLANS: PlanDef[] = [
     title: "30 يوم بيئة",
     emoji: "🌱",
     description: "عادات يومية تقلل بصمتك الكربونية وتحمي كوكبنا.",
-    area: "بيئة",
+    titleEn: "30-Day Environment",
+    descriptionEn: "Daily habits that reduce your carbon footprint and protect our planet.",
+    area: "environment",
     days: [
       "افصل البلاستيك عن باقي القمامة.",
       "استخدم زجاجة مياه قابلة لإعادة الاستخدام.",

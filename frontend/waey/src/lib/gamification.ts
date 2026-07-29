@@ -6,8 +6,10 @@ import { getUserId, syncGamification, loadGamificationFromSupabase } from "@/lib
 export interface Badge {
   id: string;
   emoji: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descKey: string;
+  title?: string; // kept for backward compat, use titleKey instead
+  description?: string; // kept for backward compat, use descKey instead
   category: "streak" | "water" | "mindfulness" | "finance" | "challenge";
   reqValue: number;
 }
@@ -16,6 +18,8 @@ export const BADGES: Badge[] = [
   {
     id: "first_step",
     emoji: "🥉",
+    titleKey: "badge.firstStep",
+    descKey: "badge.firstStepDesc",
     title: "خطوة الأولى",
     description: "أكملت أول نشاط لك في المنصة",
     category: "streak",
@@ -24,6 +28,8 @@ export const BADGES: Badge[] = [
   {
     id: "streak_7",
     emoji: "🥈",
+    titleKey: "badge.weeklyCommitment",
+    descKey: "badge.weeklyCommitmentDesc",
     title: "التزام أسبوعي",
     description: "حافظت على سلسلة وعي لمدة 7 أيام متتالية",
     category: "streak",
@@ -32,6 +38,8 @@ export const BADGES: Badge[] = [
   {
     id: "streak_30",
     emoji: "🥇",
+    titleKey: "badge.monthlyAchievement",
+    descKey: "badge.monthlyAchievementDesc",
     title: "إنجاز شهري",
     description: "وصلت لسلسلة 30 يوماً من الوعي والتوازن",
     category: "streak",
@@ -40,6 +48,8 @@ export const BADGES: Badge[] = [
   {
     id: "streak_100",
     emoji: "👑",
+    titleKey: "badge.waeyChampion",
+    descKey: "badge.waeyChampionDesc",
     title: "بطل وعي",
     description: "100 يوم من الإنجاز والتغيير الإيجابي المستمر",
     category: "streak",
@@ -48,6 +58,8 @@ export const BADGES: Badge[] = [
   {
     id: "water_8",
     emoji: "💧",
+    titleKey: "badge.fullHydration",
+    descKey: "badge.fullHydrationDesc",
     title: "ارتواء تام",
     description: "شربت 8 أكواب مياه في يوم واحد",
     category: "water",
@@ -56,6 +68,8 @@ export const BADGES: Badge[] = [
   {
     id: "water_100",
     emoji: "🌊",
+    titleKey: "badge.hydrationMaster",
+    descKey: "badge.hydrationMasterDesc",
     title: "سيد الهيدرات",
     description: "وصلت لمجموع 100 كوب مياه مشربة",
     category: "water",
@@ -64,6 +78,8 @@ export const BADGES: Badge[] = [
   {
     id: "breathing_peace",
     emoji: "🧘",
+    titleKey: "badge.momentOfPeace",
+    descKey: "badge.momentOfPeaceDesc",
     title: "لحظة هدوء",
     description: "أكملت تمرين التنفس واسترخيت",
     category: "mindfulness",
@@ -72,6 +88,8 @@ export const BADGES: Badge[] = [
   {
     id: "gratitude_heart",
     emoji: "📝",
+    titleKey: "badge.gratefulHeart",
+    descKey: "badge.gratefulHeartDesc",
     title: "قلب شاكر",
     description: "دونّت في دفتر الامتنان اليومي",
     category: "mindfulness",
@@ -80,6 +98,8 @@ export const BADGES: Badge[] = [
   {
     id: "finance_wise",
     emoji: "💰",
+    titleKey: "badge.financialAwareness",
+    descKey: "badge.financialAwarenessDesc",
     title: "وعي مالي",
     description: "سجّلت 5 مصروفات لمتابعة ميزانيتك",
     category: "finance",
@@ -88,6 +108,8 @@ export const BADGES: Badge[] = [
   {
     id: "challenge_hero",
     emoji: "🌟",
+    titleKey: "badge.challengeHero",
+    descKey: "badge.challengeHeroDesc",
     title: "بطل التحديات",
     description: "أنجزت 5 تحديات يومية",
     category: "challenge",

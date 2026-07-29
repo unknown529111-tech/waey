@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, LogOut } from "lucide-react";
 import logo from "@/assets/logo-waey.png";
 import { useLanguage } from "@/contexts/useLanguage";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import SearchModal from "@/components/SearchModal";
 import AuthModal from "@/components/AuthModal";
 import { ThemeToggle } from "./ThemeToggle";
@@ -33,8 +33,8 @@ const Navbar = () => {
       <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-sm shadow-soft" : "bg-transparent"}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" dir="rtl">
           <div className="flex items-center justify-between h-20">
-            <Link to="/" className="flex items-center gap-2" aria-label="وعي - الرئيسية">
-              <img src={logo} alt="وعي" className="h-24 w-auto" />
+            <Link to="/" className="flex items-center gap-2" aria-label={t('nav.homeLink')}>
+              <img src={logo} alt={t('nav.homeLink')} className="h-24 w-auto" />
             </Link>
 
             <div className="hidden md:flex md:items-center md:gap-1">

@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from "react";
+import { LanguageContext } from "@/contexts/useLanguage";
 
 interface Props {
   children: ReactNode;
@@ -11,6 +12,8 @@ interface State {
 }
 
 export class ErrorBoundary extends Component<Props, State> {
+  static contextType = LanguageContext;
+  declare context: React.ContextType<typeof LanguageContext>;
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -47,6 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback;
       const isChunkErr = this.isChunkLoadError(this.state.error);
+      const t = this.context?.t ?? ((key: string) => key);
 
       return (
         <div className="min-h-[60vh] flex items-center justify-center px-4" dir="rtl">
@@ -55,25 +59,25 @@ export class ErrorBoundary extends Component<Props, State> {
               <span className="text-3xl">⚠️</span>
             </div>
             <h2 className="text-xl font-bold mb-2">
-              {isChunkErr ? "تحديث جديد أو مشكلة في الاتصال" : "حدث خطأ غير متوقع"}
+              {isChunkErr ? t('error.newUpdate') : t('error.unexpected')}
             </h2>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               {isChunkErr
-                ? "يبدو أنه تم إجراء تحديثات على الموقع أو تعذر تحميل الصفحة. يرجى إعادة التحميل."
-                : this.state.error?.message || "حدث خطأ أثناء تحميل هذه الصفحة."}
+                ? t('error.updateDesc')
+                : this.state.error?.message || t('error.pageLoadError')}
             </p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={this.handleRetry}
                 className="h-10 px-6 rounded-full bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-all shadow-sm"
               >
-                إعادة التحميل
+                {t('error.reload')}
               </button>
               <button
                 onClick={() => (window.location.href = "/")}
                 className="h-10 px-6 rounded-full bg-muted text-muted-foreground text-sm font-bold hover:bg-muted/80 transition-all"
               >
-                الصفحة الرئيسية
+                {t('error.home')}
               </button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, Upload, ShieldCheck, AlertCircle, FileJson, CheckCircle2, X } from "lucide-react";
 import { todayKey } from "@/lib/dailyStorage";
+import { useT } from "@/contexts/useLanguage";
 
 interface BackupModalProps {
   open: boolean;
@@ -9,6 +10,7 @@ interface BackupModalProps {
 }
 
 export function BackupModal({ open, onClose }: BackupModalProps) {
+  const t = useT();
   const [status, setStatus] = useState<{ type: "idle" | "success" | "error"; message: string }>({
     type: "idle",
     message: "",
@@ -54,10 +56,10 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      setStatus({ type: "success", message: "تم تحميل النسخة الاحتياطية بنجاح!" });
+      setStatus({ type: "success", message: t('backup.exportSuccess') });
     } catch (err) {
       console.error(err);
-      setStatus({ type: "error", message: "تعذر تصدير النسخة الاحتياطية." });
+      setStatus({ type: "error", message: t('backup.exportError') });
     }
   };
 
@@ -73,7 +75,7 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
         const parsed = JSON.parse(content);
 
         if (!parsed || typeof parsed !== "object" || !parsed.data || typeof parsed.data !== "object") {
-          throw new Error("ملف النسخة الاحتياطية غير صالح.");
+          throw new Error(t('backup.importInvalid'));
         }
 
         const data = parsed.data as Record<string, unknown>;
@@ -89,7 +91,7 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
 
         setStatus({
           type: "success",
-          message: `تمت استعادة ${importedCount} عنصر بنجاح! سيتم تحديث الصفحة.`,
+          message: t('backup.importSuccess').replace('{count}', String(importedCount)),
         });
 
         setTimeout(() => {
@@ -99,7 +101,7 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
         console.error(err);
         setStatus({
           type: "error",
-          message: "صيغة الملف غير صحيحة أو غير مدعومة.",
+          message: t('backup.importError'),
         });
       }
     };
@@ -127,13 +129,13 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
                 <FileJson className="size-5" />
               </div>
               <div>
-                <h2 className="text-lg font-bold">النسخ الاحتياطي والاستعادة</h2>
-                <p className="text-xs text-muted-foreground">احفظ بياناتك محلياً وقم باستعادتها في أي وقت</p>
+                <h2 className="text-lg font-bold">{t('backup.title')}</h2>
+                <p className="text-xs text-muted-foreground">{t('backup.subtitle')}</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              aria-label="إغلاق"
+              aria-label={t('common.close')}
               className="size-8 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
             >
               <X className="size-4 text-muted-foreground" />
@@ -147,15 +149,15 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
               <div>
                 <h3 className="text-sm font-bold flex items-center gap-1.5">
                   <Download className="size-4 text-primary" />
-                  حفظ نسخة احتياطية (JSON)
+                  {t('backup.exportLabel')}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-1">تنزيل ملف يحتوي على كل تتبعاتك وسلسلتك</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('backup.exportDesc')}</p>
               </div>
               <button
                 onClick={handleExport}
                 className="h-9 px-4 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all shrink-0 shadow-sm"
               >
-                تنزيل
+                {t('backup.exportBtn')}
               </button>
             </div>
 
@@ -164,15 +166,15 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
               <div>
                 <h3 className="text-sm font-bold flex items-center gap-1.5">
                   <Upload className="size-4 text-secondary" />
-                  استعادة نسخة سابقة
+                  {t('backup.importLabel')}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-1">رفع ملف JSON لاسترجاع التتبعات والإنجازات</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('backup.importDesc')}</p>
               </div>
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="h-9 px-4 rounded-full bg-secondary text-secondary-foreground text-xs font-bold hover:bg-secondary/90 transition-all shrink-0 shadow-sm"
               >
-                رفع ملف
+                {t('backup.importBtn')}
               </button>
               <input
                 ref={fileInputRef}

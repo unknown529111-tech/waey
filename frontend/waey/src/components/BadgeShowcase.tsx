@@ -14,15 +14,7 @@ import { getStreakFreezes, addStreakFreeze, getDailyValue } from "@/lib/dailySto
 import { StreakRecoveryModal } from "@/components/StreakRecoveryModal";
 import { generateAchievementsShareText, shareContent, downloadBlob, generateBadgesPDF } from "@/lib/share";
 import { toast } from "sonner";
-
-// Maps each badge category to an emoji, title, and Arabic label generator.
-const CATEGORY_ORDER: { id: Badge["category"]; icon: string; title: string }[] = [
-  { id: "streak", icon: "🔥", title: "أوسمة التتابع (Streak)" },
-  { id: "water", icon: "💧", title: "أوسمة المياه" },
-  { id: "mindfulness", icon: "🧘", title: "أوسمة الوعي والتأمل" },
-  { id: "finance", icon: "💰", title: "وسام الوعي المالي" },
-  { id: "challenge", icon: "🌟", title: "وسام التحديات" },
-];
+import { useT } from "@/contexts/useLanguage";
 
 // Returns 0..1 progress toward unlocking the given badge based on live stats.
 function badgeProgress(b: Badge): number {
@@ -55,34 +47,6 @@ function badgeProgress(b: Badge): number {
   }
 }
 
-// Arabic description of the action required to unlock this badge.
-function progressLabel(b: Badge): string {
-  switch (b.id) {
-    case "first_step":
-      return "أول نشاط";
-    case "streak_7":
-      return "7 أيام";
-    case "streak_30":
-      return "30 يوماً";
-    case "streak_100":
-      return "100 يوم";
-    case "water_8":
-      return "8 أكواب / يوم";
-    case "water_100":
-      return "100 كوب إجمالاً";
-    case "breathing_peace":
-      return "تمرين تنفس";
-    case "gratitude_heart":
-      return "تدوين امتنان";
-    case "finance_wise":
-      return "5 مصروفات";
-    case "challenge_hero":
-      return "5 تحديات";
-    default:
-      return b.description;
-  }
-}
-
 export function BadgeShowcase() {
   const [unlockedIds, setUnlockedIds] = useState(() => getUnlockedBadgeIds());
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
@@ -90,14 +54,39 @@ export function BadgeShowcase() {
   const [points, setPoints] = useState(() => getUserPoints());
   const [freezes, setFreezes] = useState(() => getStreakFreezes());
   const [recoveryOpen, setRecoveryOpen] = useState(false);
+  const t = useT();
+
+  const CATEGORY_ORDER: { id: Badge["category"]; icon: string; title: string }[] = [
+    { id: "streak", icon: "🔥", title: t('badge.category.streak') },
+    { id: "water", icon: "💧", title: t('badge.category.water') },
+    { id: "mindfulness", icon: "🧘", title: t('badge.category.mindfulness') },
+    { id: "finance", icon: "💰", title: t('badge.category.finance') },
+    { id: "challenge", icon: "🌟", title: t('badge.category.challenge') },
+  ];
+
+  function progressLabel(b: Badge): string {
+    switch (b.id) {
+      case "first_step": return t('badge.progress.firstStep');
+      case "streak_7": return t('badge.progress.streak7');
+      case "streak_30": return t('badge.progress.streak30');
+      case "streak_100": return t('badge.progress.streak100');
+      case "water_8": return t('badge.progress.water8');
+      case "water_100": return t('badge.progress.water100');
+      case "breathing_peace": return t('badge.progress.breathing');
+      case "gratitude_heart": return t('badge.progress.gratitude');
+      case "finance_wise": return t('badge.progress.finance');
+      case "challenge_hero": return t('badge.progress.challenge');
+      default: return b.description;
+    }
+  }
 
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<string[]>).detail;
       setUnlockedIds(getUnlockedBadgeIds());
       setPoints(getUserPoints());
-      const names = detail.map((id) => BADGES.find((b) => b.id === id)?.title || id);
-      toast.success(`🎉 أوسمة جديدة: ${names.join("، ")}`);
+      const names = detail.map((id) => t(BADGES.find((b) => b.id === id)?.titleKey || id));
+      toast.success(t('badge.newToast').replace('{names}', names.join('، ')));
     };
     window.addEventListener("waey-badges-updated", handler);
     return () => window.removeEventListener("waey-badges-updated", handler);
@@ -112,9 +101,11 @@ export function BadgeShowcase() {
   };
 
   const handleShare = (badge: Badge) => {
-    const text = `🏆 حققت إنجاز "${badge.title}" (${badge.emoji}) في منصة وعي (Waey)! ${badge.description}`;
+    const badgeTitle = t(badge.titleKey);
+    const badgeDesc = t(badge.descKey);
+    const text = `${t('badge.shareTextPrefix')} "${badgeTitle}" (${badge.emoji}) ${t('badge.shareTextOn')} Waey! ${badgeDesc}`;
     if (navigator.share) {
-      navigator.share({ title: badge.title, text }).catch(() => {});
+      navigator.share({ title: badgeTitle, text }).catch(() => {});
     } else {
       navigator.clipboard.writeText(text);
       setCopied(true);
@@ -124,22 +115,22 @@ export function BadgeShowcase() {
 
   const handleShareAll = async () => {
     try {
-      const text = generateAchievementsShareText();
-      const success = await shareContent({ title: "إنجازاتي في وعي", text });
-      toast.success(success ? "تم نسخ الإنجازات للمشاركة" : "تم النسخ للحافظة");
+      const text = generateAchievementsShareText(t);
+      const success = await shareContent({ title: t('badge.shareTitle'), text });
+      toast.success(success ? t('badge.shareSuccess') : t('badge.copySuccess'));
     } catch {
-      toast.error("فشل النسخ");
+      toast.error(t('badge.copyFail'));
     }
   };
 
   const handleDownloadBadgesPDF = async () => {
     try {
-      const blob = generateBadgesPDF();
+      const blob = generateBadgesPDF(t);
       const dateStr = new Date().toISOString().split("T")[0];
       downloadBlob(blob, `waey-badges-${dateStr}.pdf`);
-      toast.success("تم تحميل الأوسمة كـ PDF");
+      toast.success(t('badge.pdfSuccess'));
     } catch {
-      toast.error("فشل إنشاء PDF");
+      toast.error(t('badge.pdfFail'));
     }
   };
 
@@ -152,9 +143,9 @@ export function BadgeShowcase() {
             <Award className="size-6" />
           </div>
           <div>
-            <h2 className="text-lg font-bold">لوحة الأوسمة والإنجازات</h2>
+            <h2 className="text-lg font-bold">{t('badge.title')}</h2>
             <p className="text-xs text-muted-foreground">
-              تم فتح {unlockedIds.length} من {BADGES.length} أوسمة
+              {t('badge.unlocked').replace('{count}', unlockedIds.length).replace('{total}', BADGES.length)}
             </p>
           </div>
         </div>
@@ -163,14 +154,14 @@ export function BadgeShowcase() {
         <div className="flex items-center gap-3 bg-muted/50 p-2 px-4 rounded-full border border-border/40 self-start sm:self-auto">
           <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Coins className="size-4" />
-            <span>{points} نقطة</span>
+            <span>{t('badge.points').replace('{points}', points)}</span>
           </div>
 
           <div className="h-4 w-px bg-border/60" />
 
           <div className="flex items-center gap-2 text-xs font-bold text-cyan-600 dark:text-cyan-400">
             <ShieldAlert className="size-4" />
-            <span>{freezes} تجميد</span>
+            <span>{t('badge.freezes').replace('{count}', freezes)}</span>
           </div>
 
           {points >= 50 && (
@@ -178,7 +169,7 @@ export function BadgeShowcase() {
               onClick={handleBuyFreeze}
               className="h-7 px-3 rounded-full bg-cyan-600 text-white text-[11px] font-bold hover:bg-cyan-700 transition-all shadow-sm flex items-center gap-1 mr-1"
             >
-              شراء تجميد (50 ن)
+              {t('badge.buyFreeze')}
             </button>
           )}
 
@@ -187,7 +178,7 @@ export function BadgeShowcase() {
             className="h-7 px-3 rounded-full bg-amber-600 text-white text-[11px] font-bold hover:bg-amber-700 transition-all shadow-sm flex items-center gap-1 mr-1"
           >
             <RotateCcw className="size-3" />
-            استعادة السلسلة (50 ن)
+            {t('badge.recoverStreak')}
           </button>
 
           <button
@@ -195,7 +186,7 @@ export function BadgeShowcase() {
             className="h-7 px-3 rounded-full bg-primary text-primary-foreground text-[11px] font-bold hover:bg-primary/90 transition-all shadow-sm flex items-center gap-1 mr-1"
           >
             <Share2 className="size-3" />
-            مشاركة الكل
+            {t('badge.shareAll')}
           </button>
 
           <button
@@ -203,7 +194,7 @@ export function BadgeShowcase() {
             className="h-7 px-3 rounded-full bg-secondary text-secondary-foreground text-[11px] font-bold hover:bg-secondary/80 transition-all shadow-sm flex items-center gap-1"
           >
             <Download className="size-3" />
-            PDF الأوسمة
+            {t('badge.pdf')}
           </button>
         </div>
       </div>
@@ -234,15 +225,15 @@ export function BadgeShowcase() {
               </div>
 
               <div>
-                <h3 className="text-xs font-bold mb-1 truncate max-w-[110px]">{b.title}</h3>
+                <h3 className="text-xs font-bold mb-1 truncate max-w-[110px]">{t(b.titleKey)}</h3>
                 <p className="text-[10px] text-muted-foreground line-clamp-2 leading-tight">
-                  {b.description}
+                  {t(b.descKey)}
                 </p>
               </div>
 
               {isUnlocked && (
                 <span className="mt-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
-                  مفتوح ✨
+                  {t('badge.earned')}
                 </span>
               )}
             </motion.div>
@@ -254,7 +245,7 @@ export function BadgeShowcase() {
       <div className="mt-6 pt-5 border-t border-border/40">
         <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
           <Sparkles className="size-4 text-amber-500" />
-          كيف تكسب الأوسمة؟
+          {t('badge.howToEarn')}
         </h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {CATEGORY_ORDER.map((cat) => {
@@ -277,7 +268,7 @@ export function BadgeShowcase() {
                             {done ? "✓" : "•"}
                           </span>
                           <span className="flex-1">
-                            {lbl} → {b.emoji} {b.title}
+                            {lbl} → {b.emoji} {t(b.titleKey)}
                           </span>
                         </div>
                         {!done && pct < 100 && (
@@ -299,13 +290,13 @@ export function BadgeShowcase() {
           <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/30">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg">🛒</span>
-              <h4 className="text-xs font-bold">متجر النقاط</h4>
+              <h4 className="text-xs font-bold">{t('badge.shop')}</h4>
             </div>
             <ul className="space-y-1.5">
               {[
-                "اكسب 10-25 نقطة من كل نشاط",
-                "اشترِ تجميد الستريك بـ 50 نقطة",
-                "التجميد يحمي تتابعك إذا فاتك يوم",
+                t('badge.shopTip1'),
+                t('badge.shopTip2'),
+                t('badge.shopTip3'),
               ].map((step, j) => (
                 <li key={j} className="text-[11px] text-muted-foreground flex items-start gap-1.5 leading-relaxed">
                   <span className="text-primary mt-0.5 shrink-0">•</span>
@@ -335,16 +326,16 @@ export function BadgeShowcase() {
                 {selectedBadge.emoji}
               </div>
 
-              <h3 className="text-xl font-bold mb-1">{selectedBadge.title}</h3>
+              <h3 className="text-xl font-bold mb-1">{t(selectedBadge.titleKey)}</h3>
               <p className="text-xs text-muted-foreground mb-6 leading-relaxed">
-                {selectedBadge.description}
+                {t(selectedBadge.descKey)}
               </p>
 
               {unlockedIds.includes(selectedBadge.id) ? (
                 <div className="space-y-3">
                   <div className="p-3 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold flex items-center justify-center gap-1.5">
                     <Sparkles className="size-4" />
-                    <span>تم الحصول على هذا الوسام!</span>
+                    <span>{t('badge.earnedTitle')}</span>
                   </div>
 
                   <button
@@ -354,12 +345,12 @@ export function BadgeShowcase() {
                     {copied ? (
                       <>
                         <Check className="size-4 text-emerald-300" />
-                        تم نسخ النص!
+                        {t('badge.copied')}
                       </>
                     ) : (
                       <>
                         <Share2 className="size-4" />
-                        مشاركة الإنجاز
+                        {t('badge.shareAchievement')}
                       </>
                     )}
                   </button>
@@ -367,7 +358,7 @@ export function BadgeShowcase() {
               ) : (
                 <div className="p-3 rounded-2xl bg-muted text-muted-foreground text-xs font-bold flex items-center justify-center gap-1.5">
                   <Lock className="size-4" />
-                  <span>واصل التتبع في المنصة لفتح هذا الوسام</span>
+                  <span>{t('badge.locked')}</span>
                 </div>
               )}
 
@@ -375,7 +366,7 @@ export function BadgeShowcase() {
                 onClick={() => setSelectedBadge(null)}
                 className="mt-4 text-xs text-muted-foreground font-bold hover:underline"
               >
-                إغلاق
+                {t('badge.close')}
               </button>
             </motion.div>
           </div>

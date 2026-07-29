@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Heart, Wallet, Leaf, GraduationCap, ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { readJSON, writeJSON } from "@/lib/dailyStorage";
+import { useT } from "@/contexts/useLanguage";
 
 const ONBOARDING_KEY = "waey_onboarding_done";
 
 export function OnboardingModal() {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
 
@@ -18,32 +20,32 @@ export function OnboardingModal() {
 
   const steps = [
     {
-      title: "أهلاً بك في منصة وعي! 👋",
-      subtitle: "رحلتك اليومية للتوازن الشامل في الحياة",
-      description: "منصة وعي تهدف لمساعدتك في وبناء عادات إيجابية مستدامة في 4 أركان أساسية بدون تعقيد.",
+      title: t('onboard.step1.title'),
+      subtitle: t('onboard.step1.subtitle'),
+      description: t('onboard.step1.desc'),
       icon: <Sparkles className="size-8 text-amber-500" />,
-      badge: "البداية",
+      badge: t('onboard.step1.badge'),
     },
     {
-      title: "الصحة البدنية والنفسية 💚",
-      subtitle: "تابع نشاطك وشرب المياه ونومك ومزاجك",
-      description: "سجّل أكواب المياه اليومية، وتمرين التنفس والاسترخاء، ومتابعة المزاج لتحافظ على طاقتك الذكية.",
+      title: t('onboard.step2.title'),
+      subtitle: t('onboard.step2.subtitle'),
+      description: t('onboard.step2.desc'),
       icon: <Heart className="size-8 text-emerald-500" />,
-      badge: "الصحة",
+      badge: t('onboard.step2.badge'),
     },
     {
-      title: "الوعي المالي والاستدامة 💰",
-      subtitle: "إدارة ميزانيتك ووصفات بيئية واقتصادية",
-      description: "تتبع مصاريفك اليومية بحكمة، واكتشف وصفات صحية موفرة مع نصائح التدوير وترشيد الاستهلاك.",
+      title: t('onboard.step3.title'),
+      subtitle: t('onboard.step3.subtitle'),
+      description: t('onboard.step3.desc'),
       icon: <Wallet className="size-8 text-amber-600" />,
-      badge: "المال والبيئة",
+      badge: t('onboard.step3.badge'),
     },
     {
-      title: "السلسلة والأوسمة 🏆",
-      subtitle: "احصل على نقاط مجانية وحافظ على تتابعك",
-      description: "تأكّد من تسجيل نشاطك يومياً لبناء سلسلة الوعي، واكسب النقاط لفتح الأوسمة وشراء حماية التجميد!",
+      title: t('onboard.step4.title'),
+      subtitle: t('onboard.step4.subtitle'),
+      description: t('onboard.step4.desc'),
       icon: <GraduationCap className="size-8 text-primary" />,
-      badge: "الإنجازات",
+      badge: t('onboard.step4.badge'),
     },
   ];
 
@@ -105,7 +107,7 @@ export function OnboardingModal() {
                 className="h-11 px-5 rounded-full bg-muted text-muted-foreground text-xs font-bold hover:bg-muted/80 transition-all flex items-center gap-1"
               >
                 <ArrowRight className="size-3.5" />
-                السابق
+                {t('onboard.previous')}
               </button>
             )}
 
@@ -114,7 +116,7 @@ export function OnboardingModal() {
                 onClick={() => setStep((s) => s + 1)}
                 className="flex-1 h-11 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-1 shadow-sm"
               >
-                التالي
+                {t('onboard.next')}
                 <ArrowLeft className="size-3.5" />
               </button>
             ) : (
@@ -123,7 +125,7 @@ export function OnboardingModal() {
                 className="flex-1 h-11 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <Check className="size-4" />
-                ابدأ رحلة الوعي الآن
+                {t('onboard.finish')}
               </button>
             )}
           </div>

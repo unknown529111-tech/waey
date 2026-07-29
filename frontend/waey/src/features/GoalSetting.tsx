@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Target, Plus, CheckCircle2, Trash2, TrendingUp, X } from "lucide-react";
 import { bumpStreak } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
+import { useT } from "@/contexts/useLanguage";
 
 interface Goal {
   id: string;
@@ -31,15 +32,16 @@ const saveGoals = (goals: Goal[]) => {
   } catch { /* ignore */ }
 };
 
-const CATEGORIES = ["صحة", "مال", "بيئة", "تعليم", "نفسي"];
+const CATEGORIES = ["goal.category.health", "goal.category.finance", "goal.category.environment", "goal.category.education", "goal.category.mindfulness"];
 
 export function GoalSetting() {
+  const t = useT();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("صحة");
+  const [category, setCategory] = useState("goal.category.health");
   const [target, setTarget] = useState(10);
-  const [unit, setUnit] = useState("يوم");
+  const [unit, setUnit] = useState(t('goal.unitDay'));
 
   useEffect(() => {
     setGoals(loadGoals());
@@ -61,7 +63,7 @@ export function GoalSetting() {
     saveGoals(updated);
     setTitle("");
     setTarget(10);
-    setUnit("يوم");
+    setUnit(t('goal.unitDay'));
     setShowForm(false);
   };
 
@@ -92,20 +94,20 @@ export function GoalSetting() {
   };
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-sm" dir="rtl">
+    <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-sm">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
             <Target className="size-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-bold">أهدافي الشخصية</h2>
-            <p className="text-xs text-muted-foreground">حدّد أهدافك وتابع تقدّمك</p>
+            <h2 className="text-lg font-bold">{t('goal.title')}</h2>
+            <p className="text-xs text-muted-foreground">{t('goal.subtitle')}</p>
           </div>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          aria-label="إضافة هدف جديد"
+          aria-label={t('goal.add')}
           className="size-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 hover:scale-105 transition-all"
         >
           <Plus className="size-4" />
@@ -124,7 +126,7 @@ export function GoalSetting() {
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="اسم الهدف (مثلاً: أشرب 8 أكواب مياه)"
+                placeholder={t('goal.placeholder')}
                 className="w-full bg-card border border-border rounded-full px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors"
               />
               <div className="flex gap-2">
@@ -134,7 +136,7 @@ export function GoalSetting() {
                   className="flex-1 bg-card border border-border rounded-full px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors"
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                    <option key={c} value={c}>{t(c)}</option>
                   ))}
                 </select>
                 <input
@@ -146,7 +148,7 @@ export function GoalSetting() {
                 <input
                   value={unit}
                   onChange={(e) => setUnit(e.target.value)}
-                  placeholder="وحدة"
+                  placeholder={t('goal.unitPlaceholder')}
                   className="w-24 bg-card border border-border rounded-full px-3 py-2.5 text-sm outline-none focus:border-primary transition-colors text-center"
                 />
               </div>
@@ -154,7 +156,7 @@ export function GoalSetting() {
                 onClick={addGoal}
                 className="w-full h-10 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all"
               >
-                إضافة الهدف
+                {t('goal.addBtn')}
               </button>
             </div>
           </motion.div>
@@ -164,7 +166,7 @@ export function GoalSetting() {
       {goals.length === 0 && !showForm && (
         <div className="text-center py-8">
           <Target className="size-10 mx-auto text-muted-foreground/40 mb-2" />
-          <p className="text-sm text-muted-foreground">ما عندك أهداف بعد. اضغط + عشان تضيف أول هدف.</p>
+          <p className="text-sm text-muted-foreground">{t('goal.empty')}</p>
         </div>
       )}
 
@@ -192,7 +194,7 @@ export function GoalSetting() {
                       {goal.title}
                     </h3>
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold shrink-0">
-                      {goal.category}
+                      {t(goal.category)}
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -211,14 +213,14 @@ export function GoalSetting() {
                   <button
                     onClick={() => resetGoal(goal.id)}
                     className="size-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center hover:bg-muted/80 transition-all"
-                    title="إعادة تعيين"
+                    title={t('goal.reset')}
                   >
                     <X className="size-3" />
                   </button>
                   <button
                     onClick={() => deleteGoal(goal.id)}
                     className="size-8 rounded-full bg-destructive/10 text-destructive flex items-center justify-center hover:bg-destructive/20 transition-all"
-                    title="حذف"
+                    title={t('goal.delete')}
                   >
                     <Trash2 className="size-3.5" />
                   </button>
@@ -237,7 +239,7 @@ export function GoalSetting() {
               {done && (
                 <div className="flex items-center gap-1.5 mt-2 text-[11px] text-primary font-bold">
                   <CheckCircle2 className="size-3.5" />
-                  تم تحقيق الهدف! 🎉
+                  {t('goal.achieved')}
                 </div>
               )}
             </motion.div>

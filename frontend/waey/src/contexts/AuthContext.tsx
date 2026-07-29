@@ -1,7 +1,8 @@
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
+import { createContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { supabase } from "@/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { importLocalDataToSupabase, setUserId } from "@/lib/supabaseStorage";
+import { useT } from "@/contexts/useLanguage";
 
 interface AuthContextType {
   user: { name: string; email: string } | null;
@@ -13,7 +14,8 @@ interface AuthContextType {
   signOut: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const STORAGE_KEY = "waey-auth";
 
@@ -42,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [supabaseUser, setSupabaseUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     const stored = getStoredAuth();
@@ -79,18 +82,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     return () => subscription.unsubscribe();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signUp = useCallback(async (name: string, email: string, password: string) => {
     if (!name.trim() || !email.trim() || !password) {
-      return { success: false, error: "يرجى ملء جميع الحقول" };
+      return { success: false, error: t('auth.fillAllFields') };
     }
     if (password.length < 6) {
-      return { success: false, error: "كلمة المرور يجب أن تكون 6 أحرف على الأقل" };
+      return { success: false, error: t('auth.passwordMin') };
     }
 
     if (!supabase) {
-      return { success: false, error: "خدمة التسجيل غير متاحة حاليًا" };
+      return { success: false, error: t('auth.registerUnavailable') };
     }
 
     try {
@@ -102,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) {
         if (error.message.includes("already")) {
-          return { success: false, error: "هذا البريد الإلكتروني مسجل بالفعل" };
+          return { success: false, error: t('auth.emailAlreadyRegistered') };
         }
         return { success: false, error: error.message };
       }
@@ -120,13 +124,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       return { success: true };
     } catch (err) {
-      return { success: false, error: "حدث خطأ في الاتصال" };
+      return { success: false, error: t('auth.connectionError') };
     }
-  }, []);
+  }, [t]);
 
   const signIn = useCallback(async (email: string, password: string) => {
     if (!supabase) {
-      return { success: false, error: "خدمة تسجيل الدخول غير متاحة حاليًا" };
+      return { success: false, error: t('auth.loginUnavailable') };
     }
 
     let name = "";
@@ -135,7 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
-          return { success: false, error: "بريد إلكتروني أو كلمة مرور غير صحيحة" };
+          return { success: false, error: t('auth.invalidCredentials') };
         }
         if (data?.user) {
           name = data.user.user_metadata?.name || email;
@@ -152,10 +156,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         return { success: true };
       } catch {
-        return { success: false, error: "حدث خطأ في الاتصال" };
+        return { success: false, error: t('auth.connectionError') };
       }
     }
-  }, []);
+  }, [t]);
 
   const signOut = useCallback(async () => {
     if (supabase) {
@@ -174,10 +178,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-}
+export type { AuthContextType };

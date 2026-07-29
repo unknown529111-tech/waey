@@ -2,26 +2,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, X } from "lucide-react";
 import { getUserId, syncUserSettings } from "@/lib/supabaseStorage";
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
-}
-
-let deferredPrompt: BeforeInstallPromptEvent | null = null;
-
-export function usePwaInstall() {
-  useEffect(() => {
-    const handler = (e: Event) => {
-      e.preventDefault();
-      deferredPrompt = e as BeforeInstallPromptEvent;
-    };
-    window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
-  }, []);
-}
+import { getDeferredPrompt, clearDeferredPrompt } from "@/hooks/usePwaInstall";
+import { useT } from "@/contexts/useLanguage";
 
 export function PwaInstallPrompt() {
+  const t = useT();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -30,19 +15,20 @@ export function PwaInstallPrompt() {
       if (dismissed) return;
     } catch { return; }
     const timer = setTimeout(() => {
-      if (deferredPrompt) setVisible(true);
+      if (getDeferredPrompt()) setVisible(true);
     }, 8000);
     return () => clearTimeout(timer);
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
+    const prompt = getDeferredPrompt();
+    if (!prompt) return;
+    prompt.prompt();
+    const result = await prompt.userChoice;
     if (result.outcome === "accepted") {
       try { localStorage.setItem("waey_pwa_installed", "true"); } catch { /* ignore */ }
     }
-    deferredPrompt = null;
+    clearDeferredPrompt();
     setVisible(false);
     const uid = getUserId();
     if (uid) syncUserSettings(uid);
@@ -67,7 +53,7 @@ export function PwaInstallPrompt() {
         >
           <button
             onClick={handleDismiss}
-            aria-label="إغلاق"
+            aria-label={t('common.close')}
             className="absolute -top-2 -right-2 size-7 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
           >
             <X className="size-3.5" />
@@ -77,8 +63,8 @@ export function PwaInstallPrompt() {
               <Download className="size-5 text-primary" />
             </div>
             <div>
-              <h3 className="text-sm font-bold">ثبّت تطبيق وعي</h3>
-              <p className="text-[11px] text-muted-foreground leading-relaxed mt-0.5">حمّل وعي على جهازك واستخدمها في أي وقت حتى من غير نت.</p>
+              <h3 className="text-sm font-bold">{t('pwa.title')}</h3>
+              <p className="text-[11px] text-muted-foreground leading-relaxed mt-0.5">{t('pwa.desc')}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -86,13 +72,13 @@ export function PwaInstallPrompt() {
               onClick={handleInstall}
               className="flex-1 h-9 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all"
             >
-              تثبيت
+              {t('pwa.install')}
             </button>
             <button
               onClick={handleDismiss}
               className="h-9 px-4 rounded-full bg-muted text-muted-foreground text-xs font-bold hover:bg-muted/80 transition-all"
             >
-              لاحقاً
+              {t('pwa.later')}
             </button>
           </div>
         </motion.div>

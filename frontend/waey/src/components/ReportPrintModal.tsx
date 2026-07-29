@@ -5,6 +5,7 @@ import { todayKey, getDailyValue, getStreak } from "@/lib/dailyStorage";
 import { getUserPoints, getUnlockedBadgeIds, BADGES } from "@/lib/gamification";
 import { generateReportPDF, generateReportShareText, shareContent, downloadBlob } from "@/lib/share";
 import { toast } from "sonner";
+import { useT } from "@/contexts/useLanguage";
 
 interface ReportPrintModalProps {
   open: boolean;
@@ -13,6 +14,7 @@ interface ReportPrintModalProps {
 
 export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
   const [exporting, setExporting] = useState<"pdf" | "share" | null>(null);
+  const t = useT();
 
   if (!open) return null;
 
@@ -34,13 +36,13 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
   const handleExportPDF = async () => {
     setExporting("pdf");
     try {
-      const blob = generateReportPDF();
+      const blob = generateReportPDF(t);
       const dateStr = new Date().toISOString().split("T")[0];
       downloadBlob(blob, `waey-report-${dateStr}.pdf`);
-      toast.success("تم تحميل التقرير كـ PDF");
+      toast.success(t('report.successPdf'));
     } catch (e) {
       console.error(e);
-      toast.error("فشل إنشاء PDF");
+      toast.error(t('report.errorPdf'));
     } finally {
       setExporting(null);
     }
@@ -49,16 +51,16 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
   const handleShare = async () => {
     setExporting("share");
     try {
-      const text = generateReportShareText();
-      const success = await shareContent({ title: "تقرير وعي اليومي", text });
+      const text = generateReportShareText(t);
+      const success = await shareContent({ title: t('report.docTitle'), text });
       if (success) {
-        toast.success("تم نسخ التقرير للمشاركة");
+        toast.success(t('report.successShare'));
       } else {
-        toast.error("تعذر المشاركة أو النسخ");
+        toast.error(t('report.errorShare'));
       }
     } catch (e) {
       console.error(e);
-      toast.error("فشل المشاركة");
+      toast.error(t('report.errorShare2'));
     } finally {
       setExporting(null);
     }
@@ -85,8 +87,8 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
                 <FileText className="size-5" />
               </div>
               <div>
-                <h2 className="text-lg font-bold">معاينة تقرير الإنجاز والتوازن</h2>
-                <p className="text-xs text-muted-foreground">ملخص متابعاتك وحالتك للطباعة أو الحفظ كـ PDF أو المشاركة</p>
+                <h2 className="text-lg font-bold">{t('report.title')}</h2>
+                <p className="text-xs text-muted-foreground">{t('report.subtitle')}</p>
               </div>
             </div>
             <button
@@ -102,34 +104,34 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
             {/* Report Header */}
             <div className="flex items-center justify-between border-b border-border/60 pb-4">
               <div>
-                <h1 className="text-xl font-bold text-primary">وعي — تقرير الإنجاز اليومي</h1>
-                <p className="text-xs text-muted-foreground">التاريخ: {today}</p>
+                <h1 className="text-xl font-bold text-primary">{t('report.docTitle')}</h1>
+                <p className="text-xs text-muted-foreground">{t('report.date')} {today}</p>
               </div>
               <div className="text-right">
                 <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full">
-                  🔥 سلسلة {streak.count} أيام
+                  {t('report.streak', { count: streak.count })}
                 </span>
               </div>
             </div>
 
             {/* Metrics Table */}
             <div>
-              <h3 className="text-xs font-bold text-muted-foreground mb-3">مؤشرات الوعي والتوازن</h3>
+              <h3 className="text-xs font-bold text-muted-foreground mb-3">{t('report.metrics')}</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
-                  <span className="text-xs text-muted-foreground block mb-1">المياه</span>
-                  <span className="text-lg font-bold text-blue-500">{waterCups} أكواب</span>
+                  <span className="text-xs text-muted-foreground block mb-1">{t('report.water')}</span>
+                  <span className="text-lg font-bold text-blue-500">{t('report.waterValue', { count: waterCups })}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
-                  <span className="text-xs text-muted-foreground block mb-1">النوم</span>
-                  <span className="text-lg font-bold text-indigo-500">{sleepHours} ساعات</span>
+                  <span className="text-xs text-muted-foreground block mb-1">{t('report.sleep')}</span>
+                  <span className="text-lg font-bold text-indigo-500">{t('report.sleepValue', { count: sleepHours })}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
-                  <span className="text-xs text-muted-foreground block mb-1">النشاط</span>
-                  <span className="text-lg font-bold text-emerald-500">{stepMinutes} دقيقة</span>
+                  <span className="text-xs text-muted-foreground block mb-1">{t('report.activity')}</span>
+                  <span className="text-lg font-bold text-emerald-500">{t('report.activityValue', { count: stepMinutes })}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
-                  <span className="text-xs text-muted-foreground block mb-1">المزاج</span>
+                  <span className="text-xs text-muted-foreground block mb-1">{t('report.mood')}</span>
                   <span className="text-lg font-bold text-amber-500">{moodScore ? `${moodScore}/5` : "-"}</span>
                 </div>
               </div>
@@ -137,10 +139,10 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
 
             {/* Earned Badges */}
             <div>
-              <h3 className="text-xs font-bold text-muted-foreground mb-3">الأوسمة المكتسبة ({unlockedBadges.length})</h3>
+              <h3 className="text-xs font-bold text-muted-foreground mb-3">{t('report.earnedBadges', { count: unlockedBadges.length })}</h3>
               <div className="flex flex-wrap gap-2">
                 {unlockedBadges.length === 0 ? (
-                  <span className="text-xs text-muted-foreground">واصل التتبع لفتح الأوسمة!</span>
+                  <span className="text-xs text-muted-foreground">{t('report.noBadges')}</span>
                 ) : (
                   unlockedBadges.map((b) => (
                     <div
@@ -157,7 +159,7 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
 
             {/* Summary Notes */}
             <div className="p-4 rounded-2xl bg-muted/30 border border-border/40 text-xs leading-relaxed text-muted-foreground">
-              تم استخراج هذا التقرير تلقائياً من منصة وعي لحفظ السجل اليومي وتتبع التطور الشخصي في الصحة والمال والبيئة.
+              {t('report.footer')}
             </div>
           </div>
 
@@ -171,12 +173,12 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
               {exporting === "pdf" ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
-                  جاري الإنشاء...
+                  {t('report.generating')}
                 </>
               ) : (
                 <>
                   <Download className="size-4" />
-                  تحميل PDF
+                  {t('report.downloadPdf')}
                 </>
               )}
             </button>
@@ -188,12 +190,12 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
               {exporting === "share" ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
-                  جاري النسخ...
+                  {t('report.copying')}
                 </>
               ) : (
                 <>
                   <Share2 className="size-4" />
-                  مشاركة التقرير
+                  {t('report.share')}
                 </>
               )}
             </button>
@@ -202,13 +204,13 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
               className="flex-1 h-11 rounded-full bg-muted text-muted-foreground font-bold text-xs hover:bg-muted/80 transition-all flex items-center justify-center gap-2"
             >
               <Printer className="size-4" />
-              طباعة
+              {t('report.print')}
             </button>
             <button
               onClick={onClose}
               className="h-11 px-6 rounded-full bg-muted/50 text-muted-foreground font-bold text-xs hover:bg-muted/80 transition-all"
             >
-              إغلاق
+              {t('common.close')}
             </button>
           </div>
         </motion.div>

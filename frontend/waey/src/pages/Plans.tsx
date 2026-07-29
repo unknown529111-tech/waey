@@ -176,10 +176,10 @@ const Plans = () => {
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <span className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-4 py-1.5 rounded-full text-xs font-bold mb-3">
-              ✨ خطط الاشتراك
+              ✨ {t('plans.premiumSection')}
             </span>
-            <h2 className="text-2xl font-bold mb-1">اختر الخطة المناسبة لك</h2>
-            <p className="text-sm text-muted-foreground">قريباً — ادعم تطوير منصة وعي واحصل على مميزات حصرية</p>
+            <h2 className="text-2xl font-bold mb-1">{t('plans.choosePlan')}</h2>
+            <p className="text-sm text-muted-foreground">{t('plans.supportText')}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4">
@@ -194,16 +194,16 @@ const Plans = () => {
               >
                 {tier.highlighted && (
                   <span className="inline-block text-[10px] font-bold px-3 py-0.5 rounded-full bg-primary-foreground/20 text-primary-foreground mb-3">
-                    الأكثر شعبية
+                    {t('plans.popular')}
                   </span>
                 )}
-                <h3 className="text-xl font-bold mb-1">{tier.name}</h3>
-                <p className={`text-2xl font-bold mb-4 ${tier.highlighted ? "" : "text-primary"}`}>{tier.price}</p>
+                <h3 className="text-xl font-bold mb-1">{t(tier.nameKey)}</h3>
+                <p className={`text-2xl font-bold mb-4 ${tier.highlighted ? "" : "text-primary"}`}>{t(tier.priceKey)}</p>
                 <ul className="space-y-2 mb-6">
-                  {tier.features.map((f, i) => (
+                  {tier.featureKeys.map((fk, i) => (
                     <li key={i} className="flex items-center gap-2 text-xs">
                       <Check className="size-3.5 shrink-0" />
-                      {f}
+                      {t(fk)}
                     </li>
                   ))}
                 </ul>
@@ -215,7 +215,7 @@ const Plans = () => {
                       : "bg-primary text-primary-foreground"
                   }`}
                 >
-                  قريباً
+                  {t('plans.comingSoon')}
                 </button>
               </div>
             ))}

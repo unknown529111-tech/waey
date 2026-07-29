@@ -3,7 +3,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, FutureFlags } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -25,6 +26,7 @@ const Admin = lazy(() => import("./pages/Admin.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const Terms = lazy(() => import("./pages/Terms.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const Faq = lazy(() => import("./pages/Faq.tsx"));
 
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[60vh]">
@@ -67,6 +69,7 @@ function AppRoutes() {
         <Route path="/dashboard" element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
         <Route path="/daily" element={<Navigate to="/dashboard" replace />} />
         <Route path="/insights" element={<ErrorBoundary><Insights /></ErrorBoundary>} />
+        <Route path="/faq" element={<ErrorBoundary><Faq /></ErrorBoundary>} />
       </Route>
       <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
     </Routes>

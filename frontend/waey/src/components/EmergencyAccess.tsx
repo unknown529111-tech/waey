@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PhoneCall, Ambulance, Shield, Flame, Truck, Heart, X } from "lucide-react";
-
-const EMERGENCY_NUMBERS = [
-  { label: "الإسعاف", number: "123", icon: Ambulance, color: "text-red-500", bg: "bg-red-500/10" },
-  { label: "الشرطة", number: "122", icon: Shield, color: "text-blue-600", bg: "bg-blue-600/10" },
-  { label: "المطافئ", number: "180", icon: Flame, color: "text-orange-500", bg: "bg-orange-500/10" },
-  { label: "النجدة", number: "112", icon: PhoneCall, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  { label: "خط المساعدة النفسية", number: "19201", icon: Heart, color: "text-primary", bg: "bg-primary/10" },
-  { label: "سموم", number: "16001", icon: Truck, color: "text-amber-600", bg: "bg-amber-600/10" },
-];
+import { useT } from "@/contexts/useLanguage";
 
 export function EmergencyAccess() {
+  const t = useT();
   const [open, setOpen] = useState(false);
+
+  const EMERGENCY_NUMBERS = [
+    { label: t('emergency.ambulance'), number: "123", icon: Ambulance, color: "text-red-500", bg: "bg-red-500/10" },
+    { label: t('emergency.police'), number: "122", icon: Shield, color: "text-blue-600", bg: "bg-blue-600/10" },
+    { label: t('emergency.fire'), number: "180", icon: Flame, color: "text-orange-500", bg: "bg-orange-500/10" },
+    { label: t('emergency.help'), number: "112", icon: PhoneCall, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+    { label: t('emergency.mentalHealth'), number: "19201", icon: Heart, color: "text-primary", bg: "bg-primary/10" },
+    { label: t('emergency.poison'), number: "16001", icon: Truck, color: "text-amber-600", bg: "bg-amber-600/10" },
+  ];
 
   const handleCall = (number: string) => {
     window.open(`tel:${number}`, "_self");
@@ -23,7 +25,7 @@ export function EmergencyAccess() {
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-6 right-6 z-50 size-14 rounded-full bg-destructive text-destructive-foreground shadow-float-lg hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center"
-        aria-label="أرقام الطوارئ"
+        aria-label={t('emergency.title')}
       >
         <PhoneCall className="size-6" />
       </button>
@@ -45,8 +47,8 @@ export function EmergencyAccess() {
                     <PhoneCall className="size-5 text-destructive" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold">أرقام الطوارئ</h2>
-                    <p className="text-xs text-muted-foreground">خدمات الطوارئ في مصر</p>
+                    <h2 className="text-lg font-bold">{t('emergency.title')}</h2>
+                    <p className="text-xs text-muted-foreground">{t('emergency.subtitle')}</p>
                   </div>
                 </div>
                 <button
@@ -78,7 +80,7 @@ export function EmergencyAccess() {
               </div>
 
               <p className="text-[10px] text-muted-foreground text-center mt-4 leading-relaxed">
-                هذه الأرقام متاحة 24 ساعة طوال أيام الأسبوع. اتصل فوراً في حالات الطوارئ الحقيقية.
+                {t('emergency.footer')}
               </p>
             </motion.div>
           </div>

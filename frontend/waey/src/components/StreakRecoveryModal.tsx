@@ -4,6 +4,7 @@ import { Flame, Sparkles, X, AlertCircle, CheckCircle2, RotateCcw } from "lucide
 import { getStreak, restoreStreak } from "@/lib/dailyStorage";
 import { getUserPoints } from "@/lib/gamification";
 import { toast } from "sonner";
+import { useT } from "@/contexts/useLanguage";
 
 interface StreakRecoveryModalProps {
   open: boolean;
@@ -15,6 +16,7 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
   const [streak, setStreak] = useState(getStreak());
   const [points, setPoints] = useState(getUserPoints());
   const [loading, setLoading] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     if (open) {
@@ -33,16 +35,16 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
     try {
       const success = restoreStreak();
       if (success) {
-        toast.success("تم استعادة السلسلة بنجاح! 🔥 أكمل نشاطاً اليوم للحفاظ عليها.");
+        toast.success(t('streakRecovery.success'));
         setStreak(getStreak());
         setPoints(getUserPoints());
         onRestored?.();
         setTimeout(() => onClose(), 800);
       } else {
-        toast.error("عفواً، لا تملك رصيد نقاط كافي (تطلب 50 نقطة).");
+        toast.error(t('streakRecovery.noPoints'));
       }
     } catch {
-      toast.error("حدث خطأ أثناء استعادة السلسلة.");
+      toast.error(t('streakRecovery.error'));
     } finally {
       setLoading(false);
     }
@@ -72,30 +74,30 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
               <RotateCcw className="size-6" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground">استعادة السلسلة (Streak Buyback)</h2>
-              <p className="text-xs text-muted-foreground">استرجع سلسلتك المفقودة باستبدال نقاط إنجازاتك</p>
+              <h2 className="text-xl font-bold text-foreground">{t('streakRecovery.title')}</h2>
+              <p className="text-xs text-muted-foreground">{t('streakRecovery.desc')}</p>
             </div>
           </div>
 
           {/* Streak Status Box */}
           <div className="p-4 rounded-2xl bg-muted/40 border border-border/50 space-y-3 mb-5">
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-muted-foreground">السلسلة الحالية:</span>
+              <span className="text-muted-foreground">{t('streakRecovery.currentStreak')}</span>
               <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400">
                 <Flame className="size-4" />
-                {streak.count} أيام
+                {t('streakRecovery.days', { count: streak.count })}
               </span>
             </div>
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-muted-foreground">رصيد نقاطك:</span>
+              <span className="text-muted-foreground">{t('streakRecovery.yourPoints')}</span>
               <span className="inline-flex items-center gap-1 text-primary">
                 <Sparkles className="size-4" />
-                {points} نقطة
+                {t('streakRecovery.points', { count: points })}
               </span>
             </div>
             <div className="flex items-center justify-between text-xs font-bold border-t border-border/40 pt-2">
-              <span className="text-muted-foreground">تكلفة الاستعادة:</span>
-              <span className="text-amber-600 font-extrabold">{COST} نقطة</span>
+              <span className="text-muted-foreground">{t('streakRecovery.costLabel')}</span>
+              <span className="text-amber-600 font-extrabold">{t('streakRecovery.cost', { cost: COST })}</span>
             </div>
           </div>
 
@@ -103,12 +105,12 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
           {!canAfford ? (
             <div className="p-3.5 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-start gap-2 mb-5">
               <AlertCircle className="size-4 shrink-0 mt-0.5" />
-              <span>تحتاج إلى {COST - points} نقطة إضافية. يمكنك كسب النقاط عن طريق إنجاز التحديات اليومية أو تتبع المياه والأنشطة.</span>
+              <span>{t('streakRecovery.insufficient', { diff: COST - points })}</span>
             </div>
           ) : (
             <div className="p-3.5 rounded-2xl bg-primary/10 border border-primary/20 text-primary text-xs font-medium flex items-start gap-2 mb-5">
               <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
-              <span>لديك رصيد كافي! سيتم تعيين آخر يوم نشاط إلى الأمس لتستمر سلسلتك بإنجاز اليوم.</span>
+              <span>{t('streakRecovery.sufficient')}</span>
             </div>
           )}
 
@@ -120,13 +122,13 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
               className="flex-1 bg-primary text-primary-foreground py-3 rounded-2xl font-bold text-sm hover:bg-primary/90 transition-all shadow-moss disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <RotateCcw className="size-4" />
-              {loading ? "جاري الاستعادة..." : `استعادة بـ ${COST} نقطة`}
+              {loading ? t('streakRecovery.recovering') : t('streakRecovery.recover', { cost: COST })}
             </button>
             <button
               onClick={onClose}
               className="px-4 py-3 rounded-2xl border border-border text-sm font-bold hover:bg-muted transition-colors"
             >
-              إلغاء
+              {t('common.cancel')}
             </button>
           </div>
         </motion.div>

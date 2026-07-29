@@ -6,22 +6,32 @@ import Footer from "./Footer";
 import AssistantFab from "./AssistantFab";
 import BlobBackground from "./BlobBackground";
 import OfflineIndicator from "./OfflineIndicator";
-import { PwaInstallPrompt, usePwaInstall } from "./PwaInstallPrompt";
+import { PwaInstallPrompt } from "./PwaInstallPrompt";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { EmergencyAccess } from "./EmergencyAccess";
-import { startNotificationScheduler, requestNotificationPermission } from "@/lib/notifications";
+import { startNotificationScheduler, requestNotificationPermission, setNotifT } from "@/lib/notifications";
+import { setSWToastTexts } from "@/lib/swRegister";
 import { StreakDisplay } from "./StreakDisplay";
 import { initOfflineSync } from "@/lib/offlineQueue";
+import { useLanguage } from "@/contexts/useLanguage";
 
 const Layout = () => {
   const location = useLocation();
+  const { t } = useLanguage();
 
   usePwaInstall();
 
   useEffect(() => {
+    setNotifT(t);
+    setSWToastTexts({
+      title: t("swUpdate.title"),
+      desc: t("swUpdate.desc"),
+      btn: t("swUpdate.btn"),
+    });
     requestNotificationPermission();
     const stop = startNotificationScheduler();
     return stop;
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const cleanup = initOfflineSync();
@@ -35,7 +45,7 @@ const Layout = () => {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:right-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-full focus:font-bold focus:shadow-lg transition-all"
       >
-        الانتقال إلى المحتوى الرئيسي
+        {t('layout.skipToContent')}
       </a>
 
       <BlobBackground count={3} className="z-0" />

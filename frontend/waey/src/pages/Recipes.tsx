@@ -14,6 +14,7 @@ const Recipes = () => {
     trackEvent("page_view", { page: "recipes" });
   }, []);
   const ALL_TAGS: Recipe["tags"][number][] = ["نباتي", "سريع", "اقتصادي", "صحي", "بروتين عالي"];
+  // Arabic tag keys are used for internal filtering; labels come from t()
   const TAG_LABELS: Record<string, string> = {
     نباتي: t('recipes.tag.vegan'),
     سريع: t('recipes.tag.quick'),
@@ -159,11 +160,11 @@ const Recipes = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <Coins className="size-3.5 text-accent" />
-                          <span className="tabular-nums">{r.costEGP}</span> ج
+                          <span className="tabular-nums">{r.costEGP}</span> {t('recipes.egp')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="size-3.5 text-primary" />
-                          <span className="tabular-nums">{r.prepMin}</span> د
+                          <span className="tabular-nums">{r.prepMin}</span> {t('recipes.min')}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1">

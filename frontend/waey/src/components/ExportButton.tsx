@@ -1,4 +1,5 @@
 import { Download } from "lucide-react";
+import { useT } from "@/contexts/useLanguage";
 
 const readAllData = () => {
   const keys = Object.keys(localStorage).filter((k) => k.startsWith("waey_"));
@@ -14,6 +15,7 @@ const readAllData = () => {
 };
 
 const ExportButton = () => {
+  const t = useT();
   const handleExport = async () => {
     let XLSX: typeof import("xlsx");
     try {
@@ -62,7 +64,7 @@ const ExportButton = () => {
       className="inline-flex items-center gap-1.5 text-xs font-bold bg-primary text-primary-foreground rounded-full px-4 py-2 hover:bg-primary/90 transition-colors"
     >
       <Download className="size-3.5" />
-      <span>تصدير بياناتك (Excel)</span>
+      <span>{t('export.label')}</span>
     </button>
   );
 };

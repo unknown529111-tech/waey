@@ -6,9 +6,9 @@ type CalcTab = "electricity" | "budget";
 type Currency = "EGP" | "SAR" | "AED";
 
 const currencies: Record<Currency, { label: string; symbol: string; rate: number }> = {
-  EGP: { label: "🇪🇬 جنيه مصري", symbol: "ج.م", rate: 1 },
-  SAR: { label: "🇸🇦 ريال سعودي", symbol: "ر.س", rate: 0.078 },
-  AED: { label: "🇦🇪 درهم إماراتي", symbol: "د.إ", rate: 0.076 },
+  EGP: { label: "calc.currency.egp", symbol: "calc.currencySymbol.egp", rate: 1 },
+  SAR: { label: "calc.currency.sar", symbol: "calc.currencySymbol.sar", rate: 0.078 },
+  AED: { label: "calc.currency.aed", symbol: "calc.currencySymbol.aed", rate: 0.076 },
 };
 
 // names are translation keys; render via t()
@@ -76,23 +76,26 @@ const Calculators = () => {
   );
 };
 
-const CurrencySwitcher = ({ currency, setCurrency }: { currency: Currency; setCurrency: (c: Currency) => void }) => (
-  <div className="flex gap-2 justify-center flex-wrap">
-    {(Object.keys(currencies) as Currency[]).map((key) => (
-      <button
-        key={key}
-        onClick={() => setCurrency(key)}
-        className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
-          currency === key
-            ? "bg-accent text-accent-foreground"
-            : "bg-secondary text-secondary-foreground hover:bg-muted"
-        }`}
-      >
-        {currencies[key].label}
-      </button>
-    ))}
-  </div>
-);
+const CurrencySwitcher = ({ currency, setCurrency }: { currency: Currency; setCurrency: (c: Currency) => void }) => {
+  const t = useT();
+  return (
+    <div className="flex gap-2 justify-center flex-wrap">
+      {(Object.keys(currencies) as Currency[]).map((key) => (
+        <button
+          key={key}
+          onClick={() => setCurrency(key)}
+          className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+            currency === key
+              ? "bg-accent text-accent-foreground"
+              : "bg-secondary text-secondary-foreground hover:bg-muted"
+          }`}
+        >
+          {t(currencies[key].label)}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const ElectricityCalc = () => {
   const t = useT();
@@ -128,6 +131,8 @@ const ElectricityCalc = () => {
   const updateHours = (name: string, hours: number) => {
     setSelectedDevices(selectedDevices.map((d) => (d.name === name ? { ...d, hours } : d)));
   };
+
+  const curSymbol = t(cur.symbol);
 
   return (
     <div className="space-y-8">
@@ -186,8 +191,8 @@ const ElectricityCalc = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ResultCard label={t('calc.dailyConsumption')} value={`${totalDailyKwh.toFixed(1)} kWh`} />
-        <ResultCard label={t('calc.monthlyCost')} value={`${convert(monthlyCost).toLocaleString()} ${cur.symbol}`} />
-        <ResultCard label={t('calc.youCanSave')} value={`${convert(savedCost).toLocaleString()} ${cur.symbol}`} accent />
+        <ResultCard label={t('calc.monthlyCost')} value={`${convert(monthlyCost).toLocaleString()} ${curSymbol}`} />
+        <ResultCard label={t('calc.youCanSave')} value={`${convert(savedCost).toLocaleString()} ${curSymbol}`} accent />
       </div>
 
       {/* Know More */}
@@ -211,7 +216,7 @@ const ElectricityCalc = () => {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
-            {t('calc.tip').replace('{cost}', (2 * costPerKwh).toFixed(1) + ' ' + currencies.EGP.symbol)}
+            {t('calc.tip').replace('{cost}', (2 * costPerKwh).toFixed(1) + ' ' + t(currencies.EGP.symbol))}
           </p>
         </div>
       )}
@@ -230,6 +235,7 @@ const BudgetCalc = () => {
   const [newExpAmount, setNewExpAmount] = useState("");
 
   const cur = currencies[currency];
+  const curSymbol = t(cur.symbol);
   const convert = (v: number) => Math.round(v * cur.rate);
 
   const totalCustom = customExpenses.reduce((acc, e) => acc + e.amount, 0);
@@ -262,7 +268,7 @@ const BudgetCalc = () => {
           min={0}
           max={1000000}
           step={500}
-          symbol={cur.symbol}
+          symbol={curSymbol}
           convertedValue={convert(income)}
           accentColor="primary"
         />
@@ -273,7 +279,7 @@ const BudgetCalc = () => {
           min={0}
           max={income}
           step={500}
-          symbol={cur.symbol}
+          symbol={curSymbol}
           convertedValue={convert(essentials)}
           accentColor="accent"
         />
@@ -284,7 +290,7 @@ const BudgetCalc = () => {
           min={0}
           max={Math.max(income - essentials, 0)}
           step={500}
-          symbol={cur.symbol}
+          symbol={curSymbol}
           convertedValue={convert(wants)}
           accentColor="accent"
         />
@@ -324,7 +330,7 @@ const BudgetCalc = () => {
               <div key={idx} className="flex items-center justify-between bg-card rounded-xl px-4 py-2 border border-border text-sm">
                 <span className="font-bold">{exp.name}</span>
                 <div className="flex items-center gap-3">
-                  <span className="tabular-nums text-accent">{convert(exp.amount).toLocaleString()} {cur.symbol}</span>
+                  <span className="tabular-nums text-accent">{convert(exp.amount).toLocaleString()} {curSymbol}</span>
                   <button onClick={() => removeExpense(idx)} className="text-muted-foreground hover:text-destructive transition-colors">
                     <Trash2 className="size-3.5" />
                   </button>
@@ -338,7 +344,7 @@ const BudgetCalc = () => {
       <div className="bg-background rounded-3xl p-6 text-center border-2 border-border">
         <span className="text-sm font-bold text-muted-foreground block mb-2">{t('calc.remaining')}</span>
         <span className={`text-4xl font-bold tabular-nums ${savings >= 0 ? "text-primary" : "text-destructive"}`}>
-          {convert(savings).toLocaleString()} {cur.symbol}
+          {convert(savings).toLocaleString()} {curSymbol}
         </span>
         <div className="flex items-center gap-2 mt-4 justify-center">
           <div className={`size-2 rounded-full ${Number(savingsPercent) >= 20 ? "bg-primary" : "bg-accent"}`} />
