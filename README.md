@@ -1,7 +1,6 @@
 # Waey (وعي) Awareness Platform
 
 Waey helps people build better habits in health, finance, education and the environment, all in one place.
-<img width="1316" height="620" alt="لقطة شاشة 2026-07-28 231557" src="https://github.com/user-attachments/assets/ffd5b480-604c-4a5a-a0eb-28f4ddea8d76" />
 
 Website: https://waey-m7.com
 
@@ -78,10 +77,13 @@ Everything frontend-related lives under `frontend/waey/src`, split into `compone
 
 ## AI usage
 
-I used AI while building this, mainly Claude through the opencode CLI, for a few things:
+I built the backend myself, including the Supabase schema across 16+ tables, and I wrote all the content on the site myself. A friend with a UI/UX background helped me fix some interface issues. I also made a lot of manual updates by hand, including fixing several English-language issues in the site copy.
 
-- Writing components, hooks, utility functions and tests
-- Debugging a production white screen caused by circular Vite chunk dependencies
+Where I did use AI, mainly Claude through the opencode CLI, was for a smaller part of the work:
+
+- Some frontend components
+- Test scaffolding across the 23 test files
+- Debugging two specific bugs: a white screen in production caused by circular Vite chunk dependencies, and a chat crash caused by an undefined offline response function
 
 ## Tests
 
