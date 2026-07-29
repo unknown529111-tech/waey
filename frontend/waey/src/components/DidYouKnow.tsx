@@ -13,7 +13,7 @@ const FACT_EMOJIS = [
 ];
 
 const DidYouKnow = () => {
-  const { t } = useT();
+  const t = useT();
   const [current, setCurrent] = useState(0);
 
   const next = () => setCurrent((c) => (c + 1) % FACTS_COUNT);
