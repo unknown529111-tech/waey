@@ -5,7 +5,6 @@ import HeroSection from "@/components/HeroSection";
 import AskSection from "@/components/AskSection";
 import { getCardRadius } from "@/lib/organic";
 import { useT, useLanguage } from "@/contexts/useLanguage";
-import { SEO } from "@/components/SEO";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
 
@@ -26,10 +25,6 @@ const Index = () => {
 
   return (
     <div className="relative">
-      <SEO
-        title={t('index.seoTitle')}
-        description={t('index.seoDesc')}
-      />
       <HeroSection />
 
       <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16">
