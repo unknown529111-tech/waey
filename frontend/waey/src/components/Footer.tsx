@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/useLanguage";
 const Footer = () => {
   const { t } = useLanguage();
   return (
-    <footer className="relative z-10 bg-ink text-white border-t border-white/10 mt-auto">
+    <footer className="relative z-10 bg-footer text-white border-t border-white/10 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col items-center text-center gap-4">
         <div className="flex items-center justify-center mb-1">
           <img src={logoDark} alt="وعي" className="h-36 w-auto" />

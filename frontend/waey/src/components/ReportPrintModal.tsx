@@ -36,7 +36,7 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
   const handleExportPDF = async () => {
     setExporting("pdf");
     try {
-      const blob = generateReportPDF(t);
+      const blob = await generateReportPDF(t);
       const dateStr = new Date().toISOString().split("T")[0];
       downloadBlob(blob, `waey-report-${dateStr}.pdf`);
       toast.success(t('report.successPdf'));

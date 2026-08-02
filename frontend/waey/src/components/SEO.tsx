@@ -69,7 +69,7 @@ export function SEO({
     return () => {
       // Reset script tag content on unmount if needed
     };
-  }, [title, description, canonical, ogType, ogImage, schema]);
+  }, [title, description, canonical, ogType, ogImage, schema, t]);
 
   return null;
 }

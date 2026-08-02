@@ -58,6 +58,7 @@ export default {
           muted: "hsl(var(--ink-muted))",
           faint: "hsl(var(--ink-faint))",
         },
+        footer: "hsl(var(--footer))",
         leaf: {
           DEFAULT: "hsl(var(--primary))",
           light: "hsl(var(--leaf-light))",

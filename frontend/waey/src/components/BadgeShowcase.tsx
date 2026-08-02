@@ -90,7 +90,7 @@ export function BadgeShowcase() {
     };
     window.addEventListener("waey-badges-updated", handler);
     return () => window.removeEventListener("waey-badges-updated", handler);
-  }, []);
+  }, [t]);
 
   const handleBuyFreeze = () => {
     if (deductPoints(50)) {
@@ -125,7 +125,7 @@ export function BadgeShowcase() {
 
   const handleDownloadBadgesPDF = async () => {
     try {
-      const blob = generateBadgesPDF(t);
+      const blob = await generateBadgesPDF(t);
       const dateStr = new Date().toISOString().split("T")[0];
       downloadBlob(blob, `waey-badges-${dateStr}.pdf`);
       toast.success(t('badge.pdfSuccess'));

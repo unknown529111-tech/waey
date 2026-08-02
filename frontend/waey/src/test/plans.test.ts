@@ -22,7 +22,7 @@ describe("PLANS", () => {
       expect(p.title).toBeTruthy();
       expect(p.emoji).toBeTruthy();
       expect(p.description).toBeTruthy();
-      expect(["صحة", "مال", "بيئة"]).toContain(p.area);
+      expect(["health", "finance", "environment"]).toContain(p.area);
     }
   });
 });

@@ -120,7 +120,7 @@ const SearchModal = ({ open, onClose }: Props) => {
     });
 
     return out.slice(0, 20);
-  }, [query]);
+  }, [query, staticTips, t]);
 
   if (!open) return null;
 

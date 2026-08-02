@@ -1,7 +1,6 @@
 import { todayKey, getDailyValue, getStreak } from "./dailyStorage";
 import { getUserPoints, getUnlockedBadgeIds, BADGES } from "./gamification";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+import type { jsPDF as JsPDFClass } from "jspdf";
 
 interface AutoTableOptions {
   startY?: number;
@@ -16,7 +15,7 @@ interface AutoTableOptions {
   columnStyles?: Record<string, unknown>;
 }
 
-interface AutoTableDoc extends jsPDF {
+interface AutoTableDoc extends JsPDFClass {
   autoTable: (options: AutoTableOptions) => AutoTableDoc;
   lastAutoTable: { finalY: number };
 }
@@ -58,7 +57,9 @@ export function generateReportShareText(t?: (key: string) => string): string {
   return lines.join("\n");
 }
 
-export function generateReportPDF(t?: (key: string) => string): Blob {
+export async function generateReportPDF(t?: (key: string) => string): Promise<Blob> {
+  const { jsPDF } = await import("jspdf");
+  await import("jspdf-autotable");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 40;
@@ -205,7 +206,9 @@ export function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export function generateBadgesPDF(t?: (key: string) => string): Blob {
+export async function generateBadgesPDF(t?: (key: string) => string): Promise<Blob> {
+  const { jsPDF } = await import("jspdf");
+  await import("jspdf-autotable");
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 40;
