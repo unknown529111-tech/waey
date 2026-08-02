@@ -64,13 +64,8 @@ const Terms = () => {
 
             <section>
               <h2 className="text-lg font-bold mb-2">{t('terms.s8.title')}</h2>
-              <p className="text-muted-foreground">{t('terms.s8.body')}</p>
-            </section>
-
-            <section>
-              <h2 className="text-lg font-bold mb-2">{t('terms.s9.title')}</h2>
               <p className="text-muted-foreground">
-                {t('terms.s9.body')} <a href="mailto:waey.official.mk@gmail.com" className="text-primary underline">waey.official.mk@gmail.com</a>
+                {t('terms.s8.body')} <a href="mailto:waey.official.mk@gmail.com" className="text-primary underline">waey.official.mk@gmail.com</a>
               </p>
             </section>
           </motion.div>

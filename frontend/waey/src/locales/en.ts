@@ -1761,10 +1761,8 @@ const en: Record<string, string> = {
   'terms.s6.body': 'We reserve the right to modify these terms at any time. We will notify you of material changes via the platform.',
   'terms.s7.title': '7. Termination',
   'terms.s7.body': 'You have the right to stop using the platform at any time.',
-  'terms.s8.title': '8. Governing Law',
-  'terms.s8.body': 'These terms are subject to Egyptian law. Any dispute shall first be resolved amicably, then through the competent courts.',
-  'terms.s9.title': '9. Contact Us',
-  'terms.s9.body': 'For inquiries about the terms:',
+  'terms.s8.title': '8. Contact Us',
+  'terms.s8.body': 'For inquiries about the terms:',
 };
 
 export default en;
