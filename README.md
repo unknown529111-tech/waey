@@ -23,7 +23,7 @@ Awareness is dropping everywhere and people are getting lazier by the day. Most 
 - Daily habit tracking
 - Expense tracking with categories
 - Streak system with freeze options
-- Gamification (points, badges, achievements)
+- points, badges, achievements
 - 30-day plans
 - AI assistant
 - Daily challenges and quotes
@@ -37,13 +37,12 @@ Awareness is dropping everywhere and people are getting lazier by the day. Most 
 
 ## Tech stack
 
-Frontend runs on React, TypeScript, Vite, Tailwind CSS, shadcn/ui and Framer Motion. Backend and storage are on Supabase. The AI assistant calls the Groq API. PDF exports use jsPDF with jspdf-autotable, and charts are built with Recharts. It's deployed on Cloudflare Pages.
+Frontend runs on React, TypeScript, Vite, Tailwind CSS, shadcn/ui and Framer Motion. Backend and storage are on Supabase. The AI assistant calls the Groq API.
 
 ## Running it locally
 
-You'll need Node.js 18+, npm and a Supabase account.
+You need Node.js 18+, npm, Supabase.
 
-Clone it and move into the project:
 
 ```sh
 git clone https://github.com/unknown529111-tech/waey.git
@@ -96,4 +95,4 @@ npm run test
 
 ## Author
 
-Mahmoud Ahmed Mohamed Khalil. I'm 16, I love coding, AI and volunteering.
+Mahmoud Ahmed Mohamed Khalil. I'm 16 years old, I love coding, AI, volunteering and my beloved contury Egypt
