@@ -5,9 +5,6 @@ node_modules/
 dist/
 /build/
 
-# Large audio files (not part of the app)
-frontend/waey/public/sounds/
-
 # Environment files
 .env
 .env.local

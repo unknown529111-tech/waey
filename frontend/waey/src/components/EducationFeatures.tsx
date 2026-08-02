@@ -103,9 +103,9 @@ const BrainDumpBox = ({ t }: { t: (key: string) => string }) => {
 /* ─── Study Sound Player (MP3) ─── */
 
 const STUDY_SOUNDS = [
-  { id: "lofi-study", label: "📚 Lo-Fi Study", src: "/sounds/1 A.M Study Session 📚 [lofi hip hop] [lTRiuFIWV54].mp3" },
-  { id: "jazz-study", label: "☕ Jazz & Coffee", src: "/sounds/Books, Coffee, & Jazz  1 Full Hour Jazz Favorites  Studying Music  Work Aid.mp3" },
-  { id: "rain-study", label: "🌧️ Rain Study", src: "/sounds/study with me in rain   thunderstorm sound  1-hour pomodoro 2x25.mp3" },
+  { id: "lofi-study", label: "📚 Lo-Fi Study", src: "/sounds/lofi-study.mp3" },
+  { id: "jazz-study", label: "☕ Jazz & Coffee", src: "/sounds/jazz-coffee.mp3" },
+  { id: "rain-study", label: "🌧️ Rain Study", src: "/sounds/rain-study.mp3" },
 ];
 
 const StudySoundPlayer = ({ t }: { t: (key: string) => string }) => {
