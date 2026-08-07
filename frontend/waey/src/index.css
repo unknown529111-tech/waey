@@ -4,85 +4,103 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ────────────────────────────────────────────────────────────
+   Waey — "Warm Editorial Ledger"
+   An earthy, hand-set wellness-journal system:
+   cream linen paper, inked moss green, ochre-amber marks,
+   one sharp corner per card, hairlines over heavy shadows,
+   and wide vibrant Alexandria type.
+   ──────────────────────────────────────────────────────────── */
+
 @layer base {
   :root {
-    --background: 47 56% 98%;
-    --foreground: 60 10% 16%;
+    /* Lime-washed cream paper */
+    --background: 40 30% 97%;
+    --foreground: 42 16% 16%;
 
-    --card: 48 56% 100%;
-    --card-foreground: 60 10% 16%;
+    --card: 44 44% 99% / 0.55;
+    --card-foreground: 42 16% 16%;
 
-    --popover: 48 56% 100%;
-    --popover-foreground: 60 10% 16%;
+    --popover: 44 44% 99%;
+    --popover-foreground: 42 16% 16%;
 
-    --primary: 100 15% 38%;
-    --primary-foreground: 80 10% 95%;
+    /* Inked moss green */
+    --primary: 92 22% 30%;
+    --primary-foreground: 60 18% 96%;
 
-    --secondary: 28 44% 56%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 28 55% 40%;
+    --secondary-foreground: 40 18% 98%;
 
-    --muted: 33 27% 92%;
-    --muted-foreground: 60 5% 45%;
+    --muted: 36 24% 90%;
+    --muted-foreground: 38 12% 44%;
 
-    --accent: 36 33% 85%;
-    --accent-foreground: 60 7% 27%;
+    --accent: 34 42% 84%;
+    --accent-foreground: 38 16% 26%;
 
     --destructive: 7 40% 47%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 19% 84%;
-    --input: 36 19% 84%;
-    --ring: 100 15% 38%;
+    --border: 36 22% 82%;
+    --input: 36 22% 82%;
+    --ring: 92 22% 30%;
 
-    --radius: 2rem;
+    --radius: 1.5rem;
 
-    --leaf-light: 100 15% 90%;
-    --sun-warm: 36 33% 85%;
-    --sand-deep: 36 19% 84%;
+    /* Decorative + bespoke tokens */
+    --leaf-light: 96 32% 91%;
+    --sun-warm: 40 36% 90%;
+    --sand-deep: 36 22% 82%;
 
-    --ink: 60 10% 16%;
-    --ink-muted: 60 5% 45%;
-    --ink-faint: 50 5% 65%;
+    --ink: 42 16% 16%;
+    --ink-muted: 38 12% 44%;
+    --ink-faint: 40 8% 62%;
 
-    --footer: 60 10% 16%;
+    --footer: 42 16% 16%;
+
+    /* Water (sea-glass blue, not default Tailwind blue) */
+    --water: 200 42% 38%;
+    --water-soft: 200 44% 90%;
   }
 
   .dark {
-    --background: 30 6% 10%;
-    --foreground: 42 10% 88%;
+    --background: 40 10% 9%;
+    --foreground: 42 12% 86%;
 
-    --card: 30 5% 14%;
-    --card-foreground: 42 10% 88%;
+    --card: 40 8% 14% / 0.5;
+    --card-foreground: 42 12% 86%;
 
-    --popover: 30 5% 14%;
-    --popover-foreground: 42 10% 88%;
+    --popover: 40 8% 14%;
+    --popover-foreground: 42 12% 86%;
 
-    --primary: 100 20% 52%;
-    --primary-foreground: 30 6% 10%;
+    --primary: 40 32% 72%;
+    --primary-foreground: 40 18% 12%;
 
-    --secondary: 28 35% 38%;
-    --secondary-foreground: 42 10% 93%;
+    --secondary: 28 42% 44%;
+    --secondary-foreground: 42 16% 92%;
 
-    --muted: 35 8% 16%;
-    --muted-foreground: 50 5% 63%;
+    --muted: 40 9% 16%;
+    --muted-foreground: 40 10% 58%;
 
-    --accent: 36 10% 20%;
-    --accent-foreground: 42 12% 92%;
+    --accent: 28 16% 21%;
+    --accent-foreground: 40 30% 90%;
 
-    --destructive: 7 35% 42%;
+    --destructive: 7 36% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 6% 20%;
-    --input: 36 6% 20%;
-    --ring: 100 20% 52%;
+    --border: 38 9% 20%;
+    --input: 38 9% 20%;
+    --ring: 40 32% 72%;
 
-    --leaf-light: 100 10% 18%;
-    --sun-warm: 36 10% 18%;
-    --sand-deep: 36 6% 16%;
+    --leaf-light: 96 10% 18%;
+    --sun-warm: 38 12% 18%;
+    --sand-deep: 38 9% 18%;
 
-    --ink: 42 10% 88%;
-    --ink-muted: 50 5% 63%;
-    --ink-faint: 40 5% 50%;
+    --ink: 42 12% 86%;
+    --ink-muted: 40 10% 58%;
+    --ink-faint: 40 8% 46%;
+
+    --water: 200 34% 52%;
+    --water-soft: 200 14% 22%;
   }
 }
 
@@ -91,11 +109,26 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply antialiased;
     direction: rtl;
-    line-height: 1.9;
+    color: hsl(var(--foreground));
     font-family: "Alexandria", sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(1100px 700px at 88% -10%, hsl(var(--water-soft) / 0.9), transparent 60%),
+      radial-gradient(950px 650px at 92% 30%, hsl(var(--leaf-light) / 0.9), transparent 62%),
+      radial-gradient(1000px 700px at 12% 20%, hsl(var(--leaf-light) / 0.75), transparent 60%),
+      radial-gradient(900px 680px at 4% 108%, hsl(var(--sun-warm) / 0.95), transparent 62%),
+      radial-gradient(700px 500px at 60% 78%, hsl(var(--water-soft) / 0.7), transparent 60%),
+      radial-gradient(500px 400px at 30% 60%, hsl(var(--sun-warm) / 0.7), transparent 60%);
+    background-attachment: fixed;
   }
 
   [dir="ltr"] body,
@@ -104,22 +137,36 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
-    font-family: inherit;
-    line-height: 1.25;
+    font-family: "Alexandria", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.22;
+    text-wrap: balance;
+    color: hsl(var(--foreground));
   }
 
   p {
     line-height: 1.9;
+    color: hsl(var(--foreground));
+  }
+
+  /* Tabular figures everywhere numbers appear */
+  .tabular-nums, [class*="tabular-nums"] {
+    font-variant-numeric: tabular-nums;
   }
 
   ::selection {
-    background: hsl(var(--primary) / 0.2);
+    background: hsl(var(--primary) / 0.22);
     color: hsl(var(--foreground));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
   }
 }
 
-/* Grain texture overlay */
+/* ── Paper grain overlay (very faint, tactile) ─────────────── */
 @layer base {
   body::after {
     content: '';
@@ -127,49 +174,352 @@
     inset: 0;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.04;
+    opacity: 0.05;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-repeat: repeat;
-    background-size: 256px 256px;
+    background-size: 220px 220px;
   }
 
   .dark body::after {
-    opacity: 0.06;
+    opacity: 0.07;
     mix-blend-mode: screen;
   }
 }
 
+@layer components {
+  /* ── Frosted glass utility ────────────────────────────────
+     Translucent panel + backdrop blur + soft inner glow.
+     Keeps the warm palette, adds the liquid-glass feel. */
+  .glass {
+    background: hsl(var(--card) / 0.5);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
+    backdrop-filter: blur(22px) saturate(1.5);
+    border: 1px solid hsl(var(--foreground) / 0.08);
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.5),
+      0 12px 32px -14px hsl(var(--foreground) / 0.12);
+  }
+
+  /* Global: any surface using the card tint is frosted glass.
+     Browser support varies; WebGL liquid-glass is layered on via
+     liquidGL (src/hooks/useLiquidGlass) where available. */
+  .bg-card {
+    -webkit-backdrop-filter: blur(20px) saturate(1.45);
+    backdrop-filter: blur(20px) saturate(1.45);
+  }
+
+  .dark .glass {
+    background: hsl(var(--card) / 0.42);
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.08),
+      0 12px 32px -12px hsl(0 0% 0% / 0.45);
+  }
+
+  /* ── Editorial ledger card ────────────────────────────────
+     One corner squared (the RTL "start" corner) for a
+     hand-set, journal layout feel. Frosted glass surface,
+     hairline border, inner glow — depth from the moss rule. */
+  .ledger {
+    position: relative;
+    background: hsl(var(--card) / 0.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.45);
+    backdrop-filter: blur(20px) saturate(1.45);
+    border: 1px solid hsl(var(--foreground) / 0.08);
+    border-start-start-radius: 0.6rem;
+    border-start-end-radius: 1.4rem;
+    border-end-start-radius: 1.4rem;
+    border-end-end-radius: 1.4rem;
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.5),
+      0 10px 28px -14px hsl(var(--foreground) / 0.14);
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .dark .ledger {
+    background: hsl(var(--card) / 0.45);
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.08),
+      0 10px 28px -16px hsl(0 0% 0% / 0.5);
+  }
+
+  .ledger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    inset-inline-start: 1.25rem;
+    width: 2.25rem;
+    height: 3px;
+    border-start-start-radius: 3px;
+    background: hsl(var(--primary));
+    opacity: 0.85;
+  }
+
+  .ledger:hover {
+    border-color: hsl(var(--primary) / 0.35);
+  }
+
+  /* ── Eyebrow / section label ────────────────────────────── */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 1.5rem;
+    height: 1px;
+    background: hsl(var(--primary) / 0.5);
+  }
+
+  /* ── Hand-drawn underline for display headings ──────────── */
+  .rule-mark {
+    position: relative;
+    display: inline-block;
+  }
+
+  .rule-mark::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: -0.3em;
+    height: 0.3em;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8 C 30 3, 60 10, 118 5' fill='none' stroke='%23C18C5D' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / 100% 100%;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .rule-mark-lower::after {
+    bottom: calc(-0.6em - 3px);
+  }
+
+  .rule-mark-env::after {
+    bottom: calc(-0.6em - 2px);
+  }
+
+  .rule-mark-higher::after {
+    bottom: calc(-0.6em + 8px);
+  }
+
+  /* ── Blur Vignette overlay ──────────────────────────────── */
+  .blur-vignette {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius, 32px);
+    -webkit-backdrop-filter: blur(var(--blur, 15px));
+    backdrop-filter: blur(var(--blur, 15px));
+    -webkit-mask-image: linear-gradient(to right, var(--fill-gradient)), linear-gradient(to bottom, var(--fill-gradient)), radial-gradient(at bottom right, var(--corner-gradient)), radial-gradient(at bottom left, var(--corner-gradient)), radial-gradient(at top left, var(--corner-gradient)), radial-gradient(at top right, var(--corner-gradient));
+    -webkit-mask-size: 100% var(--fill-narrow-size), var(--fill-narrow-size) 100%, var(--corner-size), var(--corner-size), var(--corner-size), var(--corner-size);
+    -webkit-mask-position: 0 var(--fill-farther-position), var(--fill-farther-position) 0, 0 0, 100% 0, 100% 100%, 0 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-image: linear-gradient(to right, var(--fill-gradient)), linear-gradient(to bottom, var(--fill-gradient)), radial-gradient(at bottom right, var(--corner-gradient)), radial-gradient(at bottom left, var(--corner-gradient)), radial-gradient(at top left, var(--corner-gradient)), radial-gradient(at top right, var(--corner-gradient));
+    mask-size: 100% var(--fill-narrow-size), var(--fill-narrow-size) 100%, var(--corner-size), var(--corner-size), var(--corner-size), var(--corner-size);
+    mask-position: 0 var(--fill-farther-position), var(--fill-farther-position) 0, 0 0, 100% 0, 100% 100%, 0 100%;
+    mask-repeat: no-repeat;
+  }
+
+  /* ── Numbered ledger marker ─────────────────────────────── */
+  .marker-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background: hsl(var(--muted));
+    color: hsl(var(--primary));
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+
+  .btn-glass {
+    color: hsl(var(--ink));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.22));
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    -webkit-backdrop-filter: blur(12px) saturate(1.15);
+    backdrop-filter: blur(12px) saturate(1.15);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      0 4px 14px -6px rgba(40, 90, 140, 0.28);
+  }
+  .btn-glass:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.35));
+  }
+  .dark .btn-glass {
+    color: hsl(var(--ink));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 4px 14px -6px rgba(0, 0, 0, 0.5);
+  }
+  .dark .btn-glass:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07));
+  }
+
+  .btn-glass-solid {
+    color: hsl(200 30% 96%);
+    background: linear-gradient(135deg, hsl(200 42% 40%), hsl(205 55% 30%));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 6px 16px -8px rgba(30, 70, 130, 0.55);
+  }
+  .btn-glass-solid:hover {
+    background: linear-gradient(135deg, hsl(200 42% 46%), hsl(205 55% 36%));
+  }
+  .dark .btn-glass-solid {
+    color: hsl(200 30% 96%);
+    background: linear-gradient(135deg, hsl(200 50% 38%), hsl(205 60% 26%));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 6px 16px -8px rgba(0, 0, 0, 0.6);
+  }
+  .dark .btn-glass-solid:hover {
+    background: linear-gradient(135deg, hsl(200 50% 44%), hsl(205 60% 32%));
+  }
+
+
+  .btn-moss {
+    color: hsl(var(--primary-foreground));
+    background: hsl(var(--primary));
+    box-shadow: inset 0 -2px 0 hsl(0 0% 0% / 0.12);
+  }
+  .btn-moss:hover { background: hsl(var(--primary) / 0.88); }
+
+  .btn-linen {
+    color: hsl(var(--foreground));
+    background: hsl(var(--muted) / 0.6);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.2);
+    border: 1px solid hsl(var(--foreground) / 0.1);
+  }
+  .btn-linen:hover { background: hsl(var(--border) / 0.65); }
+
+  .btn-ink {
+    color: hsl(var(--foreground));
+    background: hsl(var(--card) / 0.35);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid hsl(var(--foreground) / 0.18);
+  }
+  .btn-ink:hover { border-color: hsl(var(--foreground) / 0.5); }
+
+  /* Circular stepper for trackers */
+  .stepper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--foreground) / 0.1);
+    background: hsl(var(--card) / 0.5);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    backdrop-filter: blur(10px) saturate(1.2);
+    color: hsl(var(--foreground));
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
+    flex: none;
+  }
+  .stepper:hover { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: transparent; }
+  .stepper:active { transform: translateY(1px); }
+
+  .stepper-solid {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: transparent;
+  }
+  .stepper-solid:hover { background: hsl(var(--primary) / 0.86); color: hsl(var(--primary-foreground)); }
+  .stepper-water {
+    background: hsl(var(--water));
+    color: #fff;
+    border-color: transparent;
+  }
+  .stepper-water:hover { background: hsl(var(--water) / 0.86); color: #fff; }
+
+  /* Hairline / divider */
+  .hairline { border-top: 1px solid hsl(var(--border) / 0.7); }
+
+  /* Inline field used across the ledger */
+  .field {
+    background: hsl(var(--muted) / 0.45);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid transparent;
+    color: hsl(var(--foreground));
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .field:focus {
+    outline: none;
+    border-color: hsl(var(--primary) / 0.5);
+    background: hsl(var(--card));
+  }
+  .field::placeholder { color: hsl(var(--ink-faint)); }
+}
+
 @layer base {
+  /* Range slider — mossed, with an ink thumb */
   input[type="range"] {
-    @apply h-1.5 rounded-full appearance-none cursor-pointer;
-    background: hsl(var(--secondary));
+    height: 0.5rem;
+    border-radius: 9999px;
+    appearance: none;
+    cursor: pointer;
+    background: hsl(var(--muted));
+    background-image: linear-gradient(hsl(var(--primary)), hsl(var(--primary)));
   }
 
   input[type="range"]::-webkit-slider-thumb {
-    @apply appearance-none size-5 rounded-full;
-    background: hsl(var(--primary));
-    border: 3px solid hsl(var(--card));
-    box-shadow: 0 2px 8px rgba(93, 112, 82, 0.2);
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: hsl(var(--card));
+    border: 3px solid hsl(var(--primary));
+    box-shadow: 0 1px 4px hsl(0 0% 0% / 0.18);
+    cursor: grab;
   }
 
   input[type="range"]::-moz-range-thumb {
-    @apply size-5 rounded-full border-[3px];
-    background: hsl(var(--primary));
-    border-color: hsl(var(--card));
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: hsl(var(--card));
+    border: 3px solid hsl(var(--primary));
+    box-shadow: 0 1px 4px hsl(0 0% 0% / 0.18);
   }
 
   select {
-    @apply appearance-none rounded-full;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2378786C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+    appearance: none;
+    border-radius: 9999px;
     background-repeat: no-repeat;
-    background-position: left 16px center;
-    padding-left: 36px;
-  }
-
-  [dir="ltr"] select {
-    background-position: right 16px center;
-    padding-left: 16px;
-    padding-right: 36px;
+    background-position: left 0.9rem center;
+    background-size: 0.7rem;
+    padding-inline-start: 1.75rem;
+    padding-inline-end: 1rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%235a5548' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
   }
 }

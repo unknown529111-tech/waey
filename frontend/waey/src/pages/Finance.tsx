@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import Calculators from "@/components/Calculators";
 import FinanceFeatures from "@/components/FinanceFeatures";
-import { useT } from "@/contexts/useLanguage";
+import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
 
 const Finance = () => {
   const t = useT();
+  const { lang } = useLanguage();
 
   useEffect(() => {
     trackEvent("page_view", { page: "finance" });
@@ -63,8 +64,9 @@ const Finance = () => {
         <PageHero
           badge={t('finance.badge')}
           icon={<Wallet className="size-4" />}
-          title={t('finance.title')}
+          title={lang === 'ar' ? <span>{t('finance.title').replace('أموالك بذكاء', '')}<span className="block">أموالك بذكاء</span></span> : t('finance.title')}
           subtitle={t('finance.subtitle')}
+          subtitleClass={lang === 'ar' ? 'mt-6' : ''}
         />
         <Calculators />
 

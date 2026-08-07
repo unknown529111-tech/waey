@@ -94,21 +94,21 @@ export function GoalSetting() {
   };
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-sm">
+    <div className="ledger p-6">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="size-10 rounded-full bg-moss/15 flex items-center justify-center">
             <Target className="size-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-lg font-bold">{t('goal.title')}</h2>
+            <h2 className="text-lg font-extrabold">{t('goal.title')}</h2>
             <p className="text-xs text-muted-foreground">{t('goal.subtitle')}</p>
           </div>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
           aria-label={t('goal.add')}
-          className="size-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 hover:scale-105 transition-all"
+          className="btn btn-moss size-9"
         >
           <Plus className="size-4" />
         </button>
@@ -127,34 +127,34 @@ export function GoalSetting() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={t('goal.placeholder')}
-                className="w-full bg-card border border-border rounded-full px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors"
+                className="w-full field rounded-full px-4 py-2.5 text-sm"
               />
               <div className="flex gap-2">
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="flex-1 bg-card border border-border rounded-full px-4 py-2.5 text-sm outline-none focus:border-primary transition-colors"
+                  className="flex-1 field rounded-full px-4 py-2.5 text-sm"
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c} value={c}>{t(c)}</option>
+                    <option key={c.value} value={c}>{t(c)}</option>
                   ))}
                 </select>
                 <input
                   type="number"
                   value={target}
                   onChange={(e) => setTarget(Math.max(1, Number(e.target.value)))}
-                  className="w-20 bg-card border border-border rounded-full px-3 py-2.5 text-sm outline-none focus:border-primary transition-colors text-center"
+                  className="w-20 field rounded-full px-3 py-2.5 text-sm text-center"
                 />
                 <input
                   value={unit}
                   onChange={(e) => setUnit(e.target.value)}
                   placeholder={t('goal.unitPlaceholder')}
-                  className="w-24 bg-card border border-border rounded-full px-3 py-2.5 text-sm outline-none focus:border-primary transition-colors text-center"
+                  className="w-24 field rounded-full px-3 py-2.5 text-sm text-center"
                 />
               </div>
               <button
                 onClick={addGoal}
-                className="w-full h-10 rounded-full bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-all"
+                className="btn btn-moss w-full h-10 text-xs"
               >
                 {t('goal.addBtn')}
               </button>
@@ -205,21 +205,21 @@ export function GoalSetting() {
                   {!done && (
                     <button
                       onClick={() => incrementGoal(goal.id)}
-                      className="size-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 hover:scale-105 transition-all"
+                      className="btn btn-moss size-8"
                     >
                       <TrendingUp className="size-3.5" />
                     </button>
                   )}
                   <button
                     onClick={() => resetGoal(goal.id)}
-                    className="size-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center hover:bg-muted/80 transition-all"
+                    className="btn btn-linen size-8"
                     title={t('goal.reset')}
                   >
                     <X className="size-3" />
                   </button>
                   <button
                     onClick={() => deleteGoal(goal.id)}
-                    className="size-8 rounded-full bg-destructive/10 text-destructive flex items-center justify-center hover:bg-destructive/20 transition-all"
+                    className="btn size-8 bg-destructive/10 text-destructive hover:bg-destructive/20"
                     title={t('goal.delete')}
                   >
                     <Trash2 className="size-3.5" />

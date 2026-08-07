@@ -48,13 +48,13 @@ const ExpenseTracker = () => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-3xl p-5">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <Wallet className="size-5 text-accent" />
-          <h3 className="font-bold">{t("tracker.expense.title")}</h3>
+    <div className="ledger p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2.5">
+          <Wallet className="size-5 text-secondary" />
+          <h3 className="font-bold text-sm">{t("tracker.expense.title")}</h3>
         </div>
-        <span className="text-sm font-bold text-accent">{total.toFixed(2)} {t('tracker.expense.egp')}</span>
+        <span className="text-sm font-extrabold text-secondary tabular-nums">{total.toFixed(2)} {t('tracker.expense.egp')}</span>
       </div>
 
       <form onSubmit={submit} className="grid grid-cols-12 gap-2 mb-3">
@@ -66,12 +66,12 @@ const ExpenseTracker = () => {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder={t("tracker.expense.placeholder")}
-          className="col-span-4 bg-secondary/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="col-span-4 field rounded-xl px-3 py-2 text-sm"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="col-span-4 bg-secondary/60 rounded-xl px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="col-span-4 field rounded-xl px-2 py-2 text-sm"
         >
           {CATEGORIES.map((c) => (
             <option key={c.value} value={c.value}>{t(c.key)}</option>
@@ -83,11 +83,11 @@ const ExpenseTracker = () => {
           onChange={(e) => setNote(e.target.value)}
           placeholder={t("tracker.expense.note")}
           maxLength={40}
-          className="col-span-3 bg-secondary/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="col-span-3 field rounded-xl px-3 py-2 text-sm"
         />
         <button
           type="submit"
-          className="col-span-1 bg-primary text-primary-foreground rounded-xl flex items-center justify-center hover:bg-primary/90"
+          className="col-span-1 bg-primary text-primary-foreground rounded-xl flex items-center justify-center hover:bg-primary/88 transition-colors"
           aria-label={t("tracker.expense.add")}
         >
           <Plus className="size-4" />
@@ -103,19 +103,19 @@ const ExpenseTracker = () => {
         {list.map((e) => (
           <div
             key={e.id}
-            className="flex items-center justify-between bg-secondary/40 rounded-xl px-3 py-2 text-sm"
+            className="flex items-center justify-between bg-muted/40 rounded-xl px-3 py-2 text-sm"
           >
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-card px-2 py-0.5 rounded-full text-muted-foreground">
+              <span className="text-xs bg-card px-2 py-0.5 rounded-full text-muted-foreground border border-border/70">
                 {t(getCategoryKey(e.category))}
               </span>
               {e.note && <span className="text-xs text-muted-foreground">{e.note}</span>}
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold">{e.amount.toFixed(2)} {t('tracker.expense.egp')}</span>
+              <span className="font-bold tabular-nums">{e.amount.toFixed(2)} {t('tracker.expense.egp')}</span>
               <button
                 onClick={() => remove(e.id)}
-                className="text-muted-foreground hover:text-destructive"
+                className="text-muted-foreground hover:text-destructive transition-colors"
                 aria-label={t("tracker.expense.delete")}
               >
                 <Trash2 className="size-3.5" />

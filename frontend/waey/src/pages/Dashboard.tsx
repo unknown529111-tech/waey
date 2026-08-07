@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Moon, Footprints, Recycle, Target, Brain, Sparkles, BarChart3, Database, Printer, Bell, Snowflake } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useT } from "@/contexts/useLanguage";
+import { useT, useLanguage } from "@/contexts/useLanguage";
 import StreakBadge from "@/features/StreakBadge";
 import DailyChallenge from "@/features/DailyChallenge";
 import DailyQuote from "@/features/DailyQuote";
@@ -32,6 +32,7 @@ import { toast } from "sonner";
 
 const Dashboard = () => {
   const t = useT();
+  const { lang } = useLanguage();
   const [backupOpen, setBackupOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -41,67 +42,76 @@ const Dashboard = () => {
     trackEvent("page_view", { page: "dashboard" });
   }, []);
 
+  const todayStamp = new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'ar-EG', {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    numberingSystem: lang === 'en' ? 'latn' : 'arab',
+  });
+
   return (
     <div className="relative min-h-[60vh]">
       <SEO
         title={t('dash.seoTitle')}
         description={t('dash.seoDesc')}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-        <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-primary">
-              {t('dash.title')}
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('dash.subtitle')}
-            </p>
-            <div className="mt-3">
-              <StreakBadge />
-            </div>
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+        <header className="mb-8">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <span className="eyebrow">{todayStamp}</span>
+            <StreakBadge />
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <button
-              onClick={() => setReportOpen(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title={t('dash.printReport')}
-            >
-              <Printer className="size-3.5 text-primary" />
-              {t('dash.pdfReport')}
-            </button>
-            <button
-              onClick={() => setBackupOpen(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title={t('dash.backupRestore')}
-            >
-              <Database className="size-3.5 text-primary" />
-              {t('dash.backup')}
-            </button>
-            <ExportButton />
-            <button
-              onClick={() => setNotifOpen(!notifOpen)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title={t('dash.notifSettings')}
-            >
-              <Bell className="size-3.5 text-primary" />
-              {t('dash.notifications')}
-            </button>
-            <button
-              onClick={() => { freeze(); toast.success(t('dash.freezeToast')); }}
-              className="inline-flex items-center gap-1.5 text-xs font-bold bg-muted hover:bg-muted/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-3.5 py-2 text-muted-foreground"
-              title={t('dash.freezeStreak')}
-            >
-              <Snowflake className="size-3.5 text-primary" />
-              {t('dash.freezeCount').replace('{count}', freezes)}
-            </button>
-            <Link
-              to="/insights"
-              className="inline-flex items-center gap-1.5 text-sm font-bold bg-secondary hover:bg-muted hover:text-foreground hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-4 py-2"
-            >
-              <BarChart3 className="size-4" />
-              {t('dash.weeklyInsights')}
-            </Link>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-primary leading-tight">
+                <span className={`rule-mark ${lang === 'ar' ? 'rule-mark-lower' : ''}`}>{t('dash.title')}</span>
+              </h1>
+              <p className="text-sm md:text-base text-muted-foreground mt-10 max-w-xl">
+                {t('dash.subtitle')}
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={() => setReportOpen(true)}
+                className="btn btn-linen text-xs px-3.5 py-2"
+                title={t('dash.printReport')}
+              >
+                <Printer className="size-3.5 text-primary" />
+                {t('dash.pdfReport')}
+              </button>
+              <button
+                onClick={() => setBackupOpen(true)}
+                className="btn btn-linen text-xs px-3.5 py-2"
+                title={t('dash.backupRestore')}
+              >
+                <Database className="size-3.5 text-primary" />
+                {t('dash.backup')}
+              </button>
+              <ExportButton />
+              <button
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="btn btn-linen text-xs px-3.5 py-2"
+                title={t('dash.notifSettings')}
+              >
+                <Bell className="size-3.5 text-primary" />
+                {t('dash.notifications')}
+              </button>
+              <button
+                onClick={() => { freeze(); toast.success(t('dash.freezeToast')); }}
+                className="btn btn-linen text-xs px-3.5 py-2"
+                title={t('dash.freezeStreak')}
+              >
+                <Snowflake className="size-3.5 text-primary" />
+                {t('dash.freezeCount').replace('{count}', freezes)}
+              </button>
+              <Link
+                to="/insights"
+                className="btn btn-moss text-sm px-4 py-2.5"
+              >
+                <BarChart3 className="size-4" />
+                {t('dash.weeklyInsights')}
+              </Link>
+            </div>
           </div>
         </header>
 

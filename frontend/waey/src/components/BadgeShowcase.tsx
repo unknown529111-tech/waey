@@ -135,7 +135,7 @@ export function BadgeShowcase() {
   };
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-sm mb-8" dir="rtl">
+    <div className="ledger p-6 mb-8" dir="rtl">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/40">
         <div className="flex items-center gap-3">

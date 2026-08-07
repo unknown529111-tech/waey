@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, LogOut } from "lucide-react";
@@ -19,6 +19,13 @@ const Navbar = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const navLinks = [
     { path: "/", label: "nav.home", icon: null },
     { path: "/health", label: "nav.health", icon: null },
@@ -30,8 +37,11 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-sm shadow-soft" : "bg-transparent"}`}>
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" dir="rtl">
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500
+        ${scrolled
+          ? "bg-[linear-gradient(135deg,rgba(255,255,255,0.65),rgba(255,255,255,0.35))] dark:bg-[linear-gradient(135deg,rgba(20,28,40,0.75),rgba(20,28,40,0.45))] backdrop-blur-2xl shadow-[0_8px_32px_-12px_rgba(40,90,140,0.35)] border-b border-white/40 dark:border-white/10"
+          : "bg-transparent"}`}>
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-[2] pointer-events-auto" dir="rtl">
           <div className="flex items-center justify-between h-20">
             <Link to="/" className="flex items-center gap-2" aria-label={t('nav.homeLink')}>
               <img src={logo} alt={t('nav.homeLink')} className="h-24 w-auto" />
@@ -43,10 +53,10 @@ const Navbar = () => {
                   key={link.path}
                   to={link.path}
                   className={({ isActive }) =>
-                    `px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    `px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                       isActive
-                        ? "bg-primary text-primary-foreground shadow-sm"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        ? "bg-white/50 dark:bg-white/10 text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/30 dark:hover:bg-white/5"
                     }`
                   }
                   onClick={() => setIsOpen(false)}
@@ -62,7 +72,7 @@ const Navbar = () => {
 
               <button
                 onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-xl bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors"
+                className="btn btn-glass px-3 py-2 text-sm"
                 aria-label={t('nav.toggleLang')}
               >
                 {lang === 'ar' ? 'EN' : 'عربي'}
@@ -79,7 +89,7 @@ const Navbar = () => {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={signOut}
-                        className="px-3 py-1.5 text-sm font-medium rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors flex items-center gap-1.5"
+                        className="btn btn-glass px-3 py-2 text-sm text-destructive/80 hover:text-destructive"
                       >
                         <LogOut className="size-4" />
                         <span className="hidden sm:inline">{t('nav.logout')}</span>
@@ -95,14 +105,8 @@ const Navbar = () => {
                   >
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => { setAuthMode("signin"); setAuthModalOpen(true); }}
-                        className="px-4 py-2 text-sm font-bold rounded-full bg-muted hover:bg-muted/80 transition-colors"
-                      >
-                        {t('nav.login')}
-                      </button>
-                      <button
                         onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); }}
-                        className="px-4 py-2 text-sm font-bold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
+                        className="btn btn-moss px-4 py-2 text-sm"
                       >
                         {t('nav.signup')}
                       </button>
@@ -140,35 +144,38 @@ const Navbar = () => {
             className="fixed inset-0 z-50 md:hidden"
             onClick={() => setIsOpen(false)}
           >
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-sky-400/10 backdrop-blur-sm" />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="absolute right-0 top-0 h-full w-full max-w-sm bg-card shadow-xl flex flex-col"
+              className="absolute right-0 top-0 h-full w-full max-w-sm flex flex-col
+                bg-[linear-gradient(165deg,rgba(255,255,255,0.82),rgba(214,235,255,0.72))]
+                backdrop-blur-2xl rounded-l-[2rem] shadow-[0_20px_60px_-20px_rgba(80,160,220,0.5)]
+                border border-white/60"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <h3 className="font-bold">{t('nav.menu')}</h3>
+              <div className="flex items-center justify-between p-5 border-b border-white/60">
+                <h3 className="font-bold text-sky-900/70">{t('nav.menu')}</h3>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-xl hover:bg-muted transition-colors"
+                  className="p-2.5 rounded-full bg-white/60 backdrop-blur-md border border-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_4px_12px_-4px_rgba(60,150,220,0.3)] hover:bg-white/80 transition-colors"
                 >
-                  <X className="size-5" />
+                  <X className="size-5 text-sky-700/70" />
                 </button>
               </div>
 
-              <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+              <nav className="flex-1 p-5 space-y-2 overflow-y-auto">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.path}
                     to={link.path}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all ${
+                      `flex items-center gap-3 px-4 py-3.5 rounded-full text-base font-medium transition-all duration-300 ${
                         isActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          ? "bg-white/75 text-sky-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_6px_16px_-8px_rgba(70,150,220,0.45)]"
+                          : "text-sky-900/60 hover:bg-white/45 hover:text-sky-800"
                       }`
                     }
                     onClick={() => setIsOpen(false)}
@@ -178,12 +185,12 @@ const Navbar = () => {
                   </NavLink>
                 ))}
 
-                <div className="pt-4 border-t border-border space-y-3">
+                <div className="pt-5 border-t border-white/60 space-y-3">
                   <div className="flex items-center justify-between px-1">
                     <ThemeToggle />
                     <button
                       onClick={() => lang === 'ar' ? setLang('en') : setLang('ar')}
-                      className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                      className="size-9 grid place-items-center rounded-full bg-white/60 backdrop-blur-md border border-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_4px_12px_-4px_rgba(60,150,220,0.3)] text-sky-700/80 hover:text-sky-800 transition-colors"
                       aria-label={t('nav.toggleLang')}
                     >
                       <span className="text-sm font-bold">{lang === 'ar' ? 'EN' : 'ع'}</span>
@@ -200,7 +207,7 @@ const Navbar = () => {
                       >
                         <button
                           onClick={signOut}
-                          className="w-full px-4 py-3 text-base font-bold rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors flex items-center justify-center gap-2"
+                          className="w-full px-4 py-3 text-base font-bold rounded-full bg-white/60 backdrop-blur-md border border-white/70 text-sky-800/80 hover:text-sky-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_4px_12px_-4px_rgba(60,150,220,0.3)] transition-colors flex items-center justify-center gap-2"
                         >
                           <LogOut className="size-5" />
                           {t('nav.logout')}
@@ -215,14 +222,8 @@ const Navbar = () => {
                       >
                         <div className="flex flex-col gap-2">
                           <button
-                            onClick={() => { setAuthMode("signin"); setAuthModalOpen(true); setIsOpen(false); }}
-                            className="w-full px-4 py-3 text-base font-bold rounded-xl bg-muted hover:bg-muted/80 transition-colors"
-                          >
-                            {t('nav.login')}
-                          </button>
-                          <button
                             onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); setIsOpen(false); }}
-                            className="w-full px-4 py-3 text-base font-bold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
+                            className="w-full px-4 py-3 text-base font-bold rounded-full bg-gradient-to-br from-[#6f8a58] to-[#4d5f3c] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_10px_24px_-10px_rgba(77,95,60,0.55)] hover:opacity-95 transition-opacity"
                           >
                             {t('nav.signup')}
                           </button>

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Heart, Wallet, TreePine, ArrowLeft, LayoutDashboard, GraduationCap, Sparkles, Trophy, Flame } from "lucide-react";
+import { Heart, Wallet, TreePine, ArrowLeft, LayoutDashboard, GraduationCap, Sparkles } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
 import AskSection from "@/components/AskSection";
 import { getCardRadius } from "@/lib/organic";
@@ -25,42 +25,7 @@ const Index = () => {
 
   return (
     <div className="relative">
-      <HeroSection />
-
-      <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20 border border-amber-200/60 dark:border-amber-800/30 rounded-[2rem] p-6 md:p-8"
-        >
-          <div className="absolute -top-10 -left-10 size-40 rounded-full bg-amber-400/10 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-10 -right-10 size-40 rounded-full bg-orange-400/10 blur-3xl pointer-events-none" />
-          <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
-            <div className="size-16 md:size-20 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0 shadow-lg">
-              <Trophy className="size-8 md:size-10 text-white" />
-            </div>
-            <div className="flex-1 text-center md:text-right">
-              <h3 className="text-xl md:text-2xl font-bold text-amber-900 dark:text-amber-200 mb-2">
-                {t('prize.badge')}
-              </h3>
-              <p className="text-amber-800/80 dark:text-amber-300/80 leading-relaxed font-medium">
-                {t('prize.first')}{" "}
-                <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400 font-bold bg-amber-100 dark:bg-amber-900/40 px-3 py-0.5 rounded-full">
-                  <Flame className="size-4" />
-                  100
-                </span>{" "}
-                {t('prize.points')}{" "}
-                <span className="text-amber-600 dark:text-amber-400 font-bold text-lg">{t('prize.amount')}</span> 🎉
-              </p>
-              <p className="text-sm text-amber-700/60 dark:text-amber-400/60 mt-2">
-                {t('prize.desc')}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+<HeroSection />
 
       <section className="relative px-4 sm:px-6 lg:px-8 pb-32 max-w-7xl mx-auto">
         <motion.div

@@ -23,20 +23,20 @@ const MoodTracker = () => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-3xl p-5">
-      <div className="flex items-center gap-2 mb-3">
-        <Smile className="size-5 text-accent" />
-        <h3 className="font-bold">{t("tracker.mood.title")}</h3>
+    <div className="ledger p-5">
+      <div className="flex items-center gap-2.5 mb-4">
+        <Smile className="size-5 text-secondary" />
+        <h3 className="font-bold text-sm">{t("tracker.mood.title")}</h3>
       </div>
-      <div className="flex justify-between gap-1">
+      <div className="flex justify-between gap-1.5">
         {MOODS.map((m) => (
           <button
             key={m.v}
             onClick={() => choose(m.v)}
-            className={`flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl transition-all ${
+            className={`flex-1 flex flex-col items-center gap-1 py-2.5 rounded-2xl border transition-all ${
               val === m.v
-                ? "bg-primary/15 ring-2 ring-primary"
-                : "hover:bg-secondary"
+                ? "border-secondary bg-secondary/10 ring-1 ring-secondary/40"
+                : "border-transparent hover:bg-muted/60"
             }`}
             aria-label={t(m.key)}
           >

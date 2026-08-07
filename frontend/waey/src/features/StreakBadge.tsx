@@ -21,10 +21,10 @@ const StreakBadge = () => {
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="inline-flex items-center gap-2 bg-gradient-to-l from-accent/20 to-accent/5 border border-accent/30 rounded-full px-4 py-2"
+      className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground border border-secondary/40 rounded-full px-4 py-1.5 shadow-sm"
     >
-      <Flame className="size-5 text-accent" />
-      <span className="font-bold text-sm text-accent tabular-nums">
+      <Flame className="size-4" />
+      <span className="font-bold text-sm tabular-nums">
         {streak.count} {t('streak.points')}
       </span>
     </motion.div>

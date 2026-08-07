@@ -45,18 +45,18 @@ const SimpleTracker = ({
   };
 
   return (
-    <div className="bg-card border border-border rounded-3xl p-5">
+    <div className="ledger p-5">
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <Icon className={`size-5 ${color}`} />
-          <h3 className="font-bold">{title}</h3>
+          <h3 className="font-bold text-sm">{title}</h3>
         </div>
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-muted-foreground tabular-nums">
           {val} {goal ? `/ ${goal}` : ""} {unit}
         </span>
       </div>
       {goal && (
-        <div className="h-2 bg-secondary rounded-full overflow-hidden mb-4">
+        <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-4">
           <div
             className={`h-full transition-all duration-500 bg-current ${color}`}
             style={{ width: `${Math.min(100, (val / goal) * 100)}%` }}
@@ -66,15 +66,15 @@ const SimpleTracker = ({
       <div className="flex items-center justify-between">
         <button
           onClick={() => update(val - step)}
-          className="size-10 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground flex items-center justify-center"
+          className="stepper"
           aria-label={t("tracker.simple.decrease")}
         >
           <Minus className="size-4" />
         </button>
-        <div className="text-2xl font-bold">{val}</div>
+        <div className="text-2xl font-extrabold tabular-nums">{val}</div>
         <button
           onClick={() => update(val + step)}
-          className={`size-10 rounded-full text-white flex items-center justify-center bg-primary hover:bg-primary/90`}
+          className={`stepper stepper-solid`}
           aria-label={t("tracker.simple.add")}
         >
           <Plus className="size-4" />

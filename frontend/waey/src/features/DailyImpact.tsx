@@ -23,9 +23,9 @@ const DailyImpact = () => {
   }, [t]);
 
   return (
-    <div className="bg-gradient-to-l from-primary/10 via-leaf-light/20 to-sun-warm/20 rounded-3xl p-5 border border-primary/15">
-      <div className="flex items-center gap-2 mb-2">
-        <Sparkles className="size-5 text-accent" />
+    <div className="ledger p-5 bg-gradient-to-l from-moss/[0.04] to-transparent">
+      <div className="flex items-center gap-2.5 mb-3">
+        <Sparkles className="size-5 text-secondary" />
         <h3 className="font-bold text-sm">{t('impact.title')}</h3>
       </div>
       <p className="text-sm leading-relaxed">{impact}</p>

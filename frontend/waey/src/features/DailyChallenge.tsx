@@ -27,19 +27,21 @@ const DailyChallenge = () => {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-primary/10 via-card to-accent/10 border border-border rounded-3xl p-6 md:p-8 shadow-soft"
+      className="bg-gradient-to-br from-primary/[0.06] via-card to-accent/10 border border-border/70 border-s-2 border-s-secondary rounded-3xl p-6 md:p-8"
     >
-      <div className="flex items-center gap-2 text-xs font-bold text-primary mb-3">
-        <Trophy className="size-4" />
+      <div className="flex items-center gap-2 text-xs font-bold text-primary mb-4">
+        <span className="inline-flex items-center justify-center size-6 rounded-full bg-primary text-primary-foreground text-[10px] shadow-sm">
+          <Trophy className="size-3.5" />
+        </span>
         {t('challenge.title')}
       </div>
       <div className="flex items-start gap-4">
-        <div className="text-5xl">{challenge.emoji}</div>
+        <div className="text-5xl leading-none">{challenge.emoji}</div>
         <div className="flex-1">
-          <p className="text-lg md:text-xl font-bold leading-relaxed mb-1">
+          <p className="text-lg md:text-xl font-bold leading-relaxed mb-2">
             {t(challenge.text)}
           </p>
-          <span className="inline-block text-xs bg-secondary px-2 py-0.5 rounded-full text-muted-foreground">
+          <span className="inline-block text-xs bg-secondary/10 text-secondary border border-secondary/25 px-2.5 py-0.5 rounded-full font-bold">
             {t(challenge.area)}
           </span>
         </div>
@@ -47,10 +49,8 @@ const DailyChallenge = () => {
       <button
         onClick={handleDone}
         disabled={done}
-        className={`mt-5 w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all ${
-          done
-            ? "bg-primary/20 text-primary cursor-default"
-            : "bg-primary text-primary-foreground hover:bg-primary/90"
+        className={`btn mt-5 px-6 py-3 text-sm ${
+          done ? "bg-primary/15 text-primary cursor-default" : "btn-moss"
         }`}
       >
         <Check className="size-4" />

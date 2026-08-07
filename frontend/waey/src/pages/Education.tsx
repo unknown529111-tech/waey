@@ -2,12 +2,13 @@ import { GraduationCap, BookOpen, Brain, Timer, Target, Sparkles, Compass, Heart
 import PageHero from "@/components/PageHero";
 import VarkTest from "@/components/VarkTest";
 import EducationFeatures from "@/components/EducationFeatures";
-import { useT } from "@/contexts/useLanguage";
+import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
 
 const Education = () => {
   const t = useT();
+  const { lang } = useLanguage();
 
   useEffect(() => {
     trackEvent("page_view", { page: "education" });
@@ -49,6 +50,8 @@ const Education = () => {
           icon={<GraduationCap className="size-4" />}
           title={t('edu.title')}
           subtitle={t('edu.subtitle')}
+          subtitleClass="mt-6"
+          titleClass={lang === 'ar' ? 'rule-mark-higher' : ''}
         />
 
         <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16 space-y-12">

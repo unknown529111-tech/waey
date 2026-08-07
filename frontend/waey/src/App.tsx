@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate, FutureFlags } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, FutureFlags, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -81,6 +81,14 @@ const futureFlags: FutureFlags = {
   v7_relativeSplatPath: true,
 };
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
 const App = () => {
   useEffect(() => {
     const cleanup = initOfflineSync();
@@ -94,6 +102,7 @@ const App = () => {
         <LanguageProvider>
           <AuthProvider>
             <BrowserRouter future={futureFlags}>
+              <ScrollToTop />
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>
                   <AppRoutes />

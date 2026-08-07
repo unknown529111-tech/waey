@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { Leaf } from "lucide-react";
-import heroImage from "@/assets/hero-nature.jpg";
 import BlobBackground from "./BlobBackground";
+import BlurVignette from "./BlurVignette";
 import { useLanguage } from "@/contexts/useLanguage";
 
 const HeroSection = () => {
@@ -9,15 +8,7 @@ const HeroSection = () => {
   return (
     <header className="relative pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center flex flex-col items-center gap-8 overflow-hidden bg-gradient-to-br from-leaf-light/40 via-background to-sun-warm/30">
       <BlobBackground count={2} className="z-0" />
-      <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 inline-flex items-center gap-2 bg-card/70 backdrop-blur text-muted-foreground text-xs font-bold px-4 py-2 rounded-full border border-border/50 shadow-soft"
-      >
-        <Leaf className="size-3.5" />
-        {t('hero.badge')}
-      </motion.div>
+      <BlurVignette className="z-[1]" />
       <motion.h1
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -36,21 +27,6 @@ const HeroSection = () => {
       >
         {t('hero.desc')}
       </motion.p>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.3 }}
-        className="relative z-10 w-full max-w-[700px] mt-6 rounded-4xl overflow-hidden shadow-soft-lg border border-border/40"
-      >
-        <img
-          src={heroImage}
-          alt={t('hero.alt')}
-          width={1200}
-          height={800}
-          className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
-          loading="lazy"
-        />
-      </motion.div>
     </header>
   );
 };

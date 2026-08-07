@@ -52,25 +52,25 @@ const NightReview = () => {
   }, [achievement, lesson, screensOff]);
 
   return (
-    <div className="bg-card rounded-3xl p-5 border border-border">
-      <div className="flex items-center gap-2 mb-3">
-        <Moon className="size-5 text-indigo-500" />
+    <div className="ledger p-5">
+      <div className="flex items-center gap-2.5 mb-3">
+        <Moon className="size-5 text-primary" />
         <h3 className="font-bold text-sm">{t('daily.nightReview.title')}</h3>
       </div>
       <div className="space-y-3">
         <div>
           <label className="text-xs font-bold flex items-center gap-1.5 mb-1.5">
-            <Trophy className="size-3.5 text-accent" /> {t('daily.nightReview.achievement')}
+            <Trophy className="size-3.5 text-secondary" /> {t('daily.nightReview.achievement')}
           </label>
-          <input value={achievement} onChange={(e) => setAchievement(e.target.value)} placeholder={t('daily.nightReview.achievementPlaceholder')} className="w-full bg-muted/50 border border-border rounded-2xl p-2.5 text-xs outline-none focus:border-primary/40 transition-colors" />
+          <input value={achievement} onChange={(e) => setAchievement(e.target.value)} placeholder={t('daily.nightReview.achievementPlaceholder')} className="w-full field rounded-2xl p-2.5 text-xs" />
         </div>
         <div>
           <label className="text-xs font-bold flex items-center gap-1.5 mb-1.5">
-            <Lightbulb className="size-3.5 text-yellow-500" /> {t('daily.nightReview.lesson')}
+            <Lightbulb className="size-3.5 text-secondary" /> {t('daily.nightReview.lesson')}
           </label>
-          <input value={lesson} onChange={(e) => setLesson(e.target.value)} placeholder={t('daily.nightReview.lessonPlaceholder')} className="w-full bg-muted/50 border border-border rounded-2xl p-2.5 text-xs outline-none focus:border-primary/40 transition-colors" />
+          <input value={lesson} onChange={(e) => setLesson(e.target.value)} placeholder={t('daily.nightReview.lessonPlaceholder')} className="w-full field rounded-2xl p-2.5 text-xs" />
         </div>
-        <button onClick={() => setScreensOff(!screensOff)} className={`flex items-center gap-2 w-full p-3 rounded-2xl text-xs font-bold transition-all ${screensOff ? "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600" : "bg-secondary text-muted-foreground"}`}>
+        <button onClick={() => setScreensOff(!screensOff)} className={`flex items-center gap-2 w-full p-3 rounded-2xl text-xs font-bold transition-all border ${screensOff ? "bg-water-soft/50 border-water/40 text-water" : "field"}`}>
           <Smartphone className="size-4" />
           {screensOff ? t('daily.nightReview.screensOff') : t('daily.nightReview.screensOn')}
         </button>

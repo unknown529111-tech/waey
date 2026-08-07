@@ -2,14 +2,27 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
 
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  console.warn("Supabase env vars missing. Contact form will be unavailable.");
+// Treat example/placeholder values as "not configured" so the app stays
+// fully offline-first instead of firing requests at a fake domain.
+const PLACEHOLDER_PATTERN = /your-|your_|example|change_me|put_your/i;
+
+function isConfigured(url: string | undefined, key: string | undefined): url is string {
+  if (!url || !key) return false;
+  if (PLACEHOLDER_PATTERN.test(url) || PLACEHOLDER_PATTERN.test(key)) return false;
+  return url.startsWith("https://") && key.length >= 8;
 }
 
-export const supabase = SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY
+export const isSupabaseConfigured = (): boolean =>
+  isConfigured(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+if (!isConfigured(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)) {
+  console.warn("Supabase env vars missing or unconfigured. Cloud features (contact form, sync, AI proxy) will be unavailable.");
+}
+
+export const supabase = isConfigured(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   ? createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {
         storage: localStorage,

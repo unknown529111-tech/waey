@@ -42,17 +42,17 @@ const DailyBig3 = () => {
   };
 
   return (
-    <div className="bg-card rounded-3xl p-5 border border-border">
-      <div className="flex items-center gap-2 mb-3">
+    <div className="ledger p-5">
+      <div className="flex items-center gap-2.5 mb-2">
         <Target className="size-5 text-primary" />
         <h3 className="font-bold text-sm">{t('big3.title')}</h3>
       </div>
-      <p className="text-xs text-muted-foreground mb-3">{t('big3.subtitle')}</p>
+      <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{t('big3.subtitle')}</p>
       <div className="space-y-2">
         {tasks.map((task, i) => (
           <div key={i} className="flex items-center gap-2">
             <button onClick={() => toggleDone(i)} className="shrink-0">
-              {done[i] ? <CheckCircle2 className="size-5 text-green-500" /> : <Circle className="size-5 text-muted-foreground" />}
+              {done[i] ? <CheckCircle2 className="size-5 text-primary" /> : <Circle className="size-5 text-muted-foreground/50" />}
             </button>
             <input
               value={task}
@@ -62,7 +62,7 @@ const DailyBig3 = () => {
                 setTasks(next);
               }}
               placeholder={t('big3.task').replace('{n}', String(i + 1))}
-              className={`flex-1 bg-transparent border-b border-border py-1.5 text-sm outline-none focus:border-primary/40 transition-colors ${done[i] ? "line-through text-muted-foreground" : ""}`}
+              className={`flex-1 bg-transparent border-b border-border py-1.5 text-sm outline-none focus:border-primary/60 transition-colors ${done[i] ? "line-through text-muted-foreground" : ""}`}
             />
           </div>
         ))}

@@ -1022,7 +1022,7 @@ const ar: Record<string, string> = {
   // Assistant
   'assistant.badge': 'المساعد الذكي',
   'assistant.title': 'اسأل مساعد وعي',
-  'assistant.subtitle': 'إجابات سريعة وموثوقة في الصحة والمال والبيئة، باللغة العربية.',
+  'assistant.subtitle': 'إجابات سريعة وموثوقة في الصحة والمال والبيئة والتعليم، باللغة العربية.',
   'assistant.open': 'افتح المساعد الذكي',
 
   // NotFound

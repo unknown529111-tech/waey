@@ -71,6 +71,13 @@ export default {
           DEFAULT: "hsl(var(--background))",
           deep: "hsl(var(--sand-deep))",
         },
+        water: {
+          DEFAULT: "hsl(var(--water))",
+          soft: "hsl(var(--water-soft))",
+        },
+        moss: {
+          DEFAULT: "hsl(var(--primary))",
+        },
       },
       borderRadius: {
         sm: "8px",

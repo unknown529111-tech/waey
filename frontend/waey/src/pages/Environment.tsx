@@ -2,12 +2,13 @@ import { TreePine } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import EnvironmentalContent from "@/components/EnvironmentalContent";
 import RecycleSection from "@/components/RecycleSection";
-import { useT } from "@/contexts/useLanguage";
+import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect } from "react";
 
 const Environment = () => {
   const t = useT();
+  const { lang } = useLanguage();
 
   useEffect(() => {
     trackEvent("page_view", { page: "environment" });
@@ -21,6 +22,8 @@ const Environment = () => {
           icon={<TreePine className="size-4" />}
           title={t('env.title')}
           subtitle={t('env.subtitle')}
+          titleClass={lang === 'ar' ? 'rule-mark-env' : ''}
+          subtitleClass={lang === 'ar' ? 'mt-10' : ''}
         />
 
         <EnvironmentalContent />

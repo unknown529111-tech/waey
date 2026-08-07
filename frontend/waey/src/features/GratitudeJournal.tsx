@@ -31,17 +31,17 @@ const GratitudeJournal = () => {
   }, [text, today]);
 
   return (
-    <div className="bg-card rounded-3xl p-5 border border-border">
-      <div className="flex items-center gap-2 mb-3">
-        <Heart className="size-5 text-accent" />
+    <div className="ledger p-5">
+      <div className="flex items-center gap-2.5 mb-3">
+        <Heart className="size-5 text-secondary" />
         <h3 className="font-bold text-sm">{t('daily.gratitude.title')}</h3>
       </div>
-      <p className="text-xs text-muted-foreground mb-2">{t('daily.gratitude.desc')}</p>
+      <p className="text-xs text-muted-foreground mb-2 leading-relaxed">{t('daily.gratitude.desc')}</p>
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder={t('daily.gratitude.placeholder')}
-        className="w-full bg-muted/50 border border-border rounded-2xl p-3 text-sm outline-none focus:border-primary/40 transition-colors"
+        className="w-full field rounded-2xl p-3 text-sm"
       />
     </div>
   );
