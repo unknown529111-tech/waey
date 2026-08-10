@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, Lock, Sparkles, Share2, Check, Coins, ShieldAlert, RotateCcw, Download } from "lucide-react";
+import { Award, Lock, Sparkles, Share2, Check, Coins, ShieldAlert, RotateCcw, Download, Flame, Droplets, Flower, Wallet, Trophy, ShoppingCart } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   BADGES,
   getUnlockedBadgeIds,
@@ -56,12 +57,12 @@ export function BadgeShowcase() {
   const [recoveryOpen, setRecoveryOpen] = useState(false);
   const t = useT();
 
-  const CATEGORY_ORDER: { id: Badge["category"]; icon: string; title: string }[] = [
-    { id: "streak", icon: "🔥", title: t('badge.category.streak') },
-    { id: "water", icon: "💧", title: t('badge.category.water') },
-    { id: "mindfulness", icon: "🧘", title: t('badge.category.mindfulness') },
-    { id: "finance", icon: "💰", title: t('badge.category.finance') },
-    { id: "challenge", icon: "🌟", title: t('badge.category.challenge') },
+  const CATEGORY_ORDER: { id: Badge["category"]; icon: LucideIcon; title: string }[] = [
+    { id: "streak", icon: Flame, title: t('badge.category.streak') },
+    { id: "water", icon: Droplets, title: t('badge.category.water') },
+    { id: "mindfulness", icon: Flower, title: t('badge.category.mindfulness') },
+    { id: "finance", icon: Wallet, title: t('badge.category.finance') },
+    { id: "challenge", icon: Trophy, title: t('badge.category.challenge') },
   ];
 
   function progressLabel(b: Badge): string {
@@ -76,7 +77,7 @@ export function BadgeShowcase() {
       case "gratitude_heart": return t('badge.progress.gratitude');
       case "finance_wise": return t('badge.progress.finance');
       case "challenge_hero": return t('badge.progress.challenge');
-      default: return b.description;
+      default: return b.description ?? "";
     }
   }
 
@@ -145,7 +146,7 @@ export function BadgeShowcase() {
           <div>
             <h2 className="text-lg font-bold">{t('badge.title')}</h2>
             <p className="text-xs text-muted-foreground">
-              {t('badge.unlocked').replace('{count}', unlockedIds.length).replace('{total}', BADGES.length)}
+              {t('badge.unlocked').replace('{count}', String(unlockedIds.length)).replace('{total}', String(BADGES.length))}
             </p>
           </div>
         </div>
@@ -154,14 +155,14 @@ export function BadgeShowcase() {
         <div className="flex items-center gap-3 bg-muted/50 p-2 px-4 rounded-full border border-border/40 self-start sm:self-auto">
           <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
             <Coins className="size-4" />
-            <span>{t('badge.points').replace('{points}', points)}</span>
+            <span>{t('badge.points').replace('{points}', String(points))}</span>
           </div>
 
           <div className="h-4 w-px bg-border/60" />
 
           <div className="flex items-center gap-2 text-xs font-bold text-cyan-600 dark:text-cyan-400">
             <ShieldAlert className="size-4" />
-            <span>{t('badge.freezes').replace('{count}', freezes)}</span>
+            <span>{t('badge.freezes').replace('{count}', String(freezes))}</span>
           </div>
 
           {points >= 50 && (
@@ -216,7 +217,13 @@ export function BadgeShowcase() {
               }`}
             >
               <div className="relative mb-2">
-                <span className="text-3xl filter drop-shadow-sm">{b.emoji}</span>
+                {b.icon ? (
+                  <div className="size-12 mx-auto rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                    <b.icon className="size-6" />
+                  </div>
+                ) : (
+                  <span className="text-3xl filter drop-shadow-sm">{b.emoji}</span>
+                )}
                 {!isUnlocked && (
                   <div className="absolute -bottom-1 -right-1 bg-background border border-border rounded-full p-1 shadow-sm">
                     <Lock className="size-3 text-muted-foreground" />
@@ -253,7 +260,7 @@ export function BadgeShowcase() {
             return (
               <div key={cat.id} className="p-3.5 rounded-2xl bg-muted/30 border border-border/30">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-lg">{cat.icon}</span>
+                  <cat.icon className="size-4 text-primary" />
                   <h4 className="text-xs font-bold">{cat.title}</h4>
                 </div>
                 <ul className="space-y-1.5">
@@ -268,7 +275,7 @@ export function BadgeShowcase() {
                             {done ? "✓" : "•"}
                           </span>
                           <span className="flex-1">
-                            {lbl} → {b.emoji} {t(b.titleKey)}
+                            {lbl} → {t(b.titleKey)}
                           </span>
                         </div>
                         {!done && pct < 100 && (
@@ -289,7 +296,7 @@ export function BadgeShowcase() {
           {/* Points shop card — still instructional */}
           <div className="p-3.5 rounded-2xl bg-muted/30 border border-border/30">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-lg">🛒</span>
+              <ShoppingCart className="size-4 text-primary" />
               <h4 className="text-xs font-bold">{t('badge.shop')}</h4>
             </div>
             <ul className="space-y-1.5">
@@ -322,8 +329,12 @@ export function BadgeShowcase() {
               className="bg-card border border-border/50 rounded-[2rem] p-6 max-w-sm w-full text-center shadow-xl relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="size-20 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center text-4xl shadow-inner">
-                {selectedBadge.emoji}
+              <div className="size-20 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center shadow-inner">
+                {selectedBadge.icon ? (
+                  <selectedBadge.icon className="size-9 text-amber-600 dark:text-amber-400" />
+                ) : (
+                  <span className="text-4xl">{selectedBadge.emoji}</span>
+                )}
               </div>
 
               <h3 className="text-xl font-bold mb-1">{t(selectedBadge.titleKey)}</h3>

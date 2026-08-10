@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, User, LogOut } from "lucide-react";
+import { Menu, X, Search, User, LogOut, type LucideIcon } from "lucide-react";
 import logo from "@/assets/logo-waey.png";
 import { useLanguage } from "@/contexts/useLanguage";
 import { useAuth } from "@/hooks/useAuth";
@@ -26,13 +26,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = [
-    { path: "/", label: "nav.home", icon: null },
-    { path: "/health", label: "nav.health", icon: null },
-    { path: "/finance", label: "nav.finance", icon: null },
-    { path: "/environment", label: "nav.environment", icon: null },
-    { path: "/education", label: "nav.education", icon: null },
-    { path: "/dashboard", label: "nav.dashboard", icon: null },
+  const navLinks: { path: string; label: string; icon?: LucideIcon }[] = [
+    { path: "/", label: "nav.home" },
+    { path: "/health", label: "nav.health" },
+    { path: "/finance", label: "nav.finance" },
+    { path: "/environment", label: "nav.environment" },
+    { path: "/education", label: "nav.education" },
+    { path: "/dashboard", label: "nav.dashboard" },
   ];
 
   return (

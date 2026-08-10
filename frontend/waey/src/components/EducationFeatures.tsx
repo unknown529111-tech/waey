@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Play, Pause, RotateCcw, Trash2, Volume2, Download, CheckCircle2, XCircle, Sparkles, Brain, BookOpen, Lightbulb, Apple } from "lucide-react";
+import { Play, Pause, RotateCcw, Trash2, Volume2, Download, CheckCircle2, XCircle, Sparkles, Brain, BookOpen, Lightbulb, Apple, Coffee, CloudRain, BookOpenText, Zap, RefreshCw, MoonStar, Flower, Search, Smartphone, TreePine, Timer, Moon, Nut, Candy, Grape, Egg, Salad, Fish } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
+import { soundSrc } from "@/lib/sounds";
 
 /* ─── Pomodoro Timer ─── */
 
@@ -102,13 +103,12 @@ const BrainDumpBox = ({ t }: { t: (key: string) => string }) => {
 
 /* ─── Study Sound Player (MP3) ─── */
 
-const STUDY_SOUNDS = [
-  { id: "lofi-study", label: "📚 Lo-Fi Study", src: "/sounds/lofi-study.mp3" },
-  { id: "jazz-study", label: "☕ Jazz & Coffee", src: "/sounds/jazz-coffee.mp3" },
-  { id: "rain-study", label: "🌧️ Rain Study", src: "/sounds/rain-study.mp3" },
-];
-
 const StudySoundPlayer = ({ t }: { t: (key: string) => string }) => {
+  const STUDY_SOUNDS = [
+    { id: "lofi-study", label: t('eduFeatures.soundPlayer.lofi'), icon: BookOpen, src: soundSrc("lofi-study.mp3") },
+    { id: "jazz-study", label: t('eduFeatures.soundPlayer.jazz'), icon: Coffee, src: soundSrc("jazz-coffee.mp3") },
+    { id: "rain-study", label: t('eduFeatures.soundPlayer.rain'), icon: CloudRain, src: soundSrc("rain-study.mp3") },
+  ];
   const [activeId, setActiveId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -149,6 +149,7 @@ const StudySoundPlayer = ({ t }: { t: (key: string) => string }) => {
             }`}
           >
             {activeId === s.id ? <Volume2 className="size-5 shrink-0" /> : <Play className="size-5 shrink-0" />}
+            <s.icon className="size-4 shrink-0 opacity-60" />
             <span className="flex-1">{s.label}</span>
             {activeId === s.id && (
               <span className="text-xs opacity-70">{t('eduFeatures.soundPlayer.pressToStop')}</span>
@@ -188,12 +189,12 @@ const EducationFeatures = () => {
   ];
 
   const brainFoods = [
-    { emoji: "🥜", name: t('eduFeatures.brainFood.items.0.name'), desc: t('eduFeatures.brainFood.items.0.desc') },
-    { emoji: "🍫", name: t('eduFeatures.brainFood.items.1.name'), desc: t('eduFeatures.brainFood.items.1.desc') },
-    { emoji: "🫐", name: t('eduFeatures.brainFood.items.2.name'), desc: t('eduFeatures.brainFood.items.2.desc') },
-    { emoji: "🥚", name: t('eduFeatures.brainFood.items.3.name'), desc: t('eduFeatures.brainFood.items.3.desc') },
-    { emoji: "🥑", name: t('eduFeatures.brainFood.items.4.name'), desc: t('eduFeatures.brainFood.items.4.desc') },
-    { emoji: "🐟", name: t('eduFeatures.brainFood.items.5.name'), desc: t('eduFeatures.brainFood.items.5.desc') },
+    { icon: Nut, name: t('eduFeatures.brainFood.items.0.name'), desc: t('eduFeatures.brainFood.items.0.desc') },
+    { icon: Candy, name: t('eduFeatures.brainFood.items.1.name'), desc: t('eduFeatures.brainFood.items.1.desc') },
+    { icon: Grape, name: t('eduFeatures.brainFood.items.2.name'), desc: t('eduFeatures.brainFood.items.2.desc') },
+    { icon: Egg, name: t('eduFeatures.brainFood.items.3.name'), desc: t('eduFeatures.brainFood.items.3.desc') },
+    { icon: Salad, name: t('eduFeatures.brainFood.items.4.name'), desc: t('eduFeatures.brainFood.items.4.desc') },
+    { icon: Fish, name: t('eduFeatures.brainFood.items.5.name'), desc: t('eduFeatures.brainFood.items.5.desc') },
   ];
 
   const avoidFoods = [
@@ -236,7 +237,9 @@ const EducationFeatures = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Cornell Notes */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
-            <span className="text-3xl mb-3">📓</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <BookOpenText className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.cornell.title')}</h3>
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
               {t('eduFeatures.cornell.desc')}
@@ -257,7 +260,9 @@ const EducationFeatures = () => {
 
           {/* Blurting */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
-            <span className="text-3xl mb-3">💥</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <Zap className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.blurting.title')}</h3>
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
               {t('eduFeatures.blurting.desc')}
@@ -274,7 +279,9 @@ const EducationFeatures = () => {
 
           {/* Interleaving */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
-            <span className="text-3xl mb-3">🔄</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <RefreshCw className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.interleaving.title')}</h3>
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
               {t('eduFeatures.interleaving.desc')}
@@ -297,7 +304,9 @@ const EducationFeatures = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Night Before Checklist */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-            <span className="text-3xl mb-3 block">🌙</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <MoonStar className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.nightBefore.title')}</h3>
             <div className="space-y-3">
               <div>
@@ -331,7 +340,9 @@ const EducationFeatures = () => {
 
           {/* 5-4-3-2-1 Grounding */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-            <span className="text-3xl mb-3 block">🧘‍♂️</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <Flower className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.grounding.title')}</h3>
             <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
               {t('eduFeatures.grounding.desc')}
@@ -350,7 +361,9 @@ const EducationFeatures = () => {
 
           {/* Reverse Engineering */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-            <span className="text-3xl mb-3 block">🕵️‍♂️</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <Search className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.reverse.title')}</h3>
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
               {t('eduFeatures.reverse.desc')}
@@ -374,13 +387,17 @@ const EducationFeatures = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Brain Food */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-            <span className="text-3xl mb-3 block">🥑</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <Apple className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.brainFood.title')}</h3>
             <p className="text-xs text-muted-foreground mb-4">{t('eduFeatures.brainFood.desc')}</p>
             <div className="space-y-2 mb-4">
               {brainFoods.map((f, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm">
-                  <span>{f.emoji}</span>
+                  <div className="size-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <f.icon className="size-4 text-primary" />
+                  </div>
                   <span className="font-bold text-xs">{f.name}</span>
                   <span className="text-xs text-muted-foreground">— {f.desc}</span>
                 </div>
@@ -401,7 +418,9 @@ const EducationFeatures = () => {
 
           {/* Lighting & Space */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-            <span className="text-3xl mb-3 block">💡</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <Lightbulb className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.lighting.title')}</h3>
             <div className="space-y-4">
               <div className="bg-muted/40 rounded-2xl p-4 border border-border">
@@ -421,7 +440,9 @@ const EducationFeatures = () => {
 
           {/* Focus Apps */}
           <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-            <span className="text-3xl mb-3 block">📱</span>
+            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+              <Smartphone className="size-6 text-primary" />
+            </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.focusApps.title')}</h3>
             <p className="text-xs text-muted-foreground mb-5 leading-relaxed">
               {t('eduFeatures.focusApps.desc')}
@@ -429,21 +450,21 @@ const EducationFeatures = () => {
             <div className="space-y-3">
               <div className="bg-green-50 dark:bg-green-900/20 rounded-2xl p-4 border border-green-200 dark:border-green-800/30">
                 <div className="flex items-center gap-2 mb-1">
-                  <span>🌳</span>
+                  <TreePine className="size-4 text-green-600 dark:text-green-400" />
                   <p className="text-sm font-bold">Forest</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t('eduFeatures.focusApps.forest.desc')}</p>
               </div>
               <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4 border border-purple-200 dark:border-purple-800/30">
                 <div className="flex items-center gap-2 mb-1">
-                  <span>🍅</span>
+                  <Timer className="size-4 text-red-500 dark:text-red-400" />
                   <p className="text-sm font-bold">Focus To-Do</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t('eduFeatures.focusApps.focusToDo.desc')}</p>
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-200 dark:border-blue-800/30">
                 <div className="flex items-center gap-2 mb-1">
-                  <span>⚪</span>
+                  <Moon className="size-4 text-blue-500 dark:text-blue-400" />
                   <p className="text-sm font-bold">Offtime</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t('eduFeatures.focusApps.offtime.desc')}</p>

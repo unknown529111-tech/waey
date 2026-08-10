@@ -1,8 +1,14 @@
-import { UtensilsCrossed } from "lucide-react";
+import { UtensilsCrossed, LeafyGreen, Drumstick, CookingPot } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 
 const EgyptianPlate = () => {
   const t = useT();
+
+  const groups = [
+    { icon: LeafyGreen, nameKey: 'plate.vegName', itemsKey: 'plate.vegItems', chip: "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" },
+    { icon: Drumstick, nameKey: 'plate.proteinName', itemsKey: 'plate.proteinItems', chip: "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300" },
+    { icon: CookingPot, nameKey: 'plate.carbsName', itemsKey: 'plate.carbsItems', chip: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300" },
+  ];
 
   return (
     <div className="bg-card rounded-3xl p-6 md:p-8 border border-border">
@@ -20,7 +26,7 @@ const EgyptianPlate = () => {
           <div className="absolute inset-0 flex">
             <div className="w-1/2 h-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center p-2">
               <div className="text-center">
-                <span className="text-2xl">🥬</span>
+                <LeafyGreen className="size-7 mx-auto mb-1 text-green-600 dark:text-green-400" />
                 <p className="text-xs font-bold mt-1">{t('plate.half')}</p>
                 <p className="text-[10px] text-muted-foreground">{t('plate.vegSection')}</p>
               </div>
@@ -28,14 +34,14 @@ const EgyptianPlate = () => {
             <div className="w-1/2 h-full flex flex-col">
               <div className="h-1/2 bg-red-50 dark:bg-red-900/20 flex items-center justify-center p-1">
                 <div className="text-center">
-                  <span className="text-xl">🍗</span>
+                  <Drumstick className="size-5 mx-auto mb-0.5 text-red-500 dark:text-red-400" />
                   <p className="text-[10px] font-bold mt-0.5">{t('plate.proteinQuarter')}</p>
                   <p className="text-[8px] text-muted-foreground">{t('plate.proteinSection')}</p>
                 </div>
               </div>
               <div className="h-1/2 bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center p-1">
                 <div className="text-center">
-                  <span className="text-xl">🍚</span>
+                  <CookingPot className="size-5 mx-auto mb-0.5 text-yellow-600 dark:text-yellow-400" />
                   <p className="text-[10px] font-bold mt-0.5">{t('plate.carbsQuarter')}</p>
                   <p className="text-[8px] text-muted-foreground">{t('plate.carbsSection')}</p>
                 </div>
@@ -45,13 +51,11 @@ const EgyptianPlate = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-3 w-full">
-          {[
-            { emoji: "🥬", nameKey: 'plate.vegName', itemsKey: 'plate.vegItems' },
-            { emoji: "🍗", nameKey: 'plate.proteinName', itemsKey: 'plate.proteinItems' },
-            { emoji: "🍚", nameKey: 'plate.carbsName', itemsKey: 'plate.carbsItems' },
-          ].map((s, i) => (
+          {groups.map((s, i) => (
             <div key={i} className="bg-muted/40 rounded-2xl p-3 text-center border border-border">
-              <span className="text-xl">{s.emoji}</span>
+              <div className={`size-10 mx-auto rounded-full flex items-center justify-center mb-1.5 ${s.chip}`}>
+                <s.icon className="size-5" />
+              </div>
               <p className="text-xs font-bold mt-1">{t(s.nameKey)}</p>
               <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">{t(s.itemsKey)}</p>
             </div>

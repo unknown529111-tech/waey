@@ -9,6 +9,17 @@ import {
   Lightbulb,
   TreePine,
   Heart,
+  FlaskConical,
+  Citrus,
+  Logs,
+  CookingPot,
+  Snowflake,
+  Banana,
+  Waves,
+  Shirt,
+  CupSoda,
+  Globe,
+  GlassWater,
 } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 
@@ -73,31 +84,31 @@ const NaturalCleaners = () => {
       chemical: t('env.cleaner.0.chemical'),
       natural: t('env.cleaner.0.natural'),
       benefit: t('env.cleaner.0.benefit'),
-      emoji: "🧪",
+      icon: FlaskConical,
     },
     {
       chemical: t('env.cleaner.1.chemical'),
       natural: t('env.cleaner.1.natural'),
       benefit: t('env.cleaner.1.benefit'),
-      emoji: "🍋",
+      icon: Citrus,
     },
     {
       chemical: t('env.cleaner.2.chemical'),
       natural: t('env.cleaner.2.natural'),
       benefit: t('env.cleaner.2.benefit'),
-      emoji: "🪵",
+      icon: Logs,
     },
     {
       chemical: t('env.cleaner.3.chemical'),
       natural: t('env.cleaner.3.natural'),
       benefit: t('env.cleaner.3.benefit'),
-      emoji: "🌿",
+      icon: Leaf,
     },
     {
       chemical: t('env.cleaner.4.chemical'),
       natural: t('env.cleaner.4.natural'),
       benefit: t('env.cleaner.4.benefit'),
-      emoji: "🪟",
+      icon: GlassWater,
     },
   ];
 
@@ -119,7 +130,9 @@ const NaturalCleaners = () => {
                   key={i}
                   className="bg-background rounded-3xl p-5 border border-border"
                 >
-                  <span className="text-3xl block mb-3">{item.emoji}</span>
+                  <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
+                    <item.icon className="size-6 text-primary" />
+                  </div>
                   <div className="space-y-2">
                     <div>
                       <span className="text-xs font-bold text-destructive block mb-1">
@@ -137,8 +150,9 @@ const NaturalCleaners = () => {
                         {item.natural}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed mt-2">
-                      💚 {item.benefit}
+                    <p className="text-xs text-muted-foreground leading-relaxed mt-2 flex items-start gap-1.5">
+                      <Leaf className="size-3.5 text-primary shrink-0 mt-0.5" />
+                      {item.benefit}
                     </p>
                   </div>
                 </div>
@@ -176,8 +190,9 @@ const NaturalCleaners = () => {
                       </span>
                     </td>
                     <td className="py-4 pr-4">
-                      <span className="text-sm font-bold text-primary">
-                        {item.emoji} {item.natural}
+                      <span className="text-sm font-bold text-primary flex items-center gap-2">
+                        <item.icon className="size-4 text-primary" />
+                        {item.natural}
                       </span>
                     </td>
                     <td className="py-4 pr-4">
@@ -284,25 +299,25 @@ const ZeroWaste = () => {
 
   const zeroWasteItems = [
     {
-      emoji: "🥣",
+      icon: CookingPot,
       title: t('env.zeroWaste.0.title'),
       desc: t('env.zeroWaste.0.desc'),
       impact: t('env.zeroWaste.0.impact'),
     },
     {
-      emoji: "🌱",
+      icon: Sprout,
       title: t('env.zeroWaste.1.title'),
       desc: t('env.zeroWaste.1.desc'),
       impact: t('env.zeroWaste.1.impact'),
     },
     {
-      emoji: "🧊",
+      icon: Snowflake,
       title: t('env.zeroWaste.2.title'),
       desc: t('env.zeroWaste.2.desc'),
       impact: t('env.zeroWaste.2.impact'),
     },
     {
-      emoji: "🍌",
+      icon: Banana,
       title: t('env.zeroWaste.3.title'),
       desc: t('env.zeroWaste.3.desc'),
       impact: t('env.zeroWaste.3.impact'),
@@ -322,14 +337,16 @@ const ZeroWaste = () => {
           {zeroWasteItems.map((item, i) => (
             <FadeInUp key={i} delay={i * 0.1}>
               <div className="bg-card p-7 rounded-3xl border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex gap-5">
-                <span className="text-4xl shrink-0 mt-1">{item.emoji}</span>
+                <div className="size-14 shrink-0 mt-1 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <item.icon className="size-7 text-primary" />
+                </div>
                 <div>
                   <h4 className="font-bold text-base mb-2">{item.title}</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-3">
                     {item.desc}
                   </p>
                   <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-full">
-                    🌍 {item.impact}
+                    <Globe className="size-3.5" /> {item.impact}
                   </span>
                 </div>
               </div>
@@ -348,7 +365,7 @@ const VisualStats = () => {
 
   const statsData = [
     {
-      emoji: "🌊",
+      icon: Waves,
       stat: t('env.stat.0.stat'),
       unit: t('env.stat.0.unit'),
       impact: t('env.stat.0.impact'),
@@ -357,7 +374,7 @@ const VisualStats = () => {
       border: "border-blue-200 dark:border-blue-800",
     },
     {
-      emoji: "👕",
+      icon: Shirt,
       stat: t('env.stat.1.stat'),
       unit: t('env.stat.1.unit'),
       impact: t('env.stat.1.impact'),
@@ -366,7 +383,7 @@ const VisualStats = () => {
       border: "border-emerald-200 dark:border-emerald-800",
     },
     {
-      emoji: "🌳",
+      icon: TreePine,
       stat: t('env.stat.2.stat'),
       unit: t('env.stat.2.unit'),
       impact: t('env.stat.2.impact'),
@@ -375,7 +392,7 @@ const VisualStats = () => {
       border: "border-green-200 dark:border-green-800",
     },
     {
-      emoji: "🥤",
+      icon: CupSoda,
       stat: t('env.stat.3.stat'),
       unit: t('env.stat.3.unit'),
       impact: t('env.stat.3.impact'),
@@ -400,7 +417,11 @@ const VisualStats = () => {
               <div
                 className={`bg-card rounded-3xl p-7 border-2 ${item.border} ${item.bg} text-center h-full hover:shadow-float transition-all duration-300 hover:-translate-y-1`}
               >
-                <span className="text-5xl block mb-4">{item.emoji}</span>
+                <div
+                className={`size-16 mx-auto rounded-2xl ${item.bg} flex items-center justify-center mb-4`}
+              >
+                <item.icon className={`size-8 ${item.color}`} />
+              </div>
                 <div className="mb-3">
                   <span className={`text-4xl font-black ${item.color} tabular-nums block leading-tight`}>
                     {item.stat}

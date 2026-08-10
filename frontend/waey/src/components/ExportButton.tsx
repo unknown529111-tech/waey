@@ -17,14 +17,14 @@ const readAllData = () => {
 const ExportButton = () => {
   const t = useT();
   const handleExport = async () => {
-    let XLSX: typeof import("xlsx");
+    let Workbook: typeof import("exceljs").Workbook;
     try {
-      XLSX = await import("xlsx");
+      ({ Workbook } = await import("exceljs"));
     } catch {
       return;
     }
     const all = readAllData();
-    const wb = XLSX.utils.book_new();
+    const wb = new Workbook();
 
     Object.entries(all).forEach(([key, value]) => {
       let rows: Record<string, unknown>[] = [];
@@ -51,11 +51,22 @@ const ExportButton = () => {
       }
 
       const safeName = key.replace("waey_", "").slice(0, 31);
-      const ws = XLSX.utils.json_to_sheet(rows);
-      XLSX.utils.book_append_sheet(wb, ws, safeName);
+      const ws = wb.addWorksheet(safeName);
+      const headers = Object.keys(rows[0] || {});
+      ws.addRow(headers);
+      rows.forEach((r) => ws.addRow(headers.map((h) => (r[h] === undefined || r[h] === null ? "" : r[h]))));
     });
 
-    XLSX.writeFile(wb, `waey-data-${new Date().toISOString().slice(0, 10)}.xlsx`);
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `waey-data-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (

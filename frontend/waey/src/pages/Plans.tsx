@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Target, Check, RotateCcw, Play } from "lucide-react";
+import { Target, Check, RotateCcw, Play, Sparkles } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { PLANS, getPlanState, startPlan, togglePlanDay, resetPlan } from "@/lib/plansData";
 import { TIER_FEATURES } from "@/lib/premiumTier";
@@ -31,7 +31,7 @@ const Plans = () => {
 
   const handleStart = () => {
     startPlan(plan.id);
-    toast.success(t('plans.started').replace('{title}', plan.title) + ' 🎉');
+    toast.success(t('plans.started').replace('{title}', plan.title));
     refresh();
   };
 
@@ -105,8 +105,9 @@ const Plans = () => {
           <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 md:p-10 shadow-soft">
             <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
               <div>
-                <h2 className="text-2xl font-bold mb-1">
-                  {plan.emoji} {plan.title}
+                <h2 className="text-2xl font-bold mb-1 flex items-center gap-2.5">
+                  {plan.icon ? <plan.icon className="size-7 text-primary" /> : <span>{plan.emoji}</span>}
+                  {plan.title}
                 </h2>
                 <p className="text-sm text-muted-foreground">{plan.description}</p>
               </div>
@@ -176,7 +177,7 @@ const Plans = () => {
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <span className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-4 py-1.5 rounded-full text-xs font-bold mb-3">
-              ✨ {t('plans.premiumSection')}
+              <Sparkles className="size-4 inline-block mb-1 shrink-0" /> {t('plans.premiumSection')}
             </span>
             <h2 className="text-2xl font-bold mb-1">{t('plans.choosePlan')}</h2>
             <p className="text-sm text-muted-foreground">{t('plans.supportText')}</p>

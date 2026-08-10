@@ -1,4 +1,4 @@
-import { TrendingUp, AlertTriangle, CheckCircle, BadgePercent, Brain, ShoppingCart, Calendar, GraduationCap, Briefcase, Heart, Skull, Target, DollarSign, Users, MessageCircle, HelpCircle, Wallet } from "lucide-react";
+import { TrendingUp, AlertTriangle, CheckCircle, BadgePercent, Brain, ShoppingCart, Calendar, GraduationCap, Briefcase, Heart, Skull, Target, DollarSign, Users, MessageCircle, HelpCircle, Wallet, Home, Landmark, Ban } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 
 const FinanceFeatures = () => {
@@ -7,9 +7,9 @@ const FinanceFeatures = () => {
   /* ─── 1. Inflation & Value Protection ─── */
 
   const valueComparison = [
-    { method: t('financeFeatures.valueComparison.0.method'), desc: t('financeFeatures.valueComparison.0.desc'), result: t('financeFeatures.valueComparison.0.result'), icon: "🏚️" },
-    { method: t('financeFeatures.valueComparison.1.method'), desc: t('financeFeatures.valueComparison.1.desc'), result: t('financeFeatures.valueComparison.1.result'), icon: "🏦" },
-    { method: t('financeFeatures.valueComparison.2.method'), desc: t('financeFeatures.valueComparison.2.desc'), result: t('financeFeatures.valueComparison.2.result'), icon: "📈" },
+    { method: t('financeFeatures.valueComparison.0.method'), desc: t('financeFeatures.valueComparison.0.desc'), result: t('financeFeatures.valueComparison.0.result'), icon: Home },
+    { method: t('financeFeatures.valueComparison.1.method'), desc: t('financeFeatures.valueComparison.1.desc'), result: t('financeFeatures.valueComparison.1.result'), icon: Landmark },
+    { method: t('financeFeatures.valueComparison.2.method'), desc: t('financeFeatures.valueComparison.2.desc'), result: t('financeFeatures.valueComparison.2.result'), icon: TrendingUp },
   ];
 
   /* ─── 2. Financial Psychology ─── */
@@ -145,7 +145,9 @@ const FinanceFeatures = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {valueComparison.map((v, i) => (
             <div key={i} className="bg-card rounded-2xl p-6 border border-border text-center hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
-              <span className="text-4xl block mb-3">{v.icon}</span>
+              <div className="size-14 mx-auto rounded-2xl bg-accent/10 flex items-center justify-center mb-3">
+                <v.icon className="size-7 text-accent" />
+              </div>
               <h3 className="font-bold text-lg mb-2">{v.method}</h3>
               <p className="text-sm text-muted-foreground mb-3">{v.desc}</p>
               <span className={`text-xs font-bold rounded-full px-3 py-1.5 ${
@@ -211,7 +213,7 @@ const FinanceFeatures = () => {
           <div className="bg-card rounded-2xl p-5 border border-border space-y-3">
             {supermarketTraps.map((trap, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-accent shrink-0">⚠️</span>
+                <AlertTriangle className="size-4 text-accent shrink-0" />
                 <p className="text-sm text-muted-foreground leading-relaxed">{trap}</p>
               </div>
             ))}
@@ -230,8 +232,8 @@ const FinanceFeatures = () => {
             </p>
             <div className="flex flex-wrap gap-2">
               {noSpendDays.map((day, i) => (
-                <span key={i} className="text-xs font-bold bg-primary/10 text-primary rounded-full px-3 py-1.5">
-                  🚫 {day}
+                <span key={i} className="text-xs font-bold bg-primary/10 text-primary rounded-full px-3 py-1.5 flex items-center gap-1.5">
+                  <Ban className="size-3.5" /> {day}
                 </span>
               ))}
             </div>

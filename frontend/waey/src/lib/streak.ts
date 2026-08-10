@@ -1,5 +1,6 @@
 import { queueUpsert } from "@/lib/offlineQueue";
 import { getUserId, syncStreak, loadStreakFromSupabase } from "@/lib/supabaseStorage";
+import { toLooseClient } from "@/lib/looseSupabase";
 
 const STREAK_KEY = "waey_streak";
 const FREEZES_KEY = "waey_streak_freezes";
@@ -16,7 +17,7 @@ interface PrizeData {
 async function getSupabase() {
   try {
     const { supabase } = await import("@/supabase/client");
-    return supabase;
+    return toLooseClient(supabase);
   } catch {
     return null;
   }
@@ -207,7 +208,7 @@ export async function fetchSupabaseUsers(): Promise<{ email: string; name: strin
   if (!sb) return [];
   try {
     const { data } = await sb.from("profiles").select("email, name, streak_count").order("streak_count", { ascending: false });
-    return data || [];
+    return (data as { email: string; name: string; streak_count: number }[]) || [];
   } catch {
     return [];
   }
@@ -218,7 +219,7 @@ export async function fetchSupabasePrize(): Promise<{ winner_email: string; clai
   if (!sb) return null;
   try {
     const { data } = await sb.from("prize").select("winner_email, claimed_at").limit(1).single();
-    return data || null;
+    return (data as { winner_email: string; claimed_at: string } | null) || null;
   } catch {
     return null;
   }

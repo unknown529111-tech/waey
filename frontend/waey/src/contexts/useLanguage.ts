@@ -5,7 +5,7 @@ interface LanguageContextType {
   lang: Lang;
   setLang: (lang: Lang) => void;
   toggleLang: () => void;
-  t: (key: string) => string;
+  t: (key: string, vars?: Record<string, string | number>) => string;
 }
 
 import { createContext } from 'react';
@@ -18,6 +18,6 @@ export function useLanguage(): LanguageContextType {
   return ctx;
 }
 
-export function useT(): (key: string) => string {
+export function useT(): (key: string, vars?: Record<string, string | number>) => string {
   return useLanguage().t;
 }

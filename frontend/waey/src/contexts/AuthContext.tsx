@@ -159,6 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: t('auth.connectionError') };
       }
     }
+    return { success: true };
   }, [t]);
 
   const signOut = useCallback(async () => {

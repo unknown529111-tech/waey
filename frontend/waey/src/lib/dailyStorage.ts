@@ -1,6 +1,8 @@
 // Streak delegated to streak.ts (single source of truth)
 import * as streak from "./streak";
 import { getUserId, syncDailyEntry, syncExpense, syncChallengeRecord, syncJournalEntry, syncScreenOff, syncBig3 } from "@/lib/supabaseStorage";
+import type { LucideIcon } from "lucide-react";
+import { Droplets, Wallet, Lightbulb, Footprints, Recycle, Notebook, MoonStar, Leaf, Apple, Banknote, Wind, ShowerHead, MonitorOff, CupSoda } from "lucide-react";
 export type { StreakState } from "./streak";
 export const getStreak = () => streak.getStreakState();
 export const getStreakFreezes = () => streak.getStreakFreezes();
@@ -109,23 +111,23 @@ export const removeExpense = (id: string, date = todayKey()) => {
 };
 
 // ==================== CHALLENGES (daily) ====================
-export type ChallengeDef = { emoji: string; text: string; area: string };
+export type ChallengeDef = { emoji: string; text: string; area: string; icon?: LucideIcon };
 
 export const CHALLENGES: ChallengeDef[] = [
-  { emoji: "💧", text: "challenge.item.0.text", area: "challenge.item.0.area" },
-  { emoji: "💰", text: "challenge.item.1.text", area: "challenge.item.1.area" },
-  { emoji: "💡", text: "challenge.item.2.text", area: "challenge.item.2.area" },
-  { emoji: "🚶", text: "challenge.item.3.text", area: "challenge.item.3.area" },
-  { emoji: "♻️", text: "challenge.item.4.text", area: "challenge.item.4.area" },
-  { emoji: "📒", text: "challenge.item.5.text", area: "challenge.item.5.area" },
-  { emoji: "😴", text: "challenge.item.6.text", area: "challenge.item.6.area" },
-  { emoji: "🌿", text: "challenge.item.7.text", area: "challenge.item.7.area" },
-  { emoji: "🍎", text: "challenge.item.8.text", area: "challenge.item.8.area" },
-  { emoji: "💵", text: "challenge.item.9.text", area: "challenge.item.9.area" },
-  { emoji: "🧘", text: "challenge.item.10.text", area: "challenge.item.10.area" },
-  { emoji: "🚿", text: "challenge.item.11.text", area: "challenge.item.11.area" },
-  { emoji: "📵", text: "challenge.item.12.text", area: "challenge.item.12.area" },
-  { emoji: "🥤", text: "challenge.item.13.text", area: "challenge.item.13.area" },
+  { emoji: "💧", icon: Droplets, text: "challenge.item.0.text", area: "challenge.item.0.area" },
+  { emoji: "💰", icon: Wallet, text: "challenge.item.1.text", area: "challenge.item.1.area" },
+  { emoji: "💡", icon: Lightbulb, text: "challenge.item.2.text", area: "challenge.item.2.area" },
+  { emoji: "🚶", icon: Footprints, text: "challenge.item.3.text", area: "challenge.item.3.area" },
+  { emoji: "♻️", icon: Recycle, text: "challenge.item.4.text", area: "challenge.item.4.area" },
+  { emoji: "📒", icon: Notebook, text: "challenge.item.5.text", area: "challenge.item.5.area" },
+  { emoji: "😴", icon: MoonStar, text: "challenge.item.6.text", area: "challenge.item.6.area" },
+  { emoji: "🌿", icon: Leaf, text: "challenge.item.7.text", area: "challenge.item.7.area" },
+  { emoji: "🍎", icon: Apple, text: "challenge.item.8.text", area: "challenge.item.8.area" },
+  { emoji: "💵", icon: Banknote, text: "challenge.item.9.text", area: "challenge.item.9.area" },
+  { emoji: "🧘", icon: Wind, text: "challenge.item.10.text", area: "challenge.item.10.area" },
+  { emoji: "🚿", icon: ShowerHead, text: "challenge.item.11.text", area: "challenge.item.11.area" },
+  { emoji: "📵", icon: MonitorOff, text: "challenge.item.12.text", area: "challenge.item.12.area" },
+  { emoji: "🥤", icon: CupSoda, text: "challenge.item.13.text", area: "challenge.item.13.area" },
 ];
 
 function getMergedChallenges(): ChallengeDef[] {

@@ -1,7 +1,11 @@
+import type { LucideIcon } from "lucide-react";
+import { Wallet, Dumbbell, Sprout } from "lucide-react";
+
 export type PlanDef = {
   id: string;
   title: string;
   emoji: string;
+  icon?: LucideIcon;
   description: string;
   area: "health" | "finance" | "environment";
   titleEn?: string;
@@ -14,6 +18,7 @@ export const PLANS: PlanDef[] = [
     id: "save30",
     title: "30 يوم ادخار",
     emoji: "💰",
+    icon: Wallet,
     description: "تحدّيات يومية بسيطة توفّر لك مئات الجنيهات في الشهر.",
     titleEn: "30-Day Savings",
     descriptionEn: "Simple daily challenges that save you hundreds of pounds monthly.",
@@ -55,6 +60,7 @@ export const PLANS: PlanDef[] = [
     id: "health30",
     title: "30 يوم صحة",
     emoji: "💪",
+    icon: Dumbbell,
     description: "خطوات بسيطة لجسد أقوى ونوم أعمق وطاقة أعلى.",
     titleEn: "30-Day Health",
     descriptionEn: "Simple steps for a stronger body, deeper sleep, and higher energy.",
@@ -96,6 +102,7 @@ export const PLANS: PlanDef[] = [
     id: "eco30",
     title: "30 يوم بيئة",
     emoji: "🌱",
+    icon: Sprout,
     description: "عادات يومية تقلل بصمتك الكربونية وتحمي كوكبنا.",
     titleEn: "30-Day Environment",
     descriptionEn: "Daily habits that reduce your carbon footprint and protect our planet.",

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate, FutureFlags, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -76,11 +76,6 @@ function AppRoutes() {
   );
 }
 
-const futureFlags: FutureFlags = {
-  v7_startTransition: true,
-  v7_relativeSplatPath: true,
-};
-
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -101,7 +96,7 @@ const App = () => {
         <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
-            <BrowserRouter future={futureFlags}>
+            <BrowserRouter>
               <ScrollToTop />
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>

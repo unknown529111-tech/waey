@@ -1,15 +1,65 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+  Footprints,
+  Droplets,
+  MoonStar,
+  Salad,
+  Ban,
+  Armchair,
+  Wallet,
+  LifeBuoy,
+  TrendingUp,
+  BarChart3,
+  CreditCard,
+  ShoppingBasket,
+  Recycle,
+  Utensils,
+  Lightbulb,
+  Plug,
+  TreePine,
+  SprayCan,
+  Apple,
+  Brain,
+  RefreshCw,
+  GraduationCap,
+  Puzzle,
+} from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 
 const FACTS_COUNT = 35;
 
-const FACT_EMOJIS = [
-  "🚶", "💧", "😴", "🥗", "🧼", "🚭", "🪑",
-  "💰", "🛟", "📈", "📊", "💳", "🧺",
-  "♻️", "🍽️", "🚰", "💡", "🔌", "🌳", "🧴",
-  "🍅", "🧠", "🔄", "👨‍🏫", "🧩", "😴", "🔄",
+const FACT_ICONS = [
+  Footprints,
+  Droplets,
+  MoonStar,
+  Salad,
+  Sparkles,
+  Ban,
+  Armchair,
+  Wallet,
+  LifeBuoy,
+  TrendingUp,
+  BarChart3,
+  CreditCard,
+  ShoppingBasket,
+  Recycle,
+  Utensils,
+  Droplets,
+  Lightbulb,
+  Plug,
+  TreePine,
+  SprayCan,
+  Apple,
+  Brain,
+  RefreshCw,
+  GraduationCap,
+  Puzzle,
+  MoonStar,
+  RefreshCw,
 ];
 
 const DidYouKnow = () => {
@@ -18,6 +68,8 @@ const DidYouKnow = () => {
 
   const next = () => setCurrent((c) => (c + 1) % FACTS_COUNT);
   const prev = () => setCurrent((c) => (c - 1 + FACTS_COUNT) % FACTS_COUNT);
+
+  const FactIcon = FACT_ICONS[current % FACT_ICONS.length];
 
   return (
     <section className="px-6 md:px-12 py-16">
@@ -42,7 +94,9 @@ const DidYouKnow = () => {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3 }}
             >
-              <span className="text-4xl block mb-4">{FACT_EMOJIS[current] || "💡"}</span>
+              <div className="size-16 mx-auto mb-5 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <FactIcon className="size-8 text-primary" />
+              </div>
               <p className="text-lg md:text-xl font-medium leading-relaxed max-w-[50ch] mx-auto">
                 {t(`dYK.fact${current + 1}`)}
               </p>

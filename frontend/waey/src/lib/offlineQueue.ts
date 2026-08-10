@@ -3,6 +3,8 @@
 // localStorage writes already work offline (they're local), so the queue
 // only handles server-side operations (Supabase upserts, etc.)
 
+import { toLooseClient } from "@/lib/looseSupabase";
+
 const QUEUE_KEY = "waey_offline_queue";
 
 interface QueueItem {
@@ -51,16 +53,17 @@ export async function flushQueue(): Promise<number> {
   try {
     const { supabase } = await import("@/supabase/client");
     if (!supabase) return 0;
+    const sb = toLooseClient(supabase);
 
     for (const item of queue) {
       try {
         if (item.type === "supabase_upsert") {
-          const { error } = await supabase
+          const { error } = await sb
             .from(item.table)
             .upsert(item.data, item.conflict ? { onConflict: item.conflict } : undefined);
           if (error) break; // stop on first failure
         } else if (item.type === "supabase_delete") {
-          let query = supabase.from(item.table).delete();
+          let query = sb.from(item.table).delete();
           // Apply the data as match conditions
           for (const [col, val] of Object.entries(item.data)) {
             query = query.eq(col as string, val as string);

@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from "react";
+import { AlertTriangle } from "lucide-react";
 import { LanguageContext } from "@/contexts/useLanguage";
 
 interface Props {
@@ -56,7 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-[60vh] flex items-center justify-center px-4" dir="rtl">
           <div className="text-center max-w-md bg-card border border-border/50 rounded-[2rem] p-8 shadow-sm">
             <div className="size-16 mx-auto mb-4 rounded-full bg-red-50 dark:bg-red-950/30 flex items-center justify-center">
-              <span className="text-3xl">⚠️</span>
+              <AlertTriangle className="size-8 text-amber-500" />
             </div>
             <h2 className="text-xl font-bold mb-2">
               {isChunkErr ? t('error.newUpdate') : t('error.unexpected')}

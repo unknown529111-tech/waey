@@ -204,10 +204,10 @@ export function exportAllData(): string {
   return JSON.stringify(data, null, 2);
 }
 
-/** Dynamic lazy import of xlsx library only when user clicks export */
+/** Dynamic lazy import of exceljs library only when user clicks export */
 export async function exportToExcelAsync(fileName = "waey_data.xlsx") {
   try {
-    const XLSX = await import("xlsx");
+    const { Workbook } = await import("exceljs");
     const data: Record<string, unknown>[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -215,13 +215,23 @@ export async function exportToExcelAsync(fileName = "waey_data.xlsx") {
         data.push({ Key: key, Value: localStorage.getItem(key) });
       }
     }
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "WaeyData");
-    XLSX.writeFile(workbook, fileName);
+    const wb = new Workbook();
+    const ws = wb.addWorksheet("WaeyData");
+    ws.addRow(["Key", "Value"]);
+    data.forEach((r) => ws.addRow([r.Key, r.Value]));
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
     return true;
   } catch (err) {
-    console.error("Failed to load XLSX lazily:", err);
+    console.error("Failed to load exceljs lazily:", err);
     return false;
   }
 }

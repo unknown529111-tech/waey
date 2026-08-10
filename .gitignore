@@ -73,3 +73,17 @@ Hospitals data/
 # Frontend screenshot bloat (website-preview.png is enough)
 frontend/waey/website-mental-health.png
 frontend/waey/website-new.png
+
+# Study sounds now stream from Supabase Storage (bucket: sounds)
+frontend/waey/public/sounds/
+
+# Debug screenshots committed by mistake; removed from tracking
+white-screen.png
+frontend/waey/dashboard_debug.png
+frontend/waey/dashboard_test.png
+frontend/waey/dashboard_test2.png
+frontend/waey/dashboard_test3.png
+frontend/waey/debug_screenshot.png
+frontend/waey/screenshot.png
+frontend/waey/screenshot3.png
+frontend/waey/website-preview.png

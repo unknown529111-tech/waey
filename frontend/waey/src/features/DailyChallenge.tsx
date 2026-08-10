@@ -36,7 +36,13 @@ const DailyChallenge = () => {
         {t('challenge.title')}
       </div>
       <div className="flex items-start gap-4">
-        <div className="text-5xl leading-none">{challenge.emoji}</div>
+        {challenge.icon ? (
+          <div className="size-14 shrink-0 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <challenge.icon className="size-7 text-primary" />
+          </div>
+        ) : (
+          <div className="text-5xl leading-none">{challenge.emoji}</div>
+        )}
         <div className="flex-1">
           <p className="text-lg md:text-xl font-bold leading-relaxed mb-2">
             {t(challenge.text)}

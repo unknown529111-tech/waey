@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
-import { Recycle } from "lucide-react";
+import { Recycle, GlassWater, Shirt, Sprout, Gift } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 
 const RecycleSection = () => {
   const t = useT();
 
   const diyIdeas = [
-    { title: t('recycle.idea.0.title'), description: t('recycle.idea.0.desc'), emoji: "🫙" },
-    { title: t('recycle.idea.1.title'), description: t('recycle.idea.1.desc'), emoji: "👕" },
-    { title: t('recycle.idea.2.title'), description: t('recycle.idea.2.desc'), emoji: "🌱" },
-    { title: t('recycle.idea.3.title'), description: t('recycle.idea.3.desc'), emoji: "🎁" },
+    { title: t('recycle.idea.0.title'), description: t('recycle.idea.0.desc'), icon: GlassWater },
+    { title: t('recycle.idea.1.title'), description: t('recycle.idea.1.desc'), icon: Shirt },
+    { title: t('recycle.idea.2.title'), description: t('recycle.idea.2.desc'), icon: Sprout },
+    { title: t('recycle.idea.3.title'), description: t('recycle.idea.3.desc'), icon: Gift },
   ];
 
   return (
@@ -39,7 +39,9 @@ const RecycleSection = () => {
               transition={{ delay: i * 0.1 }}
               className="bg-card p-8 rounded-3xl border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1"
             >
-              <span className="text-4xl block mb-4">{idea.emoji}</span>
+              <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+                <idea.icon className="size-7 text-primary" />
+              </div>
               <h4 className="font-bold mb-3">{idea.title}</h4>
               <p className="text-sm text-muted-foreground leading-relaxed">{idea.description}</p>
             </motion.div>

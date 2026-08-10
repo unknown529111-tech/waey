@@ -7,21 +7,16 @@ import { toast } from "sonner";
 import { sanitizeString } from "@/lib/sanitize";
 import { useLanguage } from "@/contexts/useLanguage";
 import { getUserId, syncAIChat } from "@/lib/supabaseStorage";
+import { getStreak, getDailyValue } from "@/lib/dailyStorage";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "waey_ai_chat";
-const DEEPSEEK_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
-const DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions";
+
+// AI calls go through the server-side proxy only (Supabase Edge Function).
+// Direct provider keys (Groq/DeepSeek/NVIDIA/OpenRouter) must never be bundled
+// into the client — they get exposed to anyone who opens the built JS.
 const AI_PROXY = import.meta.env.VITE_AI_PROXY_URL;
-
-const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
-
-const NVIDIA_KEY = import.meta.env.VITE_NVIDIA_API_KEY;
-const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
-const NVIDIA_MODEL = "meta/llama-3.1-70b-instruct";
 
 const SYSTEM_PROMPT_AR = `أنت "مساعد وعي الذكي" (Waey AI) — المساعد التفاعلي الرسمي لمنصة "وعي".
 مهمتك الأساسية هي تقديم إجابات دقيقة، عملية، وملهمة للمستخدمين باللغة العربية في أربعة أركان أساسية للحياة:
@@ -58,8 +53,6 @@ Important rules:
 - If the user asks about the site's creator or owner, answer literally as follows:
 Mahmoud Ahmed Mohamed Khalil, a high school student interested in programming and artificial intelligence, founder of the Waey platform to spread awareness in health, finance, environment, and education.`;
 
-import { getStreak, getDailyValue } from "@/lib/dailyStorage";
-
 // This function generates context in Arabic for the AI system prompt (internal, not user-facing UI text)
 function getUserPersonalizedContext(): string {
   try {
@@ -73,111 +66,6 @@ function getUserPersonalizedContext(): string {
   } catch {
     return "";
   }
-}
-
-const MAX_TOKENS = 1000;
-const RENDER_INTERVAL_MS = 16;
-
-async function tryOpenRouter(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
-  if (!OPENROUTER_KEY) return null;
-  try {
-    return await fetch(OPENROUTER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENROUTER_KEY}`,
-        "HTTP-Referer": "https://waey-m7.com",
-        "X-Title": "Waey",
-      },
-      body: JSON.stringify({
-        model: OPENROUTER_MODEL,
-        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
-        stream: true,
-        max_tokens: MAX_TOKENS,
-        temperature: 0.7,
-      }),
-      signal,
-    });
-  } catch { return null; }
-}
-
-async function tryProxy(history: Msg[], signal: AbortSignal, sp: string): Promise<string | null> {
-  if (!AI_PROXY) return null;
-  try {
-    const resp = await fetch(`${AI_PROXY}?stream=false`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ system: sp, messages: history.map((m) => ({ role: m.role, content: m.content })) }),
-      signal,
-    });
-    if (!resp.ok) return null;
-    const j = await resp.json().catch(() => null);
-    if (!j) return null;
-    return (j.content || j.text || j.answer || j.output || (j.choices && j.choices[0] && (j.choices[0].message?.content || j.choices[0].text)) || null) as string | null;
-  } catch { return null; }
-}
-
-async function tryGroq(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
-  if (!GROQ_KEY) return null;
-  try {
-    return await fetch(GROQ_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${GROQ_KEY}`,
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
-        stream: true,
-        max_tokens: MAX_TOKENS,
-        temperature: 0.7,
-      }),
-      signal,
-    });
-  } catch { return null; }
-}
-
-async function tryDeepSeek(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
-  if (!DEEPSEEK_KEY) return null;
-  try {
-    return await fetch(DEEPSEEK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${DEEPSEEK_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "deepseek-chat",
-        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
-        stream: true,
-        max_tokens: MAX_TOKENS,
-        temperature: 0.7,
-      }),
-      signal,
-    });
-  } catch { return null; }
-}
-
-async function tryNvidia(history: Msg[], signal: AbortSignal, sp: string): Promise<Response | null> {
-  if (!NVIDIA_KEY) return null;
-  try {
-    return await fetch(NVIDIA_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${NVIDIA_KEY}`,
-      },
-      body: JSON.stringify({
-        model: NVIDIA_MODEL,
-        messages: [{ role: "system", content: sp }, ...history.map((m) => ({ role: m.role, content: m.content }))],
-        stream: true,
-        max_tokens: MAX_TOKENS,
-        temperature: 0.7,
-      }),
-      signal,
-    });
-  } catch { return null; }
 }
 
 // Fallback responses - hardcoded as they serve as offline/emergency fallbacks when the app is not fully initialized
@@ -196,37 +84,20 @@ function generateSmartOfflineResponse(text: string, lang: string, _t?: (key: str
   return "🌿 " + (_t ? _t('ai.fallback.generalEn') : "Waey is a holistic-awareness platform covering: Health 💚, Finance 💰, Environment 🌱, and Education 📚. Ask me anything in these areas!");
 }
 
-function parseOpenaiSSE(line: string): string | null {
-  if (!line.startsWith("data: ")) return null;
-  const jsonStr = line.slice(6).trim();
-  if (jsonStr === "[DONE]") return null;
+async function tryProxy(history: Msg[], signal: AbortSignal, sp: string): Promise<string | null> {
+  if (!AI_PROXY) return null;
   try {
-    const parsed = JSON.parse(jsonStr);
-    return parsed.choices?.[0]?.delta?.content ?? null;
+    const resp = await fetch(`${AI_PROXY}?stream=false`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ system: sp, messages: history.map((m) => ({ role: m.role, content: m.content })) }),
+      signal,
+    });
+    if (!resp.ok) return null;
+    const j = await resp.json().catch(() => null);
+    if (!j) return null;
+    return (j.content || j.text || j.answer || j.output || (j.choices && j.choices[0] && (j.choices[0].message?.content || j.choices[0].text)) || null) as string | null;
   } catch { return null; }
-}
-
-async function streamResponse(resp: Response, onToken: (t: string) => void, signal: AbortSignal): Promise<void> {
-  if (!resp.body) return;
-  const reader = resp.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-  signal.addEventListener("abort", () => reader.cancel(), { once: true });
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      let idx: number;
-      while ((idx = buffer.indexOf("\n")) !== -1) {
-        const line = buffer.slice(0, idx).replace(/\r$/, "");
-        buffer = buffer.slice(idx + 1);
-        if (!line.trim()) continue;
-        const token = parseOpenaiSSE(line);
-        if (token) onToken(token);
-      }
-    }
-  } catch (err) { console.error("Stream read error:", err); }
 }
 
 const AIChat = () => {
@@ -241,8 +112,7 @@ const AIChat = () => {
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [provider, setProvider] = useState<"groq" | "nvidia" | "deepseek" | "proxy" | null>(null);
-  const [cursorVisible, setCursorVisible] = useState(false);
+  const [provider, setProvider] = useState<"proxy" | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -255,13 +125,6 @@ const AIChat = () => {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isLoading]);
-
-  // Cursor blink effect while loading
-  useEffect(() => {
-    if (!isLoading) { setCursorVisible(false); return; }
-    const id = setInterval(() => setCursorVisible(v => !v), 530);
-    return () => clearInterval(id);
-  }, [isLoading]);
 
   const systemPrompt = (lang === 'ar' ? SYSTEM_PROMPT_AR : SYSTEM_PROMPT_EN) + getUserPersonalizedContext();
 
@@ -281,78 +144,23 @@ const AIChat = () => {
     abortRef.current = controller;
     const timeoutId = setTimeout(() => { controller.abort(); toast.error(t('chat.timeout')); }, 30_000);
 
-    let assistantSoFar = "";
-    let renderTimer: ReturnType<typeof setInterval> | null = null;
-
-    const startRenderLoop = () => {
-      if (renderTimer) return;
-      renderTimer = setInterval(() => {
-        setMessages((prev) => {
-          const last = prev[prev.length - 1];
-          if (last?.role === "assistant") return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
-          return [...prev, { role: "assistant", content: assistantSoFar }];
-        });
-      }, RENDER_INTERVAL_MS);
-    };
-
-    const stopRenderLoop = () => {
-      if (renderTimer) {
-        clearInterval(renderTimer);
-        renderTimer = null;
-      }
-    };
-
-    let usedProvider: "groq" | "nvidia" | "deepseek" | null = null;
-    const sp = systemPrompt;
-
     try {
-      // 1) Groq (primary — using user VITE_GROQ_API_KEY)
-      let resp: Response | null = await tryGroq(nextHistory, controller.signal, sp);
-      if (resp && resp.ok) { usedProvider = "groq"; }
-
-      // 2) NVIDIA (fallback)
-      if (!resp || !resp.ok) {
-        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("Groq failed:", resp.status, body.slice(0, 200)); }
-        resp = await tryNvidia(nextHistory, controller.signal, sp);
-        if (resp && resp.ok) usedProvider = "nvidia";
-      }
-
-      // 3) DeepSeek (last resort)
-      if (!resp || !resp.ok) {
-        if (resp && !resp.ok) { const body = await resp.text().catch(() => ""); console.warn("NVIDIA failed:", resp.status, body.slice(0, 200)); }
-        resp = await tryDeepSeek(nextHistory, controller.signal, sp);
-        if (resp && resp.ok) usedProvider = "deepseek";
-      }
-
-      // 4) Proxy (fallback)
-      if (!resp || !resp.ok) {
-        const proxyText = await tryProxy(nextHistory, controller.signal, sp);
-        if (proxyText) { setProvider("proxy"); setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]); clearTimeout(timeoutId); setIsLoading(false); return; }
-      }
-
-      if (!resp || !resp.ok) {
-        clearTimeout(timeoutId);
+      const proxyText = await tryProxy(nextHistory, controller.signal, systemPrompt);
+      if (proxyText) {
+        setProvider("proxy");
+        setMessages((prev) => [...prev, { role: "assistant", content: proxyText }]);
+      } else {
         const fallbackText = generateSmartOfflineResponse(trimmed, lang, t);
         setMessages((prev) => [...prev, { role: "assistant", content: fallbackText }]);
-        return;
       }
-
-      setProvider(usedProvider);
-      startRenderLoop();
-      await streamResponse(resp, (token) => { assistantSoFar += token; }, controller.signal);
     } catch (e) {
-      if ((e as Error).name !== "AbortError") { console.error(e); toast.error(t('chat.connectionError')); setMessages(nextHistory); }
+      if ((e as Error).name !== "AbortError") {
+        console.error(e);
+        toast.error(t('chat.connectionError'));
+        setMessages(nextHistory);
+      }
     } finally {
       clearTimeout(timeoutId);
-      stopRenderLoop();
-      // Final flush to ensure complete message is saved
-      if (assistantSoFar) {
-        setMessages((prev) => {
-          const last = prev[prev.length - 1];
-          if (last?.role === "assistant") return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
-          return [...prev, { role: "assistant", content: assistantSoFar }];
-        });
-      } else { setMessages(nextHistory); toast.error(t('chat.noResponse')); }
       setIsLoading(false);
       abortRef.current = null;
     }
@@ -365,15 +173,8 @@ const AIChat = () => {
     if (uid) syncAIChat(uid);
   };
 
-  const providerLabel = () => {
-    switch (provider) {
-      case "groq": return "";
-      case "nvidia": return "";
-      case "deepseek": return "";
-      case "proxy": return t('chat.proxy');
-      default: return t('chat.scope');
-    }
-  };
+  const providerLabel = () =>
+    provider === "proxy" ? t('chat.proxy') : t('chat.scope');
 
   return (
     <div className="max-w-[800px] mx-auto px-4 md:px-6 py-8">
@@ -429,9 +230,8 @@ const AIChat = () => {
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === "user" ? "justify-start" : "justify-end"}`}>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${m.role === "user" ? "bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_8px_20px_-12px_rgba(93,112,82,0.55)]" : "bg-secondary/80 text-secondary-foreground backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"}`}>
                   {m.role === "assistant" ? (
-                    <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-headings:my-2 prose-strong:text-foreground flex items-start gap-1">
+                    <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-headings:my-2 prose-strong:text-foreground">
                       <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{sanitizeString(m.content || "", 5000)}</ReactMarkdown>
-                      {isLoading && i === messages.length - 1 && cursorVisible && <span className="text-primary animate-pulse">|</span>}
                     </div>
                   ) : (
                     <div className="whitespace-pre-wrap">{m.content}</div>

@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Smile } from "lucide-react";
+import { Smile, Angry, Frown, Meh, Laugh } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 import { getMood, setMood, bumpStreak } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
 
 const MOODS = [
-  { v: 1, e: "😞", key: "tracker.mood.bad" },
-  { v: 2, e: "😕", key: "tracker.mood.tired" },
-  { v: 3, e: "😐", key: "tracker.mood.okay" },
-  { v: 4, e: "🙂", key: "tracker.mood.good" },
-  { v: 5, e: "😄", key: "tracker.mood.excellent" },
+  { v: 1, icon: Angry, tint: "text-red-500 bg-red-500/10", key: "tracker.mood.bad" },
+  { v: 2, icon: Frown, tint: "text-amber-500 bg-amber-500/10", key: "tracker.mood.tired" },
+  { v: 3, icon: Meh, tint: "text-slate-500 bg-slate-500/10", key: "tracker.mood.okay" },
+  { v: 4, icon: Smile, tint: "text-emerald-500 bg-emerald-500/10", key: "tracker.mood.good" },
+  { v: 5, icon: Laugh, tint: "text-primary bg-primary/10", key: "tracker.mood.excellent" },
 ];
 
 const MoodTracker = () => {
@@ -40,7 +40,9 @@ const MoodTracker = () => {
             }`}
             aria-label={t(m.key)}
           >
-            <span className="text-2xl">{m.e}</span>
+            <span className={`size-9 rounded-full flex items-center justify-center ${m.tint}`}>
+              <m.icon className="size-5" />
+            </span>
             <span className="text-[10px] text-muted-foreground">{t(m.key)}</span>
           </button>
         ))}

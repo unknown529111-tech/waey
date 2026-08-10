@@ -22,12 +22,13 @@ if (!isConfigured(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)) {
   console.warn("Supabase env vars missing or unconfigured. Cloud features (contact form, sync, AI proxy) will be unavailable.");
 }
 
-export const supabase = isConfigured(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-  ? createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: {
-        storage: localStorage,
-        persistSession: true,
-        autoRefreshToken: true,
-      }
-    })
-  : null;
+export const supabase =
+  SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY && isConfigured(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+    ? createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+        auth: {
+          storage: localStorage,
+          persistSession: true,
+          autoRefreshToken: true,
+        }
+      })
+    : null;

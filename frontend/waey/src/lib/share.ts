@@ -32,7 +32,7 @@ export function generateReportShareText(t?: (key: string) => string): string {
   const stepMinutes = getDailyValue("steps");
   const moodScore = getDailyValue("mood");
 
-  const T = (key: string, fallback: string): string => (t ? t(key) : fallback);
+  const T = (key: string, fallback: string): string => (t ? t(key) : undefined) ?? fallback;
 
   const lines: string[] = [
     `📊 ${T("share.reportTitle", "تقرير وعي اليومي")}`,
@@ -65,7 +65,7 @@ export async function generateReportPDF(t?: (key: string) => string): Promise<Bl
   const margin = 40;
   let y = margin;
 
-  const T = (key: string, fallback: string): string => (t ? t(key) : fallback);
+  const T = (key: string, fallback: string): string => (t ? t(key) : undefined) ?? fallback;
 
   // Arabic font setup - use built-in font
   doc.setFont("helvetica");
@@ -139,7 +139,7 @@ export async function generateReportPDF(t?: (key: string) => string): Promise<Bl
   y += 15;
 
   if (unlockedBadges.length > 0) {
-    const badgeData = unlockedBadges.map((b) => [`${b.emoji} ${b.title}`, b.description]);
+    const badgeData = unlockedBadges.map((b) => [`${b.emoji} ${b.title}`, b.description ?? ""]);
     (doc as AutoTableDoc).autoTable({
       startY: y,
       head: [[T("share.badge", "الوسام"), T("share.description", "الوصف")]],
@@ -214,7 +214,7 @@ export async function generateBadgesPDF(t?: (key: string) => string): Promise<Bl
   const margin = 40;
   let y = margin;
 
-  const T = (key: string, fallback: string): string => (t ? t(key) : fallback);
+  const T = (key: string, fallback: string): string => (t ? t(key) : undefined) ?? fallback;
 
   doc.setFont("helvetica");
 
@@ -250,7 +250,7 @@ export async function generateBadgesPDF(t?: (key: string) => string): Promise<Bl
   y += 15;
 
   if (unlockedBadges.length > 0) {
-    const badgeData = unlockedBadges.map((b) => [`${b.emoji} ${b.title}`, b.description]);
+    const badgeData = unlockedBadges.map((b) => [`${b.emoji} ${b.title}`, b.description ?? ""]);
     (doc as AutoTableDoc).autoTable({
       startY: y,
       head: [[T("share.badge", "الوسام"), T("share.description", "الوصف")]],
@@ -291,7 +291,7 @@ export function generateAchievementsShareText(t?: (key: string) => string): stri
   const streak = getStreak();
   const points = getUserPoints();
 
-  const T = (key: string, fallback: string): string => (t ? t(key) : fallback);
+  const T = (key: string, fallback: string): string => (t ? t(key) : undefined) ?? fallback;
 
   const lines: string[] = [
     `🏆 ${T("share.achievementsTitle", "إنجازاتي في منصة وعي")}`,

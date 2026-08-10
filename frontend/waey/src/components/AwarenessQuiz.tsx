@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, CheckCircle, RotateCcw } from "lucide-react";
+import { Brain, CheckCircle, RotateCcw, Lightbulb } from "lucide-react";
 import { useT } from "@/contexts/useLanguage";
 import { bumpStreak } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
@@ -231,8 +231,9 @@ const AwarenessQuiz = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-4"
                   >
-                    <p className="text-sm text-muted-foreground bg-secondary/50 p-4 rounded-2xl leading-relaxed">
-                      💡 {t(`quiz.${q.explanation}`)}
+                    <p className="text-sm text-muted-foreground bg-secondary/50 p-4 rounded-2xl leading-relaxed flex items-start gap-2">
+                      <Lightbulb className="size-4 shrink-0 mt-0.5 text-amber-500" />
+                      {t(`quiz.${q.explanation}`)}
                     </p>
                     <button
                       onClick={handleNext}

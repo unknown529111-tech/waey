@@ -2,6 +2,8 @@
 import { getDailyValue, readJSON, writeJSON, todayKey } from "./dailyStorage";
 import { getStreakState } from "@/lib/streak";
 import { getUserId, syncGamification, loadGamificationFromSupabase } from "@/lib/supabaseStorage";
+import type { LucideIcon } from "lucide-react";
+import { Footprints, Flame, Medal, Crown, Droplets, Waves, Wind, BookHeart, PiggyBank, Trophy } from "lucide-react";
 
 export interface Badge {
   id: string;
@@ -12,12 +14,14 @@ export interface Badge {
   description?: string; // kept for backward compat, use descKey instead
   category: "streak" | "water" | "mindfulness" | "finance" | "challenge";
   reqValue: number;
+  icon?: LucideIcon; // lucide icon for the medallion render
 }
 
 export const BADGES: Badge[] = [
   {
     id: "first_step",
     emoji: "🥉",
+    icon: Footprints,
     titleKey: "badge.firstStep",
     descKey: "badge.firstStepDesc",
     title: "خطوة الأولى",
@@ -28,6 +32,7 @@ export const BADGES: Badge[] = [
   {
     id: "streak_7",
     emoji: "🥈",
+    icon: Flame,
     titleKey: "badge.weeklyCommitment",
     descKey: "badge.weeklyCommitmentDesc",
     title: "التزام أسبوعي",
@@ -38,6 +43,7 @@ export const BADGES: Badge[] = [
   {
     id: "streak_30",
     emoji: "🥇",
+    icon: Medal,
     titleKey: "badge.monthlyAchievement",
     descKey: "badge.monthlyAchievementDesc",
     title: "إنجاز شهري",
@@ -48,6 +54,7 @@ export const BADGES: Badge[] = [
   {
     id: "streak_100",
     emoji: "👑",
+    icon: Crown,
     titleKey: "badge.waeyChampion",
     descKey: "badge.waeyChampionDesc",
     title: "بطل وعي",
@@ -58,6 +65,7 @@ export const BADGES: Badge[] = [
   {
     id: "water_8",
     emoji: "💧",
+    icon: Droplets,
     titleKey: "badge.fullHydration",
     descKey: "badge.fullHydrationDesc",
     title: "ارتواء تام",
@@ -68,6 +76,7 @@ export const BADGES: Badge[] = [
   {
     id: "water_100",
     emoji: "🌊",
+    icon: Waves,
     titleKey: "badge.hydrationMaster",
     descKey: "badge.hydrationMasterDesc",
     title: "سيد الهيدرات",
@@ -78,6 +87,7 @@ export const BADGES: Badge[] = [
   {
     id: "breathing_peace",
     emoji: "🧘",
+    icon: Wind,
     titleKey: "badge.momentOfPeace",
     descKey: "badge.momentOfPeaceDesc",
     title: "لحظة هدوء",
@@ -88,6 +98,7 @@ export const BADGES: Badge[] = [
   {
     id: "gratitude_heart",
     emoji: "📝",
+    icon: BookHeart,
     titleKey: "badge.gratefulHeart",
     descKey: "badge.gratefulHeartDesc",
     title: "قلب شاكر",
@@ -98,6 +109,7 @@ export const BADGES: Badge[] = [
   {
     id: "finance_wise",
     emoji: "💰",
+    icon: PiggyBank,
     titleKey: "badge.financialAwareness",
     descKey: "badge.financialAwarenessDesc",
     title: "وعي مالي",
@@ -108,6 +120,7 @@ export const BADGES: Badge[] = [
   {
     id: "challenge_hero",
     emoji: "🌟",
+    icon: Trophy,
     titleKey: "badge.challengeHero",
     descKey: "badge.challengeHeroDesc",
     title: "بطل التحديات",

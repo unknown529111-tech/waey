@@ -1,11 +1,10 @@
 import { supabase } from "@/supabase/client";
 import { queueUpsert, queueDelete, isOffline } from "@/lib/offlineQueue";
 import type { Tables } from "@/supabase/types";
+import { toLooseClient, type LooseSyncClient } from "@/lib/looseSupabase";
 
-type SupabaseClient = NonNullable<typeof supabase>;
-
-function getClient(): SupabaseClient | null {
-  return supabase;
+function getClient(): LooseSyncClient | null {
+  return toLooseClient(supabase);
 }
 
 export function getUserId(): string | null {
@@ -624,14 +623,15 @@ export async function loadGamificationFromSupabase(userId: string): Promise<void
   try {
     const { data } = await sb.from("gamification").select("*").eq("user_id", userId).maybeSingle();
     if (data) {
-      writeLocal("waey_points", data.points);
-      writeLocal("waey_unlocked_badges", data.unlocked_badges);
+      const row = data as Record<string, unknown>;
+      writeLocal("waey_points", row.points);
+      writeLocal("waey_unlocked_badges", row.unlocked_badges);
       writeLocal("waey_stats", {
-        totalWaterCups: data.total_water_cups,
-        totalExpensesCount: data.total_expenses_count,
-        totalChallengesDone: data.total_challenges_done,
-        breathingDone: data.breathing_done,
-        gratitudeDone: data.gratitude_done,
+        totalWaterCups: row.total_water_cups,
+        totalExpensesCount: row.total_expenses_count,
+        totalChallengesDone: row.total_challenges_done,
+        breathingDone: row.breathing_done,
+        gratitudeDone: row.gratitude_done,
       });
     }
   } catch { /* best-effort */ }
@@ -643,8 +643,9 @@ export async function loadStreakFromSupabase(userId: string): Promise<void> {
   try {
     const { data } = await sb.from("streaks").select("*").eq("user_id", userId).maybeSingle();
     if (data) {
-      writeLocal("waey_streak", { count: data.count, lastDay: data.last_day, freezeUsed: data.freeze_used });
-      writeLocal("waey_streak_freezes", data.freeze_count);
+      const row = data as Record<string, unknown>;
+      writeLocal("waey_streak", { count: row.count, lastDay: row.last_day, freezeUsed: row.freeze_used });
+      writeLocal("waey_streak_freezes", row.freeze_count);
     }
   } catch { /* best-effort */ }
 }
@@ -655,14 +656,15 @@ export async function loadSettingsFromSupabase(userId: string): Promise<void> {
   try {
     const { data } = await sb.from("user_settings").select("*").eq("user_id", userId).maybeSingle();
     if (data) {
-      if (data.lang) localStorage.setItem("waey-lang", data.lang);
-      if (data.theme) localStorage.setItem("waey-theme", data.theme);
-      writeLocal("waey_notif_categories", data.notification_categories);
-      writeLocal("waey_premium_tier", { tier: data.premium_tier, activatedAt: data.premium_activated_at });
-      localStorage.setItem("waey_onboarding_done", data.onboarding_done ? "true" : "false");
-      localStorage.setItem("waey_pwa_dismissed", data.pwa_dismissed ? "true" : "false");
-      localStorage.setItem("waey_pwa_installed", data.pwa_installed ? "true" : "false");
-      writeLocal("waey_whats_new_v2_seen", data.whats_new_seen);
+      const row = data as Record<string, unknown>;
+      if (typeof row.lang === "string") localStorage.setItem("waey-lang", row.lang);
+      if (typeof row.theme === "string") localStorage.setItem("waey-theme", row.theme);
+      writeLocal("waey_notif_categories", row.notification_categories);
+      writeLocal("waey_premium_tier", { tier: row.premium_tier, activatedAt: row.premium_activated_at });
+      localStorage.setItem("waey_onboarding_done", row.onboarding_done ? "true" : "false");
+      localStorage.setItem("waey_pwa_dismissed", row.pwa_dismissed ? "true" : "false");
+      localStorage.setItem("waey_pwa_installed", row.pwa_installed ? "true" : "false");
+      writeLocal("waey_whats_new_v2_seen", row.whats_new_seen);
     }
   } catch { /* best-effort */ }
 }
@@ -673,7 +675,8 @@ export async function loadFavoritesFromSupabase(userId: string): Promise<void> {
   try {
     const { data } = await sb.from("favorites").select("*").eq("user_id", userId).maybeSingle();
     if (data) {
-      writeLocal("waey_recipe_favs", data.recipe_ids);
+      const row = data as Record<string, unknown>;
+      writeLocal("waey_recipe_favs", row.recipe_ids);
     }
   } catch { /* best-effort */ }
 }

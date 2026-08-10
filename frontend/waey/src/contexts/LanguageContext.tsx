@@ -33,7 +33,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return langOrder[(idx + 1) % langOrder.length];
   });
 
-  const t = (key: string): string => locale[key] ?? key;
+  const t = (key: string, vars?: Record<string, string | number>): string => {
+    const base = locale[key] ?? key;
+    if (!vars) return base;
+    return base.replace(/\{(\w+)\}/g, (match, name: string) =>
+      name in vars ? String(vars[name]) : match
+    );
+  };
 
   return (
     <LanguageContext.Provider value={{ lang, setLang, toggleLang, t }}>

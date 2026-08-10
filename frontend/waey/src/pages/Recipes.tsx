@@ -1,11 +1,33 @@
 import { useState, useMemo, useEffect } from "react";
-import { ChefHat, Clock, Flame, Coins, X, Heart } from "lucide-react";
+import { ChefHat, Clock, Flame, Coins, X, Heart, Utensils, Sunrise, Sun, MoonStar, Cake, CupSoda, Leaf, Zap, HeartPulse, Dumbbell, Users } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { getAdminRecipes, type AdminItem } from "@/lib/adminContent";
 import { getFavorites, toggleFavorite } from "@/lib/favorites";
 import { useT } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
+
+// Meal glyph: derived from the recipe's Arabic tags so data stays emoji-free.
+const TAG_STYLE: { match: string; Icon: LucideIcon; chip: string }[] = [
+  { match: "فطار", Icon: Sunrise, chip: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+  { match: "غدا", Icon: Sun, chip: "bg-orange-500/10 text-orange-600 dark:text-orange-400" },
+  { match: "عشا", Icon: MoonStar, chip: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400" },
+  { match: "حلو", Icon: Cake, chip: "bg-pink-500/10 text-pink-600 dark:text-pink-400" },
+  { match: "مشروب", Icon: CupSoda, chip: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
+  { match: "بروتين عالي", Icon: Dumbbell, chip: "bg-red-500/10 text-red-500 dark:text-red-400" },
+  { match: "نباتي", Icon: Leaf, chip: "bg-green-500/10 text-green-600 dark:text-green-400" },
+  { match: "صحي", Icon: HeartPulse, chip: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+  { match: "اقتصادي", Icon: Coins, chip: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400" },
+  { match: "سريع", Icon: Zap, chip: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+];
+
+function dishGlyph(tags: string[]): { Icon: LucideIcon; chip: string } {
+  for (const s of TAG_STYLE) {
+    if (tags.includes(s.match)) return { Icon: s.Icon, chip: s.chip };
+  }
+  return { Icon: Utensils, chip: "bg-primary/10 text-primary" };
+}
 
 const Recipes = () => {
   const t = useT();
@@ -151,7 +173,9 @@ const Recipes = () => {
                       <Heart className={`size-4 ${isFav ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
                     </button>
                     <button onClick={() => setOpen(r)} className="text-right w-full">
-                      <div className="text-5xl mb-3">{r.emoji}</div>
+                      <div className={`size-14 rounded-2xl flex items-center justify-center mb-3 ${dishGlyph(r.tags).chip}`}>
+                        {(() => { const G = dishGlyph(r.tags).Icon; return <G className="size-7" />; })()}
+                      </div>
                       <h3 className="font-bold text-lg mb-3">{r.name}</h3>
                       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-3">
                         <span className="flex items-center gap-1">
@@ -204,13 +228,15 @@ const Recipes = () => {
               >
                 <Heart className={`size-4 ${favs.includes(getId(open)) ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
               </button>
-              <div className="text-6xl mb-4">{open.emoji}</div>
+              <div className={`size-16 rounded-2xl flex items-center justify-center mb-4 ${dishGlyph(open.tags).chip}`}>
+                {(() => { const G = dishGlyph(open.tags).Icon; return <G className="size-8" />; })()}
+              </div>
               <h2 className="text-2xl font-bold mb-2">{open.name}</h2>
-              <div className="flex flex-wrap gap-3 text-sm text-muted-foreground mb-6">
-                <span>🔥 {open.calories} {t('recipes.calorieUnit')}</span>
-                <span>💰 {open.costEGP} {t('recipes.costUnitServing')}</span>
-                <span>⏱ {open.prepMin} {t('recipes.prepMinUnit')}</span>
-                <span>👥 {open.servings} {t('recipes.servingsUnit')}</span>
+              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6">
+                <span className="flex items-center gap-1.5"><Flame className="size-4 text-destructive" /> {open.calories} {t('recipes.calorieUnit')}</span>
+                <span className="flex items-center gap-1.5"><Coins className="size-4 text-accent" /> {open.costEGP} {t('recipes.costUnitServing')}</span>
+                <span className="flex items-center gap-1.5"><Clock className="size-4 text-primary" /> {open.prepMin} {t('recipes.prepMinUnit')}</span>
+                <span className="flex items-center gap-1.5"><Users className="size-4 text-emerald-600" /> {open.servings} {t('recipes.servingsUnit')}</span>
               </div>
               <h3 className="font-bold mb-2">{t('recipes.ingredients')}:</h3>
               <ul className="list-disc list-inside space-y-1 text-sm mb-6 marker:text-primary">

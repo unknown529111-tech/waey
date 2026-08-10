@@ -136,7 +136,7 @@ export function GoalSetting() {
                   className="flex-1 field rounded-full px-4 py-2.5 text-sm"
                 >
                   {CATEGORIES.map((c) => (
-                    <option key={c.value} value={c}>{t(c)}</option>
+                    <option key={c} value={c}>{t(c)}</option>
                   ))}
                 </select>
                 <input

@@ -212,6 +212,7 @@ export default function Admin() {
 
 // ==================== DASHBOARD ====================
 function DashboardTab() {
+  const t = useT();
   const [cloudUsers, setCloudUsers] = useState<number>(0);
   const [cloudTopStreak, setCloudTopStreak] = useState<number>(0);
   const [cloudPrize, setCloudPrize] = useState<{ winner: string | null }>({ winner: null });
@@ -267,6 +268,7 @@ function DashboardTab() {
 }
 
 function LiveMetricsCard() {
+  const t = useT();
   const [online, setOnline] = useState(() => getOnlineCount());
   const [signedIn, setSignedIn] = useState(() => getSignedInCount());
   const [minMs, setMinMs] = useState(() => getMinSessionDuration());
@@ -314,6 +316,7 @@ function LiveMetricsCard() {
 
 // ==================== RECIPES TAB ====================
 function RecipesTab() {
+  const t = useT();
   const [adminItems, setAdminItems] = useState<AdminItem<Recipe>[]>([]);
   const [edit, setEdit] = useState<EditState & { data?: Partial<Recipe> }>({ open: false, mode: "add" });
   const [search, setSearch] = useState("");
@@ -387,7 +390,7 @@ function RecipesTab() {
             ))}
             {/* Admin recipes */}
             <tr className="bg-primary/5">
-              <td colSpan={6} className="px-4 py-2 text-xs font-bold text-primary">{t('admin.recipe.adminAdded', { count: adminItems.length })}</td>
+              <td colSpan={6} className="px-4 py-2 text-xs font-bold text-primary">{t('admin.recipe.adminAdded').replace('{count}', String(adminItems.length))}</td>
             </tr>
             {adminItems.length === 0 ? (
               <tr>
@@ -466,6 +469,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
   onSave: (d: Partial<Recipe>) => void;
   onClose: () => void;
 }) {
+  const t = useT();
   const [form, setForm] = useState<Partial<Recipe>>(data);
 
   const allTags = ["نباتي", "سريع", "اقتصادي", "صحي", "بروتين عالي", "فطار", "غدا", "عشا", "حلو", "مشروب"] as const;
@@ -622,6 +626,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
 
 // ==================== CHALLENGES TAB ====================
 function ChallengesTab() {
+  const t = useT();
   const base = CHALLENGES;
   const [adminItems, setAdminItems] = useState(getAdminChallenges());
   const [showAdd, setShowAdd] = useState(false);
@@ -747,6 +752,7 @@ function ChallengesTab() {
 
 // ==================== QUOTES TAB ====================
 function QuotesTab() {
+  const t = useT();
   const base = QUOTES;
   const [adminItems, setAdminItems] = useState(getAdminQuotes());
   const [showAdd, setShowAdd] = useState(false);
@@ -845,6 +851,7 @@ function QuotesTab() {
 
 // ==================== USERS TAB ====================
 function UsersTab() {
+  const t = useT();
   const [users, setUsers] = useState<{ email: string; name: string; streakCount: number }[]>([]);
   const [prize, setPrizeState] = useState<{ winner: string | null }>({ winner: null });
   const [loading, setLoading] = useState(true);
@@ -877,7 +884,7 @@ function UsersTab() {
         </div>
       </div>
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
-        <h2 className="text-lg font-bold">{t('admin.users.title', { count: users.length })}</h2>
+        <h2 className="text-lg font-bold">{t('admin.users.title').replace('{count}', String(users.length))}</h2>
         <button
           onClick={() => {
             const text = users.map((u, i) => `${i + 1}. ${u.name} (${u.email}) — ${u.streakCount} ${t('admin.users.points')}`).join("\n");
@@ -934,7 +941,7 @@ function UsersTab() {
             <div>
               <p className="text-sm font-bold">{t('admin.users.prize')}</p>
               <p className="text-xs text-muted-foreground">
-                {prize.winner ? t('admin.users.prizeWinner', { email: prize.winner }) : t('admin.users.noWinner')}
+                {prize.winner ? t('admin.users.prizeWinner').replace('{email}', prize.winner) : t('admin.users.noWinner')}
               </p>
             </div>
           </div>
@@ -946,6 +953,7 @@ function UsersTab() {
 
 // ==================== SYSTEM TAB ====================
 function SystemTab() {
+  const t = useT();
   const [exported, setExported] = useState("");
   const [showReset, setShowReset] = useState(false);
   const [copied, setCopied] = useState(false);
