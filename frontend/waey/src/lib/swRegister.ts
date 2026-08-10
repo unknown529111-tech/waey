@@ -22,7 +22,7 @@ export function registerSW() {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("/sw.js", { scope: "/" })
+        .register("/sw.js", { scope: "/", updateViaCache: "none" })
         .then((registration) => {
           updateInterval = setInterval(() => registration.update(), 60 * 60 * 1000);
 

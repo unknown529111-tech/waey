@@ -1,6 +1,6 @@
 // Waey PWA Service Worker - Offline-first strategy
 // Version: increment when changing cache keys
-const CACHE_VERSION = "waey-v4";
+const CACHE_VERSION = "waey-v5";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
@@ -87,7 +87,7 @@ async function networkFirst(request, cacheName) {
       fetch(request),
       new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), NETWORK_TIMEOUT)),
     ]);
-    if (response.ok) {
+    if (response.ok && request.mode !== "navigate") {
       cache.put(request, response.clone());
     }
     return response;
@@ -95,7 +95,8 @@ async function networkFirst(request, cacheName) {
     const cached = await cache.match(request);
     if (cached) return cached;
     if (request.mode === "navigate") {
-      const offline = await cache.match("/");
+      // Never serve a stale app shell: fall back to the precached home page
+      const offline = await caches.match("/");
       return offline || new Response("Offline", { status: 503 });
     }
     throw err;
