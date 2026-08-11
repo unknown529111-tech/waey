@@ -45,7 +45,7 @@ describe("registerSW", () => {
     expect(window.addEventListener).toHaveBeenCalledWith("load", expect.any(Function));
     const loadCallback = (window.addEventListener as ReturnType<typeof vi.fn>).mock.calls[0][1];
     loadCallback();
-    expect(navigator.serviceWorker.register).toHaveBeenCalledWith("/sw.js", { scope: "/" });
+    expect(navigator.serviceWorker.register).toHaveBeenCalledWith("/sw.js", { scope: "/", updateViaCache: "none" });
   });
 });
 

@@ -1700,13 +1700,13 @@ const ar: Record<string, string> = {
   'share.badge': 'الوسام',
   'share.description': 'الوصف',
   'share.keepTracking': 'واصل التتبع لفتح الأوسمة!',
-  'share.reportFooter': 'تم إنشاء هذا التقرير تلقائياً من منصة وعي (Waey) لتتبع التطور الشخصي',
+  'share.reportFooter': 'تم إنشاء هذا التقرير تلقائياً من منصة وعي لتتبع التطور الشخصي',
   'share.categories': '🌿 الصحة  •  💰 المال  •  🌱 البيئة  •  📚 التعليم',
   // Share — badges PDF
   'share.badgesTitle': '🏆 إنجازاتي في وعي',
   'share.openBadges': 'الأوسمة المفتوحة',
   'share.of': 'من',
-  'share.badgesFooter': 'تم إنشاء هذا التقرير من منصة وعي (Waey)',
+  'share.badgesFooter': 'تم إنشاء هذا التقرير من منصة وعي',
   // Share — achievements text
   'share.achievementsTitle': '🏆 إنجازاتي في منصة وعي',
   'share.currentStreak': 'السلسلة الحالية',
