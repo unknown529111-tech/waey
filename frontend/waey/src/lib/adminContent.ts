@@ -204,38 +204,6 @@ export function exportAllData(): string {
   return JSON.stringify(data, null, 2);
 }
 
-/** Dynamic lazy import of exceljs library only when user clicks export */
-export async function exportToExcelAsync(fileName = "waey_data.xlsx") {
-  try {
-    const { Workbook } = await import("exceljs");
-    const data: Record<string, unknown>[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.startsWith("waey_")) {
-        data.push({ Key: key, Value: localStorage.getItem(key) });
-      }
-    }
-    const wb = new Workbook();
-    const ws = wb.addWorksheet("WaeyData");
-    ws.addRow(["Key", "Value"]);
-    data.forEach((r) => ws.addRow([r.Key, r.Value]));
-    const buf = await wb.xlsx.writeBuffer();
-    const blob = new Blob([buf], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    URL.revokeObjectURL(url);
-    return true;
-  } catch (err) {
-    console.error("Failed to load exceljs lazily:", err);
-    return false;
-  }
-}
-
 export function resetAllData(): void {
   const preserve = [ADMIN_TOKEN_KEY, "waey-theme", "waey_onboarding_done"];
   const keys: string[] = [];

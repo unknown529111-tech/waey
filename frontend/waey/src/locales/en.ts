@@ -958,9 +958,6 @@ const en: Record<string, string> = {
   'notif.disabled': 'Enable Notifications',
   'notif.footnote': 'Notifications appear every 2 hours with tips from your selected categories.',
 
-  // Export
-  'export.label': 'Export Your Data (Excel)',
-
   // Goals
   'goal.title': 'My Personal Goals',
   'goal.subtitle': 'Set your goals and track progress',

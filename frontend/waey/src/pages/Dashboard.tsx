@@ -21,7 +21,6 @@ import { ReportPrintModal } from "@/components/ReportPrintModal";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { WhatsNewModal } from "@/components/WhatsNewModal";
 import { SEO } from "@/components/SEO";
-import ExportButton from "@/components/ExportButton";
 import NotificationSettings from "@/components/NotificationSettings";
 import { useFreeze } from "@/features/useFreeze";
 import { GoalSetting } from "@/features/GoalSetting";
@@ -87,7 +86,6 @@ const Dashboard = () => {
                 <Database className="size-3.5 text-primary" />
                 {t('dash.backup')}
               </button>
-              <ExportButton />
               <button
                 onClick={() => setNotifOpen(!notifOpen)}
                 className="btn btn-linen text-xs px-3.5 py-2"

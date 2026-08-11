@@ -959,9 +959,6 @@ const ar: Record<string, string> = {
   'notif.disabled': 'فعّل الإشعارات',
   'notif.footnote': 'الإشعارات بتظهر كل ساعتين بنصائح من الأقسام اللي تختارها.',
 
-  // Export
-  'export.label': 'تصدير بياناتك (Excel)',
-
   // Goals
   'goal.title': 'أهدافي الشخصية',
   'goal.subtitle': 'حدّد أهدافك وتابع تقدّمك',
