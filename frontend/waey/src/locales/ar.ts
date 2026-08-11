@@ -1635,7 +1635,7 @@ const ar: Record<string, string> = {
   'premium.plusPrice': '٤٩ ج.م / شهرياً',
   'premium.plusFeat1': 'كل مميزات المجاني',
   'premium.plusFeat2': 'مساعد ذكي غير محدود',
-  'premium.plusFeat3': 'تصدير Excel',
+  'premium.plusFeat3': 'تصدير تقرير PDF',
   'premium.plusFeat4': 'ثيمات مخصصة',
   'premium.plusFeat5': 'أولوية في الدعم',
   'premium.pro': 'برو',

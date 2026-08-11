@@ -1637,7 +1637,7 @@ const en: Record<string, string> = {
   'premium.plusPrice': '49 EGP / month',
   'premium.plusFeat1': 'All Free features',
   'premium.plusFeat2': 'Unlimited Smart Assistant',
-  'premium.plusFeat3': 'Excel export',
+  'premium.plusFeat3': 'PDF report export',
   'premium.plusFeat4': 'Custom themes',
   'premium.plusFeat5': 'Priority support',
   'premium.pro': 'Pro',
