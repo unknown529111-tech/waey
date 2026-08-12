@@ -1,6 +1,6 @@
 // Waey PWA Service Worker - Offline-first strategy
 // Version: increment when changing cache keys
-const CACHE_VERSION = "waey-v5";
+const CACHE_VERSION = "waey-v6";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
@@ -21,11 +21,11 @@ const PRECACHE_ASSETS = [
 const NETWORK_FIRST = "network-first";
 const CACHE_FIRST = "cache-first";
 
-// Route patterns and their strategies
+// Route patterns and their strategies (same-origin paths only)
 const ROUTES = [
   { pattern: /^\/$|\/dashboard|\/health|\/finance|\/environment|\/education|\/assistant|\/insights|\/recipes|\/plans|\/quiz/, strategy: NETWORK_FIRST },
   { pattern: /\.(js|css|woff2?|png|jpg|jpeg|svg|ico|webp)$/, strategy: CACHE_FIRST },
-  { pattern: /\/api\/|\/functions\/|supabase\.co/, strategy: NETWORK_FIRST },
+  { pattern: /\/api\/|\/functions\//, strategy: NETWORK_FIRST },
 ];
 
 self.addEventListener("install", (event) => {
@@ -54,15 +54,22 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const { request } = event;
-  const url = new URL(request.url);
-
   if (request.method !== "GET") return;
+  const url = new URL(request.url);
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
+  // Only handle same-origin requests. Third-party URLs (analytics beacons,
+  // CDN scripts, Supabase API, fonts from other hosts, etc.) must pass
+  // through untouched — intercepting them causes unhandled fetch failures
+  // when they are blocked or unreachable (e.g. by an ad blocker).
+  if (url.origin !== self.location.origin) return;
 
   const route = ROUTES.find((r) => r.pattern.test(url.pathname));
   const strategy = route?.strategy || NETWORK_FIRST;
 
-  event.respondWith(handleRequest(request, strategy));
+  event.respondWith(handleRequest(request, strategy).catch(() => {
+    // Never surface an unhandled rejection from the fetch handler.
+    return new Response("", { status: 504, statusText: "Gateway Timeout" });
+  }));
 });
 
 async function handleRequest(request, strategy) {
@@ -99,7 +106,9 @@ async function networkFirst(request, cacheName) {
       const offline = await caches.match("/");
       return offline || new Response("Offline", { status: 503 });
     }
-    throw err;
+    // Non-navigation request with no cached copy: signal failure instead of
+    // throwing, so blocked/failed fetches never become unhandled rejections.
+    return new Response("", { status: 504, statusText: "Gateway Timeout" });
   }
 }
 
