@@ -63,7 +63,7 @@ const Education = () => {
               {studyMethods.map((m) => (
                 <div
                   key={m.id}
-                  className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300"
+                  className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300"
                 >
                   <m.icon className="size-8 text-primary mb-3" />
                   <h3 className="font-bold text-lg mb-2">{m.title}</h3>
@@ -82,7 +82,7 @@ const Education = () => {
               {focusTips.map((tip) => (
                 <div
                   key={tip.id}
-                  className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 bg-gradient-to-l from-sun-warm/30 to-transparent shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300"
+                  className="bg-card border border-border/50 rounded-[2rem] p-6 bg-gradient-to-l from-sun-warm/30 to-transparent shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300"
                 >
                   <h3 className="font-bold mb-1.5">{tip.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>
@@ -107,7 +107,7 @@ const Education = () => {
               <Compass className="size-6" />
               {t('edu.lost')}
             </h2>
-            <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 md:p-8 shadow-soft">
+            <div className="bg-card border border-border/50 rounded-[2rem] p-6 md:p-8 shadow-soft">
               <ul className="space-y-3">
                 {lostTips.map((tip, i) => (
                   <li key={i} className="flex gap-3">

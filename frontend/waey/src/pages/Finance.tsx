@@ -77,7 +77,7 @@ const Finance = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {principles.map((p, i) => (
-                <div key={i} className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
+                <div key={i} className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
                   <p.icon className="size-8 text-accent mb-3" />
                   <h3 className="font-bold text-lg mb-2">{p.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
@@ -91,7 +91,7 @@ const Finance = () => {
               <PiggyBank className="size-6 text-primary" />
               {t('finance.tips')}
             </h2>
-            <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 md:p-8 shadow-soft">
+            <div className="bg-card border border-border/50 rounded-[2rem] p-6 md:p-8 shadow-soft">
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                 {everydayTips.map((tip, i) => (
                   <li key={i} className="flex gap-3">
@@ -122,7 +122,7 @@ const Finance = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.15 }}
-                  className="bg-card p-6 md:p-8 rounded-[2rem] border border-[#DED8CF]/50 dark:border-border/50 flex items-start gap-5 shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300"
+                  className="bg-card p-6 md:p-8 rounded-[2rem] border border-border/50 flex items-start gap-5 shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300"
                 >
                   <div className="size-12 bg-sun-warm rounded-2xl flex items-center justify-center shrink-0">
                     <span className="text-xl font-bold text-accent">{i + 1}</span>
@@ -146,7 +146,7 @@ const Finance = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {earnTips.map((e, i) => (
-                <div key={i} className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
+                <div key={i} className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
                   <h3 className="font-bold mb-1.5">{e.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{e.desc}</p>
                 </div>

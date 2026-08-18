@@ -102,7 +102,7 @@ const Insights = () => {
   }, [totals.sleep, totals.water]);
 
   const stat = (icon: JSX.Element, label: string, value: string) => (
-    <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-5 shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300">
+    <div className="bg-card border border-border/50 rounded-[2rem] p-5 shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300">
       <div className="flex items-center gap-2 mb-1">
         <div className="size-8 rounded-full bg-muted flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
           {icon}
@@ -134,7 +134,7 @@ const Insights = () => {
         </Link>
       </header>
 
-      <div className="bg-gradient-to-l from-primary/10 via-card to-accent/10 border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
+      <div className="bg-gradient-to-l from-primary/10 via-card to-accent/10 border border-border/50 rounded-[2rem] p-6 shadow-soft">
         <div className="text-xs font-bold text-primary mb-2">{t('insights.report')}</div>
         <ul className="space-y-1.5 text-sm leading-relaxed">
           {summary.map((s, i) => (
@@ -151,7 +151,7 @@ const Insights = () => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-5">
-        <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
+        <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
             <Droplet className="size-4 text-blue-500" /> {t('insights.waterChart')}
           </h3>
@@ -166,7 +166,7 @@ const Insights = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
+        <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
             <Wallet className="size-4 text-accent" /> {t('insights.expensesChart')}
           </h3>
@@ -181,7 +181,7 @@ const Insights = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
+        <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
             <Moon className="size-4 text-indigo-500" /> {t('insights.sleepChart')}
           </h3>
@@ -197,7 +197,7 @@ const Insights = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft">
+        <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft">
           <h3 className="font-bold mb-4 flex items-center gap-2">
             <Wallet className="size-4 text-accent" /> {t('insights.expenseDistribution')}
           </h3>
@@ -219,7 +219,7 @@ const Insights = () => {
           )}
         </div>
 
-        <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft lg:col-span-2">
+        <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft lg:col-span-2">
           <h3 className="font-bold mb-4 flex items-center gap-2">
             <Footprints className="size-4 text-primary" /> {t('insights.dailyActivity')}
           </h3>

@@ -185,7 +185,7 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
             <button
               onClick={handleShare}
               disabled={exporting !== null}
-              className="flex-1 h-11 rounded-full bg-secondary text-secondary-foreground font-bold text-xs hover:bg-secondary/80 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="flex-1 h-11 rounded-full bg-muted text-foreground border border-foreground/10 font-bold text-xs hover:bg-border/65 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {exporting === "share" ? (
                 <>

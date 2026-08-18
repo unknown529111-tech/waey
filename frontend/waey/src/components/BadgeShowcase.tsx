@@ -192,7 +192,7 @@ export function BadgeShowcase() {
 
           <button
             onClick={handleDownloadBadgesPDF}
-            className="h-7 px-3 rounded-full bg-secondary text-secondary-foreground text-[11px] font-bold hover:bg-secondary/80 transition-all shadow-sm flex items-center gap-1"
+            className="h-7 px-3 rounded-full bg-muted text-foreground border border-foreground/10 text-[11px] font-bold hover:bg-border/65 transition-all shadow-sm flex items-center gap-1"
           >
             <Download className="size-3" />
             {t('badge.pdf')}

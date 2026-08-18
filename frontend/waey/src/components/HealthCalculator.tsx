@@ -26,7 +26,7 @@ const HealthCalculator = () => {
           <HeartPulse className="size-4" />
           {t('healthCalc.badge')}
         </div>
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-primary-foreground">
+        <h2 className="section-title text-3xl md:text-5xl mb-6 tracking-tight text-primary-foreground">
           {t('healthCalc.title')}
         </h2>
         <p className="text-primary-foreground/70 text-lg max-w-[50ch] mx-auto leading-relaxed">

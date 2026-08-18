@@ -104,7 +104,7 @@ const Navbar = () => {
                 >
                   <button
                     onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); }}
-                    className="font-body rounded-full px-6 py-2.5 text-sm bg-foreground text-background hover:scale-[1.03] transition-transform duration-300"
+                    className="btn btn-moss font-body px-6 py-2.5 text-sm hover:scale-[1.03] transition-transform"
                   >
                     {t('nav.signup')}
                   </button>
@@ -217,7 +217,7 @@ const Navbar = () => {
                       >
                         <button
                           onClick={() => { setAuthMode("signup"); setAuthModalOpen(true); setIsOpen(false); }}
-                          className="font-body w-full px-4 py-3 text-base font-bold rounded-full bg-foreground text-background shadow-moss hover:scale-[1.02] transition-transform"
+                          className="btn btn-moss font-body w-full px-4 py-3 text-base shadow-moss hover:scale-[1.02] transition-transform"
                         >
                           {t('nav.signup')}
                         </button>

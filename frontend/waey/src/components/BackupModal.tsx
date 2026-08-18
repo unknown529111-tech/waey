@@ -172,7 +172,7 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
               </div>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="h-9 px-4 rounded-full bg-secondary text-secondary-foreground text-xs font-bold hover:bg-secondary/90 transition-all shrink-0 shadow-sm"
+                className="h-9 px-4 rounded-full bg-muted text-foreground border border-foreground/10 text-xs font-bold hover:bg-border/65 transition-all shrink-0 shadow-sm"
               >
                 {t('backup.importBtn')}
               </button>

@@ -62,7 +62,7 @@ const Dashboard = () => {
           </div>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <h1 className="text-4xl md:text-6xl font-extrabold text-primary leading-tight">
+              <h1 className="section-title text-4xl md:text-6xl leading-tight">
                 <span className={`rule-mark ${lang === 'ar' ? 'rule-mark-lower' : ''}`}>{t('dash.title')}</span>
               </h1>
               <p className="text-sm md:text-base text-muted-foreground mt-10 max-w-xl">

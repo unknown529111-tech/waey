@@ -32,7 +32,7 @@ const CalorieCalculator = () => {
           <Flame className="size-4" />
           {t('calorie.badge')}
         </div>
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
+        <h2 className="section-title text-3xl md:text-5xl mb-6 tracking-tight">
           {t('calorie.title')}
         </h2>
         <p className="text-muted-foreground text-lg max-w-[50ch] mx-auto leading-relaxed">

@@ -21,15 +21,28 @@
   font-family: "Alexandria", "Inter", sans-serif;
 }
 
-/* Editorial section headings — serif display, ink color, normal weight */
+/* Editorial section headings — serif display, normal weight, tight leading.
+   Color inherits the global heading rule (foreground ink); override with
+   Tailwind utilities (e.g. text-primary-foreground) where needed. */
 .section-title {
   font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
   font-weight: 400;
   line-height: 1.15;
-  color: hsl(var(--foreground));
 }
 [dir="rtl"] .section-title {
   font-family: "Amiri", "Instrument Serif", "Alexandria", serif;
+}
+
+/* Buttons always use the body stack, never the serif display face */
+.btn,
+button,
+[role="button"] {
+  font-family: "Inter", "Alexandria", sans-serif;
+}
+[dir="rtl"] .btn,
+[dir="rtl"] button,
+[dir="rtl"] [role="button"] {
+  font-family: "Alexandria", "Inter", sans-serif;
 }
 
 /* Global body typography: Inter for LTR, Alexandria stays canonical for Arabic */

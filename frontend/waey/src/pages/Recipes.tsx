@@ -90,7 +90,7 @@ const Recipes = () => {
         />
 
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-6xl mx-auto">
-          <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft mb-8 space-y-5">
+          <div className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft mb-8 space-y-5">
             <div>
               <div className="flex justify-between text-sm font-bold mb-2">
                 <span>{t('recipes.maxCalories')}</span>
@@ -159,7 +159,7 @@ const Recipes = () => {
                 return (
                   <div
                     key={rid}
-                    className="relative text-right bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:border-primary hover:shadow-moss-lg transition-all duration-300"
+                    className="relative text-right bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:border-primary hover:shadow-moss-lg transition-all duration-300"
                   >
                     <button
                       onClick={(e) => {

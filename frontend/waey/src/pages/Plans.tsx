@@ -77,7 +77,7 @@ const Plans = () => {
                   className={`text-right rounded-[2rem] p-6 border-2 transition-all duration-300 hover:-translate-y-0.5 ${
                     isActive
                       ? "bg-primary text-primary-foreground border-primary shadow-soft-lg"
-                      : "bg-card border-[#DED8CF]/50 dark:border-border/50 hover:border-primary/50 shadow-soft"
+                      : "bg-card border-border/50 hover:border-primary/50 shadow-soft"
                   }`}
                 >
                   <div className="text-4xl mb-2">{p.emoji}</div>
@@ -101,7 +101,7 @@ const Plans = () => {
             })}
           </div>
 
-          <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 md:p-10 shadow-soft">
+          <div className="bg-card border border-border/50 rounded-[2rem] p-6 md:p-10 shadow-soft">
             <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
               <div>
                 <h2 className="section-title text-2xl mb-1 flex items-center gap-2.5">
@@ -122,7 +122,7 @@ const Plans = () => {
                 ) : (
                   <button
                     onClick={handleReset}
-                    className="flex items-center gap-2 bg-secondary text-secondary-foreground px-4 py-2 rounded-full font-bold text-sm hover:bg-muted hover:scale-105 active:scale-95 transition-all duration-300"
+                    className="flex items-center gap-2 bg-muted text-foreground border border-foreground/10 px-4 py-2 rounded-full font-bold text-sm hover:bg-border/65 hover:scale-105 active:scale-95 transition-all duration-300"
                   >
                     <RotateCcw className="size-4" />
                     {t('plans.reset')}
@@ -152,7 +152,7 @@ const Plans = () => {
                     className={`flex items-start gap-3 text-right p-4 rounded-[2rem] border-2 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed ${
                       done
                         ? "bg-primary/10 border-primary"
-                        : "bg-background border-[#DED8CF]/50 dark:border-border/50 hover:border-primary/40"
+                        : "bg-background border-border/50 hover:border-primary/40"
                     }`}
                   >
                     <div
