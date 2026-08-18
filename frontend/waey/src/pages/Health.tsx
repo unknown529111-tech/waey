@@ -82,7 +82,7 @@ const Health = () => {
 
       <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16 space-y-14">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Wind className="size-6" />
             {t('health.breathing')}
           </h2>
@@ -90,7 +90,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <HeartPulse className="size-6" />
             {t('health.tools')}
           </h2>
@@ -102,7 +102,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Smartphone className="size-6" />
             {t('health.office')}
           </h2>
@@ -110,7 +110,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-destructive flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <HeartPulse className="size-6" />
             {t('health.firstAid')}
           </h2>
@@ -121,7 +121,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Moon className="size-6" />
             {t('health.sleep')}
           </h2>
@@ -129,7 +129,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Smartphone className="size-6" />
             {t('health.digital')}
           </h2>
@@ -137,7 +137,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Stethoscope className="size-6" />
             {t('health.checkups')}
           </h2>
@@ -148,7 +148,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-secondary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Brain className="size-6" />
             {t('health.stress')}
           </h2>
@@ -166,7 +166,7 @@ const Health = () => {
         </div>
 
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Feather className="size-6" />
             {t('health.grounding')}
           </h2>
@@ -191,7 +191,7 @@ const Health = () => {
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary/5 rounded-full -translate-x-1/2 translate-y-1/2" />
           <div className="relative">
             <Heart className="size-10 text-secondary mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-4 text-primary">
+            <h2 className="section-title text-2xl mb-4">
               {t('health.perfectTitle')}
             </h2>
             <p className="text-base leading-loose max-w-[600px] mx-auto text-foreground/90">

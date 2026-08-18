@@ -45,7 +45,7 @@ const SectionHeader = ({
         {icon}
       </div>
     </div>
-    <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+    <h2 className="section-title text-3xl md:text-4xl mb-3">
       {title}
     </h2>
     <p className="text-muted-foreground text-lg max-w-[55ch] mx-auto leading-relaxed">

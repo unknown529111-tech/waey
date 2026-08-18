@@ -71,7 +71,7 @@ const Finance = () => {
 
         <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16 space-y-12">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <Lightbulb className="size-6 text-accent" />
               {t('finance.principles')}
             </h2>
@@ -87,7 +87,7 @@ const Finance = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <PiggyBank className="size-6 text-primary" />
               {t('finance.tips')}
             </h2>
@@ -106,7 +106,7 @@ const Finance = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <ShoppingBag className="size-6 text-accent" />
               {t('finance.beforeBuy')}
             </h2>
@@ -140,7 +140,7 @@ const Finance = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <TrendingUp className="size-6 text-accent" />
               {t('finance.earnMore')}
             </h2>
@@ -157,7 +157,7 @@ const Finance = () => {
           <FinanceFeatures />
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <AlertTriangle className="size-6 text-destructive" />
               {t('finance.warnings')}
             </h2>

@@ -135,7 +135,7 @@ const FinanceFeatures = () => {
 
       {/* ─── 1. Inflation & Value Protection ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <BadgePercent className="size-6 text-accent" />
           {t('financeFeatures.inflationTitle')}
         </h2>
@@ -180,7 +180,7 @@ const FinanceFeatures = () => {
 
       {/* ─── 2. Financial Psychology ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <Brain className="size-6 text-accent" />
           {t('financeFeatures.psychologyTitle')}
         </h2>
@@ -243,7 +243,7 @@ const FinanceFeatures = () => {
 
       {/* ─── 3. Special Budgets ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <Target className="size-6 text-accent" />
           {t('financeFeatures.budgetsTitle')}
         </h2>
@@ -267,7 +267,7 @@ const FinanceFeatures = () => {
 
       {/* ─── 4. Debt Elimination ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <AlertTriangle className="size-6 text-destructive" />
           {t('financeFeatures.debtTitle')}
         </h2>
@@ -307,7 +307,7 @@ const FinanceFeatures = () => {
 
       {/* ─── 5. Income Boost ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-foreground flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <DollarSign className="size-6 text-accent" />
           {t('financeFeatures.incomeTitle')}
         </h2>

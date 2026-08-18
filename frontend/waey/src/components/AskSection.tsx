@@ -90,7 +90,7 @@ const AskSection = () => {
         >
           <div className="inline-flex items-center gap-2 mb-4">
             <MessageCircleQuestion className="size-6 text-primary" />
-            <h2 className="text-3xl md:text-5xl font-bold text-primary tracking-tight">
+            <h2 className="section-title text-3xl md:text-5xl tracking-tight">
               {t('ask.title')}
             </h2>
           </div>

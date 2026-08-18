@@ -127,7 +127,7 @@ const AwarenessQuiz = () => {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 mb-4">
             <Brain className="size-6 text-primary" />
-            <h2 className="text-3xl md:text-5xl font-bold text-primary tracking-tight">
+            <h2 className="section-title text-3xl md:text-5xl tracking-tight">
               {t('quiz.heading')}
             </h2>
           </div>

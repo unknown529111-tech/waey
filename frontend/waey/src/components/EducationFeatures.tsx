@@ -217,7 +217,7 @@ const EducationFeatures = () => {
 
       {/* ─── Interactive Tools ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <Sparkles className="size-6" />
           {t('eduFeatures.interactiveTools')}
         </h2>
@@ -230,7 +230,7 @@ const EducationFeatures = () => {
 
       {/* ─── Note-Taking & Summarization ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <BookOpen className="size-6" />
           {t('eduFeatures.noteTaking')}
         </h2>
@@ -297,7 +297,7 @@ const EducationFeatures = () => {
 
       {/* ─── Exam Anxiety ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <Lightbulb className="size-6" />
           {t('eduFeatures.examAnxiety')}
         </h2>
@@ -380,7 +380,7 @@ const EducationFeatures = () => {
 
       {/* ─── Study Environment ─── */}
       <div>
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+        <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
           <Apple className="size-6" />
           {t('eduFeatures.studyEnv')}
         </h2>

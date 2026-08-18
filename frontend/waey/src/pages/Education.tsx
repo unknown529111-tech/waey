@@ -55,7 +55,7 @@ const Education = () => {
 
         <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16 space-y-12">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <BookOpen className="size-6" />
               {t('edu.methods')}
             </h2>
@@ -74,7 +74,7 @@ const Education = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <Brain className="size-6" />
               {t('edu.focus')}
             </h2>
@@ -92,7 +92,7 @@ const Education = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <Lightbulb className="size-6" />
               {t('edu.learningStyle')}
             </h2>
@@ -103,7 +103,7 @@ const Education = () => {
           </div>
 
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-primary flex items-center gap-2">
+            <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
               <Compass className="size-6" />
               {t('edu.lost')}
             </h2>
@@ -125,7 +125,7 @@ const Education = () => {
 
           <div className="bg-gradient-to-l from-primary/15 via-leaf-light/40 to-sun-warm/30 rounded-[2rem] p-8 md:p-12 border border-primary/20 text-center shadow-soft">
             <Heart className="size-10 text-accent mx-auto mb-4" />
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
+            <h2 className="section-title text-2xl md:text-3xl mb-4">
               {t('edu.futureTitle')}
             </h2>
             <p className="text-base md:text-lg leading-loose max-w-[700px] mx-auto text-foreground/90">

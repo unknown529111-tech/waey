@@ -104,7 +104,7 @@ const Plans = () => {
           <div className="bg-card border border-[#DED8CF]/50 dark:border-border/50 rounded-[2rem] p-6 md:p-10 shadow-soft">
             <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
               <div>
-                <h2 className="text-2xl font-bold mb-1 flex items-center gap-2.5">
+                <h2 className="section-title text-2xl mb-1 flex items-center gap-2.5">
                   {plan.icon ? <plan.icon className="size-7 text-primary" /> : <span>{plan.emoji}</span>}
                   {plan.title}
                 </h2>
@@ -178,7 +178,7 @@ const Plans = () => {
             <span className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-4 py-1.5 rounded-full text-xs font-bold mb-3">
               <Sparkles className="size-4 inline-block mb-1 shrink-0" /> {t('plans.premiumSection')}
             </span>
-            <h2 className="text-2xl font-bold mb-1">{t('plans.choosePlan')}</h2>
+            <h2 className="section-title text-2xl mb-1">{t('plans.choosePlan')}</h2>
             <p className="text-sm text-muted-foreground">{t('plans.supportText')}</p>
           </div>
 

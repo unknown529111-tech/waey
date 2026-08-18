@@ -22,7 +22,7 @@ const RecycleSection = () => {
         >
           <div className="flex items-center gap-3 mb-8">
             <Recycle className="size-8 text-primary" />
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">{t('recycle.title')}</h2>
+            <h2 className="section-title text-3xl md:text-4xl">{t('recycle.title')}</h2>
           </div>
           <p className="text-muted-foreground text-lg mb-10 max-w-[55ch] leading-relaxed">
             {t('recycle.subtitle')}

@@ -21,6 +21,17 @@
   font-family: "Alexandria", "Inter", sans-serif;
 }
 
+/* Editorial section headings — serif display, ink color, normal weight */
+.section-title {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-weight: 400;
+  line-height: 1.15;
+  color: hsl(var(--foreground));
+}
+[dir="rtl"] .section-title {
+  font-family: "Amiri", "Instrument Serif", "Alexandria", serif;
+}
+
 /* Global body typography: Inter for LTR, Alexandria stays canonical for Arabic */
 body {
   font-family: "Inter", "Alexandria", sans-serif;

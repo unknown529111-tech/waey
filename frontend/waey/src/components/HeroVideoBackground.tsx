@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const VIDEO_URL =
-  (import.meta.env.VITE_HERO_VIDEO_URL as string | undefined) ??
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4";
+  (import.meta.env.VITE_HERO_VIDEO_URL as string | undefined)?.trim() || "";
 
 const FADE_DURATION = 0.5;
 const TINT = "#0a0a0a";
@@ -81,21 +80,25 @@ const HeroVideoBackground = () => {
       style={{ inset: 0, overflow: "hidden" }}
       aria-hidden="true"
     >
-      <video
-        ref={videoRef}
-        src={VIDEO_URL}
-        muted
-        playsInline
-        preload="auto"
-        disablePictureInPicture
-        className="h-full w-full object-cover"
-        style={{ opacity: 0 }}
-      />
-      <div
-        data-video-tint
-        className="absolute inset-0"
-        style={{ background: TINT, opacity: 0 }}
-      />
+      {VIDEO_URL ? (
+        <video
+          ref={videoRef}
+          src={VIDEO_URL}
+          muted
+          playsInline
+          preload="auto"
+          disablePictureInPicture
+          className="h-full w-full object-cover"
+          style={{ opacity: 0 }}
+        />
+      ) : null}
+      {VIDEO_URL ? (
+        <div
+          data-video-tint
+          className="absolute inset-0"
+          style={{ background: TINT, opacity: 0 }}
+        />
+      ) : null}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/30 to-background" />
     </div>
   );
