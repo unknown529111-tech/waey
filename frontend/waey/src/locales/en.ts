@@ -52,6 +52,7 @@ const en: Record<string, string> = {
   'hero.title1': 'Plant your habits today,',
   'hero.title2': 'and reap a balanced life tomorrow.',
   'hero.desc': "Waey guides you step by step toward financial stability, sustainable health, excellent education, and a thriving environment.",
+  'hero.cta': 'Begin Journey',
   'hero.alt': 'A green plant growing from golden soil, symbolizing growth and sustainability',
 
   // Index sections

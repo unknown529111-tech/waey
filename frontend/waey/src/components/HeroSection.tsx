@@ -1,32 +1,47 @@
-import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import BlobBackground from "./BlobBackground";
 import BlurVignette from "./BlurVignette";
+import HeroVideoBackground from "./HeroVideoBackground";
 import { useLanguage } from "@/contexts/useLanguage";
+import { trackEvent } from "@/lib/analytics";
 
 const HeroSection = () => {
   const { t } = useLanguage();
   return (
-    <header className="relative pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center flex flex-col items-center gap-8 overflow-hidden bg-gradient-to-br from-leaf-light/40 via-background to-sun-warm/30">
+    <header className="relative overflow-hidden">
       <BlobBackground count={2} className="z-0" />
       <BlurVignette className="z-[1]" />
-      <motion.h1
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.08 }}
-        className="relative z-10 text-4xl md:text-6xl font-bold text-balance leading-[1.15] tracking-tight"
+      <HeroVideoBackground />
+
+      <section
+        className="relative z-10 flex flex-col items-center justify-center text-center px-6 pb-40"
+        style={{ paddingTop: "calc(8rem - 75px)" }}
       >
-        {t('hero.title1')}
-        <br />
-        <span className="text-primary mt-6 block">{t('hero.title2')}</span>
-      </motion.h1>
-      <motion.p
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.16 }}
-        className="relative z-10 text-base md:text-lg max-w-[55ch] text-muted-foreground text-pretty leading-[1.9]"
-      >
-        {t('hero.desc')}
-      </motion.p>
+        <div className="animate-fade-rise mb-0">
+          <h1
+            className="font-display font-normal text-foreground text-5xl sm:text-7xl md:text-8xl max-w-7xl text-balance"
+            style={{ lineHeight: 0.95, letterSpacing: "-2.46px" }}
+          >
+            {t('hero.title1')}
+            <br />
+            <span className="text-muted-foreground">{t('hero.title2')}</span>
+          </h1>
+        </div>
+
+        <p className="animate-fade-rise-delay font-body text-base sm:text-lg text-muted-foreground max-w-2xl mt-8 leading-relaxed">
+          {t('hero.desc')}
+        </p>
+
+        <Link
+          to="/quiz"
+          onClick={() => trackEvent("hero_cta_click", { target: "/quiz" })}
+          className="animate-fade-rise-delay-2 group inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground font-body font-bold px-8 py-4 mt-10 shadow-soft hover:shadow-moss-lg hover:-translate-y-0.5 transition-all duration-300"
+        >
+          {t('hero.cta')}
+          <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" />
+        </Link>
+      </section>
     </header>
   );
 };

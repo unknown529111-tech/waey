@@ -43,7 +43,6 @@ const Education = () => {
 
   return (
     <div className="relative min-h-[60vh]">
-      <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/30 pointer-events-none" />
       <div className="relative">
         <PageHero
           badge={t('edu.badge')}

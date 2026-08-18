@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import QuickTips from "@/components/QuickTips";
 import HealthCalculator from "@/components/HealthCalculator";
-import DidYouKnow from "@/components/DidYouKnow";
 import CalorieCalculator from "@/components/CalorieCalculator";
 import HospitalFinder from "@/components/HospitalFinder";
 import BreathingExercise from "@/components/BreathingExercise";
@@ -46,7 +45,6 @@ const Health = () => {
 
   return (
     <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
       <div className="relative">
       <PageHero
         badge={t('health.badge')}
@@ -56,7 +54,6 @@ const Health = () => {
       />
       <QuickTips />
       <HealthCalculator />
-      <DidYouKnow />
 
       <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-8">
         <motion.div

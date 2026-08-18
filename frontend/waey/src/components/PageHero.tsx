@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
 interface PageHeroProps {
@@ -10,25 +9,26 @@ interface PageHeroProps {
   subtitleClass?: string;
 }
 
-const PageHero = ({ title, subtitle, titleClass, subtitleClass }: PageHeroProps) => (
-  <div className="text-center py-12 px-4 sm:px-6 lg:px-8 max-w-[60ch] mx-auto">
-    <motion.h1
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.1 }}
-      className="text-4xl md:text-6xl font-bold text-primary tracking-tight mb-4"
+const PageHero = ({ title, subtitle, icon, badge, titleClass, subtitleClass }: PageHeroProps) => (
+  <div className="text-center pt-14 pb-10 px-6 max-w-4xl mx-auto">
+    {badge && (
+      <div className="animate-fade-rise inline-flex items-center gap-2 text-xs font-body font-medium text-muted-foreground bg-card/60 border border-border/50 rounded-full px-4 py-1.5 mb-6">
+        {icon}
+        {badge}
+      </div>
+    )}
+    <h1
+      className={`animate-fade-rise-delay font-display font-normal text-foreground text-4xl sm:text-6xl md:text-7xl text-balance tracking-tight ${titleClass || ''}`}
+      style={{ lineHeight: 1.05 }}
     >
       <span className={`rule-mark ${titleClass || ''}`}>{title}</span>
-    </motion.h1>
+    </h1>
     {subtitle && (
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className={`text-base md:text-lg text-muted-foreground max-w-[55ch] mx-auto leading-[1.9] ${subtitleClass || ''}`}
+      <p
+        className={`animate-fade-rise-delay-2 font-body text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mt-6 leading-relaxed ${subtitleClass || ''}`}
       >
         {subtitle}
-      </motion.p>
+      </p>
     )}
   </div>
 );

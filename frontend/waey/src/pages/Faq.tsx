@@ -18,7 +18,6 @@ const Faq = () => {
 
   return (
     <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
       <div className="relative">
         <PageHero
           badge="FAQ"

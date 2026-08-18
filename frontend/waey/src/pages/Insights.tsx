@@ -115,7 +115,6 @@ const Insights = () => {
 
   return (
     <div className="relative min-h-[60vh]">
-      <div className="absolute inset-0 bg-gradient-to-b from-leaf-light/40 via-background to-sun-warm/20 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
