@@ -1,10 +1,10 @@
-import { GraduationCap, BookOpen, Brain, Timer, Target, Sparkles, Compass, Heart, Lightbulb } from "lucide-react";
+import { BookOpen, Brain, Timer, Target, Sparkles, Compass, Heart, Lightbulb } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import VarkTest from "@/components/VarkTest";
 import EducationFeatures from "@/components/EducationFeatures";
 import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 
 const Education = () => {
   const t = useT();
@@ -45,8 +45,6 @@ const Education = () => {
     <div className="relative min-h-[60vh]">
       <div className="relative">
         <PageHero
-          badge={t('edu.badge')}
-          icon={<GraduationCap className="size-4" />}
           title={t('edu.title')}
           subtitle={t('edu.subtitle')}
           subtitleClass="mt-6"
@@ -60,10 +58,11 @@ const Education = () => {
               {t('edu.methods')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {studyMethods.map((m) => (
+              {studyMethods.map((m, i) => (
                 <div
                   key={m.id}
-                  className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300"
+                  className="stagger-item bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300"
+                  style={{ "--i": i } as CSSProperties}
                 >
                   <m.icon className="size-8 text-primary mb-3" />
                   <h3 className="font-bold text-lg mb-2">{m.title}</h3>
@@ -79,10 +78,11 @@ const Education = () => {
               {t('edu.focus')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {focusTips.map((tip) => (
+              {focusTips.map((tip, i) => (
                 <div
                   key={tip.id}
-                  className="bg-card border border-border/50 rounded-[2rem] p-6 bg-gradient-to-l from-sun-warm/30 to-transparent shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300"
+                  className="stagger-item bg-card border border-border/50 rounded-[2rem] p-6 bg-gradient-to-l from-sun-warm/30 to-transparent shadow-soft hover:-translate-y-0.5 hover:shadow-moss-lg transition-all duration-300"
+                  style={{ "--i": i } as CSSProperties}
                 >
                   <h3 className="font-bold mb-1.5">{tip.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>
@@ -123,7 +123,7 @@ const Education = () => {
 
           <EducationFeatures />
 
-          <div className="bg-gradient-to-l from-primary/15 via-leaf-light/40 to-sun-warm/30 rounded-[2rem] p-8 md:p-12 border border-primary/20 text-center shadow-soft">
+          <div className="bg-card rounded-[2rem] p-8 md:p-12 border border-border/50 text-center shadow-soft">
             <Heart className="size-10 text-accent mx-auto mb-4" />
             <h2 className="section-title text-2xl md:text-3xl mb-4">
               {t('edu.futureTitle')}

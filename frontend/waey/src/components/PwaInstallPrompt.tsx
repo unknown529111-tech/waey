@@ -48,7 +48,7 @@ export function PwaInstallPrompt() {
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          className="fixed bottom-24 left-4 z-[60] max-w-xs w-full bg-card border border-border rounded-3xl p-4 shadow-float-lg"
+          className="fixed bottom-64 left-6 z-[60] max-w-xs w-full bg-card border border-border rounded-3xl p-4 shadow-float-lg"
           dir="rtl"
         >
           <button

@@ -1,4 +1,3 @@
-import { TreePine } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import EnvironmentalContent from "@/components/EnvironmentalContent";
 import RecycleSection from "@/components/RecycleSection";
@@ -17,8 +16,6 @@ const Environment = () => {
     <div className="relative min-h-[60vh] pb-16">
       <div className="relative">
         <PageHero
-          badge={t('env.badge')}
-          icon={<TreePine className="size-4" />}
           title={t('env.title')}
           subtitle={t('env.subtitle')}
           titleClass={lang === 'ar' ? 'rule-mark-env' : ''}

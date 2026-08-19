@@ -1,11 +1,11 @@
-import { Wallet, PiggyBank, TrendingUp, Shield, Target, AlertTriangle, Lightbulb, Coins, ShoppingBag, HelpCircle, CheckCircle, XCircle } from "lucide-react";
+import { PiggyBank, TrendingUp, Shield, Target, AlertTriangle, Lightbulb, Coins, ShoppingBag, HelpCircle, CheckCircle, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import Calculators from "@/components/Calculators";
 import FinanceFeatures from "@/components/FinanceFeatures";
 import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 
 const Finance = () => {
   const t = useT();
@@ -61,13 +61,10 @@ const Finance = () => {
     <div className="relative">
       <div className="relative">
         <PageHero
-          badge={t('finance.badge')}
-          icon={<Wallet className="size-4" />}
           title={lang === 'ar' ? <span>{t('finance.title').replace('أموالك بذكاء', '')}<span className="block">أموالك بذكاء</span></span> : t('finance.title')}
           subtitle={t('finance.subtitle')}
           subtitleClass={lang === 'ar' ? 'mt-6' : ''}
         />
-        <Calculators />
 
         <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16 space-y-12">
           <div>
@@ -77,7 +74,7 @@ const Finance = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {principles.map((p, i) => (
-                <div key={i} className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
+                <div key={i} className="stagger-item bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300" style={{ "--i": i } as CSSProperties}>
                   <p.icon className="size-8 text-accent mb-3" />
                   <h3 className="font-bold text-lg mb-2">{p.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
@@ -146,7 +143,7 @@ const Finance = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {earnTips.map((e, i) => (
-                <div key={i} className="bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
+                <div key={i} className="stagger-item bg-card border border-border/50 rounded-[2rem] p-6 shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300" style={{ "--i": i } as CSSProperties}>
                   <h3 className="font-bold mb-1.5">{e.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{e.desc}</p>
                 </div>
@@ -185,6 +182,8 @@ const Finance = () => {
             </p>
           </div>
         </section>
+
+        <Calculators />
       </div>
     </div>
   );

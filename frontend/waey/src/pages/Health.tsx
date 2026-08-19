@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import QuickTips from "@/components/QuickTips";
+import OfficeHealth from "@/components/OfficeHealth";
+import FirstAidGuide from "@/components/FirstAidGuide";
+import SleepHygiene from "@/components/SleepHygiene";
+import DigitalWellness from "@/components/DigitalWellness";
+import CheckupsTable from "@/components/CheckupsTable";
 import HealthCalculator from "@/components/HealthCalculator";
 import CalorieCalculator from "@/components/CalorieCalculator";
 import HospitalFinder from "@/components/HospitalFinder";
@@ -10,15 +15,10 @@ import BreathingExercise from "@/components/BreathingExercise";
 import SleepCycleCalculator from "@/components/SleepCycleCalculator";
 import WaterCalculator from "@/components/WaterCalculator";
 import EgyptianPlate from "@/components/EgyptianPlate";
-import OfficeHealth from "@/components/OfficeHealth";
-import FirstAidGuide from "@/components/FirstAidGuide";
-import SleepHygiene from "@/components/SleepHygiene";
-import DigitalWellness from "@/components/DigitalWellness";
-import CheckupsTable from "@/components/CheckupsTable";
 
 import { useT } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 
 const Health = () => {
   const t = useT();
@@ -47,13 +47,10 @@ const Health = () => {
     <div className="relative">
       <div className="relative">
       <PageHero
-        badge={t('health.badge')}
-        icon={<Heart className="size-4" />}
         title={t('health.title')}
         subtitle={t('health.subtitle')}
       />
       <QuickTips />
-      <HealthCalculator />
 
       <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-8">
         <motion.div
@@ -81,26 +78,6 @@ const Health = () => {
       </section>
 
       <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16 space-y-14">
-        <div>
-          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
-            <Wind className="size-6" />
-            {t('health.breathing')}
-          </h2>
-          <BreathingExercise />
-        </div>
-
-        <div>
-          <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
-            <HeartPulse className="size-6" />
-            {t('health.tools')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <SleepCycleCalculator />
-            <WaterCalculator />
-            <EgyptianPlate />
-          </div>
-        </div>
-
         <div>
           <h2 className="section-title text-2xl md:text-3xl mb-6 flex items-center gap-2">
             <Smartphone className="size-6" />
@@ -175,7 +152,7 @@ const Health = () => {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             {groundingSteps.map((g, i) => (
-              <div key={i} className="bg-card border border-border/50 rounded-3xl p-6 text-center shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300">
+              <div key={i} className="stagger-item bg-card border border-border/50 rounded-3xl p-6 text-center shadow-soft hover:-translate-y-1 hover:shadow-moss-lg transition-all duration-300" style={{ "--i": i } as CSSProperties}>
                 <div className="size-10 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 text-primary font-bold text-xl flex items-center justify-center mx-auto mb-3">
                   {g.num}
                 </div>
@@ -186,7 +163,7 @@ const Health = () => {
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-card to-secondary/10 p-8 md:p-12 text-center shadow-soft">
+        <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card p-8 md:p-12 text-center shadow-soft">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary/5 rounded-full -translate-x-1/2 translate-y-1/2" />
           <div className="relative">
@@ -205,8 +182,21 @@ const Health = () => {
         </div>
       </section>
 
-      <CalorieCalculator />
-      <HospitalFinder />
+      <div>
+        <h2 className="section-title text-2xl md:text-3xl mb-2 px-6 flex items-center gap-2">
+          <HeartPulse className="size-6" />
+          {t('health.tools')}
+        </h2>
+        <HealthCalculator />
+        <CalorieCalculator />
+        <div className="px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-5 pb-20">
+          <WaterCalculator />
+          <SleepCycleCalculator />
+          <EgyptianPlate />
+          <BreathingExercise />
+        </div>
+        <HospitalFinder />
+      </div>
       </div>
     </div>
   );

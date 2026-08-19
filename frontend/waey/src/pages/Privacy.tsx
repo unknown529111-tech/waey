@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Shield } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { useLanguage } from "@/contexts/useLanguage";
 
@@ -9,8 +8,6 @@ const Privacy = () => {
     <div className="relative">
       <div className="relative">
         <PageHero
-          badge={t('privacy.badge')}
-          icon={<Shield className="size-4" />}
           title={t('privacy.title')}
           subtitle={t('privacy.subtitle')}
         />

@@ -113,7 +113,7 @@ const NaturalCleaners = () => {
   ];
 
   return (
-    <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-transparent to-muted/30">
+    <section className="py-20 px-6 md:px-12">
       <div className="max-w-[1000px] mx-auto">
         <SectionHeader
           icon={<Sprout className="size-6 text-primary" />}
@@ -325,7 +325,7 @@ const ZeroWaste = () => {
   ];
 
   return (
-    <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-muted/20 to-transparent">
+    <section className="py-20 px-6 md:px-12">
       <div className="max-w-[1000px] mx-auto">
         <SectionHeader
           icon={<Trash2 className="size-6 text-primary" />}

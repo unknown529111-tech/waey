@@ -9,8 +9,6 @@ const en: Record<string, string> = {
   'nav.insights': 'Insights',
   'nav.recipes': 'Recipes',
   'nav.education': 'Education',
-  'nav.quiz': 'Quiz',
-  'nav.plans': 'Plans',
   'nav.admin': 'Admin',
   'nav.dashboard': 'Daily',
   'nav.faq': 'FAQ',
@@ -44,15 +42,12 @@ const en: Record<string, string> = {
   'auth.errorUnexpected': 'An unexpected error occurred',
 
   // Footer
-  'footer.desc': 'Waey — your journey toward holistic balance in health, finance, environment, and education.',
   'footer.copyright': 'All rights reserved © Waey',
 
   // Hero
-  'hero.badge': 'Holistic Awareness Platform',
   'hero.title1': 'Plant your habits today,',
   'hero.title2': 'and reap a balanced life tomorrow.',
   'hero.desc': "Waey guides you step by step toward financial stability, sustainable health, excellent education, and a thriving environment.",
-  'hero.cta': 'Begin Journey',
   'hero.alt': 'A green plant growing from golden soil, symbolizing growth and sustainability',
 
   // Index sections
@@ -80,7 +75,6 @@ const en: Record<string, string> = {
   'prize.desc': 'Every 5 min of active presence = 1 continuity point (once daily). Log in and start collecting points!',
 
   // Health page
-  'health.badge': 'Holistic Health',
   'health.title': 'Build your health with daily steps',
   'health.subtitle': 'Simple habits for a strong body and clear mind. Fresh tips every week.',
   'health.recipesHeading': 'Healthy Recipes',
@@ -165,8 +159,7 @@ const en: Record<string, string> = {
   'health.groundingDesc': 'If you feel anxious or panicked, use your five senses to return to the present moment:',
 
   // Finance page
-  'finance.badge': 'Financial Growth',
-  'finance.title': 'Tools to manage your money smartly',
+  'finance.title': 'Manage your money smartly',
   'finance.subtitle': 'Electricity, water & expense calculators in EGP, plus practical tips you can apply today.',
   'finance.principles': 'Financial Principles',
   'finance.tips': 'Daily Savings Tips',
@@ -309,7 +302,6 @@ const en: Record<string, string> = {
   'financeFeatures.incomeAdditions.2.items.2': 'If negotiating salary — make your first offer 10-15% higher than what you actually want',
 
   // Environment page
-  'env.badge': 'Environmental Harmony',
   'env.title': 'Your decisions protect our planet',
   'env.subtitle': 'Natural alternatives, consumption optimization, statistics, and community — everything you need for a sustainable life.',
 
@@ -398,7 +390,6 @@ const en: Record<string, string> = {
   'recycle.idea.3.desc': 'Reuse paper bags and newspapers to wrap gifts in a stylish way.',
 
   // Education page
-  'edu.badge': 'Education & Focus',
   'edu.title': 'Study smart, focus, and keep going',
   'edu.subtitle': 'Practical study methods, focus tips for when you\'re lost, and words to lift your heart.',
   'edu.methods': 'Effective Study Methods',
@@ -586,7 +577,6 @@ const en: Record<string, string> = {
   'insights.dailyActivity': 'Physical Activity & Eco Actions',
 
   // Recipes page
-  'recipes.badge': 'Healthy Kitchen',
   'recipes.title': 'Healthy & Affordable Egyptian Recipes',
   'recipes.subtitle': 'Filter by calories and cost, cook homemade meals with taste and health.',
   'recipes.favorites': 'Favorites',
@@ -596,6 +586,11 @@ const en: Record<string, string> = {
   'recipes.tag.economic': 'Budget-Friendly',
   'recipes.tag.healthy': 'Healthy',
   'recipes.tag.highProtein': 'High Protein',
+  'recipes.tag.breakfast': 'Breakfast',
+  'recipes.tag.lunch': 'Lunch',
+  'recipes.tag.dinner': 'Dinner',
+  'recipes.tag.dessert': 'Dessert',
+  'recipes.tag.drink': 'Drink',
   'recipes.maxCalories': 'Max Calories',
   'recipes.calorieUnit': 'cal',
   'recipes.maxCost': 'Max Cost',
@@ -605,21 +600,6 @@ const en: Record<string, string> = {
   'recipes.servingsUnit': 'servings',
   'recipes.ingredients': 'Ingredients',
   'recipes.instructions': 'Instructions',
-
-  // Quiz page
-  'quiz.badge': 'Test Your Awareness',
-  'quiz.title': '10 New Questions Every Day',
-  'quiz.subtitle': 'Test your knowledge in health, finance, and environment.',
-
-  // Plans page
-  'plans.badge': '30-Day Plans',
-  'plans.title': 'Change your habits in 30 days',
-  'plans.subtitle': 'Choose a plan and track your progress day by day. Each step brings you closer to a better you.',
-  'plans.start': 'Start Plan',
-  'plans.reset': 'Reset',
-  'plans.started': 'Started {title}',
-  'plans.completed': '🏆 Congratulations! You completed all plan days!',
-  'plans.resetMessage': 'Plan has been reset',
 
   // Breathing Exercise
   'breathing.title': 'Breathing Exercises',
@@ -1019,7 +999,6 @@ const en: Record<string, string> = {
   'search.noResults': 'No results found',
 
   // Assistant
-  'assistant.badge': 'Smart Assistant',
   'assistant.title': 'Ask Waey Assistant',
   'assistant.subtitle': 'Fast and reliable answers about health, finance, and environment.',
   'assistant.open': 'Open Smart Assistant',
@@ -1204,20 +1183,6 @@ const en: Record<string, string> = {
   'vark.advice.kinesthetic.i2': 'Discuss the topic with peers to engage the auditory aspect',
   'vark.advice.kinesthetic.i3': 'Write down the steps to solidify them in your mind',
 
-  // Quiz — AwarenessQuiz
-  'quiz.heading': 'Test Your Awareness',
-  'quiz.description': '10 interactive questions that refresh daily to measure your health, financial, and environmental awareness.',
-  'quiz.category.health': 'Health',
-  'quiz.category.finance': 'Finance',
-  'quiz.category.environment': 'Environment',
-  'quiz.resultExcellent': '🌟 Excellent! Your awareness is very high!',
-  'quiz.resultGood': '👍 Good! But you can improve more.',
-  'quiz.resultLow': '📚 You need to learn more. Follow Waey!',
-  'quiz.resultScore': 'You answered {score} out of {total} questions correctly',
-  'quiz.retry': 'Retry Quiz',
-  'quiz.nextQuestion': 'Next Question',
-  'quiz.showResult': 'Show Result',
-
   // Daily Check-In
   'checkin.title': 'Daily Check-In',
   'checkin.cta': "I'm aware today! 🔥",
@@ -1299,9 +1264,9 @@ const en: Record<string, string> = {
   'onboard.overlay.step2.title': 'Track Daily Habits',
   'onboard.overlay.step2.desc': 'Record water, sleep, activity, and mood every day. See your streak and achievements.',
   'onboard.overlay.step3.title': 'Plan Your Budget',
-  'onboard.overlay.step3.desc': 'Smart calculators for budget and bills, and 30-day plans for saving, health, and environment.',
-  'onboard.overlay.step4.title': 'Test Yourself & Learn',
-  'onboard.overlay.step4.desc': 'Interactive quizzes, daily tips, and a smart assistant that answers your questions.',
+  'onboard.overlay.step3.desc': 'Smart calculators for budget and bills, plus tips for saving, health, and environment.',
+  'onboard.overlay.step4.title': 'Plan & Learn',
+  'onboard.overlay.step4.desc': 'Daily tips, interactive tools, and a smart assistant that answers your questions.',
   'onboard.overlay.step5.title': 'Mental Health Matters',
   'onboard.overlay.step5.desc': 'Breathing exercises, stress techniques, and grounding — all tools to help you calm your nerves.',
 
@@ -1496,7 +1461,6 @@ const en: Record<string, string> = {
   'admin.system.totalRecipes': 'Total built-in recipes: {count}',
   'admin.system.totalChallenges': 'Total built-in challenges: {count}',
   'admin.system.totalQuotes': 'Total built-in quotes: {count}',
-  'admin.system.totalPlans': 'Plans: {count}',
   'admin.system.envNote': 'Can be changed via environment variable',
 
   // Footer
@@ -1714,7 +1678,6 @@ const en: Record<string, string> = {
   'share.joinMe': 'Join me on the awareness & balance journey!',
 
   // Privacy
-  'privacy.badge': 'Privacy',
   'privacy.title': 'Privacy Policy',
   'privacy.subtitle': 'How we protect your data and privacy on Waey',
   'privacy.s1.title': '1. Introduction',
@@ -1741,7 +1704,6 @@ const en: Record<string, string> = {
   'privacy.s9.body': 'For inquiries about the privacy policy, email us at:',
 
   // Terms
-  'terms.badge': 'Terms',
   'terms.title': 'Terms of Use',
   'terms.subtitle': 'Rules and guidelines for using the Waey awareness platform',
   'terms.s1.title': '1. Acceptance of Terms',

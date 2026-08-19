@@ -20,16 +20,16 @@ const HealthCalculator = () => {
   const points = Math.max(0, 100 - Math.floor((totalSugar / recommended) * 20));
 
   return (
-    <section id="health-calculator" className="py-24 px-6 md:px-12 bg-gradient-to-b from-primary/95 to-primary">
+    <section id="health-calculator" className="py-24 px-6 md:px-12 bg-background">
       <div className="max-w-[1000px] mx-auto text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-primary-foreground/10 text-primary-foreground px-4 py-2 rounded-full text-sm font-bold mb-4">
+        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold mb-4">
           <HeartPulse className="size-4" />
           {t('healthCalc.badge')}
         </div>
-        <h2 className="section-title text-3xl md:text-5xl mb-6 tracking-tight text-primary-foreground">
+        <h2 className="section-title text-3xl md:text-5xl mb-6 tracking-tight text-foreground">
           {t('healthCalc.title')}
         </h2>
-        <p className="text-primary-foreground/70 text-lg max-w-[50ch] mx-auto leading-relaxed">
+        <p className="text-muted-foreground text-lg max-w-[50ch] mx-auto leading-relaxed">
           {t('healthCalc.desc')}
         </p>
       </div>

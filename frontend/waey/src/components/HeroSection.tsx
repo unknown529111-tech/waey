@@ -1,10 +1,7 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import BlobBackground from "./BlobBackground";
 import BlurVignette from "./BlurVignette";
 import HeroVideoBackground from "./HeroVideoBackground";
 import { useLanguage } from "@/contexts/useLanguage";
-import { trackEvent } from "@/lib/analytics";
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -32,15 +29,6 @@ const HeroSection = () => {
         <p className="animate-fade-rise-delay font-body text-base sm:text-lg text-muted-foreground max-w-2xl mt-8 leading-relaxed">
           {t('hero.desc')}
         </p>
-
-        <Link
-          to="/quiz"
-          onClick={() => trackEvent("hero_cta_click", { target: "/quiz" })}
-          className="animate-fade-rise-delay-2 group inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground font-body font-bold px-8 py-4 mt-10 shadow-soft hover:shadow-moss-lg hover:-translate-y-0.5 transition-all duration-300"
-        >
-          {t('hero.cta')}
-          <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-1" />
-        </Link>
       </section>
     </header>
   );

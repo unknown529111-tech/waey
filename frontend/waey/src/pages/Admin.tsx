@@ -4,7 +4,6 @@ import { RECIPES, type Recipe } from "@/data/recipes";
 import { CHALLENGES, QUOTES } from "@/lib/dailyStorage";
 import { fetchSupabaseUsers, fetchSupabasePrize } from "@/lib/streak";
 import { getOnlineCount, getSignedInCount, getMinSessionDuration, getOnlineList } from "@/lib/presence";
-import { PLANS } from "@/lib/plansData";
 import {
   isAdminLoggedIn,
   adminLogin,
@@ -1052,7 +1051,6 @@ function SystemTab() {
           <p>{t('admin.system.totalRecipes', { count: RECIPES.length })}</p>
           <p>{t('admin.system.totalChallenges', { count: CHALLENGES.length })}</p>
           <p>{t('admin.system.totalQuotes', { count: QUOTES.length })}</p>
-          <p>{t('admin.system.totalPlans', { count: PLANS.length })}</p>
           <p>{t('admin.system.envNote')} <code className="text-xs bg-muted px-1 py-0.5 rounded">VITE_ADMIN_PASSWORD</code></p>
         </div>
       </motion.div>

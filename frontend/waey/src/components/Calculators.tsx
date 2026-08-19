@@ -38,16 +38,7 @@ const Calculators = () => {
   const [activeTab, setActiveTab] = useState<CalcTab>("electricity");
 
   return (
-    <section id="calculators" className="py-24 px-6 md:px-12 bg-gradient-to-b from-primary/90 to-primary">
-      <div className="max-w-[1000px] mx-auto text-center mb-16">
-        <h2 className="section-title text-3xl md:text-5xl mb-6 tracking-tight text-primary-foreground">
-          {t('calc.title')}
-        </h2>
-        <p className="text-primary-foreground/70 text-lg max-w-[50ch] mx-auto leading-relaxed">
-          {t('calc.subtitle')}
-        </p>
-      </div>
-
+    <section id="calculators" className="py-24 px-6 md:px-12 bg-background">
       <div className="max-w-[900px] mx-auto bg-card rounded-4xl p-8 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
         <div className="flex gap-2 mb-10 flex-wrap justify-center">
           {[

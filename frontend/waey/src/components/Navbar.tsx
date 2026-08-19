@@ -3,8 +3,10 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, LogOut, type LucideIcon } from "lucide-react";
 import logo from "@/assets/logo-waey.png";
+import logoDark from "@/assets/logo-waey-dark.png";
 import { useLanguage } from "@/contexts/useLanguage";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/hooks/useTheme";
 import SearchModal from "@/components/SearchModal";
 import AuthModal from "@/components/AuthModal";
 import { ThemeToggle } from "./ThemeToggle";
@@ -12,6 +14,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
   const { user, isAuthenticated, isLoaded, signOut } = useAuth();
+  const { theme } = useTheme();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -42,11 +45,11 @@ const Navbar = () => {
           ? "bg-background/75 dark:bg-background/60 backdrop-blur-2xl border-b border-border/50"
           : "bg-transparent"}`}>
         <nav
-          className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center relative z-[2] pointer-events-auto"
+          className="max-w-7xl mx-auto px-8 py-2 flex justify-between items-center relative z-[2] pointer-events-auto"
           dir="rtl"
         >
           <Link to="/" className="flex items-center shrink-0" aria-label={t('nav.homeLink')}>
-            <img src={logo} alt={t('nav.homeLink')} className="h-12 w-auto" />
+            <img src={theme === "light" ? logo : logoDark} alt={t('nav.homeLink')} className="h-20 w-auto" />
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-2">

@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Scale } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { useLanguage } from "@/contexts/useLanguage";
 
@@ -9,8 +8,6 @@ const Terms = () => {
     <div className="relative">
       <div className="relative">
         <PageHero
-          badge={t('terms.badge')}
-          icon={<Scale className="size-4" />}
           title={t('terms.title')}
           subtitle={t('terms.subtitle')}
         />

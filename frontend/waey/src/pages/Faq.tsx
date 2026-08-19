@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { HelpCircle } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { useT } from "@/contexts/useLanguage";
 
@@ -20,8 +19,6 @@ const Faq = () => {
     <div className="relative">
       <div className="relative">
         <PageHero
-          badge="FAQ"
-          icon={<HelpCircle className="size-4" />}
           title={t('faq.title')}
           subtitle={t('faq.subtitle')}
         />

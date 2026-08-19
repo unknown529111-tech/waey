@@ -9,8 +9,6 @@ const ar: Record<string, string> = {
   'nav.insights': 'الرؤى',
   'nav.recipes': 'الوصفات',
   'nav.education': 'التعليم',
-  'nav.quiz': 'الاختبار',
-  'nav.plans': 'الخطط',
   'nav.admin': 'الإدارة',
   'nav.dashboard': 'يومي',
   'nav.faq': 'الأسئلة الشائعة',
@@ -44,15 +42,12 @@ const ar: Record<string, string> = {
   'auth.errorUnexpected': 'حدث خطأ غير متوقع',
 
   // Footer
-  'footer.desc': 'منصة وعي — رحلتك نحو التوازن الشامل في الصحة، المال، البيئة، والتعليم.',
   'footer.copyright': 'جميع الحقوق محفوظة © وعي',
 
   // Hero
-  'hero.badge': 'منصة التوازن الشامل',
   'hero.title1': 'ازرع عاداتك اليوم،',
   'hero.title2': 'واحصد حياة متوازنة غداً.',
   'hero.desc': 'منصة وعي ترشدك خطوة بخطوة نحو استقرار مالي، صحة مستدامة، وتعليم متميز، وبيئة مزدهرة.',
-  'hero.cta': 'ابدأ رحلتك',
   'hero.alt': 'نبتة خضراء تنمو من تربة ذهبية ترمز للنمو والاستدامة',
 
   // Index sections
@@ -80,7 +75,6 @@ const ar: Record<string, string> = {
   'prize.desc': 'كل 5 دقائق تواجد نشط = نقطة استمرار (مرة واحدة يومياً). سجل دخولك وابدأ جمع النقاط!',
 
   // Health page
-  'health.badge': 'الصحة الشاملة',
   'health.title': 'ابنِ صحتك بخطوات يومية',
   'health.subtitle': 'عادات بسيطة لجسد قوي وعقل صافي. نصائح متجددة كل أسبوع.',
   'health.recipesHeading': 'وصفات صحية',
@@ -165,8 +159,7 @@ const ar: Record<string, string> = {
   'health.groundingDesc': 'لو حاسس بقلق أو هلع، استخدم الحواس الخمسة عشان ترجع للحظة اللي أنت فيها:',
 
   // Finance page
-  'finance.badge': 'النمو المالي',
-  'finance.title': 'أدوات لإدارة أموالك بذكاء',
+  'finance.title': 'إدارة أموالك بذكاء',
   'finance.subtitle': 'حاسبات الكهرباء والمياه والمصروفات بالجنيه المصري، ونصايح عملية تطبّقها من النهارده.',
   'finance.principles': 'مبادئ مالية',
   'finance.tips': 'نصائح ادخار يومية',
@@ -309,7 +302,6 @@ const ar: Record<string, string> = {
   'financeFeatures.incomeAdditions.2.items.2': 'لو هتفاوض على راتب — خلي أول رقم تقوله أعلى من اللي عايزه بـ ١٠-١٥٪',
 
   // Environment page
-  'env.badge': 'التناغم البيئي',
   'env.title': 'قراراتك تحمي كوكبنا',
   'env.subtitle': 'بدائل طبيعية، ترشيد استهلاك، إحصائيات، ومجتمع — كل ما تحتاجه لحياة أكثر استدامة.',
 
@@ -398,7 +390,6 @@ const ar: Record<string, string> = {
   'recycle.idea.3.desc': 'أعد استخدام أكياس الورق وصحف الجرائد لتغليف الهدايا بأسلوب عصري.',
 
   // Education page
-  'edu.badge': 'تعليم وتركيز',
   'edu.title': 'ذاكر صح، وركّز، وكمّل',
   'edu.subtitle': 'طرق مذاكرة عملية، نصايح للتركيز لو تايه، وكلمتين تحفّز قلبك.',
   'edu.methods': 'طرق مذاكرة فعّالة',
@@ -586,7 +577,6 @@ const ar: Record<string, string> = {
   'insights.dailyActivity': 'النشاط البدني والأفعال البيئية',
 
   // Recipes page
-  'recipes.badge': 'مطبخ صحي',
   'recipes.title': 'وصفات مصرية صحية واقتصادية',
   'recipes.subtitle': 'فلتر بالسعرات والتكلفة، واطبخ أكل بيتي بطعم وبصحة.',
   'recipes.favorites': 'المفضلة',
@@ -596,6 +586,11 @@ const ar: Record<string, string> = {
   'recipes.tag.economic': 'اقتصادي',
   'recipes.tag.healthy': 'صحي',
   'recipes.tag.highProtein': 'بروتين عالي',
+  'recipes.tag.breakfast': 'فطار',
+  'recipes.tag.lunch': 'غدا',
+  'recipes.tag.dinner': 'عشا',
+  'recipes.tag.dessert': 'حلو',
+  'recipes.tag.drink': 'مشروب',
   'recipes.maxCalories': 'الحد الأقصى للسعرات',
   'recipes.calorieUnit': 'سعرة',
   'recipes.maxCost': 'الحد الأقصى للتكلفة',
@@ -605,21 +600,6 @@ const ar: Record<string, string> = {
   'recipes.servingsUnit': 'أفراد',
   'recipes.ingredients': 'المكونات',
   'recipes.instructions': 'طريقة التحضير',
-
-  // Quiz page
-  'quiz.badge': 'اختبر وعيك',
-  'quiz.title': '10 أسئلة جديدة كل يوم',
-  'quiz.subtitle': 'اختبر معلوماتك في الصحة والمال والبيئة.',
-
-  // Plans page
-  'plans.badge': 'خطط 30 يوم',
-  'plans.title': 'غيّر عاداتك في 30 يوم',
-  'plans.subtitle': 'اختر خطة وتابع تقدمك يوماً بيوم. كل يوم خطوة صغيرة تقربك من نسخة أفضل منك.',
-  'plans.start': 'ابتدأ الخطة',
-  'plans.reset': 'إعادة',
-  'plans.started': 'بدأت {title}',
-  'plans.completed': '🏆 مبروك! أكملت كل أيام الخطة!',
-  'plans.resetMessage': 'تمت إعادة الخطة',
 
   // Breathing Exercise
   'breathing.title': 'تمارين التنفس',
@@ -1020,7 +1000,6 @@ const ar: Record<string, string> = {
   'search.noResults': 'لا توجد نتائج',
 
   // Assistant
-  'assistant.badge': 'المساعد الذكي',
   'assistant.title': 'اسأل مساعد وعي',
   'assistant.subtitle': 'إجابات سريعة وموثوقة في الصحة والمال والبيئة والتعليم، باللغة العربية.',
   'assistant.open': 'افتح المساعد الذكي',
@@ -1205,20 +1184,6 @@ const ar: Record<string, string> = {
   'vark.advice.kinesthetic.i2': 'ناقش الموضوع مع زمايلك عشان تشغل الجانب السمعي',
   'vark.advice.kinesthetic.i3': 'اكتب خطوات العمل عشان ترسخها في دماغك',
 
-  // Quiz — AwarenessQuiz
-  'quiz.heading': 'اختبر وعيك',
-  'quiz.description': '10 أسئلة تفاعلية تتجدد يومياً لقياس مستوى وعيك الصحي والمالي والبيئي.',
-  'quiz.category.health': 'صحة',
-  'quiz.category.finance': 'مال',
-  'quiz.category.environment': 'بيئة',
-  'quiz.resultExcellent': '🌟 ممتاز! وعيك عالي جداً!',
-  'quiz.resultGood': '👍 جيد! لكن يمكنك التحسن أكثر.',
-  'quiz.resultLow': '📚 تحتاج لمعرفة المزيد. تابع منصة وعي!',
-  'quiz.resultScore': 'أجبت على {score} من {total} أسئلة بشكل صحيح',
-  'quiz.retry': 'أعد الاختبار',
-  'quiz.nextQuestion': 'السؤال التالي',
-  'quiz.showResult': 'عرض النتيجة',
-
   // Daily Check-In
   'checkin.title': 'تسجيل الحضور',
   'checkin.cta': 'أنا واعي اليوم! 🔥',
@@ -1345,9 +1310,9 @@ const ar: Record<string, string> = {
   'onboard.overlay.step2.title': 'تابع عاداتك اليومية',
   'onboard.overlay.step2.desc': 'سجّل مياهك، نومك، نشاطك، ومزاجك كل يوم. وشوف ستريكك وإنجازاتك.',
   'onboard.overlay.step3.title': 'خطط ميزانيتك',
-  'onboard.overlay.step3.desc': 'حاسبات ذكية للميزانية والفواتير، وخطط 30 يوم للادخار والصحة والبيئة.',
-  'onboard.overlay.step4.title': 'اختبر نفسك وتعلم',
-  'onboard.overlay.step4.desc': 'اختبارات تفاعلية، نصائح يومية، ومساعد ذكي يجوب على أسئلتك.',
+  'onboard.overlay.step3.desc': 'حاسبات ذكية للميزانية والفواتير، ونصائح للادخار والصحة والبيئة.',
+  'onboard.overlay.step4.title': 'خطط وتعلم',
+  'onboard.overlay.step4.desc': 'نصائح يومية، وأدوات تفاعلية، ومساعد ذكي يجوب على أسئلتك.',
   'onboard.overlay.step5.title': 'صحتك النفسية مهمة',
   'onboard.overlay.step5.desc': 'تمارين تنفس، تقنيات للتوتر، وتأريض — كلها أدوات تساعدك تهدي أعصابك.',
 
@@ -1497,7 +1462,6 @@ const ar: Record<string, string> = {
   'admin.system.totalRecipes': 'إجمالي الوصفات الأساسية: {count}',
   'admin.system.totalChallenges': 'إجمالي التحديات الأساسية: {count}',
   'admin.system.totalQuotes': 'إجمالي الحكم الأساسية: {count}',
-  'admin.system.totalPlans': 'الخطط: {count}',
   'admin.system.envNote': 'يمكن تغييرها عبر متغير البيئة',
 
   // Footer
@@ -1712,7 +1676,6 @@ const ar: Record<string, string> = {
   'share.joinMe': 'انضم إليّ في رحلة الوعي والتوازن!',
 
   // Privacy
-  'privacy.badge': 'الخصوصية',
   'privacy.title': 'سياسة الخصوصية',
   'privacy.subtitle': 'كيف نحمي بياناتك ونحافظ على خصوصيتك في منصة وعي',
   'privacy.s1.title': '١. مقدمة',
@@ -1739,7 +1702,6 @@ const ar: Record<string, string> = {
   'privacy.s9.body': 'للاستفسار عن سياسة الخصوصية، راسلنا على:',
 
   // Terms
-  'terms.badge': 'الشروط',
   'terms.title': 'شروط الاستخدام',
   'terms.subtitle': 'القواعد والإرشادات لاستخدام منصة وعي للتوعية الشاملة',
   'terms.s1.title': '١. قبول الشروط',

@@ -20,8 +20,6 @@ const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Insights = lazy(() => import("./pages/Insights.tsx"));
 const Recipes = lazy(() => import("./pages/Recipes.tsx"));
 const Education = lazy(() => import("./pages/Education.tsx"));
-const Quiz = lazy(() => import("./pages/Quiz.tsx"));
-const Plans = lazy(() => import("./pages/Plans.tsx"));
 const Admin = lazy(() => import("./pages/Admin.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const Terms = lazy(() => import("./pages/Terms.tsx"));
@@ -61,8 +59,8 @@ function AppRoutes() {
         <Route path="/assistant" element={<ErrorBoundary><Assistant /></ErrorBoundary>} />
         <Route path="/recipes" element={<ErrorBoundary><Recipes /></ErrorBoundary>} />
         <Route path="/education" element={<ErrorBoundary><Education /></ErrorBoundary>} />
-        <Route path="/quiz" element={<ErrorBoundary><Quiz /></ErrorBoundary>} />
-        <Route path="/plans" element={<ErrorBoundary><Plans /></ErrorBoundary>} />
+        <Route path="/quiz" element={<Navigate to="/" replace />} />
+        <Route path="/plans" element={<Navigate to="/" replace />} />
         <Route path="/privacy" element={<ErrorBoundary><Privacy /></ErrorBoundary>} />
         <Route path="/terms" element={<ErrorBoundary><Terms /></ErrorBoundary>} />
         <Route path="/admin" element={<ErrorBoundary><Admin /></ErrorBoundary>} />
@@ -79,7 +77,7 @@ function AppRoutes() {
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
   return null;
 };

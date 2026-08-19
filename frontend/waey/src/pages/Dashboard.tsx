@@ -26,7 +26,7 @@ import { useFreeze } from "@/features/useFreeze";
 import { GoalSetting } from "@/features/GoalSetting";
 import { DailyCheckIn } from "@/features/DailyCheckIn";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect } from "react";
+import { useEffect, type CSSProperties } from "react";
 import { toast } from "sonner";
 
 const Dashboard = () => {
@@ -132,13 +132,14 @@ const Dashboard = () => {
             <DailyChallenge />
 
             <div className="grid sm:grid-cols-2 gap-5">
-              <DailyBig3 />
-              <MentalEnergy />
+              <div className="stagger-item" style={{ "--i": 0 } as CSSProperties}><DailyBig3 /></div>
+              <div className="stagger-item" style={{ "--i": 1 } as CSSProperties}><MentalEnergy /></div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-5">
-              <WaterTracker />
-              <WeightTracker />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="stagger-item" style={{ "--i": 0 } as CSSProperties}><WaterTracker /></div>
+              <div className="stagger-item" style={{ "--i": 1 } as CSSProperties}><WeightTracker /></div>
+              <div className="stagger-item" style={{ "--i": 2 } as CSSProperties}>
               <SimpleTracker
                 storageKey="sleep"
                 title={t('dash.sleep')}
@@ -149,6 +150,8 @@ const Dashboard = () => {
                 goal={8}
                 max={14}
               />
+              </div>
+              <div className="stagger-item" style={{ "--i": 3 } as CSSProperties}>
               <SimpleTracker
                 storageKey="steps"
                 title={t('dash.activity')}
@@ -159,6 +162,8 @@ const Dashboard = () => {
                 goal={30}
                 max={300}
               />
+              </div>
+              <div className="stagger-item" style={{ "--i": 4 } as CSSProperties}>
               <SimpleTracker
                 storageKey="eco"
                 title={t('dash.eco')}
@@ -169,6 +174,7 @@ const Dashboard = () => {
                 goal={3}
                 max={20}
               />
+              </div>
             </div>
 
             <ExpenseTracker />
@@ -177,10 +183,10 @@ const Dashboard = () => {
           </div>
 
           <aside className="space-y-5">
-            <DailyQuote />
-            <MoodTracker />
-            <GratitudeJournal />
-            <DailyImpact />
+            <div className="stagger-item" style={{ "--i": 0 } as CSSProperties}><DailyQuote /></div>
+            <div className="stagger-item" style={{ "--i": 1 } as CSSProperties}><MoodTracker /></div>
+            <div className="stagger-item" style={{ "--i": 2 } as CSSProperties}><GratitudeJournal /></div>
+            <div className="stagger-item" style={{ "--i": 3 } as CSSProperties}><DailyImpact /></div>
           </aside>
         </div>
       </div>

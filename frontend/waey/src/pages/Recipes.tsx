@@ -1,11 +1,11 @@
 import { useState, useMemo, useEffect } from "react";
-import { ChefHat, Clock, Flame, Coins, X, Heart, Utensils, Sunrise, Sun, MoonStar, Cake, CupSoda, Leaf, Zap, HeartPulse, Dumbbell, Users } from "lucide-react";
+import { Clock, Flame, Coins, X, Heart, Utensils, Sunrise, Sun, MoonStar, Cake, CupSoda, Leaf, Zap, HeartPulse, Dumbbell, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { getAdminRecipes, type AdminItem } from "@/lib/adminContent";
 import { getFavorites, toggleFavorite } from "@/lib/favorites";
-import { useT } from "@/contexts/useLanguage";
+import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 
 // Meal glyph: derived from the recipe's Arabic tags so data stays emoji-free.
@@ -31,6 +31,8 @@ function dishGlyph(tags: string[]): { Icon: LucideIcon; chip: string } {
 
 const Recipes = () => {
   const t = useT();
+  const { lang } = useLanguage();
+  const isEn = lang === "en";
 
   useEffect(() => {
     trackEvent("page_view", { page: "recipes" });
@@ -43,7 +45,18 @@ const Recipes = () => {
     اقتصادي: t('recipes.tag.economic'),
     صحي: t('recipes.tag.healthy'),
     'بروتين عالي': t('recipes.tag.highProtein'),
+    فطار: t('recipes.tag.breakfast'),
+    غدا: t('recipes.tag.lunch'),
+    عشا: t('recipes.tag.dinner'),
+    حلو: t('recipes.tag.dessert'),
+    مشروب: t('recipes.tag.drink'),
   };
+  // English content picker: falls back to Arabic when no translation exists
+  const localized = (r: Recipe | AdminItem<Recipe>) => ({
+    name: isEn && r.nameEn ? r.nameEn : r.name,
+    ingredients: isEn && r.ingredientsEn ? r.ingredientsEn : r.ingredients,
+    steps: isEn && r.stepsEn ? r.stepsEn : r.steps,
+  });
   const [maxCal, setMaxCal] = useState(1000);
   const [maxCost, setMaxCost] = useState(200);
   const [activeTags, setActiveTags] = useState<string[]>([]);
@@ -83,8 +96,6 @@ const Recipes = () => {
     <div className="relative min-h-[60vh]">
       <div className="relative">
         <PageHero
-          badge={t('recipes.badge')}
-          icon={<ChefHat className="size-4" />}
           title={t('recipes.title')}
           subtitle={t('recipes.subtitle')}
         />
@@ -156,6 +167,7 @@ const Recipes = () => {
               {filtered.map((r) => {
                 const rid = getId(r);
                 const isFav = favs.includes(rid);
+                const c = localized(r);
                 return (
                   <div
                     key={rid}
@@ -175,7 +187,7 @@ const Recipes = () => {
                       <div className={`size-14 rounded-2xl flex items-center justify-center mb-3 ${dishGlyph(r.tags).chip}`}>
                         {(() => { const G = dishGlyph(r.tags).Icon; return <G className="size-7" />; })()}
                       </div>
-                      <h3 className="font-bold text-lg mb-3">{r.name}</h3>
+                      <h3 className="font-bold text-lg mb-3">{c.name}</h3>
                       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-3">
                         <span className="flex items-center gap-1">
                           <Flame className="size-3.5 text-destructive" />
@@ -183,17 +195,17 @@ const Recipes = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <Coins className="size-3.5 text-accent" />
-                          <span className="tabular-nums">{r.costEGP}</span> {t('recipes.egp')}
+                          <span className="tabular-nums">{r.costEGP}</span> {t('recipes.costUnit')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="size-3.5 text-primary" />
-                          <span className="tabular-nums">{r.prepMin}</span> {t('recipes.min')}
+                          <span className="tabular-nums">{r.prepMin}</span> {t('recipes.prepMinUnit')}
                         </span>
                       </div>
                       <div className="flex flex-wrap gap-1">
-                        {r.tags.map((t) => (
-                          <span key={t} className="text-[10px] bg-secondary px-2 py-0.5 rounded-full font-bold">
-                            {t}
+                        {r.tags.map((tg) => (
+                          <span key={tg} className="text-[10px] bg-secondary px-2 py-0.5 rounded-full font-bold">
+                            {TAG_LABELS[tg] ?? tg}
                           </span>
                         ))}
                       </div>
@@ -210,6 +222,9 @@ const Recipes = () => {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setOpen(null)}
           >
+            {(() => {
+              const c = localized(open);
+              return (
             <div
               className="bg-card rounded-[2rem] max-w-[600px] w-full max-h-[85vh] overflow-y-auto p-8 relative shadow-soft-lg"
               onClick={(e) => e.stopPropagation()}
@@ -230,7 +245,7 @@ const Recipes = () => {
               <div className={`size-16 rounded-2xl flex items-center justify-center mb-4 ${dishGlyph(open.tags).chip}`}>
                 {(() => { const G = dishGlyph(open.tags).Icon; return <G className="size-8" />; })()}
               </div>
-              <h2 className="text-2xl font-bold mb-2">{open.name}</h2>
+              <h2 className="text-2xl font-bold mb-2">{c.name}</h2>
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6">
                 <span className="flex items-center gap-1.5"><Flame className="size-4 text-destructive" /> {open.calories} {t('recipes.calorieUnit')}</span>
                 <span className="flex items-center gap-1.5"><Coins className="size-4 text-accent" /> {open.costEGP} {t('recipes.costUnitServing')}</span>
@@ -239,13 +254,13 @@ const Recipes = () => {
               </div>
               <h3 className="font-bold mb-2">{t('recipes.ingredients')}:</h3>
               <ul className="list-disc list-inside space-y-1 text-sm mb-6 marker:text-primary">
-                {open.ingredients.map((i) => (
+                {c.ingredients.map((i) => (
                   <li key={i}>{i}</li>
                 ))}
               </ul>
               <h3 className="font-bold mb-2">{t('recipes.instructions')}:</h3>
               <ol className="space-y-2 text-sm">
-                {open.steps.map((s, i) => (
+                {c.steps.map((s, i) => (
                   <li key={i} className="flex gap-3">
                     <span className="shrink-0 size-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
                       {i + 1}
@@ -255,6 +270,8 @@ const Recipes = () => {
                 ))}
               </ol>
             </div>
+              );
+            })()}
           </div>
         )}
       </div>
