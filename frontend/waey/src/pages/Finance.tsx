@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import PageHero from "@/components/PageHero";
 import Calculators from "@/components/Calculators";
 import FinanceFeatures from "@/components/FinanceFeatures";
+import SavingsGoalTracker from "@/components/SavingsGoalTracker";
 import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 import { useEffect, type CSSProperties } from "react";
@@ -183,6 +184,7 @@ const Finance = () => {
           </div>
         </section>
 
+        <SavingsGoalTracker />
         <Calculators />
       </div>
     </div>

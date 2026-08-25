@@ -5,7 +5,7 @@ const VIDEO_URL =
 
 const FADE_DURATION = 0.5;
 const TINT = "#0a0a0a";
-const TINT_OPACITY = 0.35;
+const TINT_OPACITY = 0.55;
 
 const HeroVideoBackground = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -89,7 +89,7 @@ const HeroVideoBackground = () => {
           preload="auto"
           disablePictureInPicture
           className="h-full w-full object-cover"
-          style={{ opacity: 0 }}
+          style={{ opacity: 0, filter: "saturate(0.45) contrast(0.95)" }}
         />
       ) : null}
       {VIDEO_URL ? (
@@ -99,7 +99,7 @@ const HeroVideoBackground = () => {
           style={{ background: TINT, opacity: 0 }}
         />
       ) : null}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/30 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background" />
     </div>
   );
 };

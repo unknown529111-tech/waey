@@ -1,5 +1,3 @@
-import BlobBackground from "./BlobBackground";
-import BlurVignette from "./BlurVignette";
 import HeroVideoBackground from "./HeroVideoBackground";
 import { useLanguage } from "@/contexts/useLanguage";
 
@@ -7,8 +5,6 @@ const HeroSection = () => {
   const { t } = useLanguage();
   return (
     <header className="relative overflow-hidden">
-      <BlobBackground count={2} className="z-0" />
-      <BlurVignette className="z-[1]" />
       <HeroVideoBackground />
 
       <section

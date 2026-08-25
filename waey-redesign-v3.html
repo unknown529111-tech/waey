@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>وعي | مجلة يومك</title>
+<meta name="description" content="وعي: منصة مصرية للتوازن الشامل. صحتك، فلوسك، بيئتك، وعقلك في مكان واحد." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+/* ============================================================
+   WAEY redesign v3, built against Leonxlnx/taste-skill.
+   Mode: redesign-overhaul. Dials: VARIANCE 8 / MOTION 5 / DENSITY 3.
+   Palette family: COBALT + CREAM (user-selected). Saturated cobalt
+   against a single warm neutral, no brass, no beige gradients.
+   Editorial / magazine aesthetic: display serif (Amiri) justified by
+   the editorial family; Alexandria for body. Radius rule: SHARP (0)
+   everywhere, hairline rules instead of shadows. One accent, locked:
+   cobalt. Theme: light-locked editorial (dark variant included).
+   ============================================================ */
+:root {
+  --cobalt: #1E3FBE;
+  --cobalt-deep: #14279E;
+  --cobalt-on: #F6F3EB;
+  --ink: #12141F;
+  --ink-soft: #4E5160;
+  --bg: #F6F3EB;
+  --raised: #FDFCF8;
+  --line: #D9D3C3;
+  --line-strong: #12141F;
+}
+html.dark {
+  --cobalt: #6D8CFF;
+  --cobalt-deep: #4C6EF0;
+  --cobalt-on: #0C0F1D;
+  --ink: #ECEAE2;
+  --ink-soft: #A5A49B;
+  --bg: #0F1120;
+  --raised: #161930;
+  --line: #2C2F45;
+  --line-strong: #ECEAE2;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Alexandria', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; filter: saturate(0.82); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+:focus-visible { outline: 3px solid var(--cobalt); outline-offset: 3px; }
+::selection { background: var(--cobalt); color: var(--cobalt-on); }
+
+.wrap { max-width: 1320px; margin-inline: auto; padding-inline: 32px; }
+.serif { font-family: 'Amiri', serif; }
+
+h1, h2, h3 { line-height: 1.3; }
+.display { font-family: 'Amiri', serif; font-weight: 700; letter-spacing: 0; }
+.rule { border: none; border-top: 1px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- masthead ---------- */
+.masthead { border-bottom: 3px solid var(--line-strong); }
+.masthead-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-block: 14px; border-bottom: 1px solid var(--line);
+  font-size: 0.82rem; color: var(--ink-soft);
+}
+.masthead-top .issue { font-weight: 600; color: var(--cobalt); }
+.masthead-main {
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  padding-block: 18px;
+}
+.wordmark { font-family: 'Amiri', serif; font-weight: 700; font-size: 2.6rem; line-height: 1; }
+.wordmark span { color: var(--cobalt); }
+.mast-nav { display: flex; gap: 28px; list-style: none; font-size: 0.92rem; font-weight: 600; }
+.mast-nav a { padding-block: 6px; border-bottom: 2px solid transparent; transition: border-color .2s, color .2s; }
+.mast-nav a:hover { color: var(--cobalt); border-color: var(--cobalt); }
+.mast-side { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 40px; height: 40px; border: 1px solid var(--line-strong);
+  display: grid; place-items: center; font-size: 17px; transition: all .2s;
+}
+.icon-btn:hover { background: var(--cobalt); color: var(--cobalt-on); border-color: var(--cobalt); }
+.menu-btn { display: none; }
+.mobile-menu {
+  display: none; flex-direction: column;
+  border-bottom: 3px solid var(--line-strong); background: var(--raised);
+}
+.mobile-menu a { padding: 14px 32px; font-weight: 600; border-bottom: 1px solid var(--line); }
+.mobile-menu.open { display: flex; }
+@media (max-width: 1020px) {
+  .mast-nav { display: none; }
+  .menu-btn { display: grid; }
+  .wordmark { font-size: 2rem; }
+  .masthead-top { font-size: 0.75rem; }
+}
+
+/* ---------- buttons: sharp rectangles ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 13px 32px; white-space: nowrap;
+  font-weight: 700; font-size: 0.95rem;
+  border: 1px solid var(--line-strong);
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn:active { transform: translateY(1px); }
+.btn-solid { background: var(--cobalt); border-color: var(--cobalt); color: var(--cobalt-on); }
+.btn-solid:hover { background: var(--cobalt-deep); border-color: var(--cobalt-deep); }
+.btn-outline { background: transparent; color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ---------- hero: editorial front page ---------- */
+.hero { padding-block: 72px 88px; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 0;
+  border: 1px solid var(--line-strong);
+}
+.hero-copy { padding: 56px 52px; display: flex; flex-direction: column; justify-content: center; }
+.kicker {
+  display: inline-block; align-self: flex-start;
+  background: var(--cobalt); color: var(--cobalt-on);
+  font-size: 0.8rem; font-weight: 700; padding: 5px 16px; margin-bottom: 28px;
+}
+.hero-copy h1 {
+  font-family: 'Amiri', serif; font-weight: 700;
+  font-size: clamp(2.6rem, 5.2vw, 4.4rem); line-height: 1.25;
+}
+.hero-copy h1 em { font-style: italic; color: var(--cobalt); }
+.hero-sub { margin-top: 22px; color: var(--ink-soft); font-size: 1.05rem; max-width: 46ch; }
+.hero-cta { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-media { position: relative; border-inline-start: 1px solid var(--line-strong); min-height: 420px; }
+.hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-caption {
+  position: absolute; bottom: 0; inset-inline: 0;
+  background: var(--bg); border-top: 1px solid var(--line-strong);
+  padding: 12px 20px; font-size: 0.82rem; color: var(--ink-soft);
+}
+@media (max-width: 900px) {
+  .hero { padding-block: 44px 64px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-media { border-inline-start: none; border-top: 1px solid var(--line-strong); min-height: 320px; }
+  .hero-copy { padding: 40px 28px; }
+}
+
+/* ---------- index band: features as editorial contents list ---------- */
+.index-band { border-block: 1px solid var(--line-strong); background: var(--raised); }
+.index-grid { display: grid; grid-template-columns: 0.9fr 1.6fr; }
+.index-head { padding: 52px 40px; border-inline-end: 1px solid var(--line-strong); }
+.index-head h2 { font-family: 'Amiri', serif; font-size: clamp(1.7rem, 2.8vw, 2.4rem); }
+.index-head p { color: var(--ink-soft); margin-top: 12px; font-size: 0.95rem; max-width: 34ch; }
+.index-list { display: grid; grid-template-columns: 1fr 1fr; }
+.index-item {
+  padding: 34px 36px; display: flex; flex-direction: column; gap: 8px;
+  border-bottom: 1px solid var(--line);
+  transition: background .2s;
+}
+.index-item:nth-child(odd) { border-inline-end: 1px solid var(--line); }
+.index-item:nth-last-child(-n+2) { border-bottom: none; }
+.index-item:hover { background: var(--bg); }
+.index-item i { font-size: 26px; color: var(--cobalt); }
+.index-item h3 { font-size: 1.08rem; }
+.index-item p { color: var(--ink-soft); font-size: 0.9rem; }
+@media (max-width: 900px) {
+  .index-grid { grid-template-columns: 1fr; }
+  .index-head { border-inline-end: none; border-bottom: 1px solid var(--line-strong); }
+  .index-list { grid-template-columns: 1fr; }
+  .index-item:nth-child(odd) { border-inline-end: none; }
+  .index-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .index-item:last-child { border-bottom: none; }
+}
+
+/* ---------- daily ritual: ledger style ---------- */
+.ritual { padding-block: 96px; }
+.ledger-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 44px; flex-wrap: wrap; }
+.ledger-head h2 { font-family: 'Amiri', serif; font-size: clamp(1.8rem, 3.2vw, 2.6rem); }
+.ledger-head p { color: var(--ink-soft); font-size: 0.95rem; }
+.ledger {
+  border: 1px solid var(--line-strong);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+}
+.ledger-cell { padding: 34px 32px; border-bottom: 1px solid var(--line-strong); position: relative; }
+.ledger-cell:nth-child(3n+2), .ledger-cell:nth-child(3n) { border-inline-start: 1px solid var(--line-strong); }
+.ledger-cell:nth-child(n+4) { border-bottom: none; }
+.ledger-cell .cell-tag {
+  font-size: 0.78rem; font-weight: 700; color: var(--cobalt);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+}
+.ledger-cell .cell-tag i { font-size: 20px; }
+.ledger-cell h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.ledger-cell > p { color: var(--ink-soft); font-size: 0.88rem; }
+.water-count { font-family: 'Amiri', serif; font-size: 2.4rem; font-weight: 700; color: var(--cobalt); line-height: 1.15; margin-block: 8px; }
+.controls { display: flex; gap: 8px; margin-top: 12px; }
+.sq-btn {
+  width: 42px; height: 42px; border: 1px solid var(--line-strong);
+  display: grid; place-items: center; font-size: 18px; transition: all .15s;
+}
+.sq-btn:hover { background: var(--cobalt); color: var(--cobalt-on); border-color: var(--cobalt); }
+.sq-btn:active { transform: translateY(1px); }
+.mood-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.mood-chip {
+  width: 46px; height: 46px; font-size: 22px; border: 1px solid var(--line-strong);
+  display: grid; place-items: center; transition: all .2s;
+}
+.mood-chip[aria-pressed="true"] { background: var(--cobalt); border-color: var(--cobalt); }
+.streak-big { font-family: 'Amiri', serif; font-size: 2.4rem; font-weight: 700; color: var(--cobalt); line-height: 1.15; margin-block: 8px; }
+@media (max-width: 900px) {
+  .ledger { grid-template-columns: 1fr; }
+  .ledger-cell { border-inline-start: none !important; }
+  .ledger-cell:nth-child(n+2) { border-bottom: 1px solid var(--line-strong); }
+  .ledger-cell:last-child { border-bottom: none; }
+}
+
+/* ---------- pillar spreads: editorial feature spreads ---------- */
+.spread { padding-block: 88px; border-top: 1px solid var(--line-strong); }
+.spread-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.spread-grid.flip .spread-media { order: 2; }
+.spread-media { position: relative; }
+.spread-media img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border: 1px solid var(--line-strong); }
+.spread-media .media-note {
+  position: absolute; bottom: -1px; inset-inline-start: -1px;
+  background: var(--cobalt); color: var(--cobalt-on);
+  padding: 10px 22px; font-weight: 700; font-size: 0.88rem;
+}
+.spread-body h2 { font-family: 'Amiri', serif; font-size: clamp(1.8rem, 3.2vw, 2.7rem); margin-bottom: 18px; }
+.spread-body > p { color: var(--ink-soft); margin-bottom: 28px; max-width: 54ch; }
+.spread-list { list-style: none; display: grid; gap: 0; margin-bottom: 32px; }
+.spread-list li {
+  display: flex; gap: 14px; align-items: baseline; font-weight: 500;
+  padding-block: 13px; border-top: 1px solid var(--line);
+}
+.spread-list li:last-child { border-bottom: 1px solid var(--line); }
+.spread-list i { color: var(--cobalt); font-size: 18px; translate: 0 3px; flex: none; }
+@media (max-width: 900px) {
+  .spread-grid { grid-template-columns: 1fr; gap: 44px; }
+  .spread-grid.flip .spread-media { order: 0; }
+}
+
+/* savings demo inside money spread */
+.savings-demo {
+  border: 1px solid var(--line-strong); background: var(--raised);
+  padding: 26px 30px; display: flex; align-items: center; gap: 28px;
+}
+.bar-wrap { flex: 1; }
+.bar-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.bar-top b { font-size: 1rem; }
+.bar-top span { font-family: 'Amiri', serif; font-weight: 700; font-size: 1.5rem; color: var(--cobalt); }
+.bar-track { height: 14px; border: 1px solid var(--line-strong); }
+.bar-fill { height: 100%; background: var(--cobalt); transition: width .7s cubic-bezier(0.16, 1, 0.3, 1); }
+.bar-sub { margin-top: 10px; font-size: 0.85rem; color: var(--ink-soft); }
+@media (max-width: 560px) { .savings-demo { flex-direction: column; align-items: stretch; } }
+
+/* ---------- learn: two editorial columns ---------- */
+.learn { border-top: 1px solid var(--line-strong); background: var(--raised); padding-block: 88px; }
+.learn-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
+.learn-col h2 { font-family: 'Amiri', serif; font-size: clamp(1.6rem, 2.6vw, 2.1rem); margin-bottom: 8px; }
+.learn-col .col-intro { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 20px; }
+.group { padding-block: 18px; border-top: 1px solid var(--line); }
+.group:last-child { border-bottom: 1px solid var(--line); }
+.group h3 { font-size: 1.02rem; margin-bottom: 4px; }
+.group p { color: var(--ink-soft); font-size: 0.9rem; }
+@media (max-width: 820px) { .learn-cols { grid-template-columns: 1fr; gap: 52px; } }
+
+/* ---------- recipes: newspaper clippings rail ---------- */
+.recipes { padding-block: 96px; }
+.recipe-rail { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 18px; }
+.recipe-rail::-webkit-scrollbar { height: 6px; }
+.recipe-rail::-webkit-scrollbar-thumb { background: var(--line); }
+.clipping {
+  scroll-snap-align: start; flex: 0 0 310px;
+  background: var(--raised); border: 1px solid var(--line-strong);
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clipping:hover { transform: translateY(-5px); }
+.clipping img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-bottom: 1px solid var(--line-strong); }
+.clipping-body { padding: 22px 24px 26px; }
+.clipping-body h3 { font-family: 'Amiri', serif; font-size: 1.35rem; margin-bottom: 6px; }
+.clipping-body p { color: var(--ink-soft); font-size: 0.88rem; margin-bottom: 14px; }
+.meta-row { display: flex; gap: 0; border-top: 1px solid var(--line); }
+.meta-row span { font-size: 0.78rem; font-weight: 600; padding: 8px 14px 0 0; color: var(--cobalt); }
+.meta-row span + span { border-inline-start: 1px solid var(--line); margin-inline-start: 14px; padding-inline-start: 14px; }
+
+/* ---------- quote: full cobalt block ---------- */
+.quote-band { background: var(--cobalt); color: var(--cobalt-on); padding-block: 110px; }
+html.dark .quote-band { color: #0C0F1D; }
+.quote-band blockquote {
+  max-width: 860px; margin-inline: auto; text-align: center;
+  font-family: 'Amiri', serif; font-size: clamp(1.5rem, 3vw, 2.3rem); font-weight: 700; line-height: 1.65;
+}
+.quote-band figcaption { margin-top: 28px; text-align: center; font-size: 0.95rem; opacity: 0.85; }
+.quote-band figcaption b { display: block; font-family: 'Alexandria', sans-serif; font-size: 1rem; }
+
+/* ---------- assistant spread ---------- */
+.assistant-spread { padding-block: 88px 40px; border-top: 1px solid var(--line-strong); }
+
+/* ---------- final ---------- */
+.final { padding-block: 110px; text-align: center; border-top: 1px solid var(--line-strong); }
+.final h2 { font-family: 'Amiri', serif; font-size: clamp(2.1rem, 4.4vw, 3.4rem); }
+.final p { color: var(--ink-soft); max-width: 50ch; margin: 18px auto 36px; }
+
+/* ---------- footer: newspaper colophon ---------- */
+footer { border-top: 3px solid var(--line-strong); padding-block: 40px; background: var(--raised); }
+.footer-grid { display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
+.footer-brand { font-family: 'Amiri', serif; font-weight: 700; font-size: 1.6rem; }
+.footer-brand span { color: var(--cobalt); }
+.footer-links { display: flex; gap: 26px; list-style: none; font-size: 0.88rem; color: var(--ink-soft); flex-wrap: wrap; }
+.footer-links a:hover { color: var(--cobalt); }
+
+/* ---------- reveal ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead-top">
+      <span class="issue">العدد اليومي</span>
+      <span>صحتك، فلوسك، بيئتك، وعقلك في مكان واحد</span>
+      <span>القاهرة، مصر</span>
+    </div>
+    <div class="masthead-main">
+      <a class="wordmark" href="#">وعـ<span>ي</span></a>
+      <nav aria-label="التنقل الرئيسي">
+        <ul class="mast-nav">
+          <li><a href="#ritual">يومك</a></li>
+          <li><a href="#health">الصحة</a></li>
+          <li><a href="#money">المالية</a></li>
+          <li><a href="#learn">البيئة والتعليم</a></li>
+          <li><a href="#recipes">الوصفات</a></li>
+          <li><a href="#assistant">المساعد</a></li>
+        </ul>
+      </nav>
+      <div class="mast-side">
+        <button id="themeBtn" class="icon-btn" aria-label="تبديل الوضع الليلي"><i class="ph ph-moon"></i></button>
+        <a href="#start" class="btn btn-solid" style="padding:11px 26px;">ابدأ رحلتك</a>
+        <button id="menuBtn" class="icon-btn menu-btn" aria-label="القائمة"><i class="ph ph-list"></i></button>
+      </div>
+    </div>
+  </div>
+  <nav id="mobileMenu" class="mobile-menu" aria-label="قائمة الجوال">
+    <a href="#ritual">يومك</a>
+    <a href="#health">الصحة</a>
+    <a href="#money">المالية</a>
+    <a href="#learn">البيئة والتعليم</a>
+    <a href="#recipes">الوصفات</a>
+    <a href="#assistant">المساعد</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO: front-page spread, 4 text elements -->
+  <section class="hero">
+    <div class="wrap hero-grid reveal">
+      <div class="hero-copy">
+        <span class="kicker">منصة التوازن الشامل</span>
+        <h1>اليومية الصغيرة هي <em>المقال الكبير</em> في حياتك.</h1>
+        <p class="hero-sub">وعي بيحول عاداتك اليومية لسيرة حاجة تفتخر بيها: تتبع بسيط، لغة مصري، وبياناتك على جهازك.</p>
+        <div class="hero-cta">
+          <a href="#start" class="btn btn-solid">ابدأ رحلتك</a>
+          <a href="#assistant" class="btn btn-outline">جرب المساعد الذكي</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <!-- TODO: replace with real brand photography, portrait crop -->
+        <img src="https://picsum.photos/seed/waey-v3-window-light/900/1100" alt="إضاءة صباحية من نافذة" />
+        <div class="hero-caption">البداية دايمًا الصفحة الأولى: كوباية مياه ونوم منتظم.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDEX BAND: contents-style feature list, grouped hairlines -->
+  <section class="index-band" aria-label="أقسام المنصة">
+    <div class="wrap index-grid">
+      <div class="index-head reveal">
+        <h2>فهرس المنصة</h2>
+        <p>ست محاور بتغطي حياتك كلها، كل محور بأدواته الخاصة.</p>
+      </div>
+      <div class="index-list">
+        <article class="index-item reveal">
+          <i class="ph ph-chats-circle"></i>
+          <h3>مساعد بيفهم مصري</h3>
+          <p>اسأل أي حاجة، والمساعد بيرد مربوط ببياناتك المحلية.</p>
+        </article>
+        <article class="index-item reveal">
+          <i class="ph ph-seal-check"></i>
+          <h3>سلاسل وشارات</h3>
+          <p>سلسلة يومية واسترجاع بعد الانقطاع وشارات إنجاز.</p>
+        </article>
+        <article class="index-item reveal">
+          <i class="ph ph-file-pdf"></i>
+          <h3>تقرير PDF بالعربي</h3>
+          <p>ملخص تقدمك بخط أميري، جاهز للمشاركة بضغطة.</p>
+        </article>
+        <article class="index-item reveal">
+          <i class="ph ph-cloud-slash"></i>
+          <h3>بياناتك ملكك</h3>
+          <p>تخزين محلي أولًا، نسخ احتياطي اختياري، وشغل أوفلاين كامل.</p>
+        </article>
+        <article class="index-item reveal">
+          <i class="ph ph-basket"></i>
+          <h3>قائمة تسوق ذكية</h3>
+          <p>بتتحدث تلقائيًا من وصفاتك وأهدافك الأسبوعية.</p>
+        </article>
+        <article class="index-item reveal">
+          <i class="ph ph-bell-ringing"></i>
+          <h3>تنبيقات على مزاجك</h3>
+          <p>تذكيرات مرنة بوقتها الصح، من غير إزعاج.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAILY RITUAL: ledger grid, working demos -->
+  <section class="ritual" id="ritual">
+    <div class="wrap">
+      <div class="ledger-head reveal">
+        <h2>سجل اليوم</h2>
+        <p>ست متتبعات في دقيقتين. جربها هنا فعليًا.</p>
+      </div>
+      <div class="ledger">
+        <article class="ledger-cell reveal">
+          <span class="cell-tag"><i class="ph ph-drop"></i> المياه</span>
+          <p class="water-count"><span id="waterNum">٥</span> / ٨ أكواب</p>
+          <div class="controls">
+            <button class="sq-btn" id="waterAdd" aria-label="زود كوباية"><i class="ph ph-plus"></i></button>
+            <button class="sq-btn" id="waterSub" aria-label="قلل كوباية"><i class="ph ph-minus"></i></button>
+          </div>
+        </article>
+        <article class="ledger-cell reveal">
+          <span class="cell-tag"><i class="ph ph-smiley"></i> المزاج</span>
+          <h3>إزاي كان يومك؟</h3>
+          <div class="mood-row" role="group" aria-label="اختيار المزاج">
+            <button class="mood-chip" aria-pressed="false" data-mood="ضعيف">😕</button>
+            <button class="mood-chip" aria-pressed="false" data-mood="عادي">😐</button>
+            <button class="mood-chip" aria-pressed="true" data-mood="كويس">🙂</button>
+            <button class="mood-chip" aria-pressed="false" data-mood="مبسوط">😄</button>
+          </div>
+        </article>
+        <article class="ledger-cell reveal">
+          <span class="cell-tag"><i class="ph ph-fire"></i> السلسلة</span>
+          <p class="streak-big">١٢ يوم</p>
+          <p>استمررت أطول من ٨٧٪ من مستخدمي الشهر ده.</p>
+        </article>
+        <article class="ledger-cell reveal">
+          <span class="cell-tag"><i class="ph ph-hand-heart"></i> الامتنان</span>
+          <h3>دفتر الامتنان</h3>
+          <p>اكتب حاجة واحدة كنت شاكرها النهاردة.</p>
+          <div class="controls">
+            <a href="#" class="btn btn-outline" style="padding:9px 22px; font-size:0.85rem;">افتح الدفتر</a>
+          </div>
+        </article>
+        <article class="ledger-cell reveal">
+          <span class="cell-tag"><i class="ph ph-moon-stars"></i> النوم</span>
+          <h3>حاسبة دورة النوم</h3>
+          <p>أفضل وقت تنام وتصحى على حسب جدولك.</p>
+          <div class="controls">
+            <a href="#" class="btn btn-outline" style="padding:9px 22px; font-size:0.85rem;">احسبها</a>
+          </div>
+        </article>
+        <article class="ledger-cell reveal">
+          <span class="cell-tag"><i class="ph ph-target"></i> التحدي</span>
+          <h3>تحدي النهاردة</h3>
+          <p>امشي ٢٠ دقيقة من غير موبايل.</p>
+          <div class="controls">
+            <a href="#" class="btn btn-outline" style="padding:9px 22px; font-size:0.85rem;">اقبل التحدي</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPREAD 1: health -->
+  <section class="spread" id="health">
+    <div class="wrap spread-grid">
+      <div class="spread-media reveal">
+        <img src="https://picsum.photos/seed/waey-v3-clinic/1000/800" alt="مستلزمات طبية على مكتب" loading="lazy" />
+        <span class="media-note">قسم الصحة</span>
+      </div>
+      <div class="spread-body reveal">
+        <h2>صحتك بمعايير موجودة فعلاً هنا</h2>
+        <p>أدوات مبنية على واقع الحياة في مصر، مش محتوى مترجم عن واقع مش بتاعك.</p>
+        <ul class="spread-list">
+          <li><i class="ph ph-hospital"></i> دليل مستشفيات وصيدليات قريبين منك</li>
+          <li><i class="ph ph-heartbeat"></i> إسعافات أولية خطوة بخطوة بالعربي</li>
+          <li><i class="ph ph-calendar-check"></i> جدول الفحوصات الدورية بسنك</li>
+          <li><i class="ph ph-bowl-food"></i> الطبق المصري المتوازن وحاسبة السعرات</li>
+        </ul>
+        <a href="#" class="btn btn-outline">استكشف الصحة</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPREAD 2: money, flipped -->
+  <section class="spread" id="money">
+    <div class="wrap spread-grid flip">
+      <div class="spread-media reveal">
+        <img src="https://picsum.photos/seed/waey-v3-coins/1000/800" alt="عملات معدنية على دفتر حسابات" loading="lazy" />
+        <span class="media-note">قسم المالية</span>
+      </div>
+      <div class="spread-body reveal">
+        <h2>فلوسك ليها هدف مكتوب</h2>
+        <p>تتبع المصروف، أهداف الادخار، وقائمة التسوق الذكية، كلها شغالة مع بعض.</p>
+        <ul class="spread-list">
+          <li><i class="ph ph-wallet"></i> مسجل مصاريف سريع بفئات جاهزة</li>
+          <li><i class="ph ph-piggy-bank"></i> أهداف ادخار بشريط تقدم واضح</li>
+          <li><i class="ph ph-basket"></i> قائمة تسوق بتتحدث من وصفاتك</li>
+          <li><i class="ph ph-shield-warning"></i> تنبيهات من فخاخ مالية منتشرة</li>
+        </ul>
+        <div class="savings-demo">
+          <div class="bar-wrap">
+            <div class="bar-top">
+              <b>هدف: عيدية الصيف</b>
+              <span id="goalPct">٦٨٪</span>
+            </div>
+            <div class="bar-track" role="progressbar" aria-label="تقدم هدف الادخار" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" id="goalBar">
+              <div class="bar-fill" id="goalFill" style="width:68%"></div>
+            </div>
+            <p class="bar-sub">٩٬٦٠٠ من ١٤٬٠٠٠ جنيه</p>
+          </div>
+          <button class="sq-btn" id="goalBoost" aria-label="ضيف ٢٠٠ جنيه للهدف"><i class="ph ph-plus"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARN: environment + education columns -->
+  <section class="learn" id="learn">
+    <div class="wrap learn-cols">
+      <div class="learn-col reveal">
+        <h2>بيئة أهدى</h2>
+        <p class="col-intro">عادات يومية بأثر حقيقي على محيطك ومصاريفك.</p>
+        <div class="group">
+          <h3>خطوات محسوبة لبيوتنا</h3>
+          <p>فصل النفايات وترشيد الكهرباء والمياه بواقعية البيت المصري.</p>
+        </div>
+        <div class="group">
+          <h3>أثرك التراكمي</h3>
+          <p>شوف مجموع توفيرك للمياه والطاقة يوم بيوم.</p>
+        </div>
+        <div class="group">
+          <h3>إعادة تدوير بمكان</h3>
+          <p>أماكن جمع قريب منك وإرشادات لكل نوع.</p>
+        </div>
+      </div>
+      <div class="learn-col reveal">
+        <h2>تعليم يناسب عقلك</h2>
+        <p class="col-intro">محتوى بيتعامل مع طريقة تعلمك انت، مش نسخة جاهزة.</p>
+        <div class="group">
+          <h3>اختبار VARK</h3>
+          <p>اكتشف أسلوب تعلّمك وخُد توصيات مبنية عليه.</p>
+        </div>
+        <div class="group">
+          <h3>عافية رقمية</h3>
+          <p>تحكم في وقت الشاشة وإشعاراتك بحزم أدوات عملية.</p>
+        </div>
+        <div class="group">
+          <h3>صحة مكان العمل</h3>
+          <p>تمارين مكتبية ونظافة نوم للموظفين والطلبة.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECIPES: newspaper clippings -->
+  <section class="recipes" id="recipes">
+    <div class="wrap">
+      <div class="ledger-head reveal">
+        <h2>وصفات من مطبخنا</h2>
+        <p>مصرية، بمكونات موجودة عندك، وبقيم غذائية واضحة.</p>
+      </div>
+      <div class="recipe-rail">
+        <article class="clipping reveal">
+          <img src="https://picsum.photos/seed/waey-v3-koshary/700/520" alt="طبق كشري" loading="lazy" />
+          <div class="clipping-body">
+            <h3>كشري خفيف</h3>
+            <p>نسخة أقل دهون من الطبق الوطني، بنفس الروح.</p>
+            <div class="meta-row"><span>٤٢٠ سعرات</span><span>٢٥ دقيقة</span></div>
+          </div>
+        </article>
+        <article class="clipping reveal">
+          <img src="https://picsum.photos/seed/waey-v3-salad/700/520" alt="سلطة طازجة" loading="lazy" />
+          <div class="clipping-body">
+            <h3>سلطة البرجموط</h3>
+            <p>خضار موسمية بصلصة برجموط وخردل، مشروعة وسريعة.</p>
+            <div class="meta-row"><span>١٨٠ سعرات</span><span>١٠ دقايق</span></div>
+          </div>
+        </article>
+        <article class="clipping reveal">
+          <img src="https://picsum.photos/seed/waey-v3-lentil/700/520" alt="شوربة عدس" loading="lazy" />
+          <div class="clipping-body">
+            <h3>شوربة عدس بالكمون</h3>
+            <p>غداء شتوي مشبع ببروتين نباتي.</p>
+            <div class="meta-row"><span>٣١٠ سعرات</span><span>٣٥ دقيقة</span></div>
+          </div>
+        </article>
+        <article class="clipping reveal">
+          <img src="https://picsum.photos/seed/waey-v3-ful/700/520" alt="طبق فول" loading="lazy" />
+          <div class="clipping-body">
+            <h3>فول بالخضار</h3>
+            <p>الفطار الكلاسيكي بتركيبة متوازنة تخلّيك شبعان لحد العشا.</p>
+            <div class="meta-row"><span>٢٩٠ سعرات</span><span>١٥ دقيقة</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE: full cobalt block -->
+  <figure class="quote-band">
+    <blockquote>
+      «أول مرة أحافظ على عادة أكتر من أسبوعين. التتبع البسيط والسلسلة خلّوا الفرق.»
+    </blockquote>
+    <figcaption><b>منى عبد الرحمن</b>مصممة جرافيك، القاهرة</figcaption>
+  </figure>
+
+  <!-- ASSISTANT SPREAD -->
+  <section class="assistant-spread" id="assistant">
+    <div class="wrap spread-grid">
+      <div class="spread-media reveal">
+        <img src="https://picsum.photos/seed/waey-v3-phone/1000/800" alt="جوال على طاولة خشب" loading="lazy" />
+        <span class="media-note">المساعد الذكي</span>
+      </div>
+      <div class="spread-body reveal">
+        <h2>المساعد اللي بيسأل عليك</h2>
+        <p>مش بوت إجابات عامة. المساعد بيبص على متتبعاتك وبيقترح الخطوة الجديدة المناسبة ليك.</p>
+        <ul class="spread-list">
+          <li><i class="ph ph-chat-circle-text"></i> ردود بالمصري، بدون تعقيد</li>
+          <li><i class="ph ph-lock-key"></i> خصوصية أولًا: المحادثة مش بتتخزن على السيرفر</li>
+          <li><i class="ph ph-lightning"></i> اقتراحات فورية مربوطة بتقدمك الحقيقي</li>
+        </ul>
+        <a href="#" class="btn btn-solid">ابدأ محادثة</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final" id="start">
+    <div class="wrap reveal">
+      <h2>النهاردة أفضل يوم تبدأ فيه.</h2>
+      <p>من غير حساب ولا تعقيد. افتح الموقع، اختار عادة واحدة، وخلّي الباقي على وعي.</p>
+      <a href="#" class="btn btn-solid" style="padding:16px 46px; font-size:1.02rem;">ابدأ رحلتك</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <a class="footer-brand" href="#">وعـ<span>ي</span></a>
+    <ul class="footer-links">
+      <li><a href="#">عن وعي</a></li>
+      <li><a href="#">الأسئلة الشائعة</a></li>
+      <li><a href="#">الخصوصية</a></li>
+      <li><a href="#">الشروط</a></li>
+      <li><a href="#">اتصل بينا</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var d = document;
+
+  // Theme: system preference by default, manual toggle persists
+  var root = d.documentElement;
+  var themeBtn = d.getElementById('themeBtn');
+  var stored = null;
+  try { stored = localStorage.getItem('waey-v3-theme'); } catch (e) {}
+  if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    root.classList.add('dark');
+  }
+  function syncThemeIcon() {
+    themeBtn.innerHTML = root.classList.contains('dark')
+      ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>';
+  }
+  syncThemeIcon();
+  themeBtn.addEventListener('click', function () {
+    root.classList.toggle('dark');
+    try { localStorage.setItem('waey-v3-theme', root.classList.contains('dark') ? 'dark' : 'light'); } catch (e) {}
+    syncThemeIcon();
+  });
+
+  // Mobile menu
+  var menuBtn = d.getElementById('menuBtn');
+  var mobileMenu = d.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('open'); });
+  mobileMenu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') mobileMenu.classList.remove('open');
+  });
+
+  // Water tracker demo
+  var AR = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  function toArabic(n) { return String(n).split('').map(function(c){ return AR[+c] !== undefined ? AR[+c] : c; }).join(''); }
+  var water = 5, waterEl = d.getElementById('waterNum');
+  d.getElementById('waterAdd').addEventListener('click', function () {
+    water = water >= 8 ? 1 : water + 1;
+    waterEl.textContent = toArabic(water);
+  });
+  d.getElementById('waterSub').addEventListener('click', function () {
+    if (water > 0) water--;
+    waterEl.textContent = toArabic(water);
+  });
+
+  // Mood chips
+  d.querySelectorAll('.mood-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      d.querySelectorAll('.mood-chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+    });
+  });
+
+  // Savings goal bar demo
+  var goal = 9600, GOAL_MAX = 14000;
+  d.getElementById('goalBoost').addEventListener('click', function () {
+    goal += 200;
+    var pct = Math.min(Math.round(goal / GOAL_MAX * 100), 100);
+    d.getElementById('goalFill').style.width = pct + '%';
+    d.getElementById('goalBar').setAttribute('aria-valuenow', String(pct));
+    d.getElementById('goalPct').textContent = toArabic(pct) + '٪';
+  });
+
+  // Scroll reveals (IntersectionObserver, never window scroll listeners)
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = d.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

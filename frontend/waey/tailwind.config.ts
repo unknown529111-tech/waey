@@ -16,8 +16,10 @@ export default {
     extend: {
       fontFamily: {
         alexandria: ["Alexandria", "sans-serif"],
-        body: ["Alexandria", "sans-serif"],
-        heading: ["Alexandria", "sans-serif"],
+        body: ["Inter", "Alexandria", "sans-serif"],
+        heading: ["Instrument Serif", "Amiri", "serif"],
+        display: ["Instrument Serif", "Amiri", "Alexandria", "serif"],
+        mono: ["Roboto Mono", "ui-monospace", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -83,12 +85,12 @@ export default {
         sm: "8px",
         md: "12px",
         lg: "16px",
-        xl: "20px",
+        xl: "16px",
         "2xl": "22px",
         "2rem": "2rem",
-        "3xl": "2rem",
-        "4xl": "2.5rem",
-        "5xl": "3rem",
+        "3xl": "30px",
+        "4xl": "30px",
+        "5xl": "30px",
         pill: "9999px",
       },
       boxShadow: {

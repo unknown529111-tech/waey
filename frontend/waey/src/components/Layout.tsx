@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import AssistantFab from "./AssistantFab";
-import BlobBackground from "./BlobBackground";
 import OfflineIndicator from "./OfflineIndicator";
 import { PwaInstallPrompt } from "./PwaInstallPrompt";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
@@ -48,7 +47,6 @@ const Layout = () => {
         {t('layout.skipToContent')}
       </a>
 
-      <BlobBackground count={3} className="z-0" />
       <Navbar />
       <AnimatePresence mode="wait">
         <motion.main

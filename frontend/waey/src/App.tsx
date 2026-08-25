@@ -19,6 +19,7 @@ const Assistant = lazy(() => import("./pages/Assistant.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Insights = lazy(() => import("./pages/Insights.tsx"));
 const Recipes = lazy(() => import("./pages/Recipes.tsx"));
+const ShoppingList = lazy(() => import("./pages/ShoppingList.tsx"));
 const Education = lazy(() => import("./pages/Education.tsx"));
 const Admin = lazy(() => import("./pages/Admin.tsx"));
 const Privacy = lazy(() => import("./pages/Privacy.tsx"));
@@ -58,6 +59,7 @@ function AppRoutes() {
         <Route path="/environment" element={<ErrorBoundary><Environment /></ErrorBoundary>} />
         <Route path="/assistant" element={<ErrorBoundary><Assistant /></ErrorBoundary>} />
         <Route path="/recipes" element={<ErrorBoundary><Recipes /></ErrorBoundary>} />
+        <Route path="/shopping-list" element={<ErrorBoundary><ShoppingList /></ErrorBoundary>} />
         <Route path="/education" element={<ErrorBoundary><Education /></ErrorBoundary>} />
         <Route path="/quiz" element={<Navigate to="/" replace />} />
         <Route path="/plans" element={<Navigate to="/" replace />} />

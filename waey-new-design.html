@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>وعي | منصة التوازن الشامل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+/* ============================================================
+   WAEY redesign concept, built against Leonxlnx/taste-skill.
+   Mode: redesign-overhaul. Dials: VARIANCE 8 / MOTION 5 / DENSITY 3.
+   Palette: brand tokens from DESIGN.md (Forest family: deep green
+   + bone + amber kept inside photography only). One accent, locked:
+   forest green. Radius rule (documented): pill buttons, 28px cards,
+   16px small chips. Type: Alexandria throughout, hierarchy by weight.
+   ============================================================ */
+:root {
+  --green: #5D7052;
+  --green-deep: #45543C;
+  --green-on: #F3F4F1;
+  --ink: #26251E;
+  --ink-soft: #5D5B50;
+  --bg: #FAFAF6;
+  --bg-raised: #FFFFFF;
+  --line: #E4E1D6;
+  --tint: #EDF2E8;
+  --shadow: 0 18px 48px rgba(38, 37, 30, 0.10);
+}
+html.dark {
+  --green: #8FB894;
+  --green-deep: #6E9A74;
+  --green-on: #171A14;
+  --ink: #E9E6DB;
+  --ink-soft: #A5A294;
+  --bg: #191813;
+  --bg-raised: #211F19;
+  --line: #34322A;
+  --tint: #232A1F;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Alexandria', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  max-width: 1240px; margin-inline: auto; padding-inline: 24px;
+  height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; }
+.brand-mark {
+  width: 36px; height: 36px; border-radius: 12px;
+  background: var(--green); color: var(--green-on);
+  display: grid; place-items: center; font-size: 20px;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; font-size: 0.92rem; font-weight: 500; }
+.nav-links a { color: var(--ink-soft); transition: color .2s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-side { display: flex; align-items: center; gap: 12px; }
+.theme-btn {
+  width: 42px; height: 42px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg-raised);
+  display: grid; place-items: center; font-size: 18px; transition: transform .2s;
+}
+.theme-btn:hover { transform: translateY(-1px); }
+@media (max-width: 880px) { .nav-links { display: none; } }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 13px 30px; border-radius: 999px;
+  font-weight: 700; font-size: 0.98rem; white-space: nowrap;
+  transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1), background .2s, box-shadow .25s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-solid { background: var(--green); color: var(--green-on); }
+.btn-solid:hover { background: var(--green-deep); transform: translateY(-2px); box-shadow: var(--shadow); }
+.btn-line { border: 1.5px solid var(--line); color: var(--ink); }
+.btn-line:hover { border-color: var(--ink-soft); transform: translateY(-2px); }
+html.dark .btn-line:hover { border-color: var(--ink-soft); }
+
+/* ---------- hero: asymmetric split ---------- */
+.hero {
+  min-height: calc(100dvh - 68px);
+  max-width: 1240px; margin-inline: auto;
+  padding: 56px 24px 64px;
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(32px, 6vw, 88px); align-items: center;
+}
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--green); background: var(--tint);
+  padding: 7px 16px; border-radius: 999px; margin-bottom: 22px;
+}
+.hero h1 {
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  font-weight: 800; line-height: 1.35; letter-spacing: -0.01em;
+  max-width: 12ch;
+}
+.hero h1 strong { font-weight: 800; color: var(--green); }
+.hero .sub {
+  margin-top: 22px; font-size: 1.08rem; font-weight: 300;
+  color: var(--ink-soft); max-width: 46ch;
+}
+.hero .actions { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+.hero-media { position: relative; }
+.hero-photo {
+  width: 100%; aspect-ratio: 4 / 4.6; object-fit: cover;
+  border-radius: 96px 28px 28px 28px;
+  box-shadow: var(--shadow);
+}
+.hero-chip {
+  position: absolute; bottom: 28px; inset-inline-start: -18px;
+  background: var(--bg-raised); border: 1px solid var(--line);
+  border-radius: 999px; padding: 12px 22px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.88rem; font-weight: 600;
+  box-shadow: var(--shadow);
+}
+.hero-chip i { color: var(--green); font-size: 20px; }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; min-height: unset; padding-top: 40px; }
+  .hero h1 { max-width: none; }
+  .hero-media { order: -1; }
+  .hero-photo { aspect-ratio: 16 / 11; border-radius: 64px 24px 24px 24px; }
+}
+
+/* ---------- proof strip (plain layout, no cards) ---------- */
+.proof {
+  border-block: 1px solid var(--line);
+  background: var(--bg-raised);
+}
+.proof-inner {
+  max-width: 1240px; margin-inline: auto; padding: 40px 24px;
+  display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 32px;
+}
+.proof b { display: block; font-size: 1.7rem; font-weight: 800; color: var(--green); line-height: 1.3; }
+.proof span { font-size: 0.88rem; color: var(--ink-soft); font-weight: 400; }
+@media (max-width: 720px) { .proof-inner { grid-template-columns: 1fr; gap: 20px; } }
+
+/* ---------- domains: asymmetric bento ---------- */
+.section { max-width: 1240px; margin-inline: auto; padding: 104px 24px 0; }
+.section h2 { font-size: clamp(1.75rem, 3.4vw, 2.6rem); font-weight: 800; line-height: 1.4; max-width: 22ch; }
+.section .desc { margin-top: 14px; color: var(--ink-soft); font-weight: 300; max-width: 52ch; }
+
+.bento {
+  margin-top: 52px;
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(230px, auto);
+}
+.cell {
+  border-radius: 28px; padding: 34px 30px;
+  background: var(--bg-raised); border: 1px solid var(--line);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative; overflow: hidden;
+  transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .3s;
+}
+.cell:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.cell h3 { font-size: 1.25rem; font-weight: 700; }
+.cell p { font-size: 0.93rem; font-weight: 300; color: var(--ink-soft); margin-top: 6px; }
+.cell i { font-size: 30px; color: var(--green); margin-bottom: auto; }
+.cell-green { background: var(--green); border-color: var(--green); color: var(--green-on); }
+.cell-green p { color: color-mix(in srgb, var(--green-on) 78%, transparent); }
+.cell-green i { color: var(--green-on); }
+.cell-img { padding: 0; }
+.cell-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cell-img figcaption {
+  position: relative; margin-top: auto;
+  padding: 120px 26px 24px; color: #fff;
+  background: linear-gradient(to top, rgba(23, 26, 20, 0.72), transparent);
+  font-weight: 600; font-size: 1.1rem;
+}
+.cell-wide { grid-column: span 2; }
+.cell-tall { grid-row: span 2; }
+@media (max-width: 900px) {
+  .bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .cell-wide, .cell-tall { grid-column: span 1; grid-row: span 1; }
+  .cell-img { min-height: 260px; }
+}
+
+/* ---------- daily rhythm: horizontal snap pills ---------- */
+.rhythm-head { max-width: 640px; }
+.snap-row {
+  margin-top: 44px;
+  display: flex; gap: 16px; overflow-x: auto;
+  scroll-snap-type: x mandatory; padding-bottom: 14px;
+}
+.snap-row::-webkit-scrollbar { height: 6px; }
+.snap-row::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.snap-card {
+  scroll-snap-align: start;
+  flex: 0 0 min(360px, 84vw);
+  border-radius: 28px; border: 1px solid var(--line);
+  background: var(--bg-raised); padding: 30px;
+}
+.snap-card time {
+  display: inline-block; font-size: 0.8rem; font-weight: 700;
+  color: var(--green); background: var(--tint);
+  padding: 5px 14px; border-radius: 999px; margin-bottom: 16px;
+}
+.snap-card h3 { font-size: 1.15rem; font-weight: 700; }
+.snap-card p { margin-top: 8px; font-size: 0.94rem; font-weight: 300; color: var(--ink-soft); }
+
+/* ---------- testimonial ---------- */
+.quote-section {
+  margin-top: 112px; padding: 104px 24px;
+  background: var(--tint);
+}
+.quote-wrap { max-width: 780px; margin-inline: auto; text-align: center; }
+.quote-wrap blockquote {
+  font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+  font-weight: 500; line-height: 1.85;
+  transition: opacity .35s;
+}
+.quote-wrap blockquote::before { content: "\201C"; display: block; font-size: 4rem; line-height: 0.6; color: var(--green); margin-bottom: 18px; }
+.quote-wrap figcaption { margin-top: 26px; font-size: 0.92rem; color: var(--ink-soft); transition: opacity .35s; }
+.quote-wrap figcaption b { color: var(--ink); font-weight: 700; }
+.quote-nav { margin-top: 30px; display: flex; justify-content: center; gap: 10px; }
+.quote-nav button {
+  width: 46px; height: 46px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg-raised);
+  font-size: 18px; display: grid; place-items: center;
+  transition: transform .2s, border-color .2s;
+}
+.quote-nav button:hover { transform: translateY(-2px); border-color: var(--green); color: var(--green); }
+
+/* ---------- CTA ---------- */
+.cta { max-width: 1240px; margin-inline: auto; padding: 104px 24px 0; }
+.cta-box {
+  border-radius: 40px; background: var(--green); color: var(--green-on);
+  padding: clamp(56px, 8vw, 96px) clamp(28px, 6vw, 80px);
+  display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;
+}
+.cta-box h2 { font-size: clamp(1.8rem, 3.6vw, 2.7rem); font-weight: 800; line-height: 1.4; }
+.cta-box p { margin-top: 14px; font-weight: 300; opacity: 0.85; max-width: 44ch; }
+.cta-side { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.btn-inverse { background: var(--bg); color: var(--ink); }
+.btn-inverse:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.btn-outline-light { border: 1.5px solid color-mix(in srgb, var(--green-on) 55%, transparent); color: var(--green-on); }
+.btn-outline-light:hover { border-color: var(--green-on); transform: translateY(-2px); }
+@media (max-width: 860px) { .cta-box { grid-template-columns: 1fr; } }
+
+/* ---------- footer ---------- */
+footer { margin-top: 112px; border-top: 1px solid var(--line); }
+.footer-inner {
+  max-width: 1240px; margin-inline: auto; padding: 48px 24px;
+  display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.footer-inner ul { list-style: none; display: flex; gap: 26px; font-size: 0.9rem; color: var(--ink-soft); flex-wrap: wrap; }
+.footer-inner ul a:hover { color: var(--ink); }
+.copyright { text-align: center; font-size: 0.82rem; color: var(--ink-soft); padding-bottom: 40px; font-weight: 300; }
+
+/* ---------- reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .65s cubic-bezier(0.16,1,0.3,1), transform .65s cubic-bezier(0.16,1,0.3,1); }
+.reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#" aria-label="وعي، الصفحة الرئيسية">
+      <span class="brand-mark"><i class="ph ph-leaf" aria-hidden="true"></i></span>
+      وعي
+    </a>
+    <nav aria-label="التنقل الرئيسي">
+      <ul class="nav-links">
+        <li><a href="#domains">المجالات</a></li>
+        <li><a href="#rhythm">اليومي</a></li>
+        <li><a href="#stories">قصص</a></li>
+      </ul>
+    </nav>
+    <div class="nav-side">
+      <button class="theme-btn" id="themeToggle" aria-label="تبديل بين الوضع الفاتح والداكن">
+        <i class="ph ph-moon-stars" aria-hidden="true"></i>
+      </button>
+      <a class="btn btn-solid" style="padding: 10px 24px;" href="#start">ابدأ دلوقتي</a>
+    </div>
+  </div>
+</header>
+
+<!-- hero: asymmetric split, real photo, 4 text elements max -->
+<section class="hero">
+  <div>
+    <span class="kicker"><i class="ph ph-hand-heart" aria-hidden="true"></i> منصة عربية للتوازن الشامل</span>
+    <h1>وعيك هو أول خطوة نحو <strong>توازن حقيقي</strong></h1>
+    <p class="sub">صحتك ومالك وصفاء ذهنك في مكان واحد. من غير حسابات، وبياناتك على جهازك وحدك.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="#start">ابدأ دلوقتي</a>
+      <a class="btn btn-line" href="#domains">اكتشف المجالات</a>
+    </div>
+  </div>
+  <div class="hero-media reveal in">
+    <!-- TODO: replace with real brand photography, 4:5 -->
+    <img class="hero-photo" src="https://picsum.photos/seed/waey-morning-nile/880/1010" alt="ضوء الصبح على طبيعة هادية" width="880" height="1010" />
+    <div class="hero-chip"><i class="ph ph-fire" aria-hidden="true"></i> سلسلة ١٤ يوم متواصل</div>
+  </div>
+</section>
+
+<!-- proof strip: plain numbers under the hero, no cards -->
+<section class="proof" aria-label="أرقام المنصة">
+  <div class="proof-inner">
+    <div><b>+٢٥</b><span>أداة تتبع وحاسبة</span></div>
+    <div><b>٤</b><span>مجالات حياة متكاملة</span></div>
+    <div><b>١٠٠٪</b><span>بياناتك محلية على جهازك</span></div>
+  </div>
+</section>
+
+<!-- domains: asymmetric bento, 4 items in 4 cells, mixed backgrounds -->
+<section class="section" id="domains">
+  <h2 class="reveal">مش صح بس، حياتك كلها في الصورة</h2>
+  <p class="desc reveal">كل مجال ليه أدواته وتتبعه، وكلهم بيتكلموا بعض عشان تشوف التوازن كله.</p>
+
+  <div class="bento">
+    <article class="cell cell-tall cell-green reveal">
+      <i class="ph ph-heartbeat" aria-hidden="true"></i>
+      <h3>الصحة</h3>
+      <p>طبق مصري متوازن، حاسبات مياه ونوم وسعرات، جدول فحوصات دورية، ودليل إسعافات أولية كامل.</p>
+    </article>
+
+    <figure class="cell cell-wide cell-img reveal">
+      <!-- TODO: replace with real lifestyle photo -->
+      <img src="https://picsum.photos/seed/waey-market-fresh/1200/520" alt="خضار طازة في سوق" loading="lazy" />
+      <figcaption>وصفات صحية بمكونات بتلاقيها في أي سوبر ماركت مصري</figcaption>
+    </figure>
+
+    <article class="cell reveal">
+      <i class="ph ph-wallet" aria-hidden="true"></i>
+      <h3>المالية</h3>
+      <p>تتبع المصاريف اليومية، أهداف ادخار، قائمة تسوق ذكية.</p>
+    </article>
+
+    <article class="cell reveal">
+      <i class="ph ph-drop" aria-hidden="true"></i>
+      <h3>الصفاء الذهني</h3>
+      <p>متابعة المزاج، امتنان يومي، تمارين تنفس.</p>
+    </article>
+
+    <article class="cell reveal">
+      <i class="ph ph-recycle" aria-hidden="true"></i>
+      <h3>البيئة</h3>
+      <p>أثرك اليومي وعادات إعادة تدوير بسيطة.</p>
+    </article>
+  </div>
+</section>
+
+<!-- daily rhythm: horizontal scroll-snap pills -->
+<section class="section" id="rhythm">
+  <div class="rhythm-head">
+    <h2 class="reveal">ثلاث دقايق الصبح بتغيّل نهارك</h2>
+    <p class="desc reveal">روتين موجّه يقسّم يومك لتلات لحظات هادية، من غير ما تحس إنه شغل زيادة.</p>
+  </div>
+  <div class="snap-row" tabindex="0" aria-label="لحظات اليوم، اسحب لرؤية المزيد">
+    <article class="snap-card reveal">
+      <time>الصبح</time>
+      <h3>تسجيل دخول اليوم</h3>
+      <p>مزاجك وهدفك الأكبر وكوباية مياه، قبل ما تفتح أي حاجة تانية.</p>
+    </article>
+    <article class="snap-card reveal">
+      <time>الظهر</time>
+      <h3>استراحة واعية</h3>
+      <p>تنفس دقيقتين ومشي قصير، وراجع مصاريف النهار في ثواني.</p>
+    </article>
+    <article class="snap-card reveal">
+      <time>بالليل</time>
+      <h3>مراجعة الامتنان</h3>
+      <p>تلات حاجات حصلت النهاردة تستاهل شكر، وبعدها نوم أهدى.</p>
+    </article>
+  </div>
+</section>
+
+<!-- testimonial: single rotating editorial quote -->
+<section class="quote-section" id="stories">
+  <div class="quote-wrap">
+    <figure>
+      <blockquote id="qText">أول مرة أحس إن حياتي فيها توازن. التطبيق مش بيطلب حاجات مستحيلة، بيفتكرني بس أعيش أحسن.</blockquote>
+      <figcaption id="qAttr"><b>منى عبد الرحمن</b>، معلمة من القاهرة</figcaption>
+    </figure>
+    <div class="quote-nav">
+      <button id="qPrev" aria-label="القصة اللي فلات"><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
+      <button id="qNext" aria-label="القصة الجاية"><i class="ph ph-arrow-left" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta" id="start">
+  <div class="cta-box reveal">
+    <div>
+      <h2>يومك الأول يبدأ بدقيقة واحدة</h2>
+      <p>افتح المنصة، سجل مزاجك أو أول كوباية مياه، وشوف الفرق بنفسك.</p>
+    </div>
+    <div class="cta-side">
+      <a class="btn btn-inverse" href="#">ابدأ دلوقتي</a>
+      <a class="btn btn-outline-light" href="#domains">شوف الأدوات الأول</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a class="brand" href="#">
+      <span class="brand-mark"><i class="ph ph-leaf" aria-hidden="true"></i></span>
+      وعي
+    </a>
+    <nav aria-label="روابط سريعة">
+      <ul>
+        <li><a href="#">عن وعي</a></li>
+        <li><a href="#">الخصوصية</a></li>
+        <li><a href="#">الشروط</a></li>
+        <li><a href="#">تواصل معنا</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="copyright">وعي ٢٠٢٦. اتعمل في مصر بحب للتوازن.</p>
+</footer>
+
+<script>
+/* theme: respect system preference, manual toggle overrides */
+const rootEl = document.documentElement;
+const saved = localStorage.getItem('waey-theme');
+if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) {
+  rootEl.classList.add('dark');
+}
+const setIcon = () => {
+  document.querySelector('#themeToggle i').className = rootEl.classList.contains('dark') ? 'ph ph-sun' : 'ph ph-moon-stars';
+};
+setIcon();
+document.getElementById('themeToggle').addEventListener('click', () => {
+  rootEl.classList.toggle('dark');
+  localStorage.setItem('waey-theme', rootEl.classList.contains('dark') ? 'dark' : 'light');
+  setIcon();
+});
+
+/* scroll reveal via IntersectionObserver (no scroll listeners) */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (!e.isIntersecting) return;
+    setTimeout(() => e.target.classList.add('in'), Math.min(i, 5) * 80);
+    io.unobserve(e.target);
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+/* testimonials: prev/next, fade swap */
+const stories = [
+  { t: 'أول مرة أحس إن حياتي فيها توازن. التطبيق مش بيطلب حاجات مستحيلة، بيفتكرني بس أعيش أحسن.', a: '<b>منى عبد الرحمن</b>، معلمة من القاهرة' },
+  { t: 'متتبع المصاريف خلاني أدرك فلوسي بتروح فين بالظبط. وفّرت أكتر من ألف جنيه في شهرين.', a: '<b>أحمد سامي</b>، مهندس من الإسكندرية' },
+  { t: 'تمارين التنفس قبل العميلات بقت عادة ثابتة. واجهة عربية مريحة والوضع الداكن تحفة.', a: '<b>سارة فؤاد</b>، مصممة من المنصورة' }
+];
+let qi = 0;
+const qText = document.getElementById('qText');
+const qAttr = document.getElementById('qAttr');
+function showStory(n) {
+  qi = (n + stories.length) % stories.length;
+  qText.style.opacity = 0; qAttr.style.opacity = 0;
+  setTimeout(() => {
+    qText.textContent = stories[qi].t;
+    qAttr.innerHTML = stories[qi].a;
+    qText.style.opacity = 1; qAttr.style.opacity = 1;
+  }, 200);
+}
+document.getElementById('qNext').addEventListener('click', () => showStory(qi + 1));
+document.getElementById('qPrev').addEventListener('click', () => showStory(qi - 1));
+</script>
+</body>
+</html>

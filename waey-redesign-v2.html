@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>وعي | يومك، بوعي</title>
+<meta name="description" content="وعي: منصة مصرية للتوازن الشامل. صحتك، فلوسك، بيئتك، وعقلك في مكان واحد." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+/* ============================================================
+   WAEY redesign v2, built against Leonxlnx/taste-skill.
+   Mode: redesign-overhaul. Dials: VARIANCE 8 / MOTION 6 / DENSITY 3.
+   Palette family: TERRACOTTA + SLATE (cool grey base, one rust accent,
+   zero beige/brass/espresso). Rotation rule applied: previous concept
+   used Forest green, this one must not.
+   Radius rule (documented): pills for all interactive controls,
+   22px cards, 12px inner chips.
+   Type: Alexandria only, hierarchy by weight, no second family.
+   ============================================================ */
+:root {
+  --accent: #A04828;
+  --accent-strong: #83381D;
+  --accent-on: #FFF7F3;
+  --accent-tint: #F6E4DC;
+  --ink: #23272E;
+  --ink-soft: #575E69;
+  --bg: #F2F3F5;
+  --raised: #FFFFFF;
+  --line: #DBDEE4;
+  --shadow: 0 24px 60px rgba(35, 39, 46, 0.12);
+}
+html.dark {
+  --accent: #D97F5C;
+  --accent-strong: #E89A7C;
+  --accent-on: #24130C;
+  --accent-tint: #32221B;
+  --ink: #E9EBEF;
+  --ink-soft: #9CA3AE;
+  --bg: #14161A;
+  --raised: #1C1F24;
+  --line: #2B2F37;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Alexandria', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--accent); color: var(--accent-on); }
+
+.wrap { max-width: 1280px; margin-inline: auto; padding-inline: 28px; }
+
+h1, h2, h3 { line-height: 1.25; font-weight: 700; }
+.section-head { max-width: 640px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(1.7rem, 3.4vw, 2.6rem); letter-spacing: -0.01em; margin-bottom: 14px; }
+.section-head p { color: var(--ink-soft); max-width: 58ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- nav ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; }
+.brand-mark {
+  width: 38px; height: 38px; border-radius: 999px;
+  background: var(--accent); color: var(--accent-on);
+  display: grid; place-items: center; font-size: 19px; font-weight: 800;
+}
+.nav-links { display: flex; gap: 26px; list-style: none; font-size: 0.92rem; font-weight: 500; }
+.nav-links a { color: var(--ink-soft); transition: color .2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-side { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 999px; flex: none;
+  border: 1px solid var(--line); background: var(--raised);
+  display: grid; place-items: center; font-size: 18px; transition: transform .2s;
+}
+.icon-btn:hover { transform: translateY(-1px); }
+.menu-btn { display: none; }
+@media (max-width: 1020px) {
+  .nav-links { display: none; }
+  .menu-btn { display: grid; }
+}
+.mobile-menu {
+  display: none; flex-direction: column; gap: 4px;
+  padding: 12px 28px 22px; border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+.mobile-menu a { padding: 10px 0; font-weight: 600; border-bottom: 1px solid var(--line); }
+.mobile-menu.open { display: flex; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 13px 30px; border-radius: 999px; white-space: nowrap;
+  font-weight: 700; font-size: 0.98rem;
+  transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1), background .2s, box-shadow .25s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-solid { background: var(--accent); color: var(--accent-on); }
+.btn-solid:hover { background: var(--accent-strong); box-shadow: 0 12px 32px rgba(160, 72, 40, 0.35); transform: translateY(-2px); }
+html.dark .btn-solid:hover { box-shadow: 0 12px 32px rgba(217, 127, 92, 0.22); }
+.btn-ghost { border: 1.5px solid var(--line); background: var(--raised); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+html.dark .btn-solid { background: var(--accent); }
+html.dark .btn-solid:hover { background: var(--accent-strong); filter: brightness(1.05); }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 64px 96px; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  gap: 64px; align-items: center; min-height: calc(100dvh - 220px);
+}
+.hero h1 { font-size: clamp(2.3rem, 5vw, 3.9rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero-sub { margin-top: 22px; color: var(--ink-soft); font-size: 1.08rem; max-width: 48ch; }
+.hero-cta { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+.hero-media { position: relative; }
+.hero-img-main {
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: 22px; box-shadow: var(--shadow);
+}
+.hero-img-small {
+  position: absolute; bottom: -34px; inset-inline-start: -34px;
+  width: 44%; aspect-ratio: 1; object-fit: cover;
+  border-radius: 22px; border: 6px solid var(--bg);
+  box-shadow: var(--shadow);
+}
+.hero-badge {
+  position: absolute; top: 22px; inset-inline-end: -18px;
+  background: var(--raised); border: 1px solid var(--line);
+  border-radius: 999px; padding: 10px 20px; font-weight: 700; font-size: 0.88rem;
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 8px;
+}
+.hero-badge i { color: var(--accent); font-size: 20px; }
+@media (max-width: 900px) {
+  .hero { padding-block: 40px 72px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 72px; min-height: 0; }
+  .hero-img-small { inset-inline-start: 12px; bottom: -30px; }
+}
+
+/* ---------- stats band ---------- */
+.stats-band {
+  border-block: 1px solid var(--line);
+  background: var(--raised);
+}
+.stats-inner {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.stat { padding: 40px 28px; text-align: center; }
+.stat + .stat { border-inline-start: 1px solid var(--line); }
+.stat b { display: block; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--accent); }
+.stat span { color: var(--ink-soft); font-size: 0.92rem; }
+@media (max-width: 760px) {
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(3) { border-inline-start: none; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
+/* ---------- bento ---------- */
+.bento-section { padding-block: 110px; }
+.bento {
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(6, 1fr);
+}
+.cell {
+  background: var(--raised); border: 1px solid var(--line);
+  border-radius: 22px; padding: 30px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cell:hover { transform: translateY(-4px); }
+.cell i { font-size: 30px; color: var(--accent); }
+.cell h3 { font-size: 1.15rem; }
+.cell p { color: var(--ink-soft); font-size: 0.94rem; }
+.cell-wide { grid-column: span 3; }
+.cell-slim { grid-column: span 2; }
+.cell-accent { background: var(--accent); color: var(--accent-on); border-color: transparent; }
+.cell-accent p { color: color-mix(in srgb, var(--accent-on) 82%, transparent); }
+.cell-accent i { color: var(--accent-on); }
+.cell-photo { padding: 0; overflow: hidden; position: relative; min-height: 240px; }
+.cell-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cell-photo figcaption {
+  position: absolute; inset-inline: 0; bottom: 0; padding: 40px 24px 20px;
+  background: linear-gradient(to top, rgba(20, 22, 26, 0.78), transparent);
+  color: #fff; font-weight: 700;
+}
+@media (max-width: 900px) {
+  .cell-wide, .cell-slim { grid-column: span 6; }
+}
+
+/* ---------- daily ritual ---------- */
+.ritual { padding-block: 110px; background: var(--raised); border-block: 1px solid var(--line); }
+.ritual-grid { display: grid; grid-template-columns: 0.9fr 1.4fr; gap: 70px; align-items: start; }
+.tracker-rail {
+  display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: 18px;
+}
+.tracker-rail::-webkit-scrollbar { height: 6px; }
+.tracker-rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; }
+.track-card {
+  scroll-snap-align: start; flex: 0 0 250px;
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 22px; padding: 26px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.track-card h3 { font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
+.track-card h3 i { color: var(--accent); font-size: 22px; }
+.track-card p { font-size: 0.86rem; color: var(--ink-soft); }
+.water-count { font-size: 2.1rem; font-weight: 800; color: var(--accent); line-height: 1.1; }
+.water-controls { display: flex; align-items: center; gap: 10px; }
+.round-btn {
+  width: 42px; height: 42px; border-radius: 999px; flex: none;
+  background: var(--accent); color: var(--accent-on); font-size: 20px;
+  display: grid; place-items: center; transition: transform .15s;
+}
+.round-btn:active { transform: scale(0.9); }
+.round-btn.alt { background: var(--raised); color: var(--ink); border: 1.5px solid var(--line); }
+.mood-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.mood-chip {
+  width: 46px; height: 46px; border-radius: 999px; font-size: 22px;
+  border: 1.5px solid var(--line); background: var(--raised);
+  display: grid; place-items: center; transition: all .2s;
+}
+.mood-chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-tint); transform: scale(1.08); }
+.streak-num { font-size: 2.1rem; font-weight: 800; color: var(--accent); line-height: 1.1; }
+@media (max-width: 900px) {
+  .ritual-grid { grid-template-columns: 1fr; gap: 44px; }
+}
+
+/* ---------- zigzag pillars ---------- */
+.pillar { padding-block: 100px; }
+.pillar + .pillar { padding-top: 20px; }
+.pillar-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center;
+}
+.pillar-grid.flip .pillar-media { order: 2; }
+.pillar-media img {
+  width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 22px; box-shadow: var(--shadow);
+}
+.pillar-body h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); margin-bottom: 16px; }
+.pillar-body > p { color: var(--ink-soft); margin-bottom: 26px; max-width: 55ch; }
+.pillar-list { list-style: none; display: grid; gap: 14px; margin-bottom: 30px; }
+.pillar-list li { display: flex; gap: 12px; align-items: baseline; font-weight: 500; }
+.pillar-list i { color: var(--accent); font-size: 18px; translate: 0 3px; flex: none; }
+@media (max-width: 900px) {
+  .pillar-grid { grid-template-columns: 1fr; gap: 40px; }
+  .pillar-grid.flip .pillar-media { order: 0; }
+}
+
+/* ---------- money demo ---------- */
+.money-demo {
+  margin-top: 8px; background: var(--raised); border: 1px solid var(--line);
+  border-radius: 22px; padding: 30px; display: flex; gap: 30px; align-items: center;
+}
+.ring-wrap { position: relative; width: 130px; height: 130px; flex: none; }
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: var(--line); stroke-width: 11; }
+.ring-fill { fill: none; stroke: var(--accent); stroke-width: 11; stroke-linecap: round; transition: stroke-dashoffset .8s cubic-bezier(0.16, 1, 0.3, 1); }
+.ring-label {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-weight: 800; font-size: 1.35rem;
+}
+.money-info { display: flex; flex-direction: column; gap: 6px; }
+.money-info b { font-size: 1.05rem; }
+.money-info span { color: var(--ink-soft); font-size: 0.9rem; }
+@media (max-width: 560px) { .money-demo { flex-direction: column; text-align: center; } }
+
+/* ---------- learn band ---------- */
+.learn { padding-block: 100px; background: var(--raised); border-block: 1px solid var(--line); }
+.learn-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; }
+.learn-col h2 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); margin-bottom: 24px; }
+.learn-col h2 i { color: var(--accent); margin-inline-end: 10px; }
+.group { padding-block: 18px; }
+.group + .group { border-top: 1px solid var(--line); }
+.group h3 { font-size: 1.02rem; margin-bottom: 4px; }
+.group p { color: var(--ink-soft); font-size: 0.92rem; }
+@media (max-width: 820px) { .learn-cols { grid-template-columns: 1fr; gap: 50px; } }
+
+/* ---------- recipes rail ---------- */
+.recipes { padding-block: 110px; }
+.recipe-rail { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 18px; }
+.recipe-rail::-webkit-scrollbar { height: 6px; }
+.recipe-rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; }
+.recipe-card {
+  scroll-snap-align: start; flex: 0 0 300px;
+  background: var(--raised); border: 1px solid var(--line);
+  border-radius: 22px; overflow: hidden;
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.recipe-card:hover { transform: translateY(-5px); }
+.recipe-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.recipe-body { padding: 22px 24px 26px; }
+.recipe-body h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.recipe-body p { color: var(--ink-soft); font-size: 0.88rem; margin-bottom: 14px; }
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  font-size: 0.76rem; font-weight: 600; padding: 4px 13px;
+  border-radius: 999px; background: var(--accent-tint); color: var(--accent);
+}
+
+/* ---------- quote ---------- */
+.quote-band { padding-block: 110px; background: var(--accent); color: var(--accent-on); }
+.quote-band blockquote {
+  max-width: 820px; margin-inline: auto; text-align: center;
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem); font-weight: 600; line-height: 1.7;
+}
+.quote-band figcaption {
+  margin-top: 26px; text-align: center; font-size: 0.95rem;
+  opacity: 0.85;
+}
+.quote-band figcaption b { display: block; font-size: 1rem; }
+
+/* ---------- final cta + footer ---------- */
+.final { padding-block: 120px; text-align: center; }
+.final h2 { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.01em; }
+.final p { color: var(--ink-soft); max-width: 52ch; margin: 18px auto 36px; }
+footer { border-top: 1px solid var(--line); padding-block: 44px; }
+.footer-grid { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; align-items: center; }
+.footer-links { display: flex; gap: 24px; list-style: none; font-size: 0.9rem; color: var(--ink-soft); flex-wrap: wrap; }
+.footer-links a:hover { color: var(--accent); }
+
+/* ---------- reveal motion (MOTION_INTENSITY 6: entry reveals + hover physics) ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#"><span class="brand-mark">و</span> وعي</a>
+    <nav aria-label="التنقل الرئيسي">
+      <ul class="nav-links">
+        <li><a href="#ritual">يومك</a></li>
+        <li><a href="#health">الصحة</a></li>
+        <li><a href="#money">المالية</a></li>
+        <li><a href="#learn">البيئة والتعليم</a></li>
+        <li><a href="#recipes">الوصفات</a></li>
+        <li><a href="#assistant">المساعد</a></li>
+      </ul>
+    </nav>
+    <div class="nav-side">
+      <button id="themeBtn" class="icon-btn" aria-label="تبديل الوضع الليلي"><i class="ph ph-moon"></i></button>
+      <a href="#start" class="btn btn-solid" style="padding:11px 24px;">ابدأ رحلتك</a>
+      <button id="menuBtn" class="icon-btn menu-btn" aria-label="القائمة"><i class="ph ph-list"></i></button>
+    </div>
+  </div>
+  <nav id="mobileMenu" class="mobile-menu" aria-label="قائمة الجوال">
+    <a href="#ritual">يومك</a>
+    <a href="#health">الصحة</a>
+    <a href="#money">المالية</a>
+    <a href="#learn">البيئة والتعليم</a>
+    <a href="#recipes">الوصفات</a>
+    <a href="#assistant">المساعد</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO: asymmetric split, 4 text elements exactly -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>التوازن مش حدث.<br>هو <em>تفصيلة صغيرة</em> كل يوم.</h1>
+        <p class="hero-sub">وعي بيجمع صحتك، فلوسك، محيطك، وعقلك في مكان واحد، بعادات يومية بسيطة تقدر فعلاً تستمر عليها.</p>
+        <div class="hero-cta">
+          <a href="#start" class="btn btn-solid">ابدأ رحلتك</a>
+          <a href="#assistant" class="btn btn-ghost">جرب المساعد الذكي</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <!-- TODO: replace with real brand photography, 4:5 hero + square detail -->
+        <img class="hero-img-main" src="https://picsum.photos/seed/waey-morning-light/900/1125" alt="إضاءة الصباح على طاولة بسيطة" />
+        <img class="hero-img-small" src="https://picsum.photos/seed/waey-journal-tea/600/600" alt="دفتر يوميات وكوب شاي" />
+        <span class="hero-badge"><i class="ph ph-fire"></i> سلسلة ١٢ يوم</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND: full-width numbers -->
+  <section class="stats-band" aria-label="أرقام المنصة">
+    <div class="wrap stats-inner">
+      <!-- mock numbers for the concept -->
+      <div class="stat reveal"><b>+٤٠</b><span>أداة ومتتبّع تفاعلي</span></div>
+      <div class="stat reveal"><b>٦</b><span>محاور للتوازن الشامل</span></div>
+      <div class="stat reveal"><b>١٠٠٪</b><span>بياناتك على جهازك</span></div>
+      <div class="stat reveal"><b>بدون نت</b><span>المنصة تشتغل أوفلاين</span></div>
+    </div>
+  </section>
+
+  <!-- BENTO: platform features, mixed cells -->
+  <section class="bento-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>كل حاجة بتؤثر على وعيك، في مكان واحد</h2>
+        <p>مش تطبيق تتبّع بس. منصة كاملة بتربط عاداتك اليومية بحياتك الحقيقية.</p>
+      </div>
+      <div class="bento">
+        <article class="cell cell-wide cell-accent reveal">
+          <i class="ph ph-chats-circle"></i>
+          <h3>مساعد ذكي بيفهم مصري</h3>
+          <p>اسأل عن أي حاجة: عادة جديدة، وصفة صحية، أو خطة ادخار. المساعد بيرد عليك بلغتك وبيربط إجابته ببياناتك.</p>
+        </article>
+        <figure class="cell cell-photo cell-slim reveal">
+          <img src="https://picsum.photos/seed/waey-desk-calm/700/700" alt="مساحة عمل هادية" loading="lazy" />
+          <figcaption>رفاهيتك تبدأ من مساحتك</figcaption>
+        </figure>
+        <article class="cell cell-slim reveal">
+          <i class="ph ph-seal-check"></i>
+          <h3>سلاسل وشارات</h3>
+          <p>نظام تحفيز كامل: سلسلة يومية، استرجاع بعد الانقطاع، وشارات إنجاز تفتح مع الاستمرارية.</p>
+        </article>
+        <article class="cell cell-slim reveal">
+          <i class="ph ph-file-pdf"></i>
+          <h3>تقرير PDF بالعربي</h3>
+          <p>صدّر ملخص تقدمك بخط أميري الأنيق وشاركه مع دكتورك أو مدربك بضغطة واحدة.</p>
+        </article>
+        <figure class="cell cell-photo cell-slim reveal">
+          <img src="https://picsum.photos/seed/waey-cooking-table/700/700" alt="مكونات طازجة على ترابيزة" loading="lazy" />
+          <figcaption>أكل بيتي بواقعية</figcaption>
+        </figure>
+        <article class="cell cell-wide reveal">
+          <i class="ph ph-cloud-slash"></i>
+          <h3>بياناتك ملكك</h3>
+          <p>كل المتتبعات محفوظة على جهازك أولاً، مع نسخة احتياطية اختيارية وتشغيل كامل بدون إنترنت.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAILY RITUAL: split head + horizontal snap tracker rail -->
+  <section class="ritual" id="ritual">
+    <div class="wrap ritual-grid">
+      <div class="section-head reveal" style="margin-bottom:0;">
+        <h2>طقسك اليومي في دقيقتين</h2>
+        <p>ستة متتبعات سريعة تعمل حتى وأنت بتشتغل. اسحب وشوف.</p>
+      </div>
+      <div class="tracker-rail">
+        <article class="track-card">
+          <h3><i class="ph ph-drop"></i> المياه</h3>
+          <p class="water-count"><span id="waterNum">٥</span> / ٨ أكواب</p>
+          <div class="water-controls">
+            <button class="round-btn" id="waterAdd" aria-label="زود كوباية"><i class="ph ph-plus"></i></button>
+            <button class="round-btn alt" id="waterSub" aria-label="قلل كوباية"><i class="ph ph-minus"></i></button>
+          </div>
+        </article>
+        <article class="track-card">
+          <h3><i class="ph ph-smiley"></i> المزاج</h3>
+          <p>إزاي كان يومك؟</p>
+          <div class="mood-row" role="group" aria-label="اختيار المزاج">
+            <button class="mood-chip" aria-pressed="false" data-mood="ضعيف">😕</button>
+            <button class="mood-chip" aria-pressed="false" data-mood="عادي">😐</button>
+            <button class="mood-chip" aria-pressed="true" data-mood="كويس">🙂</button>
+            <button class="mood-chip" aria-pressed="false" data-mood="مبسوط">😄</button>
+          </div>
+        </article>
+        <article class="track-card">
+          <h3><i class="ph ph-fire"></i> السلسلة</h3>
+          <p class="streak-num">١٢ يوم</p>
+          <p>استمررت أطول من ٨٧٪ من مستخدمي الشهر ده.</p>
+        </article>
+        <article class="track-card">
+          <h3><i class="ph ph-hand-heart"></i> الامتنان</h3>
+          <p>اكتب حاجة واحدة كنت شاكرها النهاردة.</p>
+          <a href="#" class="btn btn-ghost" style="padding:10px 22px; font-size:0.88rem;">افتح الدفتر</a>
+        </article>
+        <article class="track-card">
+          <h3><i class="ph ph-moon-stars"></i> النوم</h3>
+          <p>حاسبة دورة النوم تحدد أفضل وقت تنام وتصحى.</p>
+          <a href="#" class="btn btn-ghost" style="padding:10px 22px; font-size:0.88rem;">احسبها</a>
+        </article>
+        <article class="track-card">
+          <h3><i class="ph ph-target"></i> التحدي</h3>
+          <p>تحدي النهاردة: امشي ٢٠ دقيقة من غير موبايل.</p>
+          <a href="#" class="btn btn-ghost" style="padding:10px 22px; font-size:0.88rem;">اقبل التحدي</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZIGZAG 1: health -->
+  <section class="pillar" id="health">
+    <div class="wrap pillar-grid">
+      <div class="pillar-media reveal">
+        <img src="https://picsum.photos/seed/waey-firstaid-kit/1000/800" alt="شنطة إسعافات أولية" loading="lazy" />
+      </div>
+      <div class="pillar-body reveal">
+        <h2>صحتك، بمعايير موجودة فعلاً في مصر</h2>
+        <p>أدوات مبنية على واقع الحياة هنا، مش محتوى مترجم عن واقع مش بتاعك.</p>
+        <ul class="pillar-list">
+          <li><i class="ph ph-hospital"></i> دليل مستشفيات وصيدليات قريبين منك</li>
+          <li><i class="ph ph-heartbeat"></i> إسعافات أولية خطوة بخطوة بالعربي</li>
+          <li><i class="ph ph-calendar-check"></i> جدول الفحوصات الدورية بسنك</li>
+          <li><i class="ph ph-bowl-food"></i> الطبق المصري المتوازن وحاسبة السعرات</li>
+        </ul>
+        <a href="#" class="btn btn-ghost">استكشف الصحة</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZIGZAG 2: money, flipped -->
+  <section class="pillar" id="money">
+    <div class="wrap pillar-grid flip">
+      <div class="pillar-media reveal">
+        <img src="https://picsum.photos/seed/waey-saving-jar/1000/800" alt="حصالة ادخار على مكتب" loading="lazy" />
+      </div>
+      <div class="pillar-body reveal">
+        <h2>فلوسك ليها هدف، مش مجرد رصيد</h2>
+        <p>تتبع المصروف، أهداف الادخار، وقائمة التسوق الذكية، كلها شغالة مع بعض.</p>
+        <ul class="pillar-list">
+          <li><i class="ph ph-wallet"></i> مسجل مصاريف سريع بفئات جاهزة</li>
+          <li><i class="ph ph-piggy-bank"></i> أهداف ادخار بشريط تقدم مرئي</li>
+          <li><i class="ph ph-basket"></i> قائمة تسوق تتحدث من وصفاتك</li>
+          <li><i class="ph ph-shield-warning"></i> تنبيهات من فخاخ مالية منتشرة</li>
+        </ul>
+        <div class="money-demo">
+          <div class="ring-wrap" aria-label="تقدم هدف الادخار: ٦٨٪">
+            <svg width="130" height="130" viewBox="0 0 130 130" aria-hidden="true">
+              <circle class="ring-track" cx="65" cy="65" r="56"></circle>
+              <circle class="ring-fill" id="goalRing" cx="65" cy="65" r="56"
+                stroke-dasharray="351.9" stroke-dashoffset="112.6"></circle>
+            </svg>
+            <span class="ring-label" id="goalPct">٦٨٪</span>
+          </div>
+          <div class="money-info">
+            <b>هدف: عيدية الصيف</b>
+            <span>٩٬٦٠٠ من ١٤٬٠٠٠ جنيه</span>
+            <button class="round-btn alt" id="goalBoost" style="align-self:flex-start;" aria-label="ضيف ٢٠٠ جنيه للهدف">
+              <i class="ph ph-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARN BAND: environment + education, two grouped columns (no card rows) -->
+  <section class="learn" id="learn">
+    <div class="wrap learn-cols">
+      <div class="learn-col reveal">
+        <h2><i class="ph ph-leaf"></i> بيئة أهدى</h2>
+        <div class="group">
+          <h3>عادات يومية بأثر حقيقي</h3>
+          <p>فصل النفايات، ترشيد الكهرباء والمياه، بخطوات محسوبة لظروف البيوت المصرية.</p>
+        </div>
+        <div class="group">
+          <h3>أثرك التراكمي</h3>
+          <p>شوف مجموع توفيرك للمياه والطاقة من أول ما بدأت، يوم بيوم.</p>
+        </div>
+        <div class="group">
+          <h3>إعادة تدوير بمكان</h3>
+          <p>أماكن جمع قريب منك وإرشادات تصحيحية لكل نوع.</p>
+        </div>
+      </div>
+      <div class="learn-col reveal">
+        <h2><i class="ph ph-books"></i> تعليم يناسب عقلك</h2>
+        <div class="group">
+          <h3>اختبار VARK</h3>
+          <p>اكتشف أسلوب تعلّمك (بصري، سمعي، قرائي، حركي) وخُد توصيات عليه.</p>
+        </div>
+        <div class="group">
+          <h3>عافية رقمية</h3>
+          <p>تحكم في وقت الشاشة وإشعاراتك بحزم أدوات عملية.</p>
+        </div>
+        <div class="group">
+          <h3>صحة مكان العمل</h3>
+          <p>تمارين مكتبية ونظافة نوم للموظفين والطلبة.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECIPES: media card rail -->
+  <section class="recipes" id="recipes">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>وصفات مصرية بمكونات موجودة عندك</h2>
+        <p>كل وصفة بالعربي والإنجليزي، بقيم غذائية، وبتيجي من قائمة التسوق تلقائياً.</p>
+      </div>
+      <div class="recipe-rail">
+        <article class="recipe-card reveal">
+          <img src="https://picsum.photos/seed/waey-koshary-bowl/700/520" alt="طبق كشري" loading="lazy" />
+          <div class="recipe-body">
+            <h3>كشري خفيف</h3>
+            <p>نسخة أقل دهون من الطبق الوطني، بنفس الروح.</p>
+            <div class="tag-row"><span class="chip">٤٢٠ سعرات</span><span class="chip">٢٥ دقيقة</span></div>
+          </div>
+        </article>
+        <article class="recipe-card reveal">
+          <img src="https://picsum.photos/seed/waey-salad-fresh/700/520" alt="سلطة طازجة" loading="lazy" />
+          <div class="recipe-body">
+            <h3>سلطة البرجموط</h3>
+            <p>خضار موسمية بصلصة برجموط وخردل، مشروعة وسريعة.</p>
+            <div class="tag-row"><span class="chip">١٨٠ سعرات</span><span class="chip">١٠ دقايق</span></div>
+          </div>
+        </article>
+        <article class="recipe-card reveal">
+          <img src="https://picsum.photos/seed/waey-lentil-soup/700/520" alt="شوربة عدس" loading="lazy" />
+          <div class="recipe-body">
+            <h3>شوربة عدس بالكمون</h3>
+            <p>غداء شتوي مشبع ببروتين نباتي وكوباية واحدة تكفي.</p>
+            <div class="tag-row"><span class="chip">٣١٠ سعرات</span><span class="chip">٣٥ دقيقة</span></div>
+          </div>
+        </article>
+        <article class="recipe-card reveal">
+          <img src="https://picsum.photos/seed/waey-ful-plate/700/520" alt="طبق فول" loading="lazy" />
+          <div class="recipe-body">
+            <h3>فول بالخضار</h3>
+            <p>الفطار الكلاسيكي بتركيبة متوازنة تخلّيك شبعان لحد العشا.</p>
+            <div class="tag-row"><span class="chip">٢٩٠ سعرات</span><span class="chip">١٥ دقيقة</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE BAND: single accent-color block, quote ≤ 3 lines -->
+  <figure class="quote-band">
+    <blockquote>
+      «أول مرة أحافظ على عادة أكتر من أسبوعين. التتبع البسيط والسلسلة خلّوا الفرق.»
+    </blockquote>
+    <figcaption><b>منى عبد الرحمن</b>مصممة جرافيك، القاهرة</figcaption>
+  </figure>
+
+  <!-- ASSISTANT STRIP -->
+  <section class="pillar" id="assistant" style="padding-block: 100px 40px;">
+    <div class="wrap pillar-grid">
+      <div class="pillar-media reveal">
+        <img src="https://picsum.photos/seed/waey-phone-chat/1000/800" alt="جوال على كرسي بجانب نافذة" loading="lazy" />
+      </div>
+      <div class="pillar-body reveal">
+        <h2>المساعد اللي بيسأل عليك</h2>
+        <p>مش بوت إجابات عامة. المساعد شايف متتبعاتك (ولو محلياً على جهازك) وبيقترح الخطوة الجديدة المناسبة ليك.</p>
+        <ul class="pillar-list">
+          <li><i class="ph ph-chat-circle-text"></i> ردود بالمصري، بدون تعقيد</li>
+          <li><i class="ph ph-lock-key"></i> خصوصية أولًا: المحادثة مش بتتخزن على السيرفر</li>
+          <li><i class="ph ph-lightning"></i> اقتراحات فورية مربوطة بتقدمك الحقيقي</li>
+        </ul>
+        <a href="#" class="btn btn-solid">ابدأ محادثة</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final" id="start">
+    <div class="wrap reveal">
+      <h2>النهاردة أفضل يوم تبدأ فيه.</h2>
+      <p>من غير حساب ولا تعقيد. افتح الموقع، اختار عادة واحدة، وخلّي الباقي على وعي.</p>
+      <a href="#" class="btn btn-solid" style="padding:16px 44px; font-size:1.05rem;">ابدأ رحلتك</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <a class="brand" href="#"><span class="brand-mark">و</span> وعي</a>
+    <ul class="footer-links">
+      <li><a href="#">عن وعي</a></li>
+      <li><a href="#">الأسئلة الشائعة</a></li>
+      <li><a href="#">الخصوصية</a></li>
+      <li><a href="#">الشروط</a></li>
+      <li><a href="#">اتصل بينا</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var d = document;
+
+  // Theme: system preference by default, manual toggle persists
+  var root = d.documentElement;
+  var themeBtn = d.getElementById('themeBtn');
+  var stored = null;
+  try { stored = localStorage.getItem('waey-theme'); } catch (e) {}
+  if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    root.classList.add('dark');
+  }
+  function syncThemeIcon() {
+    themeBtn.innerHTML = root.classList.contains('dark')
+      ? '<i class="ph ph-sun"></i>' : '<i class="ph ph-moon"></i>';
+  }
+  syncThemeIcon();
+  themeBtn.addEventListener('click', function () {
+    root.classList.toggle('dark');
+    try { localStorage.setItem('waey-theme', root.classList.contains('dark') ? 'dark' : 'light'); } catch (e) {}
+    syncThemeIcon();
+  });
+
+  // Mobile menu
+  var menuBtn = d.getElementById('menuBtn');
+  var mobileMenu = d.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('open'); });
+  mobileMenu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') mobileMenu.classList.remove('open');
+  });
+
+  // Water tracker demo
+  var AR = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  function toArabic(n) { return String(n).split('').map(function(c){ return AR[+c] !== undefined ? AR[+c] : c; }).join(''); }
+  var water = 5, waterEl = d.getElementById('waterNum');
+  d.getElementById('waterAdd').addEventListener('click', function () {
+    if (water < 8) water++;
+    else water = 1; // new day resets the counter
+    waterEl.textContent = toArabic(water);
+  });
+  d.getElementById('waterSub').addEventListener('click', function () {
+    if (water > 0) water--;
+    waterEl.textContent = toArabic(water);
+  });
+
+  // Mood chips
+  d.querySelectorAll('.mood-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      d.querySelectorAll('.mood-chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+    });
+  });
+
+  // Savings goal ring demo
+  var goal = 9600, GOAL_MAX = 14000, RING = 351.9;
+  d.getElementById('goalBoost').addEventListener('click', function () {
+    goal += 200;
+    var pct = Math.min(Math.round(goal / GOAL_MAX * 100), 100);
+    d.getElementById('goalRing').style.strokeDashoffset = String(RING * (1 - pct / 100));
+    d.getElementById('goalPct').textContent = toArabic(pct) + '٪';
+  });
+
+  // Scroll reveals (IntersectionObserver, never window scroll listeners)
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = d.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

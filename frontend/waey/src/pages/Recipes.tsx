@@ -1,12 +1,15 @@
 import { useState, useMemo, useEffect } from "react";
-import { Clock, Flame, Coins, X, Heart, Utensils, Sunrise, Sun, MoonStar, Cake, CupSoda, Leaf, Zap, HeartPulse, Dumbbell, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Clock, Flame, Coins, X, Heart, Utensils, Sunrise, Sun, MoonStar, Cake, CupSoda, Leaf, Zap, HeartPulse, Dumbbell, Users, ShoppingBasket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { getAdminRecipes, type AdminItem } from "@/lib/adminContent";
 import { getFavorites, toggleFavorite } from "@/lib/favorites";
+import { addToShoppingList } from "@/lib/shoppingList";
 import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
+import { toast } from "sonner";
 
 // Meal glyph: derived from the recipe's Arabic tags so data stays emoji-free.
 const TAG_STYLE: { match: string; Icon: LucideIcon; chip: string }[] = [
@@ -144,6 +147,10 @@ const Recipes = () => {
                 <Heart className={`size-3.5 ${favOnly ? "fill-current" : ""}`} />
                 {t('recipes.favorites')} ({favs.length})
               </button>
+              <Link to="/shopping-list" className="px-4 py-1.5 rounded-full text-xs font-bold bg-secondary text-foreground hover:bg-muted flex items-center gap-1 hover:scale-105 active:scale-95 transition-all duration-300">
+                <ShoppingBasket className="size-3.5 text-primary" />
+                {t('shopping.title')}
+              </Link>
               {ALL_TAGS.map((tag) => (
                 <button
                   key={tag}
@@ -182,6 +189,17 @@ const Recipes = () => {
                       aria-label={t('recipes.favorites')}
                     >
                       <Heart className={`size-4 ${isFav ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToShoppingList(c.ingredients);
+                        toast(t('shopping.added'));
+                      }}
+                      className="absolute top-4 left-16 size-10 rounded-full bg-secondary hover:bg-primary/10 hover:scale-105 active:scale-95 flex items-center justify-center transition-all duration-300"
+                      aria-label={t('shopping.addToCart')}
+                    >
+                      <ShoppingBasket className="size-4 text-primary" />
                     </button>
                     <button onClick={() => setOpen(r)} className="text-right w-full">
                       <div className={`size-14 rounded-2xl flex items-center justify-center mb-3 ${dishGlyph(r.tags).chip}`}>
@@ -241,6 +259,16 @@ const Recipes = () => {
                 aria-label={t('recipes.favorites')}
               >
                 <Heart className={`size-4 ${favs.includes(getId(open)) ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
+              </button>
+              <button
+                onClick={() => {
+                  addToShoppingList(c.ingredients);
+                  toast(t('shopping.added'));
+                }}
+                className="absolute top-4 left-28 size-10 bg-secondary rounded-full flex items-center justify-center hover:bg-primary/10 hover:scale-105 active:scale-95 transition-all duration-300"
+                aria-label={t('shopping.addToCart')}
+              >
+                <ShoppingBasket className="size-4 text-primary" />
               </button>
               <div className={`size-16 rounded-2xl flex items-center justify-center mb-4 ${dishGlyph(open.tags).chip}`}>
                 {(() => { const G = dishGlyph(open.tags).Icon; return <G className="size-8" />; })()}

@@ -12,6 +12,7 @@ import HealthCalculator from "@/components/HealthCalculator";
 import CalorieCalculator from "@/components/CalorieCalculator";
 import HospitalFinder from "@/components/HospitalFinder";
 import BreathingExercise from "@/components/BreathingExercise";
+import GuidedRoutine from "@/components/GuidedRoutine";
 import SleepCycleCalculator from "@/components/SleepCycleCalculator";
 import WaterCalculator from "@/components/WaterCalculator";
 import EgyptianPlate from "@/components/EgyptianPlate";
@@ -187,6 +188,7 @@ const Health = () => {
           <HeartPulse className="size-6" />
           {t('health.tools')}
         </h2>
+        <GuidedRoutine />
         <HealthCalculator />
         <CalorieCalculator />
         <div className="px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-5 pb-20">

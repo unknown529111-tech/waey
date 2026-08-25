@@ -5,11 +5,9 @@
 @tailwind utilities;
 
 /* ────────────────────────────────────────────────────────────
-   Waey — "Warm Editorial Ledger"
-   An earthy, hand-set wellness-journal system:
-   cream linen paper, inked moss green, ochre-amber marks,
-   one sharp corner per card, hairlines over heavy shadows,
-   and wide vibrant Alexandria type.
+   Waey — warm nature palette
+   Lime-washed cream paper, inked moss green primary, warm
+   sand/amber accents. Serif display type over the same canvas.
    ──────────────────────────────────────────────────────────── */
 
 @layer base {
@@ -44,7 +42,7 @@
     --input: 36 22% 82%;
     --ring: 92 22% 30%;
 
-    --radius: 1.5rem;
+    --radius: 1rem;
 
     /* Decorative + bespoke tokens */
     --leaf-light: 96 32% 91%;
@@ -57,7 +55,7 @@
 
     --footer: 42 16% 16%;
 
-    /* Water (sea-glass blue, not default Tailwind blue) */
+    /* Data accent (charts, trackers, sparklines) */
     --water: 200 42% 38%;
     --water-soft: 200 44% 90%;
   }
@@ -121,14 +119,6 @@
     font-size: 16px;
     line-height: 1.9;
     background-color: hsl(var(--background));
-    background-image:
-      radial-gradient(1100px 700px at 88% -10%, hsl(var(--water-soft) / 0.9), transparent 60%),
-      radial-gradient(950px 650px at 92% 30%, hsl(var(--leaf-light) / 0.9), transparent 62%),
-      radial-gradient(1000px 700px at 12% 20%, hsl(var(--leaf-light) / 0.75), transparent 60%),
-      radial-gradient(900px 680px at 4% 108%, hsl(var(--sun-warm) / 0.95), transparent 62%),
-      radial-gradient(700px 500px at 60% 78%, hsl(var(--water-soft) / 0.7), transparent 60%),
-      radial-gradient(500px 400px at 30% 60%, hsl(var(--sun-warm) / 0.7), transparent 60%);
-    background-attachment: fixed;
   }
 
   [dir="ltr"] body,
@@ -137,10 +127,10 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Alexandria", sans-serif;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.22;
+    font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
     text-wrap: balance;
     color: hsl(var(--foreground));
   }
@@ -161,112 +151,55 @@
   }
 
   :focus-visible {
-    outline: 2px solid hsl(var(--primary));
+    outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
   }
 }
 
-/* ── Paper grain overlay (very faint, tactile) ─────────────── */
-@layer base {
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.05;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 220px 220px;
-  }
-
-  .dark body::after {
-    opacity: 0.07;
-    mix-blend-mode: screen;
-  }
-}
-
 @layer components {
-  /* ── Frosted glass utility ────────────────────────────────
-     Translucent panel + backdrop blur + soft inner glow.
-     Keeps the warm palette, adds the liquid-glass feel. */
+  /* ── Glass panel ──────────────────────────────────────────
+     Frosted glass over the dark canvas — the one true depth
+     cue in the system (backdrop blur, no drop shadows). */
   .glass {
-    background: hsl(var(--card) / 0.5);
-    -webkit-backdrop-filter: blur(22px) saturate(1.5);
-    backdrop-filter: blur(22px) saturate(1.5);
-    border: 1px solid hsl(var(--foreground) / 0.08);
-    box-shadow:
-      inset 0 1px 0 hsl(0 0% 100% / 0.5),
-      0 12px 32px -14px hsl(var(--foreground) / 0.12);
+    background: hsl(var(--card) / 0.55);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--foreground) / 0.09);
   }
 
-  /* Global: any surface using the card tint is frosted glass.
-     Browser support varies; WebGL liquid-glass is layered on via
-     liquidGL (src/hooks/useLiquidGlass) where available. */
+  /* Global: any surface using the card tint is frosted glass. */
   .bg-card {
-    -webkit-backdrop-filter: blur(20px) saturate(1.45);
-    backdrop-filter: blur(20px) saturate(1.45);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
   }
 
-  .dark .glass {
-    background: hsl(var(--card) / 0.42);
-    box-shadow:
-      inset 0 1px 0 hsl(0 0% 100% / 0.08),
-      0 12px 32px -12px hsl(0 0% 0% / 0.45);
-  }
-
-  /* ── Editorial ledger card ────────────────────────────────
-     One corner squared (the RTL "start" corner) for a
-     hand-set, journal layout feel. Frosted glass surface,
-     hairline border, inner glow — depth from the moss rule. */
+  /* ── Gallery card ─────────────────────────────────────────
+     Flat elevated surface stepped by color, not shadow.
+     Hairline border, uniform 16px radius. */
   .ledger {
     position: relative;
-    background: hsl(var(--card) / 0.5);
-    -webkit-backdrop-filter: blur(20px) saturate(1.45);
-    backdrop-filter: blur(20px) saturate(1.45);
-    border: 1px solid hsl(var(--foreground) / 0.08);
-    border-start-start-radius: 0.6rem;
-    border-start-end-radius: 1.4rem;
-    border-end-start-radius: 1.4rem;
-    border-end-end-radius: 1.4rem;
-    box-shadow:
-      inset 0 1px 0 hsl(0 0% 100% / 0.5),
-      0 10px 28px -14px hsl(var(--foreground) / 0.14);
-    transition: border-color 0.25s ease, transform 0.25s ease;
-  }
-
-  .dark .ledger {
-    background: hsl(var(--card) / 0.45);
-    box-shadow:
-      inset 0 1px 0 hsl(0 0% 100% / 0.08),
-      0 10px 28px -16px hsl(0 0% 0% / 0.5);
-  }
-
-  .ledger::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    inset-inline-start: 1.25rem;
-    width: 2.25rem;
-    height: 3px;
-    border-start-start-radius: 3px;
-    background: hsl(var(--primary));
-    opacity: 0.85;
+    background: hsl(var(--card) / 0.55);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--foreground) / 0.09);
+    border-radius: var(--radius);
+    transition: border-color 0.25s ease;
   }
 
   .ledger:hover {
-    border-color: hsl(var(--primary) / 0.35);
+    border-color: hsl(var(--foreground) / 0.22);
   }
 
-  /* ── Eyebrow / section label ────────────────────────────── */
-  .eyebrow {
+  /* ── Monospace eyebrow / section label ──────────────────── */
+  .eyebrow,
+  .mono-label {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-family: "Roboto Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
     color: hsl(var(--muted-foreground));
   }
 
@@ -278,7 +211,7 @@
     background: hsl(var(--primary) / 0.5);
   }
 
-  /* ── Hand-drawn underline for display headings ──────────── */
+  /* ── Hand-drawn clay underline for display headings ─────── */
   .rule-mark {
     position: relative;
     display: inline-block;
@@ -324,18 +257,19 @@
     mask-repeat: no-repeat;
   }
 
-  /* ── Numbered ledger marker ─────────────────────────────── */
+  /* ── Numbered marker ────────────────────────────────────── */
   .marker-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 1.75rem;
     height: 1.75rem;
-    border-radius: 9999px;
+    border-radius: 8px;
     background: hsl(var(--muted));
     color: hsl(var(--primary));
+    font-family: "Roboto Mono", ui-monospace, monospace;
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     flex: none;
   }
@@ -347,7 +281,7 @@
     justify-content: center;
     gap: 0.5rem;
     border-radius: 9999px;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
@@ -356,6 +290,7 @@
   }
   .btn:active { transform: translateY(1px); }
 
+  /* Frosted glass — translucent white panel */
   .btn-glass {
     color: hsl(var(--ink));
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.22));
@@ -369,6 +304,7 @@
   .btn-glass:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.35));
   }
+
   .dark .btn-glass {
     color: hsl(var(--ink));
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
@@ -381,6 +317,7 @@
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07));
   }
 
+  /* Water-blue glass solid */
   .btn-glass-solid {
     color: hsl(200 30% 96%);
     background: linear-gradient(135deg, hsl(200 42% 40%), hsl(205 55% 30%));
@@ -403,14 +340,14 @@
     background: linear-gradient(135deg, hsl(200 50% 44%), hsl(205 60% 32%));
   }
 
-
+  /* Primary action — white-on-black (light: inverted) */
   .btn-moss {
     color: hsl(var(--primary-foreground));
     background: hsl(var(--primary));
-    box-shadow: inset 0 -2px 0 hsl(0 0% 0% / 0.12);
   }
   .btn-moss:hover { background: hsl(var(--primary) / 0.88); }
 
+  /* Warm linen surface button */
   .btn-linen {
     color: hsl(var(--foreground));
     background: hsl(var(--muted) / 0.6);
@@ -420,6 +357,7 @@
   }
   .btn-linen:hover { background: hsl(var(--border) / 0.65); }
 
+  /* Quiet outlined button */
   .btn-ink {
     color: hsl(var(--foreground));
     background: hsl(var(--card) / 0.35);
@@ -439,8 +377,6 @@
     border-radius: 9999px;
     border: 1px solid hsl(var(--foreground) / 0.1);
     background: hsl(var(--card) / 0.5);
-    -webkit-backdrop-filter: blur(10px) saturate(1.2);
-    backdrop-filter: blur(10px) saturate(1.2);
     color: hsl(var(--foreground));
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.08s ease;
     flex: none;
@@ -464,32 +400,31 @@
   /* Hairline / divider */
   .hairline { border-top: 1px solid hsl(var(--border) / 0.7); }
 
-  /* Inline field used across the ledger */
+  /* Inline field — 8px input radius */
   .field {
-    background: hsl(var(--muted) / 0.45);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    border: 1px solid transparent;
+    background: hsl(var(--muted) / 0.4);
+    border: 1px solid hsl(var(--foreground) / 0.12);
+    border-radius: 8px;
     color: hsl(var(--foreground));
     transition: border-color 0.2s ease, background-color 0.2s ease;
   }
   .field:focus {
     outline: none;
-    border-color: hsl(var(--primary) / 0.5);
-    background: hsl(var(--card));
+    border-color: hsl(var(--ring) / 0.6);
+    background: hsl(var(--muted) / 0.2);
   }
   .field::placeholder { color: hsl(var(--ink-faint)); }
 }
 
 @layer base {
-  /* Range slider — mossed, with an ink thumb */
+  /* Range slider — hairline track, ring thumb */
   input[type="range"] {
     height: 0.5rem;
     border-radius: 9999px;
     appearance: none;
     cursor: pointer;
     background: hsl(var(--muted));
-    background-image: linear-gradient(hsl(var(--primary)), hsl(var(--primary)));
+    background-image: linear-gradient(hsl(var(--ring)), hsl(var(--ring)));
   }
 
   input[type="range"]::-webkit-slider-thumb {
@@ -497,9 +432,8 @@
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 9999px;
-    background: hsl(var(--card));
-    border: 3px solid hsl(var(--primary));
-    box-shadow: 0 1px 4px hsl(0 0% 0% / 0.18);
+    background: hsl(var(--background));
+    border: 3px solid hsl(var(--ring));
     cursor: grab;
   }
 
@@ -507,9 +441,8 @@
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 9999px;
-    background: hsl(var(--card));
-    border: 3px solid hsl(var(--primary));
-    box-shadow: 0 1px 4px hsl(0 0% 0% / 0.18);
+    background: hsl(var(--background));
+    border: 3px solid hsl(var(--ring));
   }
 
   select {
