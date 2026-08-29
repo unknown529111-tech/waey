@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, LogOut, type LucideIcon } from "lucide-react";
 import logo from "@/assets/logo-waey.png";
-import logoDark from "@/assets/logo-waey-dark.png";
+import logoDark from "@/assets/logo-waey-white.png";
 import { useLanguage } from "@/contexts/useLanguage";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
@@ -34,11 +34,11 @@ const Navbar = () => {
     <>
       <header className="fixed top-0 left-0 right-0 z-40 transition-all duration-500 bg-card/90 backdrop-blur-xl border-b border-border shadow-[0_1px_8px_-2px_rgb(0_0_0_/_0.18)] dark:shadow-[0_1px_8px_-2px_rgb(0_0_0_/_0.5)]">
         <nav
-          className="max-w-[80rem] mx-auto px-8 py-6 flex justify-between items-center relative z-[2] pointer-events-auto"
+          className="max-w-[80rem] mx-auto px-8 py-3 flex justify-between items-center relative z-[2] pointer-events-auto"
           dir={lang === "ar" ? "rtl" : "ltr"}
         >
           <Link to="/" className="flex items-center shrink-0" aria-label={t('nav.homeLink')}>
-            <img src={theme === "dark" ? logoDark : logo} alt={t('nav.homeLink')} className="h-9 w-auto" />
+            <img src={theme === "dark" ? logo : logoDark} alt={t('nav.homeLink')} className="h-20 w-auto" />
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-8">
