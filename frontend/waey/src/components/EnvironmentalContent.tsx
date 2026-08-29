@@ -122,7 +122,7 @@ const NaturalCleaners = () => {
         />
 
         <FadeInUp>
-          <div className="bg-card rounded-4xl p-6 md:p-8 border border-border shadow-soft overflow-hidden">
+          <div className="card p-6 md:p-8 overflow-hidden">
             {/* Mobile: card layout */}
             <div className="grid grid-cols-1 md:hidden gap-4">
               {cleanersData.map((item, i) => (
@@ -219,43 +219,43 @@ const EnergyWaterTips = () => {
   const conservationTips = [
     {
       icon: Droplets,
-      color: "text-blue-500",
-      bg: "bg-blue-50 dark:bg-blue-950/30",
+      color: "text-info",
+      bg: "bg-info-soft",
       title: t('env.tip.0.title'),
       desc: t('env.tip.0.desc'),
     },
     {
       icon: Zap,
-      color: "text-amber-500",
-      bg: "bg-amber-50 dark:bg-amber-950/30",
+      color: "text-warning",
+      bg: "bg-warning-soft",
       title: t('env.tip.1.title'),
       desc: t('env.tip.1.desc'),
     },
     {
       icon: Leaf,
-      color: "text-emerald-500",
-      bg: "bg-emerald-50 dark:bg-emerald-950/30",
+      color: "text-success",
+      bg: "bg-success-soft",
       title: t('env.tip.2.title'),
       desc: t('env.tip.2.desc'),
     },
     {
       icon: Lightbulb,
-      color: "text-yellow-500",
-      bg: "bg-yellow-50 dark:bg-yellow-950/30",
+      color: "text-foreground",
+      bg: "bg-muted",
       title: t('env.tip.3.title'),
       desc: t('env.tip.3.desc'),
     },
     {
       icon: TreePine,
-      color: "text-green-600",
-      bg: "bg-green-50 dark:bg-green-950/30",
+      color: "text-success",
+      bg: "bg-success-soft",
       title: t('env.tip.4.title'),
       desc: t('env.tip.4.desc'),
     },
     {
       icon: Zap,
-      color: "text-orange-500",
-      bg: "bg-orange-50 dark:bg-orange-950/30",
+      color: "text-warning",
+      bg: "bg-warning-soft",
       title: t('env.tip.5.title'),
       desc: t('env.tip.5.desc'),
     },
@@ -273,7 +273,7 @@ const EnergyWaterTips = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {conservationTips.map((tip, i) => (
             <FadeInUp key={i} delay={i * 0.06}>
-              <div className="bg-card p-6 md:p-7 rounded-3xl border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 h-full">
+              <div className="ledger p-6 md:p-7 h-full">
                 <div
                   className={`size-12 ${tip.bg} rounded-2xl flex items-center justify-center mb-4`}
                 >
@@ -336,7 +336,7 @@ const ZeroWaste = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {zeroWasteItems.map((item, i) => (
             <FadeInUp key={i} delay={i * 0.1}>
-              <div className="bg-card p-7 rounded-3xl border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex gap-5">
+              <div className="ledger p-7 flex gap-5">
                 <div className="size-14 shrink-0 mt-1 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <item.icon className="size-7 text-primary" />
                 </div>
@@ -369,36 +369,36 @@ const VisualStats = () => {
       stat: t('env.stat.0.stat'),
       unit: t('env.stat.0.unit'),
       impact: t('env.stat.0.impact'),
-      color: "text-blue-600",
-      bg: "bg-blue-50 dark:bg-blue-950/30",
-      border: "border-blue-200 dark:border-blue-800",
+      color: "text-info",
+      bg: "bg-info-soft",
+      border: "border-info-soft",
     },
     {
       icon: Shirt,
       stat: t('env.stat.1.stat'),
       unit: t('env.stat.1.unit'),
       impact: t('env.stat.1.impact'),
-      color: "text-emerald-600",
-      bg: "bg-emerald-50 dark:bg-emerald-950/30",
-      border: "border-emerald-200 dark:border-emerald-800",
+      color: "text-success",
+      bg: "bg-success-soft",
+      border: "border-success-soft",
     },
     {
       icon: TreePine,
       stat: t('env.stat.2.stat'),
       unit: t('env.stat.2.unit'),
       impact: t('env.stat.2.impact'),
-      color: "text-green-700",
-      bg: "bg-green-50 dark:bg-green-950/30",
-      border: "border-green-200 dark:border-green-800",
+      color: "text-success",
+      bg: "bg-success-soft",
+      border: "border-success-soft",
     },
     {
       icon: CupSoda,
       stat: t('env.stat.3.stat'),
       unit: t('env.stat.3.unit'),
       impact: t('env.stat.3.impact'),
-      color: "text-amber-600",
-      bg: "bg-amber-50 dark:bg-amber-950/30",
-      border: "border-amber-200 dark:border-amber-800",
+      color: "text-warning",
+      bg: "bg-warning-soft",
+      border: "border-warning-soft",
     },
   ];
 
@@ -415,7 +415,7 @@ const VisualStats = () => {
           {statsData.map((item, i) => (
             <FadeInUp key={i} delay={i * 0.1}>
               <div
-                className={`bg-card rounded-3xl p-7 border-2 ${item.border} ${item.bg} text-center h-full hover:shadow-float transition-all duration-300 hover:-translate-y-1`}
+                className={`ledger p-7 ${item.border} ${item.bg} text-center h-full`}
               >
                 <div
                 className={`size-16 mx-auto rounded-2xl ${item.bg} flex items-center justify-center mb-4`}

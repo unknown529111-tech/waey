@@ -7,28 +7,28 @@ const tipKeys = [
   // Week 1
   [
     { icon: Droplets, categoryKey: "quicktips.week1.tip1.category", tipKey: "quicktips.week1.tip1.tip", color: "text-primary" },
-    { icon: Footprints, categoryKey: "quicktips.week1.tip2.category", tipKey: "quicktips.week1.tip2.tip", color: "text-accent" },
+    { icon: Footprints, categoryKey: "quicktips.week1.tip2.category", tipKey: "quicktips.week1.tip2.tip", color: "text-foreground" },
     { icon: Apple, categoryKey: "quicktips.week1.tip3.category", tipKey: "quicktips.week1.tip3.tip", color: "text-destructive" },
     { icon: Bed, categoryKey: "quicktips.week1.tip4.category", tipKey: "quicktips.week1.tip4.tip", color: "text-primary" },
   ],
   // Week 2
   [
     { icon: Droplets, categoryKey: "quicktips.week2.tip1.category", tipKey: "quicktips.week2.tip1.tip", color: "text-primary" },
-    { icon: Footprints, categoryKey: "quicktips.week2.tip2.category", tipKey: "quicktips.week2.tip2.tip", color: "text-accent" },
+    { icon: Footprints, categoryKey: "quicktips.week2.tip2.category", tipKey: "quicktips.week2.tip2.tip", color: "text-foreground" },
     { icon: Apple, categoryKey: "quicktips.week2.tip3.category", tipKey: "quicktips.week2.tip3.tip", color: "text-destructive" },
     { icon: Bed, categoryKey: "quicktips.week2.tip4.category", tipKey: "quicktips.week2.tip4.tip", color: "text-primary" },
   ],
   // Week 3
   [
     { icon: Droplets, categoryKey: "quicktips.week3.tip1.category", tipKey: "quicktips.week3.tip1.tip", color: "text-primary" },
-    { icon: Footprints, categoryKey: "quicktips.week3.tip2.category", tipKey: "quicktips.week3.tip2.tip", color: "text-accent" },
+    { icon: Footprints, categoryKey: "quicktips.week3.tip2.category", tipKey: "quicktips.week3.tip2.tip", color: "text-foreground" },
     { icon: Apple, categoryKey: "quicktips.week3.tip3.category", tipKey: "quicktips.week3.tip3.tip", color: "text-destructive" },
     { icon: Bed, categoryKey: "quicktips.week3.tip4.category", tipKey: "quicktips.week3.tip4.tip", color: "text-primary" },
   ],
   // Week 4
   [
     { icon: Droplets, categoryKey: "quicktips.week4.tip1.category", tipKey: "quicktips.week4.tip1.tip", color: "text-primary" },
-    { icon: Footprints, categoryKey: "quicktips.week4.tip2.category", tipKey: "quicktips.week4.tip2.tip", color: "text-accent" },
+    { icon: Footprints, categoryKey: "quicktips.week4.tip2.category", tipKey: "quicktips.week4.tip2.tip", color: "text-foreground" },
     { icon: Apple, categoryKey: "quicktips.week4.tip3.category", tipKey: "quicktips.week4.tip3.tip", color: "text-destructive" },
     { icon: Bed, categoryKey: "quicktips.week4.tip4.category", tipKey: "quicktips.week4.tip4.tip", color: "text-primary" },
   ],

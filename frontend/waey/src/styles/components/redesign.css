@@ -1,0 +1,155 @@
+/* ────────────────────────────────────────────────────────────
+   Redesign2 reference component system (Waey-Awareness-Site-Redesign2)
+   Faithful port of the export's component classes, restyled with
+   Waey tokens so the React app matches the static export pixel-for-
+   pixel. Token-driven → auto-reskins in [data-theme="dark"].
+   Mirrors: education / health / finance / environment / recipes / track.
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Hero / field header ──────────────────────────────────── */
+.field-hero { position: relative; z-index: 2; max-width: 80rem; margin-inline: auto; padding: 3rem 1.5rem 2.5rem; }
+
+/* ── Field video background (home-style) ──────────────────── */
+.field-hero-media { position: relative; overflow: hidden; min-height: clamp(440px, 68vh, 720px); }
+.field-video-bg {
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  z-index: 0; opacity: 0; pointer-events: none;
+  animation: video-in 1.2s ease-out 0.2s forwards;
+}
+.field-video-overlay {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--background)) 0%,
+    hsl(var(--background) / 0) 38%,
+    hsl(var(--background) / 0) 62%,
+    hsl(var(--background)) 100%
+  );
+}
+@keyframes video-in { to { opacity: 1; } }
+.field-eyebrow { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; margin-bottom: 1rem; }
+.field-title { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: clamp(2.75rem, 6vw, 5rem); line-height: 1.0; letter-spacing: -2px; }
+.field-title em { font-style: italic; color: var(--muted-foreground); }
+.field-desc { margin-top: 1.5rem; max-width: 46rem; color: var(--muted-foreground); font-size: 1.125rem; line-height: 1.7; }
+
+/* ── Section heads ────────────────────────────────────────── */
+.field-section { max-width: 80rem; margin-inline: auto; padding: 3rem 1.5rem 0; }
+.field-section:last-of-type { padding-bottom: 1rem; }
+.field-section-kicker { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; margin-bottom: 0.6rem; }
+.field-section-title { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 2.1rem; line-height: 1.05; letter-spacing: -1px; }
+.field-section-title em { font-style: italic; color: var(--muted-foreground); }
+.field-section-sub { margin-top: 0.85rem; color: var(--muted-foreground); font-size: 1.0125rem; line-height: 1.65; max-width: 48rem; }
+
+/* ── Feature grid (study methods / tips) ──────────────────── */
+.feature-grid { max-width: 80rem; margin-inline: auto; padding: 1.75rem 1.5rem 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.feature { border: 1px solid hsl(var(--border)); border-radius: var(--radius); padding: 1.5rem; background: hsl(var(--card)); transition: border-color 0.25s var(--ease), transform 0.25s var(--ease); }
+.feature:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.feature h3 { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.5rem; margin-bottom: 0.5rem; }
+.feature p { font-size: 0.9rem; color: var(--muted-foreground); line-height: 1.6; }
+
+/* ── Tool panels (interactive modules) ────────────────────── */
+.tool { border: 1px solid hsl(var(--border)); border-radius: var(--radius-card); padding: 1.75rem; background: hsl(var(--card)); margin-top: 1.25rem; }
+.tool:first-of-type { margin-top: 1.75rem; }
+.tool-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.tool-name { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.7rem; }
+.tool-note { font-size: 0.8rem; color: var(--muted-foreground); }
+
+/* ── Safety net: every table & tool carries a visible 1px stroke ── */
+table,
+.ck-table,
+.alt-table,
+.calc-table,
+.tool,
+.panel,
+.card {
+  border: 1px solid hsl(var(--border));
+}
+
+/* ── Buttons (export vocabulary) ──────────────────────────── */
+.btn-cta { display: inline-flex; align-items: center; justify-content: center; background: hsl(var(--foreground)); color: hsl(var(--background)); border-radius: var(--radius-pill); font-weight: 500; padding: 0.625rem 1.5rem; font-size: 0.875rem; transition: transform 0.25s var(--ease); }
+.btn-cta:hover { transform: scale(1.03); }
+.btn { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-pill); font-weight: 500; font-size: 0.875rem; padding: 0.625rem 1.5rem; transition: transform 0.2s var(--ease), background-color 0.2s var(--ease), border-color 0.2s var(--ease); cursor: pointer; }
+.btn:hover { transform: scale(1.03); }
+.btn-solid { background: hsl(var(--foreground)); color: hsl(var(--background)); }
+.btn-ghost { background: hsl(var(--card)); color: hsl(var(--foreground)); border: 1px solid hsl(var(--foreground)); }
+
+/* ── Pomodoro ─────────────────────────────────────────────── */
+.pomo-display { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 4.5rem; line-height: 1; letter-spacing: -2px; text-align: center; }
+.pomo-mode { text-align: center; font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted-foreground); margin-top: 0.25rem; }
+.pomo-cycles { text-align: center; font-size: 0.9rem; color: var(--muted-foreground); margin-top: 0.5rem; }
+.pomo-controls { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1.25rem; flex-wrap: wrap; }
+
+/* ── Brain dump ───────────────────────────────────────────── */
+.dump-area { width: 100%; min-height: 140px; border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 1rem; font-family: inherit; font-size: 0.95rem; color: hsl(var(--foreground)); background: hsl(var(--card)); resize: vertical; }
+.dump-area:focus { outline: none; border-color: hsl(var(--foreground)); box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
+.dump-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem; gap: 1rem; flex-wrap: wrap; }
+.dump-count { font-size: 0.8rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+
+/* ── Sound sessions ───────────────────────────────────────── */
+.sound-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.sound-opt { border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1.25rem 1rem; text-align: center; transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease); cursor: pointer; }
+.sound-opt:hover { border-color: hsl(var(--foreground)); }
+.sound-opt.selected { border-color: hsl(var(--foreground)); background: var(--surface-2); }
+.sound-opt .s-title { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.25rem; }
+.sound-opt .s-sub { font-size: 0.78rem; color: var(--muted-foreground); margin-top: 0.25rem; }
+
+/* ── Two-column panels ────────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
+.panel { border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1.25rem; background: hsl(var(--card)); }
+.panel h4 { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.75rem; }
+
+/* ── Check lists (do / don't) ─────────────────────────────── */
+.check-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+.check-list li { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.5; }
+.check-list .mk { font-weight: 600; flex: none; }
+.dont li { color: var(--muted-foreground); }
+
+/* ── Steps ────────────────────────────────────────────────── */
+.steps { list-style: none; counter-reset: st; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem; }
+.steps li { counter-increment: st; display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9rem; line-height: 1.55; }
+.steps li::before { content: counter(st); flex: none; width: 1.5rem; height: 1.5rem; border-radius: 999px; border: 1px solid hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
+
+/* ── Cornell notes ────────────────────────────────────────── */
+.cornell { display: grid; grid-template-columns: 1fr 0.4fr; grid-template-rows: auto auto; gap: 0.75rem; margin-top: 1rem; }
+.cornell .c-notes { grid-row: 1 / span 2; }
+.cornell .c-box { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 0.9rem; background: hsl(var(--card)); }
+.cornell .c-box label { display: block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.4rem; font-weight: 600; }
+.cornell textarea { width: 100%; min-height: 90px; border: none; resize: vertical; font-family: inherit; font-size: 0.9rem; color: hsl(var(--foreground)); background: transparent; }
+.cornell textarea:focus { outline: none; }
+.cornell .c-summary textarea { min-height: 70px; }
+
+/* ── Food grid (brain food) ───────────────────────────────── */
+.food-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.25rem; }
+.food { border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1.1rem; background: hsl(var(--card)); }
+.food h4 { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.2rem; margin-bottom: 0.3rem; }
+.food p { font-size: 0.82rem; color: var(--muted-foreground); line-height: 1.5; }
+.food.avoid { border-style: dashed; }
+.food.avoid h4 { text-decoration: line-through; }
+
+/* ── VARK sample ──────────────────────────────────────────── */
+.vark-q { font-size: 1.05rem; line-height: 1.6; margin-top: 1rem; }
+.vark-opts { display: grid; gap: 0.6rem; margin-top: 1rem; }
+.vark-opt { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 0.9rem 1rem; font-size: 0.92rem; transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease); cursor: pointer; }
+.vark-opt:hover { border-color: hsl(var(--foreground)); }
+.vark-opt.selected { border-color: hsl(var(--foreground)); background: var(--surface-2); }
+.vark-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; gap: 1rem; flex-wrap: wrap; }
+.vark-progress { font-size: 0.8rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+
+/* ── Closing + footer ─────────────────────────────────────── */
+.closing { max-width: 80rem; margin-inline: auto; padding: 3.5rem 1.5rem 1rem; text-align: center; }
+.closing p { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.25; letter-spacing: -0.5px; max-width: 42rem; margin-inline: auto; }
+.closing .small { font-family: "Inter", "Alexandria", sans-serif; font-size: 0.95rem; color: var(--muted-foreground); margin-top: 1.25rem; line-height: 1.7; max-width: 38rem; }
+.footer { border-top: 1px solid hsl(var(--border)); padding: 2.5rem 1.5rem; text-align: center; color: var(--muted-foreground); font-size: 0.85rem; }
+.footer a { color: hsl(var(--foreground)); }
+.footer a:hover { text-decoration: underline; }
+
+/* ── Responsive (match export breakpoint) ─────────────────── */
+@media (max-width: 720px) {
+  .feature-grid { grid-template-columns: 1fr; }
+  .sound-grid, .food-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .cornell { grid-template-columns: 1fr; }
+  .cornell .c-notes { grid-row: auto; }
+  .field-section-title { font-size: 1.7rem; }
+}

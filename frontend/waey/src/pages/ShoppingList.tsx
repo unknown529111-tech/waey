@@ -27,7 +27,7 @@ const ShoppingList = () => {
   return (
     <div className="relative min-h-[60vh]">
       <div className="relative">
-        <PageHero title={t('shopping.title')} subtitle={t('shopping.subtitle')} />
+        <PageHero title={t('shopping.title')} subtitle={t('shopping.subtitle')} eyebrow={'Waey · ' + t('shopping.title')} />
 
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
@@ -61,7 +61,7 @@ const ShoppingList = () => {
           </div>
 
           {items.length === 0 ? (
-            <div className="bg-card border border-border/50 rounded-[2rem] p-10 text-center shadow-soft">
+            <div className="card p-10 text-center shadow-soft">
               <UtensilsCrossed className="size-10 text-primary mx-auto mb-4" />
               <p className="text-muted-foreground mb-6">{t('shopping.empty')}</p>
               <Link to="/recipes" className="btn btn-moss font-body px-6 py-2.5 text-sm inline-flex items-center gap-2 hover:scale-[1.03] transition-transform">
@@ -73,7 +73,7 @@ const ShoppingList = () => {
               {items.map((item) => (
                 <div
                   key={item.key}
-                  className={`group flex items-center gap-4 bg-card border border-border/50 rounded-[2rem] px-5 py-3.5 shadow-soft transition-all duration-300 ${
+                  className={`group flex items-center gap-4 card px-5 py-3.5 shadow-soft transition-all duration-300 ${
                     item.checked ? "opacity-60" : "hover:-translate-y-0.5 hover:shadow-moss-lg"
                   }`}
                 >

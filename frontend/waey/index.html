@@ -8,7 +8,7 @@
     <meta name="author" content="وعي" />
 
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#5D7052" />
+    <meta name="theme-color" content="#FFFFFF" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="وعي" />
@@ -22,6 +22,18 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@waey" />
     <meta name="twitter:image" content="/icon-192.png" />
+
+    <script>
+      // Set theme before paint to avoid a flash of the wrong theme.
+      (function () {
+        try {
+          var k = 'waey-theme';
+          var s = localStorage.getItem(k);
+          var t = s || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+      })();
+    </script>
   </head>
 
   <body>

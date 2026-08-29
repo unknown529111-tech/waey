@@ -1,0 +1,155 @@
+/* ────────────────────────────────────────────────────────────
+   Utilities — decorative classes, motion, typography helpers.
+   Sections marked "unlayered" intentionally sit outside
+   @layer so they keep their historical override priority.
+   ──────────────────────────────────────────────────────────── */
+
+@layer components {
+  /* ── Eyebrow / section label (Inter, uppercase, tracked) ── */
+  .eyebrow,
+  .mono-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "Inter", "Alexandria", sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground));
+  }
+
+  [dir="rtl"] .eyebrow,
+  [dir="rtl"] .mono-label {
+    letter-spacing: 0;
+  }
+
+  /* ── Muted italic emphasis for display headings ───────────
+     Export pattern: 'Curiosity, <em>every day.</em>' — serif
+     display with a muted-italic tail. */
+  .em-muted {
+    font-style: italic;
+    color: hsl(var(--muted-foreground));
+  }
+
+  [dir="rtl"] .em-muted {
+    font-style: normal;
+  }
+
+  .rule-mark {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Kept as no-op aliases so existing class usage doesn't break */
+  .rule-mark::after { content: none; }
+  .rule-mark-lower::after { content: none; }
+  .rule-mark-env::after { content: none; }
+  .rule-mark-higher::after { content: none; }
+
+  /* ── Blur Vignette overlay ──────────────────────────────── */
+  .blur-vignette {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius, 32px);
+    -webkit-backdrop-filter: blur(var(--blur, 15px));
+    backdrop-filter: blur(var(--blur, 15px));
+    -webkit-mask-image: linear-gradient(to right, var(--fill-gradient)), linear-gradient(to bottom, var(--fill-gradient)), radial-gradient(at bottom right, var(--corner-gradient)), radial-gradient(at bottom left, var(--corner-gradient)), radial-gradient(at top left, var(--corner-gradient)), radial-gradient(at top right, var(--corner-gradient));
+    -webkit-mask-size: 100% var(--fill-narrow-size), var(--fill-narrow-size) 100%, var(--corner-size), var(--corner-size), var(--corner-size), var(--corner-size);
+    -webkit-mask-position: 0 var(--fill-farther-position), var(--fill-farther-position) 0, 0 0, 100% 0, 100% 100%, 0 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-image: linear-gradient(to right, var(--fill-gradient)), linear-gradient(to bottom, var(--fill-gradient)), radial-gradient(at bottom right, var(--corner-gradient)), radial-gradient(at bottom left, var(--corner-gradient)), radial-gradient(at top left, var(--corner-gradient)), radial-gradient(at top right, var(--corner-gradient));
+    mask-size: 100% var(--fill-narrow-size), var(--fill-narrow-size) 100%, var(--corner-size), var(--corner-size), var(--corner-size), var(--corner-size);
+    mask-position: 0 var(--fill-farther-position), var(--fill-farther-position) 0, 0 0, 100% 0, 100% 100%, 0 100%;
+    mask-repeat: no-repeat;
+  }
+
+  /* ── Numbered marker ────────────────────────────────────── */
+  .marker-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 8px;
+    background: hsl(var(--muted));
+    color: hsl(var(--primary));
+    font-family: "Roboto Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+}
+
+/* ── Motion & typography helpers (unlayered by design) ────── */
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-rise   { animation: fade-rise 0.8s ease-out both; }
+.animate-fade-rise-delay   { animation: fade-rise 0.8s ease-out 0.2s both; }
+.animate-fade-rise-delay-2 { animation: fade-rise 0.8s ease-out 0.4s both; }
+
+/* Staggered waterfall reveal for grids — set --i per item (0, 1, 2…) */
+.stagger-item {
+  animation: fade-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+.font-display {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+}
+[dir="rtl"] .font-display {
+  font-family: "Amiri", "Instrument Serif", "Alexandria", serif;
+}
+
+.font-body {
+  font-family: "Inter", "Alexandria", sans-serif;
+}
+[dir="rtl"] .font-body {
+  font-family: "Alexandria", "Inter", sans-serif;
+}
+
+/* Editorial section headings — serif display, normal weight, tight leading.
+   Color inherits the global heading rule (foreground ink); override with
+   Tailwind utilities (e.g. text-primary-foreground) where needed. */
+.section-title {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-weight: 400;
+  line-height: 1.15;
+}
+[dir="rtl"] .section-title {
+  font-family: "Amiri", "Instrument Serif", "Alexandria", serif;
+}
+
+/* Buttons always use the body stack, never the serif display face */
+.btn,
+button,
+[role="button"] {
+  font-family: "Inter", "Alexandria", sans-serif;
+}
+[dir="rtl"] .btn,
+[dir="rtl"] button,
+[dir="rtl"] [role="button"] {
+  font-family: "Alexandria", "Inter", sans-serif;
+}
+
+/* Global body typography: Inter for LTR, Alexandria stays canonical for Arabic */
+body {
+  font-family: "Inter", "Alexandria", sans-serif;
+}
+[dir="rtl"] body {
+  font-family: "Alexandria", "Inter", sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-rise,
+  .animate-fade-rise-delay,
+  .animate-fade-rise-delay-2,
+  .stagger-item {
+    animation: none;
+  }
+}

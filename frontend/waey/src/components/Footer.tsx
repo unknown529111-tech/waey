@@ -1,40 +1,39 @@
 import { Mail, Shield, Scale, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoDark from "@/assets/logo-waey-dark.png";
 import { useLanguage } from "@/contexts/useLanguage";
 
 const Footer = () => {
   const { t } = useLanguage();
   return (
-    <footer className="relative z-10 bg-footer text-white border-t border-white/10 mt-auto">
-      <div className="max-w-7xl mx-auto px-8 py-6 flex flex-col items-center text-center gap-4">
-        <img src={logoDark} alt="وعي" className="h-24 w-auto" />
+    <footer className="relative z-10 bg-background border-t border-border mt-auto">
+      <div className="max-w-[80rem] mx-auto px-8 py-10 flex flex-col items-center text-center gap-5">
+        <p className="font-display text-xl text-foreground">وعي</p>
 
         <nav className="flex items-center justify-center gap-1 flex-wrap" aria-label={t('nav.menu')}>
           <Link
             to="/faq"
-            className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-3 py-1.5 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 transition-colors"
           >
             <HelpCircle className="size-3" />
             {t('footer.faq')}
           </Link>
           <Link
             to="/privacy"
-            className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-3 py-1.5 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 transition-colors"
           >
             <Shield className="size-3" />
             {t('footer.privacy')}
           </Link>
           <Link
             to="/terms"
-            className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-3 py-1.5 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 transition-colors"
           >
             <Scale className="size-3" />
             {t('footer.terms')}
           </Link>
           <a
             href="mailto:waey.official.mk@gmail.com"
-            className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-3 py-1.5 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 transition-colors"
           >
             <Mail className="size-3" />
             waey.official.mk@gmail.com
@@ -43,7 +42,7 @@ const Footer = () => {
             href="https://www.facebook.com/profile.php?id=61589322916820"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-3 py-1.5 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-3 py-1.5 transition-colors"
           >
             <svg className="size-3 fill-current" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -53,10 +52,10 @@ const Footer = () => {
         </nav>
 
         {/* Website Owner & Social Media Section */}
-        <div className="w-full max-w-2xl pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="w-full max-w-2xl pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="text-right">
-            <span className="text-[10px] text-white/40 block font-medium font-body">{t('footer.ownerLabel')}</span>
-            <strong className="text-xs text-white font-bold font-body">{t('footer.ownerName')}</strong>
+            <span className="text-[10px] text-muted-foreground block font-medium font-body">{t('footer.ownerLabel')}</span>
+            <strong className="text-xs text-foreground font-bold font-body">{t('footer.ownerName')}</strong>
           </div>
 
           <div className="flex items-center gap-1 flex-wrap">
@@ -64,7 +63,7 @@ const Footer = () => {
               href="https://www.facebook.com/profile.php?id=100033533538308"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-2.5 py-1 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-2.5 py-1 transition-colors"
               title={t('footer.ownerFacebookTitle')}
             >
               <svg className="size-3 fill-current" viewBox="0 0 24 24">
@@ -77,7 +76,7 @@ const Footer = () => {
               href="https://www.linkedin.com/in/mahmoud-k-15780939b/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white rounded-full px-2.5 py-1 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground rounded-full px-2.5 py-1 transition-colors"
               title={t('footer.ownerLinkedinTitle')}
             >
               <svg className="size-3 fill-current" viewBox="0 0 24 24">
@@ -88,7 +87,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <p className="font-body text-[10px] text-white/30">
+        <p className="font-body text-[10px] text-muted-foreground/70">
           {t('footer.copyright')} {new Date().getFullYear()}
         </p>
       </div>

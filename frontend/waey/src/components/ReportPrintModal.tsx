@@ -77,7 +77,7 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="bg-card border border-border/50 rounded-[2rem] w-full max-w-xl p-6 shadow-xl relative my-4"
+          className="card w-full max-w-xl p-6 shadow-xl relative my-4"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Action buttons top (hidden on print) */}
@@ -108,7 +108,7 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
                 <p className="text-xs text-muted-foreground">{t('report.date')} {today}</p>
               </div>
               <div className="text-right">
-                <span className="text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-bold text-warning dark:text-warning-bright bg-warning/10 px-3 py-1 rounded-full">
                   {t('report.streak', { count: streak.count })}
                 </span>
               </div>
@@ -120,19 +120,19 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
                   <span className="text-xs text-muted-foreground block mb-1">{t('report.water')}</span>
-                  <span className="text-lg font-bold text-blue-500">{t('report.waterValue', { count: waterCups })}</span>
+                  <span className="text-lg font-bold text-info">{t('report.waterValue', { count: waterCups })}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
                   <span className="text-xs text-muted-foreground block mb-1">{t('report.sleep')}</span>
-                  <span className="text-lg font-bold text-indigo-500">{t('report.sleepValue', { count: sleepHours })}</span>
+                  <span className="text-lg font-bold text-info">{t('report.sleepValue', { count: sleepHours })}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
                   <span className="text-xs text-muted-foreground block mb-1">{t('report.activity')}</span>
-                  <span className="text-lg font-bold text-emerald-500">{t('report.activityValue', { count: stepMinutes })}</span>
+                  <span className="text-lg font-bold text-success">{t('report.activityValue', { count: stepMinutes })}</span>
                 </div>
                 <div className="p-3 rounded-2xl bg-muted/40 text-center">
                   <span className="text-xs text-muted-foreground block mb-1">{t('report.mood')}</span>
-                  <span className="text-lg font-bold text-amber-500">{moodScore ? `${moodScore}/5` : "-"}</span>
+                  <span className="text-lg font-bold text-warning">{moodScore ? `${moodScore}/5` : "-"}</span>
                 </div>
               </div>
             </div>
@@ -147,7 +147,7 @@ export function ReportPrintModal({ open, onClose }: ReportPrintModalProps) {
                   unlockedBadges.map((b) => (
                     <div
                       key={b.id}
-                      className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-bold text-amber-700 dark:text-amber-300"
+                      className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-warning/10 border border-warning/20 text-xs font-bold text-warning dark:text-warning-bright"
                     >
                       <span>{b.emoji}</span>
                       <span>{b.title}</span>

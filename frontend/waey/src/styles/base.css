@@ -1,0 +1,99 @@
+/* ────────────────────────────────────────────────────────────
+   Base — element defaults, selection, focus, form elements.
+   Layered below Tailwind's output exactly like the original
+   single-file setup.
+   ──────────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: rtl;
+    color: hsl(var(--foreground));
+    font-family: "Inter", "Alexandria", sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+    background-color: hsl(var(--background));
+  }
+
+  [dir="ltr"] body,
+  [dir="ltr"] {
+    direction: ltr;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    text-wrap: balance;
+    color: hsl(var(--foreground));
+  }
+
+  p {
+    line-height: 1.9;
+    color: hsl(var(--foreground));
+  }
+
+  /* Tabular figures everywhere numbers appear */
+  .tabular-nums, [class*="tabular-nums"] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.22);
+    color: hsl(var(--foreground));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Range slider — hairline track, ring thumb */
+  input[type="range"] {
+    height: 0.5rem;
+    border-radius: 9999px;
+    appearance: none;
+    cursor: pointer;
+    background: hsl(var(--muted));
+    background-image: linear-gradient(hsl(var(--ring)), hsl(var(--ring)));
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: hsl(var(--background));
+    border: 3px solid hsl(var(--ring));
+    cursor: grab;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: hsl(var(--background));
+    border: 3px solid hsl(var(--ring));
+  }
+
+  select {
+    appearance: none;
+    border-radius: 9999px;
+    background-repeat: no-repeat;
+    background-position: left 0.9rem center;
+    background-size: 0.7rem;
+    padding-inline-start: 1.75rem;
+    padding-inline-end: 1rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23777777' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+  }
+}

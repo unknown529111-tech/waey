@@ -9,13 +9,13 @@ const DigitalWellness = () => {
       icon: Smartphone,
       title: t("digitalWellness.dopamine.title"),
       desc: t("digitalWellness.dopamine.desc"),
-      bg: "from-rose-50 to-transparent dark:from-rose-900/20",
+      bg: "from-danger-soft to-transparent",
     },
     {
       icon: Bell,
       title: t("digitalWellness.cleanup.title"),
       desc: t("digitalWellness.cleanup.desc"),
-      bg: "from-teal-50 to-transparent dark:from-teal-900/20",
+      bg: "from-success-soft to-transparent",
     },
   ];
 

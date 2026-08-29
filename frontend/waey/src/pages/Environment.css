@@ -1,0 +1,105 @@
+/* ────────────────────────────────────────────────────────────
+   Environment page — page-specific classes not in redesign.css.
+   Faithful port of Waey-Awareness-Site-Redesign2/environment.html,
+   token-driven so it auto-reskins in [data-theme="dark"].
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Cleaning alternatives table ─────────────────────────── */
+.alt-table {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.75rem 1.5rem 0;
+  border-collapse: collapse;
+  width: calc(100% - 3rem);
+  border: 1px solid hsl(var(--border));
+  border-radius: 16px;
+  overflow: hidden;
+  background: hsl(var(--card));
+}
+.alt-table th,
+.alt-table td {
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid hsl(var(--border));
+  vertical-align: top;
+}
+.alt-table thead th {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-weight: 600;
+  background: var(--surface-2);
+}
+.alt-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.alt-table .col-chem { width: 30%; }
+.alt-table .col-nat { width: 28%; }
+.alt-table .col-ben { width: 42%; }
+.alt-table .nat {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-size: 1.2rem;
+  color: hsl(var(--foreground));
+}
+.alt-table .ben {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+/* ── Feature card benefit strip ───────────────────────────── */
+.feature .benefit {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: hsl(var(--foreground));
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 0.6rem;
+}
+
+/* ── Visual statistics ───────────────────────────────────── */
+.stat-grid {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.75rem 1.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.stat {
+  border: 1px solid hsl(var(--border));
+  border-radius: 16px;
+  padding: 1.75rem;
+  background: hsl(var(--card));
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.stat:hover {
+  border-color: hsl(var(--foreground));
+  transform: translateY(-2px);
+}
+.stat .num {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -1.5px;
+  color: hsl(var(--foreground));
+}
+.stat .num em { font-style: italic; }
+.stat .cap { font-size: 0.95rem; font-weight: 600; margin-top: 0.5rem; }
+.stat .note { font-size: 0.85rem; color: var(--muted-foreground); line-height: 1.6; margin-top: 0.4rem; }
+
+/* ── Responsive (match export breakpoint) ─────────────────── */
+@media (max-width: 720px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  .alt-table { width: calc(100% - 2.5rem); }
+  .alt-table thead { display: none; }
+  .alt-table,
+  .alt-table tbody,
+  .alt-table tr,
+  .alt-table td { display: block; width: 100%; }
+  .alt-table tr { border-bottom: 1px solid hsl(var(--border)); padding: 0.5rem 0; }
+  .alt-table td { border-bottom: none; padding: 0.4rem 1.25rem; }
+  .alt-table td.col-chem::before { content: "Chemical → "; color: var(--muted-foreground); font-size: 0.75rem; }
+}

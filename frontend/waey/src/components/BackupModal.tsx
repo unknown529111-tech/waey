@@ -119,7 +119,7 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="bg-card border border-border/50 rounded-[2rem] w-full max-w-md p-6 shadow-xl relative"
+          className="card w-full max-w-md p-6 shadow-xl relative"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -193,8 +193,8 @@ export function BackupModal({ open, onClose }: BackupModalProps) {
               animate={{ opacity: 1, y: 0 }}
               className={`mt-4 p-3 rounded-2xl text-xs font-bold flex items-center gap-2 ${
                 status.type === "success"
-                  ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
-                  : "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800"
+                  ? "bg-success-soft dark:bg-success-dark/40 text-success dark:text-success-bright border border-success-soft dark:border-success-dark"
+                  : "bg-danger-soft dark:bg-danger-dark/40 text-danger dark:text-danger-bright border border-danger-soft dark:border-danger-dark"
               }`}
             >
               {status.type === "success" ? (

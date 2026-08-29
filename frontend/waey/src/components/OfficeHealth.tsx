@@ -9,19 +9,19 @@ const OfficeHealth = () => {
       icon: Eye,
       title: t("officeHealth.tip1.title"),
       desc: t("officeHealth.tip1.desc"),
-      bg: "from-blue-50 to-transparent dark:from-blue-900/20",
+      bg: "from-info-soft to-transparent",
     },
     {
       icon: Monitor,
       title: t("officeHealth.tip2.title"),
       desc: t("officeHealth.tip2.desc"),
-      bg: "from-green-50 to-transparent dark:from-green-900/20",
+      bg: "from-success-soft to-transparent",
     },
     {
       icon: Ear,
       title: t("officeHealth.tip3.title"),
       desc: t("officeHealth.tip3.desc"),
-      bg: "from-purple-50 to-transparent dark:from-purple-900/20",
+      bg: "from-info-soft to-transparent",
     },
   ];
 

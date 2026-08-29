@@ -9,19 +9,19 @@ const SleepHygiene = () => {
       icon: Sunset,
       title: t("sleepHygiene.digitalSunset.title"),
       desc: t("sleepHygiene.digitalSunset.desc"),
-      bg: "from-indigo-50 to-transparent dark:from-indigo-900/20",
+      bg: "from-info-soft to-transparent",
     },
     {
       icon: Clock,
       title: t("sleepHygiene.powerNap.title"),
       desc: t("sleepHygiene.powerNap.desc"),
-      bg: "from-amber-50 to-transparent dark:from-amber-900/20",
+      bg: "from-warning-soft to-transparent",
     },
     {
       icon: Apple,
       title: t("sleepHygiene.food.title"),
       desc: t("sleepHygiene.food.desc"),
-      bg: "from-green-50 to-transparent dark:from-green-900/20",
+      bg: "from-success-soft to-transparent",
     },
   ];
 

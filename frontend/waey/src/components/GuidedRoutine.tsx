@@ -113,9 +113,9 @@ const GuidedRoutine = () => {
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-16">
-      <div className="bg-card border border-border/50 rounded-[2rem] p-6 md:p-10 shadow-soft text-center">
+      <div className="card p-6 md:p-10 text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
-          {routine === "morning" ? <Sunrise className="size-6 text-accent" /> : <MoonStar className="size-6 text-primary" />}
+          {routine === "morning" ? <Sunrise className="size-6 text-foreground" /> : <MoonStar className="size-6 text-primary" />}
           <h2 className="section-title text-2xl md:text-3xl">{t(`routine.${routine}.title`)}</h2>
         </div>
         <p className="text-muted-foreground mb-8 max-w-[55ch] mx-auto leading-relaxed">
@@ -146,7 +146,7 @@ const GuidedRoutine = () => {
               transition={active ? { duration: 6, repeat: Infinity, ease: "easeInOut" } : {}}
               className="size-40 rounded-full border-4 border-primary/40 bg-primary/10 mx-auto flex items-center justify-center mb-6"
             >
-              <div className="size-28 rounded-full border-2 border-accent/50 bg-accent/10 flex items-center justify-center p-4">
+              <div className="size-28 rounded-full border-2 border-border bg-muted flex items-center justify-center p-4">
                 <span className="text-sm font-bold leading-snug">{active ? t(phase.labelKey) : "—"}</span>
               </div>
             </motion.div>

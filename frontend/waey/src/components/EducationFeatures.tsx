@@ -51,7 +51,7 @@ const PomodoroTimer = ({ t }: { t: (key: string) => string }) => {
         {String(min).padStart(2, "0")}:{String(sec).padStart(2, "0")}
       </div>
       <div className="flex items-center justify-center gap-3 mb-4">
-        <button onClick={toggle} className="size-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors shadow-soft">
+        <button onClick={toggle} className="size-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center transition-colors">
           {active ? <Pause className="size-5" /> : <Play className="size-5" />}
         </button>
         <button onClick={reset} className="size-12 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors">
@@ -236,7 +236,7 @@ const EducationFeatures = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Cornell Notes */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+          <div className="ledger p-6 flex flex-col">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <BookOpenText className="size-6 text-primary" />
             </div>
@@ -259,7 +259,7 @@ const EducationFeatures = () => {
           </div>
 
           {/* Blurting */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+          <div className="ledger p-6 flex flex-col">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <Zap className="size-6 text-primary" />
             </div>
@@ -278,7 +278,7 @@ const EducationFeatures = () => {
           </div>
 
           {/* Interleaving */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+          <div className="ledger p-6 flex flex-col">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <RefreshCw className="size-6 text-primary" />
             </div>
@@ -286,7 +286,7 @@ const EducationFeatures = () => {
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
               {t('eduFeatures.interleaving.desc')}
             </p>
-            <div className="flex-1 bg-accent/10 rounded-2xl p-5 border border-accent/20">
+            <div className="flex-1 bg-muted rounded-2xl p-5 border border-border">
               <p className="text-sm leading-relaxed">
                 <span className="font-bold">{t('eduFeatures.interleaving.exampleLabel')}</span> {t('eduFeatures.interleaving.example')}
               </p>
@@ -303,33 +303,33 @@ const EducationFeatures = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Night Before Checklist */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
+          <div className="ledger p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <MoonStar className="size-6 text-primary" />
             </div>
             <h3 className="font-bold text-lg mb-2">{t('eduFeatures.nightBefore.title')}</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-xs font-bold text-green-600 dark:text-green-400 mb-2 flex items-center gap-1">
+                <p className="text-xs font-bold text-success mb-2 flex items-center gap-1">
                   <CheckCircle2 className="size-3.5" /> {t('eduFeatures.nightBefore.doTitle')}
                 </p>
                 <ul className="space-y-1.5">
                   {examPrepDo.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                      <span className="text-green-500 mt-0.5">✓</span>
+                      <span className="text-success mt-0.5">✓</span>
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="border-t border-border pt-3">
-                <p className="text-xs font-bold text-red-600 dark:text-red-400 mb-2 flex items-center gap-1">
+                <p className="text-xs font-bold text-danger mb-2 flex items-center gap-1">
                   <XCircle className="size-3.5" /> {t('eduFeatures.nightBefore.dontTitle')}
                 </p>
                 <ul className="space-y-1.5">
                   {examPrepDont.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                      <span className="text-red-500 mt-0.5">✗</span>
+                      <span className="text-danger mt-0.5">✗</span>
                       {item}
                     </li>
                   ))}
@@ -339,7 +339,7 @@ const EducationFeatures = () => {
           </div>
 
           {/* 5-4-3-2-1 Grounding */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
+          <div className="ledger p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <Flower className="size-6 text-primary" />
             </div>
@@ -360,7 +360,7 @@ const EducationFeatures = () => {
           </div>
 
           {/* Reverse Engineering */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
+          <div className="ledger p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <Search className="size-6 text-primary" />
             </div>
@@ -386,7 +386,7 @@ const EducationFeatures = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Brain Food */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
+          <div className="ledger p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <Apple className="size-6 text-primary" />
             </div>
@@ -417,7 +417,7 @@ const EducationFeatures = () => {
           </div>
 
           {/* Lighting & Space */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
+          <div className="ledger p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <Lightbulb className="size-6 text-primary" />
             </div>
@@ -439,7 +439,7 @@ const EducationFeatures = () => {
           </div>
 
           {/* Focus Apps */}
-          <div className="bg-card rounded-3xl p-6 border border-border hover:shadow-moss-lg transition-all duration-300 hover:-translate-y-1">
+          <div className="ledger p-6">
             <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-3">
               <Smartphone className="size-6 text-primary" />
             </div>
@@ -448,23 +448,23 @@ const EducationFeatures = () => {
               {t('eduFeatures.focusApps.desc')}
             </p>
             <div className="space-y-3">
-              <div className="bg-green-50 dark:bg-green-900/20 rounded-2xl p-4 border border-green-200 dark:border-green-800/30">
+              <div className="bg-success-soft rounded-2xl p-4 border border-success-soft">
                 <div className="flex items-center gap-2 mb-1">
-                  <TreePine className="size-4 text-green-600 dark:text-green-400" />
+                  <TreePine className="size-4 text-success" />
                   <p className="text-sm font-bold">Forest</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t('eduFeatures.focusApps.forest.desc')}</p>
               </div>
-              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4 border border-purple-200 dark:border-purple-800/30">
+              <div className="bg-info-soft rounded-2xl p-4 border border-info-soft">
                 <div className="flex items-center gap-2 mb-1">
-                  <Timer className="size-4 text-red-500 dark:text-red-400" />
+                  <Timer className="size-4 text-danger" />
                   <p className="text-sm font-bold">Focus To-Do</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t('eduFeatures.focusApps.focusToDo.desc')}</p>
               </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 border border-blue-200 dark:border-blue-800/30">
+              <div className="bg-info-soft rounded-2xl p-4 border border-info-soft">
                 <div className="flex items-center gap-2 mb-1">
-                  <Moon className="size-4 text-blue-500 dark:text-blue-400" />
+                  <Moon className="size-4 text-info" />
                   <p className="text-sm font-bold">Offtime</p>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">{t('eduFeatures.focusApps.offtime.desc')}</p>

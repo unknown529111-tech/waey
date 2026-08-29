@@ -39,7 +39,7 @@ const OfflineIndicator = () => {
   if (isDev || !offline) return null;
 
   return (
-    <div className="fixed bottom-44 left-6 z-50 flex items-center gap-2 bg-amber-600 text-white text-xs font-bold rounded-full px-3 py-1.5 shadow-lg animate-in fade-in">
+    <div className="fixed bottom-44 left-6 z-50 flex items-center gap-2 bg-warning text-white text-xs font-bold rounded-full px-3 py-1.5 shadow-lg animate-in fade-in">
       <WifiOff className="size-3.5" />
       <span>{t('offline.text')}</span>
       {queueCount > 0 && (

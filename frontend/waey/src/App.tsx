@@ -26,6 +26,7 @@ const Privacy = lazy(() => import("./pages/Privacy.tsx"));
 const Terms = lazy(() => import("./pages/Terms.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Faq = lazy(() => import("./pages/Faq.tsx"));
+const ArabicPromo = lazy(() => import("./pages/ArabicPromo.tsx"));
 
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[60vh]">
@@ -71,6 +72,7 @@ function AppRoutes() {
         <Route path="/insights" element={<ErrorBoundary><Insights /></ErrorBoundary>} />
         <Route path="/faq" element={<ErrorBoundary><Faq /></ErrorBoundary>} />
       </Route>
+      <Route path="/promo" element={<ErrorBoundary><ArabicPromo /></ErrorBoundary>} />
       <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
     </Routes>
   );

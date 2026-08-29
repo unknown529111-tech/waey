@@ -70,7 +70,7 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
 
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="size-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+            <div className="size-12 rounded-2xl bg-warning/15 text-warning dark:text-warning-bright flex items-center justify-center shrink-0">
               <RotateCcw className="size-6" />
             </div>
             <div>
@@ -83,7 +83,7 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
           <div className="p-4 rounded-2xl bg-muted/40 border border-border/50 space-y-3 mb-5">
             <div className="flex items-center justify-between text-xs font-bold">
               <span className="text-muted-foreground">{t('streakRecovery.currentStreak')}</span>
-              <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400">
+              <span className="inline-flex items-center gap-1 text-warning dark:text-warning-bright">
                 <Flame className="size-4" />
                 {t('streakRecovery.days', { count: streak.count })}
               </span>
@@ -97,7 +97,7 @@ export function StreakRecoveryModal({ open, onClose, onRestored }: StreakRecover
             </div>
             <div className="flex items-center justify-between text-xs font-bold border-t border-border/40 pt-2">
               <span className="text-muted-foreground">{t('streakRecovery.costLabel')}</span>
-              <span className="text-amber-600 font-extrabold">{t('streakRecovery.cost', { cost: COST })}</span>
+              <span className="text-warning font-extrabold">{t('streakRecovery.cost', { cost: COST })}</span>
             </div>
           </div>
 

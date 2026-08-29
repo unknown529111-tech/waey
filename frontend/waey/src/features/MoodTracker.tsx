@@ -5,10 +5,10 @@ import { getMood, setMood, bumpStreak } from "@/lib/dailyStorage";
 import { recordActivity } from "@/lib/gamification";
 
 const MOODS = [
-  { v: 1, icon: Angry, tint: "text-red-500 bg-red-500/10", key: "tracker.mood.bad" },
-  { v: 2, icon: Frown, tint: "text-amber-500 bg-amber-500/10", key: "tracker.mood.tired" },
-  { v: 3, icon: Meh, tint: "text-slate-500 bg-slate-500/10", key: "tracker.mood.okay" },
-  { v: 4, icon: Smile, tint: "text-emerald-500 bg-emerald-500/10", key: "tracker.mood.good" },
+  { v: 1, icon: Angry, tint: "text-danger bg-danger/10", key: "tracker.mood.bad" },
+  { v: 2, icon: Frown, tint: "text-warning bg-warning/10", key: "tracker.mood.tired" },
+  { v: 3, icon: Meh, tint: "text-muted-foreground bg-muted/40", key: "tracker.mood.okay" },
+  { v: 4, icon: Smile, tint: "text-success bg-success/10", key: "tracker.mood.good" },
   { v: 5, icon: Laugh, tint: "text-primary bg-primary/10", key: "tracker.mood.excellent" },
 ];
 

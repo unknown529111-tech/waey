@@ -31,17 +31,17 @@ export function WhatsNewModal() {
 
   const updates = [
     {
-      icon: <Trophy className="size-5 text-amber-500" />,
+      icon: <Trophy className="size-5 text-warning" />,
       title: t('whatsNew.item1.title'),
       description: t('whatsNew.item1.desc'),
     },
     {
-      icon: <ShieldCheck className="size-5 text-emerald-500" />,
+      icon: <ShieldCheck className="size-5 text-success" />,
       title: t('whatsNew.item2.title'),
       description: t('whatsNew.item2.desc'),
     },
     {
-      icon: <FileSpreadsheet className="size-5 text-sky-500" />,
+      icon: <FileSpreadsheet className="size-5 text-foreground" />,
       title: t('whatsNew.item3.title'),
       description: t('whatsNew.item3.desc'),
     },
@@ -57,12 +57,12 @@ export function WhatsNewModal() {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="bg-card border border-border/50 rounded-[2rem] p-6 sm:p-8 max-w-lg w-full shadow-2xl relative overflow-hidden"
+          className="card p-6 sm:p-8 max-w-lg w-full shadow-2xl relative overflow-hidden"
         >
           {/* Header */}
           <div className="text-center mb-6">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
-              <Sparkles className="size-3.5 text-amber-500" />
+              <Sparkles className="size-3.5 text-warning" />
               {t('whatsNew.badge')}
             </span>
             <h2 className="text-2xl font-bold text-foreground mb-1">{t('whatsNew.title')}</h2>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-label="منظر طبيعي هادئ يرمز لوعي">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="oklch(97% 0.02 170)"/>
+      <stop offset="1" stop-color="oklch(94% 0.03 150)"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="oklch(85% 0.13 80)"/>
+      <stop offset="1" stop-color="oklch(85% 0.13 80)" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hillBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="oklch(82% 0.10 155)"/>
+      <stop offset="1" stop-color="oklch(74% 0.11 155)"/>
+    </linearGradient>
+    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="oklch(66% 0.13 155)"/>
+      <stop offset="1" stop-color="oklch(58% 0.14 155)"/>
+    </linearGradient>
+    <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="oklch(50% 0.13 170)"/>
+      <stop offset="1" stop-color="oklch(44% 0.14 170)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- sky -->
+  <rect width="1200" height="640" fill="url(#sky)"/>
+  <!-- sun glow -->
+  <circle cx="930" cy="170" r="220" fill="url(#sun)"/>
+  <circle cx="930" cy="170" r="74" fill="oklch(88% 0.12 82)"/>
+
+  <!-- soft clouds -->
+  <g fill="oklch(100% 0 0)" opacity="0.7">
+    <ellipse cx="250" cy="150" rx="120" ry="34"/>
+    <ellipse cx="330" cy="135" rx="90" ry="28"/>
+    <ellipse cx="620" cy="100" rx="100" ry="28"/>
+  </g>
+
+  <!-- hills -->
+  <path d="M0 430 C 220 360 380 420 600 400 C 820 380 1000 440 1200 410 L1200 640 L0 640 Z" fill="url(#hillBack)"/>
+  <path d="M0 500 C 260 450 420 500 640 478 C 880 454 1020 510 1200 486 L1200 640 L0 640 Z" fill="url(#hillMid)"/>
+  <path d="M0 566 C 240 520 460 566 700 548 C 920 532 1040 580 1200 560 L1200 640 L0 640 Z" fill="url(#hillFront)"/>
+
+  <!-- foreground plants -->
+  <g stroke-linecap="round" fill="none">
+    <g stroke="oklch(42% 0.14 170)" stroke-width="6">
+      <path d="M150 640 C 150 580 150 540 150 500"/>
+      <path d="M150 540 C 120 520 100 496 96 470"/>
+      <path d="M150 560 C 184 542 206 520 214 494"/>
+    </g>
+    <g stroke="oklch(40% 0.16 18)" stroke-width="6">
+      <path d="M210 640 C 210 590 210 556 210 524"/>
+      <path d="M210 560 C 182 544 166 524 162 502"/>
+      <path d="M210 576 C 240 562 258 544 266 522"/>
+    </g>
+    <!-- leaves on plants -->
+    <path d="M96 470 C 80 458 78 436 92 426 C 104 440 104 458 96 470 Z" fill="oklch(58% 0.14 155)" stroke="none"/>
+    <path d="M214 494 C 230 482 232 460 218 450 C 206 464 206 482 214 494 Z" fill="oklch(58% 0.14 155)" stroke="none"/>
+    <path d="M162 502 C 146 490 144 468 158 458 C 170 472 170 490 162 502 Z" fill="oklch(62% 0.17 18)" stroke="none"/>
+    <path d="M266 522 C 282 510 284 488 270 478 C 258 492 258 510 266 522 Z" fill="oklch(62% 0.17 18)" stroke="none"/>
+  </g>
+
+  <!-- floating spores / light dots -->
+  <g fill="oklch(96% 0.04 170)">
+    <circle cx="420" cy="240" r="5"/><circle cx="520" cy="300" r="4"/>
+    <circle cx="700" cy="220" r="6"/><circle cx="800" cy="320" r="4"/>
+    <circle cx="360" cy="340" r="3"/><circle cx="1040" cy="280" r="5"/>
+  </g>
+</svg>

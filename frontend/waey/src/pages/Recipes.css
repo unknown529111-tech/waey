@@ -1,0 +1,331 @@
+/* ────────────────────────────────────────────────────────────
+   Recipes page — page-specific classes not in redesign.css.
+   Faithful port of Waey-Awareness-Site-Redesign2/recipes.html,
+   restyled with Waey tokens so it auto-reskins in dark mode.
+   Borders use hsl(var(--border)) ≈ #ECECEC, radii 12–18px,
+   ease var(--ease), hover → hsl(var(--foreground)) + translateY(-2px).
+   ──────────────────────────────────────────────────────────── */
+
+.wrap {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Controls panel ───────────────────────────────────────── */
+.controls {
+  border: 1px solid hsl(var(--border));
+  border-radius: 18px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  background: hsl(var(--card));
+}
+.controls-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.field label {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-weight: 600;
+}
+.field input {
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  font-size: 0.95rem;
+  width: 8.5rem;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+.field input:focus {
+  outline: none;
+  border-color: hsl(var(--foreground));
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+.spacer {
+  flex: 1;
+}
+.stat-chip {
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: hsl(var(--foreground));
+}
+.stat-chip b {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+/* ── Filter chips + search ────────────────────────────────── */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  align-items: center;
+}
+.chip {
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  min-height: 44px;
+  color: hsl(var(--foreground));
+  background: hsl(var(--card));
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.chip:hover {
+  border-color: hsl(var(--foreground));
+}
+.chip.active {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  border-color: hsl(var(--foreground));
+}
+.search {
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-pill);
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  width: 14rem;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+.search:focus {
+  outline: none;
+  border-color: hsl(var(--foreground));
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+
+.count-line {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  margin-top: 1.25rem;
+}
+
+/* ── Recipe grid + cards ──────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.rcard {
+  border: 1px solid hsl(var(--border));
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: hsl(var(--card));
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.rcard:hover {
+  border-color: hsl(var(--foreground));
+  transform: translateY(-2px);
+}
+.rcard .rhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.rcard h3 {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-weight: 400;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
+  color: hsl(var(--foreground));
+}
+.meal {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.6rem;
+  white-space: nowrap;
+}
+.rstats {
+  display: flex;
+  gap: 1.1rem;
+  font-size: 0.85rem;
+}
+.rstats .s b {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  display: block;
+  color: hsl(var(--foreground));
+}
+.rstats .s span {
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+}
+.rtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.rtags span {
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.55rem;
+}
+.rcard .ractions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+.rcard .ractions button {
+  flex: 1;
+  border: 1px solid hsl(var(--foreground));
+  border-radius: var(--radius-pill);
+  padding: 0.45rem;
+  font-size: 0.82rem;
+  min-height: 40px;
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.rcard .ractions .fav.on,
+.rcard .ractions .add.on {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted-foreground);
+  padding: 3rem 1rem;
+}
+
+/* ── Ingredients disclosure ───────────────────────────────── */
+.ing {
+  margin-top: 0.2rem;
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 0.6rem;
+}
+.ing summary {
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: hsl(var(--foreground));
+  user-select: none;
+}
+.ing summary::-webkit-details-marker {
+  color: var(--muted-foreground);
+}
+.ing-list {
+  list-style: none;
+  margin-top: 0.55rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.ing-list li {
+  font-size: 0.78rem;
+  color: var(--muted-foreground);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.55rem;
+}
+
+/* ── Shopping list modal ──────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+}
+.overlay.open {
+  display: flex;
+}
+.sheet {
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  width: 100%;
+  max-width: 34rem;
+  border-radius: 20px 20px 0 0;
+  padding: 1.5rem;
+  max-height: 80vh;
+  overflow: auto;
+}
+.sheet h2 {
+  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-weight: 400;
+  font-size: 1.7rem;
+}
+.sheet .slist {
+  list-style: none;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.sheet .slist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid hsl(var(--border));
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+}
+.sheet .slist .rm {
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+.sheet-foot {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+/* ── Responsive (match export breakpoints) ────────────────── */
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .search {
+    width: 100%;
+  }
+  .controls-top .spacer {
+    flex-basis: 100%;
+  }
+}

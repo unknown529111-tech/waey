@@ -18,17 +18,17 @@ const icons: Record<string, React.ElementType> = {
 };
 
 const colors: Record<string, string> = {
-  visual: "text-blue-500",
-  auditory: "text-purple-500",
-  readwrite: "text-amber-500",
-  kinesthetic: "text-green-500",
+  visual: "text-info",
+  auditory: "text-info",
+  readwrite: "text-warning",
+  kinesthetic: "text-success",
 };
 
 const bgColors: Record<string, string> = {
-  visual: "from-blue-500/20 to-blue-500/5",
-  auditory: "from-purple-500/20 to-purple-500/5",
-  readwrite: "from-amber-500/20 to-amber-500/5",
-  kinesthetic: "from-green-500/20 to-green-500/5",
+  visual: "from-info/20 to-info/5",
+  auditory: "from-info/20 to-info/5",
+  readwrite: "from-warning/20 to-warning/5",
+  kinesthetic: "from-success/20 to-success/5",
 };
 
 const VarkTest = () => {

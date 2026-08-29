@@ -5,13 +5,13 @@ import type { Lang } from '@/locales';
 import { LanguageContext } from './useLanguage';
 
 const locales: Record<Lang, Record<string, string>> = { ar, en };
-const langOrder: Lang[] = ['ar', 'en'];
+const langOrder: Lang[] = ['en', 'ar'];
 
 function loadLang(): Lang {
-  if (typeof window === 'undefined') return 'ar';
+  if (typeof window === 'undefined') return 'en';
   const stored = localStorage.getItem('waey-lang');
   if (langOrder.includes(stored as Lang)) return stored as Lang;
-  return 'ar';
+  return 'en';
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

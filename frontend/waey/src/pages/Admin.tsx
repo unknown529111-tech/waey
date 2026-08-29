@@ -81,7 +81,7 @@ export default function Admin() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-card border border-border/50 rounded-[2rem] p-8 w-full max-w-sm mx-4"
+          className="card p-8 w-full max-w-sm mx-4"
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -116,7 +116,7 @@ export default function Admin() {
               />
             </div>
             {loginError && (
-              <p className="text-xs text-red-500 mb-3">{t('admin.wrongPassword')}</p>
+              <p className="text-xs text-danger mb-3">{t('admin.wrongPassword')}</p>
             )}
             <button
               type="submit"
@@ -236,8 +236,8 @@ function DashboardTab() {
   const cards = [
     { icon: <Users className="size-5" />, label: t('admin.card.totalUsers'), value: cloudUsers, color: "" },
     { icon: <ChefHat className="size-5" />, label: t('admin.card.recipes'), value: RECIPES.length + adminRecipes.length, sub: `${adminRecipes.length} ${t('admin.challenge.added')}`, color: "" },
-    { icon: <Flame className="size-5 text-orange-500" />, label: t('admin.card.topStreak'), value: cloudTopStreak, sub: cloudTopStreak >= 100 ? t('admin.card.winnerBadge') : "", color: cloudTopStreak >= 100 ? "text-amber-500" : "" },
-    { icon: <Trophy className="size-5" />, label: t('admin.card.prizeWinner'), value: cloudPrize.winner ? t('admin.card.done') : t('admin.card.none'), sub: cloudPrize.winner || "", color: cloudPrize.winner ? "text-amber-500" : "" },
+    { icon: <Flame className="size-5 text-warning" />, label: t('admin.card.topStreak'), value: cloudTopStreak, sub: cloudTopStreak >= 100 ? t('admin.card.winnerBadge') : "", color: cloudTopStreak >= 100 ? "text-warning" : "" },
+    { icon: <Trophy className="size-5" />, label: t('admin.card.prizeWinner'), value: cloudPrize.winner ? t('admin.card.done') : t('admin.card.none'), sub: cloudPrize.winner || "", color: cloudPrize.winner ? "text-warning" : "" },
     { icon: <BookOpen className="size-5" />, label: t('admin.card.challenges'), value: CHALLENGES.length + adminChallenges.length, sub: `${adminChallenges.length} ${t('admin.challenge.added')}`, color: "" },
     { icon: <MessageSquareQuote className="size-5" />, label: t('admin.card.quotes'), value: QUOTES.length + adminQuotes.length, sub: `${adminQuotes.length} ${t('admin.challenge.added')}`, color: "" },
   ];
@@ -250,7 +250,7 @@ function DashboardTab() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.05 }}
-          className={`bg-card border border-border/50 rounded-[2rem] p-6 ${c.color}`}
+          className={`card p-6 ${c.color}`}
         >
           <div className="flex items-center gap-3 mb-2">
             <div className="text-primary">{c.icon}</div>
@@ -290,7 +290,7 @@ function LiveMetricsCard() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border/50 rounded-[2rem] p-6">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card p-6">
       <div className="flex items-center gap-3 mb-2">
         <div className="text-primary"><Users className="size-5" /></div>
         <span className="text-sm font-bold text-muted-foreground">{t('admin.live.title')}</span>
@@ -329,7 +329,7 @@ function RecipesTab() {
     : RECIPES;
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
+    <div className="card overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
         <h2 className="text-lg font-bold">{t('admin.tab.recipes')} ({RECIPES.length + adminItems.length})</h2>
         <div className="flex gap-2">
@@ -425,10 +425,10 @@ function RecipesTab() {
                       </button>
                       <button
                         onClick={() => { deleteAdminRecipe(r._adminId); refresh(); }}
-                        className="size-7 rounded-full bg-muted hover:bg-red-100 dark:hover:bg-red-900/30 flex items-center justify-center transition-colors"
+                        className="size-7 rounded-full bg-muted hover:bg-danger-soft dark:hover:bg-danger-dark/30 flex items-center justify-center transition-colors"
                         title={t('common.delete')}
                       >
-                        <Trash2 className="size-3 text-red-500" />
+                        <Trash2 className="size-3 text-danger" />
                       </button>
                     </div>
                   </td>
@@ -495,7 +495,7 @@ function RecipeModal({ mode, data, onSave, onClose }: {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-card border border-border/50 rounded-[2rem] w-full max-w-lg max-h-[90vh] overflow-y-auto p-6"
+        className="card w-full max-w-lg max-h-[90vh] overflow-y-auto p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-bold mb-4">{mode === "add" ? t('admin.recipe.addTitle') : t('admin.recipe.editTitle')}</h3>
@@ -641,7 +641,7 @@ function ChallengesTab() {
   };
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
+    <div className="card overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
         <h2 className="text-lg font-bold">{t('admin.challenge.title')} ({base.length + adminItems.length})</h2>
         <button
@@ -677,7 +677,7 @@ function ChallengesTab() {
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button onClick={() => startEdit(c)} className="size-7 rounded-full bg-muted hover:bg-primary/20 flex items-center justify-center"><Edit3 className="size-3" /></button>
-                <button onClick={() => { deleteAdminChallenge(c._adminId); refresh(); }} className="size-7 rounded-full bg-muted hover:bg-red-100 dark:hover:bg-red-900/30 flex items-center justify-center"><Trash2 className="size-3 text-red-500" /></button>
+                <button onClick={() => { deleteAdminChallenge(c._adminId); refresh(); }} className="size-7 rounded-full bg-muted hover:bg-danger-soft dark:hover:bg-danger-dark/30 flex items-center justify-center"><Trash2 className="size-3 text-danger" /></button>
               </div>
             </div>
           ))
@@ -698,7 +698,7 @@ function ChallengesTab() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-card border border-border/50 rounded-[2rem] w-full max-w-md p-6"
+              className="card w-full max-w-md p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-lg font-bold mb-4">{editForm.id ? t('admin.challenge.editTitle') : t('admin.challenge.addTitle')}</h3>
@@ -761,7 +761,7 @@ function QuotesTab() {
   const refresh = () => setAdminItems(getAdminQuotes());
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
+    <div className="card overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
         <h2 className="text-lg font-bold">{t('admin.quote.title')} ({base.length + adminItems.length})</h2>
         <button
@@ -791,7 +791,7 @@ function QuotesTab() {
               <p className="text-sm flex-1 truncate">{q.text}</p>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button onClick={() => { setEditText(q.text); setEditId(q._adminId); setShowAdd(true); }} className="size-7 rounded-full bg-muted hover:bg-primary/20 flex items-center justify-center"><Edit3 className="size-3" /></button>
-                <button onClick={() => { deleteAdminQuote(q._adminId); refresh(); }} className="size-7 rounded-full bg-muted hover:bg-red-100 dark:hover:bg-red-900/30 flex items-center justify-center"><Trash2 className="size-3 text-red-500" /></button>
+                <button onClick={() => { deleteAdminQuote(q._adminId); refresh(); }} className="size-7 rounded-full bg-muted hover:bg-danger-soft dark:hover:bg-danger-dark/30 flex items-center justify-center"><Trash2 className="size-3 text-danger" /></button>
               </div>
             </div>
           ))
@@ -811,7 +811,7 @@ function QuotesTab() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-card border border-border/50 rounded-[2rem] w-full max-w-md p-6"
+              className="card w-full max-w-md p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-lg font-bold mb-4">{editId ? t('admin.quote.editTitle') : t('admin.quote.addTitle')}</h3>
@@ -873,11 +873,11 @@ function UsersTab() {
   useEffect(() => { refresh(); }, []);
 
   return (
-    <div className="bg-card border border-border/50 rounded-[2rem] overflow-hidden">
+    <div className="card overflow-hidden">
       <div className="px-6 py-4 border-b border-border/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-green-600 text-[10px] font-bold">Supabase ✓</span>
+            <span className="text-success text-[10px] font-bold">Supabase ✓</span>
             <div className="text-xs text-muted-foreground">{t('admin.users.cloudData')}</div>
           </div>
         </div>
@@ -914,14 +914,14 @@ function UsersTab() {
             ) : (
               users.map((u, i) => (
                 <tr key={u.email} className={`border-b border-border/30 hover:bg-muted/30 transition-colors ${
-                  prize.winner === u.email ? "bg-amber-50 dark:bg-amber-950/20" : ""
+                  prize.winner === u.email ? "bg-warning-soft dark:bg-warning-dark/20" : ""
                 }`}>
                   <td className="px-4 py-3 text-muted-foreground text-center">{i + 1}</td>
                   <td className="px-4 py-3 font-bold">{u.name}</td>
                   <td className="px-4 py-3 text-muted-foreground dir-ltr hidden sm:table-cell">{u.email}</td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`inline-flex items-center gap-1 font-bold ${u.streakCount >= 100 ? "text-amber-500" : ""}`}>
-                      <Flame className="size-3.5 text-orange-500" />
+                    <span className={`inline-flex items-center gap-1 font-bold ${u.streakCount >= 100 ? "text-warning" : ""}`}>
+                      <Flame className="size-3.5 text-warning" />
                       {u.streakCount}
                     </span>
                   </td>
@@ -933,10 +933,10 @@ function UsersTab() {
       </div>
 
       {/* Prize section */}
-      <div className="px-6 py-4 border-t border-border/50 bg-amber-50 dark:bg-amber-950/10">
+      <div className="px-6 py-4 border-t border-border/50 bg-warning-soft dark:bg-warning-dark/10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Trophy className="size-5 text-amber-500" />
+            <Trophy className="size-5 text-warning" />
             <div>
               <p className="text-sm font-bold">{t('admin.users.prize')}</p>
               <p className="text-xs text-muted-foreground">
@@ -962,7 +962,7 @@ function SystemTab() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card border border-border/50 rounded-[2rem] p-6"
+        className="card p-6"
       >
         <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
           <Download className="size-5 text-primary" />
@@ -994,17 +994,17 @@ function SystemTab() {
             {t('admin.system.export')}
           </button>
         )}
-        {copied && <p className="text-xs text-green-600 mt-2">{t('admin.system.copied')}</p>}
+        {copied && <p className="text-xs text-success mt-2">{t('admin.system.copied')}</p>}
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="bg-card border border-red-200 dark:border-red-900/30 rounded-[2rem] p-6"
+        className="bg-card border border-danger-soft dark:border-danger-dark/30 rounded-card p-6"
       >
         <div className="flex items-start gap-3">
-          <AlertTriangle className="size-5 text-red-500 shrink-0 mt-0.5" />
+          <AlertTriangle className="size-5 text-danger shrink-0 mt-0.5" />
           <div className="flex-1">
             <h3 className="font-bold text-lg mb-1">{t('admin.system.reset')}</h3>
             <p className="text-sm text-muted-foreground mb-4">
@@ -1017,7 +1017,7 @@ function SystemTab() {
                     resetAllData();
                     setShowReset(false);
                   }}
-                  className="h-9 px-4 text-xs font-bold rounded-full bg-red-600 text-white hover:bg-red-700 transition-all"
+                  className="h-9 px-4 text-xs font-bold rounded-full bg-danger text-white hover:bg-danger transition-all"
                 >
                   {t('admin.system.confirmReset')}
                 </button>
@@ -1031,7 +1031,7 @@ function SystemTab() {
             ) : (
               <button
                 onClick={() => setShowReset(true)}
-                className="h-9 px-4 text-xs font-bold rounded-full bg-red-50 dark:bg-red-950/20 text-red-600 border border-red-200 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-950/40 transition-all"
+                className="h-9 px-4 text-xs font-bold rounded-full bg-danger-soft dark:bg-danger-dark/20 text-danger border border-danger-soft dark:border-danger-dark/30 hover:bg-danger-soft dark:hover:bg-danger-dark/40 transition-all"
               >
                 {t('admin.system.resetAll')}
               </button>
@@ -1044,7 +1044,7 @@ function SystemTab() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-card border border-border/50 rounded-[2rem] p-6"
+        className="card p-6"
       >
         <h3 className="font-bold text-lg mb-2">{t('admin.system.info')}</h3>
         <div className="space-y-1.5 text-sm text-muted-foreground">

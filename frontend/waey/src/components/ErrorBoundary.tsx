@@ -55,9 +55,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="min-h-[60vh] flex items-center justify-center px-4" dir="rtl">
-          <div className="text-center max-w-md bg-card border border-border/50 rounded-[2rem] p-8 shadow-sm">
-            <div className="size-16 mx-auto mb-4 rounded-full bg-red-50 dark:bg-red-950/30 flex items-center justify-center">
-              <AlertTriangle className="size-8 text-amber-500" />
+          <div className="text-center max-w-md card p-8 shadow-sm">
+            <div className="size-16 mx-auto mb-4 rounded-full bg-danger-soft dark:bg-danger-dark/30 flex items-center justify-center">
+              <AlertTriangle className="size-8 text-warning" />
             </div>
             <h2 className="text-xl font-bold mb-2">
               {isChunkErr ? t('error.newUpdate') : t('error.unexpected')}

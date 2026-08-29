@@ -1,0 +1,125 @@
+/* ────────────────────────────────────────────────────────────
+   Track page (faithful port of Waey-Awareness-Site-Redesign2/track.html)
+   Page-specific classes NOT present in redesign.css, implemented with
+   Waey tokens so they auto-reskin under [data-theme="dark"].
+   Borders: hsl(var(--border)) · Radii: 12–18px · Ease: var(--ease)
+   Hover: border → hsl(var(--foreground)) + translateY(-2px)
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Layout wrapper ────────────────────────────────────────── */
+.wrap { max-width: 80rem; margin-inline: auto; padding: 0 1.5rem; }
+
+/* ── Segmented control (Daily / Weekly) ────────────────────── */
+.seg { display: inline-flex; border: 1px solid hsl(var(--foreground)); border-radius: var(--radius-pill); overflow: hidden; }
+.seg button { padding: 0.5rem 1.4rem; font-size: 0.9rem; font-weight: 500; color: hsl(var(--foreground)); background: transparent; transition: background-color 0.2s var(--ease), color 0.2s var(--ease); }
+.seg button.active { background: hsl(var(--foreground)); color: hsl(var(--background)); }
+
+/* ── Card ──────────────────────────────────────────────────── */
+.card { border: 1px solid hsl(var(--border)); border-radius: 18px; padding: 1.5rem; background: hsl(var(--card)); margin-top: 1.25rem; }
+.card:first-of-type { margin-top: 1.5rem; }
+.card h2 { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.7rem; letter-spacing: -0.5px; }
+.card h3 { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.35rem; margin-bottom: 0.5rem; }
+.card .sub { color: var(--muted-foreground); font-size: 0.92rem; line-height: 1.6; margin-top: 0.3rem; }
+
+/* ── Buttons: disabled ─────────────────────────────────────── */
+.btn[disabled] { opacity: 0.5; cursor: default; transform: none; }
+
+/* ── Badges summary ────────────────────────────────────────── */
+.badge-summary { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+.stat-chip { border: 1px solid hsl(var(--border)); border-radius: var(--radius-pill); padding: 0.5rem 1rem; font-size: 0.85rem; }
+.stat-chip b { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.15rem; }
+.badge-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-left: auto; }
+
+/* ── Badge grid ────────────────────────────────────────────── */
+.badge-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.85rem; margin-top: 0.5rem; }
+.badge { border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1rem; text-align: center; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), background-color 0.25s var(--ease); }
+.badge:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.badge.earned { border-color: hsl(var(--foreground)); background: var(--surface-2); }
+.badge .ico { font-size: 1.6rem; }
+.badge .nm { font-weight: 600; font-size: 0.85rem; margin-top: 0.35rem; }
+.badge .ds { font-size: 0.76rem; color: var(--muted-foreground); line-height: 1.4; margin-top: 0.25rem; }
+.badge .tag { display: inline-block; margin-top: 0.4rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
+.badge.earned .tag { color: hsl(var(--foreground)); }
+
+/* ── How to earn ───────────────────────────────────────────── */
+.earn-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1rem; }
+.earn { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 0.9rem 1rem; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease); }
+.earn:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.earn .cat { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.15rem; margin-bottom: 0.4rem; }
+.earn ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.earn li { font-size: 0.85rem; color: var(--muted-foreground); line-height: 1.45; }
+.earn li .mk { display: inline-block; width: 1.1rem; }
+.shop-note { font-size: 0.86rem; color: var(--muted-foreground); line-height: 1.6; margin-top: 0.5rem; }
+
+/* ── Goals (empty state) ───────────────────────────────────── */
+.goals-empty { border: 1px dashed #CFCFCF; border-radius: 14px; padding: 1.5rem; text-align: center; color: var(--muted-foreground); font-size: 0.92rem; }
+.goals-add { margin-top: 0.9rem; }
+
+/* ── Check-in row ──────────────────────────────────────────── */
+.checkin { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.checkin .flame { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.3rem; }
+
+/* ── Tasks inputs ──────────────────────────────────────────── */
+.tasks { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem; }
+.tasks input { border: 1px solid hsl(var(--border)); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.9rem; width: 100%; font-family: inherit; color: hsl(var(--foreground)); background: hsl(var(--card)); }
+.tasks input:focus { outline: none; border-color: hsl(var(--foreground)); box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
+
+/* ── Metrics grid ──────────────────────────────────────────── */
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem; margin-top: 0.75rem; }
+.metric { border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1rem; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease); }
+.metric:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.metric .top { display: flex; justify-content: space-between; align-items: baseline; }
+.metric .lab { font-size: 0.8rem; color: var(--muted-foreground); }
+.metric .val { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.5rem; margin-top: 0.2rem; }
+.metric .val small { font-size: 0.8rem; color: var(--muted-foreground); }
+.metric .ctr { display: flex; gap: 0.4rem; margin-top: 0.6rem; }
+.metric .ctr button { border: 1px solid hsl(var(--foreground)); border-radius: var(--radius-pill); width: 1.9rem; height: 1.9rem; font-size: 1rem; line-height: 1; color: hsl(var(--foreground)); background: transparent; transition: background-color 0.2s var(--ease); }
+.metric .ctr button:hover { background: var(--surface-2); }
+.energy-bar { height: 10px; background: #F2F2F2; border-radius: var(--radius-pill); overflow: hidden; margin-top: 0.5rem; }
+.energy-fill { height: 100%; width: 0%; background: hsl(var(--foreground)); border-radius: var(--radius-pill); transition: width 0.3s var(--ease); }
+
+/* ── Night review ──────────────────────────────────────────── */
+.review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 0.75rem; }
+.review-grid .full { grid-column: 1 / -1; }
+.review-grid label { font-size: 0.82rem; color: var(--muted-foreground); display: block; margin-bottom: 0.35rem; }
+.review-grid textarea, .review-grid input { border: 1px solid hsl(var(--border)); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.9rem; width: 100%; resize: vertical; font-family: inherit; color: hsl(var(--foreground)); background: hsl(var(--card)); }
+.review-grid textarea:focus, .review-grid input:focus { outline: none; border-color: hsl(var(--foreground)); box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
+.mood-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.mood-row button { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 0.6rem 0.9rem; font-size: 0.85rem; color: hsl(var(--foreground)); background: transparent; transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease); }
+.mood-row button:hover { border-color: hsl(var(--foreground)); }
+.mood-row button.sel { border-color: hsl(var(--foreground)); background: var(--surface-2); }
+.bedtime-toggle { display: flex; align-items: center; gap: 0.6rem; }
+.switch { width: 46px; height: 26px; border-radius: var(--radius-pill); border: 1px solid hsl(var(--foreground)); position: relative; flex: none; cursor: pointer; }
+.switch .dot { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: hsl(var(--foreground)); transition: left 0.25s var(--ease); }
+.switch.on .dot { left: 22px; }
+
+/* ── Impact box ────────────────────────────────────────────── */
+.impact-box { border: 1px dashed #CFCFCF; border-radius: 14px; padding: 1.25rem; text-align: center; color: var(--muted-foreground); font-size: 0.9rem; }
+
+/* ── Weekly ────────────────────────────────────────────────── */
+.weekly-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; margin-top: 1rem; }
+.wstat { border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1rem; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease); }
+.wstat:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.wstat .l { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; }
+.wstat .v { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.8rem; margin-top: 0.25rem; }
+.report-note { font-size: 0.92rem; line-height: 1.7; color: var(--muted-foreground); margin-top: 0.5rem; padding-right: 1.1rem; }
+.report-note li { margin-bottom: 0.35rem; }
+.chart { margin-top: 1rem; }
+.chart .ctitle { font-size: 0.82rem; color: var(--muted-foreground); margin-bottom: 0.5rem; }
+.bars { display: flex; align-items: flex-end; gap: 0.5rem; height: 120px; border-bottom: 1px solid hsl(var(--border)); padding-bottom: 0.3rem; }
+.bars .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0.3rem; height: 100%; }
+.bars .bar { width: 60%; background: hsl(var(--foreground)); border-radius: 6px 6px 0 0; min-height: 3px; transition: height 0.3s var(--ease); }
+.bars .day { font-size: 0.72rem; color: var(--muted-foreground); }
+.bars .num { font-size: 0.7rem; color: hsl(var(--foreground)); }
+
+/* ── Responsive (match export breakpoints) ─────────────────── */
+@media (max-width: 900px) {
+  .badge-grid { grid-template-columns: repeat(2, 1fr); }
+  .earn-list { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: 1fr; }
+  .review-grid { grid-template-columns: 1fr; }
+  .weekly-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .badge-actions { margin-left: 0; }
+}

@@ -1,0 +1,164 @@
+/* ────────────────────────────────────────────────────────────
+   Waey design tokens — single source of truth.
+   Editorial monochrome system: white paper, true ink, warm-gray
+   muted text, hairline borders, black pill actions. Dark mode is
+   restored and driven entirely by these variables, scoped under
+   [data-theme="dark"] on <html> (matches the Redesign2 export).
+   Component CSS (buttons/surfaces/forms) reads these vars, so the
+   whole app reskins by flipping the dark block — no per-component
+   dark rules required.
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* Pure white paper */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
+
+  /* Ink — solid black action (export's .btn-cta) */
+  --primary: 0 0% 0%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 0%;
+
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 44%; /* #6F6F6F ≈ hsl(0 0% 43.5%) */
+
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 0%;
+
+  --destructive: 0 0% 0%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Hairline #ECECEC ≈ hsl(0 0% 92.5%) */
+  --border: 0 0% 93%;
+  --input: 0 0% 93%;
+  --ring: 0 0% 0%;
+
+  --radius: 1rem;          /* 16px — feature cards */
+  --radius-card: 1.125rem; /* 18px — field cards */
+
+  /* Legacy decorative tokens kept for compatibility (neutralized) */
+  --leaf-light: 0 0% 96%;
+  --sun-warm: 0 0% 96%;
+  --sand-deep: 0 0% 93%;
+
+  --ink: 0 0% 0%;
+  --ink-muted: 0 0% 44%;
+  --ink-faint: 0 0% 62%;
+
+  --footer: 0 0% 100%;
+
+  /* Data accent — monochrome (ink + light-grey) for charts/trackers */
+  --water: 0 0% 0%;
+  --water-soft: 0 0% 94%;
+
+  /* Status: monochrome — success resolves to ink + light-grey */
+  --success: 0 0% 0%;
+  --success-foreground: 0 0% 100%;
+  --success-bright: 0 0% 0%;
+  --success-soft: 0 0% 94%;
+  --success-dark: 0 0% 0%;
+
+  /* Status: monochrome — warning resolves to ink + light-grey */
+  --warning: 0 0% 0%;
+  --warning-foreground: 0 0% 100%;
+  --warning-bright: 0 0% 0%;
+  --warning-soft: 0 0% 94%;
+  --warning-dark: 0 0% 0%;
+
+  /* Status: danger (brick red) */
+  --danger: 0 0% 0%;
+  --danger-foreground: 0 0% 100%;
+  --danger-bright: 0 0% 0%;
+  --danger-soft: 0 0% 94%;
+  --danger-dark: 0 0% 0%;
+
+  /* Status: monochrome — info resolves to ink + light-grey */
+  --info: 0 0% 0%;
+  --info-foreground: 0 0% 100%;
+  --info-bright: 0 0% 0%;
+  --info-soft: 0 0% 94%;
+  --info-dark: 0 0% 0%;
+
+  /* ── Canonical export vocabulary (Redesign2 theme.css parity) ──
+     Raw hex forms mirror the redesign export exactly so the handoff
+     spec and Waey stay in lockstep. Light values below. */
+  --bg: #FFFFFF;
+  --fg: #000000;
+  --surface: #FFFFFF;
+  --surface-2: #F4F4F4;   /* selected / hover fills (.sound-opt.selected) */
+  --border-strong: #000000; /* hover borders */
+  --track: #F4F4F4;        /* progress tracks */
+  --fill: #000000;         /* active fills */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-pill: 999px;
+}
+
+/* ── Dark mode: restored per Redesign2 export ────────────────
+   White becomes the accent; surfaces step down to near-black.
+   All component CSS consumes these vars, so flipping them here
+   reskins the entire app. ─────────────────────────────────── */
+[data-theme="dark"] {
+  --background: 0 0% 4%;        /* #0B0B0B */
+  --foreground: 0 0% 96%;       /* #F5F5F5 */
+  --card: 0 0% 9%;              /* #161616 */
+  --card-foreground: 0 0% 96%;
+  --popover: 0 0% 9%;
+  --popover-foreground: 0 0% 96%;
+
+  --primary: 0 0% 96%;          /* ink-inverted: white action */
+  --primary-foreground: 0 0% 4%;
+
+  --secondary: 0 0% 13%;
+  --secondary-foreground: 0 0% 96%;
+  --muted: 0 0% 13%;
+  --muted-foreground: 0 0% 62%; /* #9A9A9A */
+
+  --accent: 0 0% 13%;
+  --accent-foreground: 0 0% 96%;
+
+  --border: 0 0% 16%;           /* #2A2A2A */
+  --input: 0 0% 16%;
+  --ring: 0 0% 96%;
+
+  --ink: 0 0% 96%;
+  --ink-muted: 0 0% 62%;
+  --ink-faint: 0 0% 45%;
+  --footer: 0 0% 4%;
+
+  --water: 0 0% 96%;
+  --water-soft: 0 0% 14%;
+
+  /* Status — monochrome, lightened for dark surfaces */
+  --success: 0 0% 96%;
+  --success-soft: 0 0% 14%;
+  --success-bright: 0 0% 96%;
+  --warning: 0 0% 96%;
+  --warning-soft: 0 0% 14%;
+  --warning-bright: 0 0% 96%;
+  --info: 0 0% 96%;
+  --info-soft: 0 0% 14%;
+  --info-bright: 0 0% 96%;
+  --danger: 0 0% 96%;
+  --danger-soft: 0 0% 14%;
+  --destructive: 0 0% 96%;
+  --destructive-soft: 0 0% 14%;
+
+  /* ── Canonical export vocabulary (Redesign2 dark parity) ── */
+  --bg: #0B0B0B;
+  --fg: #F5F5F5;
+  --surface: #161616;
+  --surface-2: #202020;
+  --border-strong: #F5F5F5;
+  --track: #202020;
+  --fill: #F5F5F5;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-pill: 999px;
+}

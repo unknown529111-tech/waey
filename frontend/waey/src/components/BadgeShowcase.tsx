@@ -140,7 +140,7 @@ export function BadgeShowcase() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/40">
         <div className="flex items-center gap-3">
-          <div className="size-11 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
+          <div className="size-11 rounded-full bg-warning/10 flex items-center justify-center text-warning">
             <Award className="size-6" />
           </div>
           <div>
@@ -153,14 +153,14 @@ export function BadgeShowcase() {
 
         {/* Points & Freeze Shop */}
         <div className="flex items-center gap-3 bg-muted/50 p-2 px-4 rounded-full border border-border/40 self-start sm:self-auto">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-warning dark:text-warning-bright">
             <Coins className="size-4" />
             <span>{t('badge.points').replace('{points}', String(points))}</span>
           </div>
 
           <div className="h-4 w-px bg-border/60" />
 
-          <div className="flex items-center gap-2 text-xs font-bold text-cyan-600 dark:text-cyan-400">
+          <div className="flex items-center gap-2 text-xs font-bold text-foreground">
             <ShieldAlert className="size-4" />
             <span>{t('badge.freezes').replace('{count}', String(freezes))}</span>
           </div>
@@ -168,7 +168,7 @@ export function BadgeShowcase() {
           {points >= 50 && (
             <button
               onClick={handleBuyFreeze}
-              className="h-7 px-3 rounded-full bg-cyan-600 text-white text-[11px] font-bold hover:bg-cyan-700 transition-all shadow-sm flex items-center gap-1 mr-1"
+              className="h-7 px-3 rounded-full bg-primary text-primary-foreground text-[11px] font-bold hover:bg-primary/90 transition-all shadow-sm flex items-center gap-1 mr-1"
             >
               {t('badge.buyFreeze')}
             </button>
@@ -176,7 +176,7 @@ export function BadgeShowcase() {
 
           <button
             onClick={() => setRecoveryOpen(true)}
-            className="h-7 px-3 rounded-full bg-amber-600 text-white text-[11px] font-bold hover:bg-amber-700 transition-all shadow-sm flex items-center gap-1 mr-1"
+            className="h-7 px-3 rounded-full bg-warning text-white text-[11px] font-bold hover:bg-warning transition-all shadow-sm flex items-center gap-1 mr-1"
           >
             <RotateCcw className="size-3" />
             {t('badge.recoverStreak')}
@@ -212,13 +212,13 @@ export function BadgeShowcase() {
               onClick={() => setSelectedBadge(b)}
               className={`cursor-pointer p-4 rounded-2xl border text-center transition-all flex flex-col items-center justify-between min-h-[140px] relative ${
                 isUnlocked
-                  ? "bg-gradient-to-b from-card to-amber-500/5 border-amber-500/30 shadow-sm"
+                  ? "bg-gradient-to-b from-card to-warning/5 border-warning/30 shadow-sm"
                   : "bg-muted/30 border-border/40 opacity-60 hover:opacity-80"
               }`}
             >
               <div className="relative mb-2">
                 {b.icon ? (
-                  <div className="size-12 mx-auto rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                  <div className="size-12 mx-auto rounded-full bg-warning/10 text-warning dark:text-warning-bright flex items-center justify-center">
                     <b.icon className="size-6" />
                   </div>
                 ) : (
@@ -239,7 +239,7 @@ export function BadgeShowcase() {
               </div>
 
               {isUnlocked && (
-                <span className="mt-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                <span className="mt-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-warning/10 text-warning dark:text-warning-bright">
                   {t('badge.earned')}
                 </span>
               )}
@@ -251,7 +251,7 @@ export function BadgeShowcase() {
       {/* How to Earn Badges Guide — live progress pulled from real stats */}
       <div className="mt-6 pt-5 border-t border-border/40">
         <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-          <Sparkles className="size-4 text-amber-500" />
+          <Sparkles className="size-4 text-warning" />
           {t('badge.howToEarn')}
         </h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -271,7 +271,7 @@ export function BadgeShowcase() {
                     return (
                       <li key={b.id} className="text-[11px] flex flex-col gap-1 leading-relaxed">
                         <div className="flex items-start gap-1.5">
-                          <span className={`mt-0.5 shrink-0 ${done ? "text-amber-500" : "text-primary"}`}>
+                          <span className={`mt-0.5 shrink-0 ${done ? "text-warning" : "text-primary"}`}>
                             {done ? "✓" : "•"}
                           </span>
                           <span className="flex-1">
@@ -326,12 +326,12 @@ export function BadgeShowcase() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-card border border-border/50 rounded-[2rem] p-6 max-w-sm w-full text-center shadow-xl relative"
+              className="card p-6 max-w-sm w-full text-center shadow-xl relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="size-20 mx-auto mb-4 rounded-full bg-amber-500/10 flex items-center justify-center shadow-inner">
+              <div className="size-20 mx-auto mb-4 rounded-full bg-warning/10 flex items-center justify-center shadow-inner">
                 {selectedBadge.icon ? (
-                  <selectedBadge.icon className="size-9 text-amber-600 dark:text-amber-400" />
+                  <selectedBadge.icon className="size-9 text-warning dark:text-warning-bright" />
                 ) : (
                   <span className="text-4xl">{selectedBadge.emoji}</span>
                 )}
@@ -344,7 +344,7 @@ export function BadgeShowcase() {
 
               {unlockedIds.includes(selectedBadge.id) ? (
                 <div className="space-y-3">
-                  <div className="p-3 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold flex items-center justify-center gap-1.5">
+                  <div className="p-3 rounded-2xl bg-warning/10 text-warning dark:text-warning-bright text-xs font-bold flex items-center justify-center gap-1.5">
                     <Sparkles className="size-4" />
                     <span>{t('badge.earnedTitle')}</span>
                   </div>
@@ -355,7 +355,7 @@ export function BadgeShowcase() {
                   >
                     {copied ? (
                       <>
-                        <Check className="size-4 text-emerald-300" />
+                        <Check className="size-4 text-success-bright" />
                         {t('badge.copied')}
                       </>
                     ) : (

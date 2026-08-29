@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="نبتة تنمو">
+  <circle cx="100" cy="100" r="92" fill="oklch(95% 0.04 170)"/>
+  <!-- mound -->
+  <path d="M40 150 C 70 132 130 132 160 150 C 150 168 50 168 40 150 Z" fill="oklch(78% 0.10 155)"/>
+  <!-- stem -->
+  <path d="M100 152 C 100 120 100 96 100 74" stroke="oklch(44% 0.14 170)" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <!-- leaves -->
+  <path d="M100 104 C 70 96 52 74 56 50 C 84 56 100 78 100 104 Z" fill="oklch(58% 0.14 155)"/>
+  <path d="M100 118 C 130 110 150 88 146 62 C 118 68 100 90 100 118 Z" fill="oklch(50% 0.13 170)"/>
+  <!-- bud -->
+  <circle cx="100" cy="70" r="11" fill="oklch(68% 0.15 72)"/>
+</svg>

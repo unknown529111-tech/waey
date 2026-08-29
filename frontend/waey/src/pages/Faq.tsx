@@ -19,6 +19,7 @@ const Faq = () => {
     <div className="relative">
       <div className="relative">
         <PageHero
+          eyebrow={'Waey · ' + t('nav.faq')}
           title={t('faq.title')}
           subtitle={t('faq.subtitle')}
         />

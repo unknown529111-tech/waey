@@ -10,10 +10,10 @@ export const blobShapes = [
 ];
 
 export const cardRadii = [
-  "rounded-[2rem] rounded-tl-[4rem]",
-  "rounded-[2rem] rounded-br-[4rem]",
-  "rounded-[2rem] rounded-tr-[5rem] rounded-bl-[5rem]",
-  "rounded-[2rem] rounded-bl-[4rem]",
+  "rounded-card rounded-tl-[4rem]",
+  "rounded-card rounded-br-[4rem]",
+  "rounded-card rounded-tr-[5rem] rounded-bl-[5rem]",
+  "rounded-card rounded-bl-[4rem]",
   "rounded-[3rem_1rem_3rem_1rem]",
   "rounded-[1rem_3rem_1rem_3rem]",
   "rounded-[2rem_0.5rem_2rem_0.5rem]",

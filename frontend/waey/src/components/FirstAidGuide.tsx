@@ -14,8 +14,8 @@ const FirstAidGuide = () => {
         t("firstAid.burns.step3"),
         t("firstAid.burns.step4"),
       ],
-      color: "text-red-500",
-      bg: "from-red-50 to-transparent dark:from-red-900/20",
+      color: "text-danger",
+      bg: "from-danger-soft to-transparent",
     },
     {
       icon: Activity,
@@ -26,8 +26,8 @@ const FirstAidGuide = () => {
         t("firstAid.choking.step3"),
         t("firstAid.choking.step4"),
       ],
-      color: "text-orange-500",
-      bg: "from-orange-50 to-transparent dark:from-orange-900/20",
+      color: "text-warning",
+      bg: "from-warning-soft to-transparent",
     },
     {
       icon: Heart,
@@ -39,7 +39,7 @@ const FirstAidGuide = () => {
         t("firstAid.sugarDrop.step4"),
       ],
       color: "text-primary",
-      bg: "from-primary/5 to-transparent dark:from-primary/10",
+      bg: "from-primary/5 to-transparent",
     },
   ];
 

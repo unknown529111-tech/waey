@@ -1,0 +1,55 @@
+/* ────────────────────────────────────────────────────────────
+   Surfaces — flat editorial cards with hairline borders.
+   Matches the redesign export: no frosted glass, no drop
+   shadows. Depth = 1px #ECECEC border; hover = black border
+   + slight lift, ease cubic-bezier(0.22,1,0.36,1).
+   ──────────────────────────────────────────────────────────── */
+
+@layer components {
+  /* ── Card ─────────────────────────────────────────────────
+     The default content surface: white paper, hairline border,
+     18px radius. Combine with padding utilities (p-4 / p-6 …). */
+  .card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-card);
+    transition: border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card:hover {
+    border-color: hsl(var(--foreground));
+    transform: translateY(-2px);
+  }
+
+  /* ── Feature card (export's .feature / .field-card) ────── */
+  .ledger {
+    position: relative;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    transition: border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ledger:hover {
+    border-color: hsl(var(--foreground));
+    transform: translateY(-2px);
+  }
+
+  /* ── Glass panel — kept as alias for compatibility; now a
+     quiet bordered surface (the system has one depth cue). ── */
+  .glass {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+  }
+
+  /* bg-card keeps Tailwind semantics but loses the frost */
+  .bg-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Hairline / divider */
+  .hairline { border-top: 1px solid hsl(var(--border)); }
+}

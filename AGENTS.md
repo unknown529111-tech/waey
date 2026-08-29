@@ -7,7 +7,7 @@
 - **Backend**: Supabase (contact form + AI chat proxy only)
 - **Storage**: localStorage-first (no auth, no DB for user data)
 - **Theme**: Full light/dark toggle
-- **Design**: Warm nature palette (forest green, amber, cream sand), Alexandria font, 24px rounded-3xl cards, pill buttons
+- **Design**: Editorial monochrome system — ink/paper/grey, Instrument Serif (Latin display) + Amiri (Arabic display) + Inter (UI/body) + Roboto Mono (labels), 16-18px cards, pill buttons, light/dark via `data-theme`
 
 ---
 
@@ -202,7 +202,7 @@ npm run test
 
 ### Design & Visual Check
 - [ ] New components match DESIGN.md tokens (colors, spacing, rounded corners, typography)
-- [ ] All cards use `rounded-3xl` (32px) unless specifically exempted
+- [ ] All cards use 16-18px radii (`rounded-2xl` / `rounded-[18px]`) unless specifically exempted
 - [ ] All buttons are `rounded-full` pills
 - [ ] Headings are weight 700, body has 1.9 line-height
 - [ ] RTL layout: `dir="rtl"` on all pages, text-right on content
@@ -240,10 +240,10 @@ npm run test
 
 - **RTL**: All text is right-to-left. Never use LTR layout. `dir="rtl"`, `text-align: right`.
 - **No auth/DB for user data**: All trackers, streaks, favorites go in localStorage. Supabase is only for contact form + AI chat proxy.
-- **Alexandria font**: The only typeface. Weight 700 for headings/buttons, 400 for body.
+- **Typography**: Instrument Serif (Latin display) + Amiri (Arabic display) + Inter (UI/body) + Roboto Mono (labels). Body line-height ~1.9 (Arabic 1.8); headings serif weight 400/700; eyebrows mono uppercase tracked.
 - **Body leading**: Always 1.9 line-height on body text.
-- **Card radius**: Default is `rounded-3xl` (32px). NEVER use square corners on cards.
+- **Card radius**: Default is 16-18px (`rounded-2xl` / `rounded-[18px]`). NEVER use square corners on cards.
 - **Button shape**: Always `rounded-full` (pill). NEVER square buttons.
-- **Colors**: Use DESIGN.md tokens, never raw hex. Text uses warm `#392B21` ink, never pure black.
+- **Colors**: Use DESIGN.md tokens, never raw hex. Text uses ink `#000` (light) / `#F5F5F5` (dark) per tokens — pure monochrome, no warm-tinted ink.
 - **Gradient blobs**: Decorate pages with blurred circles in primary/accent tints.
 - **Design integrity**: Before marking UI work complete, load `impeccable` or `design-review` skill for a visual audit.

@@ -1,0 +1,91 @@
+/* ────────────────────────────────────────────────────────────
+   Finance page — port-specific classes not covered by redesign.css.
+   Faithful port of finance.html, restyled with Waey tokens so it
+   auto-reskins in [data-theme="dark"].
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Inflation 3-up ─────────────────────────────────────────── */
+.triplet { max-width: 80rem; margin-inline: auto; padding: 1.75rem 1.5rem 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.trip { border: 1px solid hsl(var(--border)); border-radius: 16px; padding: 1.5rem; background: hsl(var(--card)); transition: border-color 0.25s var(--ease), transform 0.25s var(--ease); }
+.trip:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.trip h3 { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-weight: 400; font-size: 1.6rem; margin-bottom: 0.5rem; }
+.trip .where { font-size: 0.8rem; color: var(--muted-foreground); margin-bottom: 0.6rem; }
+.trip .verdict { font-weight: 600; font-size: 0.95rem; border-top: 1px solid hsl(var(--border)); padding-top: 0.6rem; }
+
+/* ── Digital envelope allocation ────────────────────────────── */
+.envelope { max-width: 80rem; margin-inline: auto; padding: 1.75rem 1.5rem 0; display: flex; flex-direction: column; gap: 0.9rem; }
+.env-row { display: grid; grid-template-columns: 9rem 1fr 4rem; align-items: center; gap: 1rem; }
+.env-name { font-weight: 500; font-size: 0.92rem; }
+.env-track { height: 14px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.env-fill { height: 100%; background: hsl(var(--foreground)); border-radius: 999px; }
+.env-pct { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 0.9rem; }
+
+/* ── Numbered tips ──────────────────────────────────────────── */
+.tips { max-width: 80rem; margin-inline: auto; padding: 1.75rem 1.5rem 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; counter-reset: tip; }
+.tip { display: flex; gap: 0.85rem; align-items: flex-start; border: 1px solid hsl(var(--border)); border-radius: 14px; padding: 1rem 1.15rem; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease); }
+.tip:hover { border-color: hsl(var(--foreground)); transform: translateY(-2px); }
+.tip::before { counter-increment: tip; content: counter(tip); flex: none; width: 1.6rem; height: 1.6rem; border-radius: 999px; border: 1px solid hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 600; }
+.tip span { font-size: 0.9rem; line-height: 1.55; }
+
+/* ── Day chips ──────────────────────────────────────────────── */
+.chips { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.25rem; }
+.chip { border: 1px solid hsl(var(--foreground)); border-radius: 999px; padding: 0.5rem 1.1rem; font-size: 0.9rem; font-weight: 500; }
+
+/* ── Panel sub-headings (debt pros/cons) ────────────────────── */
+.panel h5 { font-size: 0.95rem; margin: 0.75rem 0 0.4rem; font-weight: 600; }
+
+/* ── Currency pills ─────────────────────────────────────────── */
+.cur-pills { display: inline-flex; gap: 0.4rem; }
+.cur-pill { border: 1px solid hsl(var(--border)); border-radius: 999px; padding: 0.4rem 0.9rem; font-size: 0.8rem; font-weight: 600; background: hsl(var(--card)); color: hsl(var(--foreground)); cursor: pointer; transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease); }
+.cur-pill:hover { border-color: hsl(var(--foreground)); }
+.cur-pill.active { border-color: hsl(var(--foreground)); background: var(--surface-2); }
+
+/* ── Savings Goal Tracker ───────────────────────────────────── */
+.goal-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.goal-row input { border: 1px solid hsl(var(--border)); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.9rem; width: 11rem; background: hsl(var(--card)); color: hsl(var(--foreground)); font-family: inherit; }
+.goal-row input:focus { outline: none; border-color: hsl(var(--foreground)); box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
+.progress { height: 16px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-top: 0.5rem; }
+.progress-fill { height: 100%; width: 0%; background: hsl(var(--foreground)); border-radius: 999px; transition: width 0.3s var(--ease); }
+.goal-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted-foreground); margin-top: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+.dep-history { list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.3rem; max-height: 8rem; overflow: auto; }
+.dep-history li { font-size: 0.82rem; color: var(--muted-foreground); display: flex; justify-content: space-between; border-bottom: 1px solid var(--surface-2); padding-bottom: 0.3rem; }
+
+/* ── Electricity Calculator ─────────────────────────────────── */
+.calc-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; border: 1px solid hsl(var(--border)); border-radius: 16px; overflow: hidden; }
+.calc-table th, .calc-table td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid hsl(var(--border)); font-size: 0.88rem; }
+.calc-table th { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; }
+.calc-table input { width: 5.5rem; border: 1px solid hsl(var(--border)); border-radius: 8px; padding: 0.35rem 0.5rem; font-size: 0.85rem; background: hsl(var(--card)); color: hsl(var(--foreground)); font-family: inherit; }
+.calc-table input:focus { outline: none; border-color: hsl(var(--foreground)); }
+.calc-table .dev-name { width: 40%; }
+.calc-add { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.85rem; align-items: center; }
+.calc-add input { border: 1px solid hsl(var(--border)); border-radius: 8px; padding: 0.5rem 0.6rem; font-size: 0.85rem; background: hsl(var(--card)); color: hsl(var(--foreground)); font-family: inherit; }
+.calc-add input:focus { outline: none; border-color: hsl(var(--foreground)); }
+.calc-out { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.1rem; }
+.calc-out .box { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 1rem; }
+.calc-out .box .l { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; }
+.calc-out .box .v { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.7rem; margin-top: 0.25rem; }
+.calc-out .box.save .v { font-size: 1.4rem; }
+
+/* ── Monthly Budget ────────────────────────────────────────── */
+.budget-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.budget-row input { border: 1px solid hsl(var(--border)); border-radius: 10px; padding: 0.6rem 0.8rem; font-size: 0.95rem; width: 13rem; background: hsl(var(--card)); color: hsl(var(--foreground)); font-family: inherit; }
+.budget-row input:focus { outline: none; border-color: hsl(var(--foreground)); box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
+.budget-grid { max-width: 80rem; margin-inline: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-top: 0.5rem; }
+.budget-cell { border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 1rem; text-align: center; }
+.budget-cell .bn { font-size: 0.8rem; color: var(--muted-foreground); }
+.budget-cell .bv { font-family: "Instrument Serif", "Amiri", "Alexandria", serif; font-size: 1.5rem; margin-top: 0.3rem; }
+
+/* ── Foot note under calculators ────────────────────────────── */
+.foot-note { font-size: 0.8rem; color: var(--muted-foreground); margin-top: 0.6rem; line-height: 1.5; }
+
+/* ── Responsive (match export breakpoint) ───────────────────── */
+@media (max-width: 720px) {
+  .triplet, .tips, .calc-out, .budget-grid { grid-template-columns: 1fr; }
+  .env-row { grid-template-columns: 7rem 1fr 3rem; }
+  .calc-table { display: block; }
+  .calc-table thead { display: none; }
+  .calc-table tbody { display: block; }
+  .calc-table tr { display: block; border: 1px solid hsl(var(--border)); border-radius: 12px; padding: 0.5rem 0.75rem; margin-bottom: 0.6rem; }
+  .calc-table td { display: flex; align-items: center; gap: 0.5rem; border-bottom: none; padding: 0.3rem 0; }
+  .calc-table td::before { content: attr(data-label); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; width: 6.5rem; flex: none; }
+}

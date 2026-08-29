@@ -17,8 +17,8 @@ const CheckupsTable = () => {
 
   const getGenderStyle = (type: string) => {
     if (type === 'all') return "bg-primary/10 text-primary";
-    if (type === 'women') return "bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400";
-    return "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400";
+    if (type === 'women') return "bg-danger-soft text-danger";
+    return "bg-info-soft text-info";
   };
 
   return (

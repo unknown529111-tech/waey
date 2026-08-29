@@ -23,21 +23,21 @@ export function OnboardingModal() {
       title: t('onboard.step1.title'),
       subtitle: t('onboard.step1.subtitle'),
       description: t('onboard.step1.desc'),
-      icon: <Sparkles className="size-8 text-amber-500" />,
+      icon: <Sparkles className="size-8 text-warning" />,
       badge: t('onboard.step1.badge'),
     },
     {
       title: t('onboard.step2.title'),
       subtitle: t('onboard.step2.subtitle'),
       description: t('onboard.step2.desc'),
-      icon: <Heart className="size-8 text-emerald-500" />,
+      icon: <Heart className="size-8 text-success" />,
       badge: t('onboard.step2.badge'),
     },
     {
       title: t('onboard.step3.title'),
       subtitle: t('onboard.step3.subtitle'),
       description: t('onboard.step3.desc'),
-      icon: <Wallet className="size-8 text-amber-600" />,
+      icon: <Wallet className="size-8 text-warning" />,
       badge: t('onboard.step3.badge'),
     },
     {
@@ -68,7 +68,7 @@ export function OnboardingModal() {
           initial={{ opacity: 0, scale: 0.9, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 15 }}
-          className="bg-card border border-border/50 rounded-[2rem] p-8 max-w-md w-full shadow-2xl text-center relative overflow-hidden"
+          className="card p-8 max-w-md w-full shadow-2xl text-center relative overflow-hidden"
         >
           {/* Progress dots */}
           <div className="flex justify-center gap-1.5 mb-6">

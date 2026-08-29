@@ -14,6 +14,7 @@ const Assistant = () => {
   return (
     <div className="pb-16">
       <PageHero
+        eyebrow={'Waey · ' + t('nav.assistant')}
         title={t('assistant.title')}
         titleClass={lang === 'ar' ? 'rule-mark-lower' : ''}
         subtitle={t('assistant.subtitle')}

@@ -2,9 +2,9 @@ import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
-  darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
+  darkMode: ["selector", '[data-theme="dark"]'],
   theme: {
     container: {
       center: true,
@@ -55,23 +55,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        ink: {
-          DEFAULT: "hsl(var(--ink))",
-          muted: "hsl(var(--ink-muted))",
-          faint: "hsl(var(--ink-faint))",
-        },
         footer: "hsl(var(--footer))",
         leaf: {
-          DEFAULT: "hsl(var(--primary))",
           light: "hsl(var(--leaf-light))",
         },
         sun: {
-          DEFAULT: "hsl(var(--accent))",
           warm: "hsl(var(--sun-warm))",
-        },
-        sand: {
-          DEFAULT: "hsl(var(--background))",
-          deep: "hsl(var(--sand-deep))",
         },
         water: {
           DEFAULT: "hsl(var(--water))",
@@ -79,6 +68,34 @@ export default {
         },
         moss: {
           DEFAULT: "hsl(var(--primary))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success) / <alpha-value>)",
+          foreground: "hsl(var(--success-foreground) / <alpha-value>)",
+          bright: "hsl(var(--success-bright) / <alpha-value>)",
+          soft: "hsl(var(--success-soft) / <alpha-value>)",
+          dark: "hsl(var(--success-dark) / <alpha-value>)",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning) / <alpha-value>)",
+          foreground: "hsl(var(--warning-foreground) / <alpha-value>)",
+          bright: "hsl(var(--warning-bright) / <alpha-value>)",
+          soft: "hsl(var(--warning-soft) / <alpha-value>)",
+          dark: "hsl(var(--warning-dark) / <alpha-value>)",
+        },
+        danger: {
+          DEFAULT: "hsl(var(--danger) / <alpha-value>)",
+          foreground: "hsl(var(--danger-foreground) / <alpha-value>)",
+          bright: "hsl(var(--danger-bright) / <alpha-value>)",
+          soft: "hsl(var(--danger-soft) / <alpha-value>)",
+          dark: "hsl(var(--danger-dark) / <alpha-value>)",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info) / <alpha-value>)",
+          foreground: "hsl(var(--info-foreground) / <alpha-value>)",
+          bright: "hsl(var(--info-bright) / <alpha-value>)",
+          soft: "hsl(var(--info-soft) / <alpha-value>)",
+          dark: "hsl(var(--info-dark) / <alpha-value>)",
         },
       },
       borderRadius: {
@@ -91,17 +108,18 @@ export default {
         "3xl": "30px",
         "4xl": "30px",
         "5xl": "30px",
+        card: "var(--radius-card)",
         pill: "9999px",
       },
       boxShadow: {
-        soft: "0 4px 20px -2px rgba(93, 112, 82, 0.15)",
-        float: "0 10px 40px -10px rgba(193, 140, 93, 0.2)",
-        "soft-lg": "0 20px 40px -10px rgba(93, 112, 82, 0.15)",
-        "float-lg": "0 20px 50px -12px rgba(193, 140, 93, 0.25)",
-        "moss": "0 4px 20px -2px rgba(93, 112, 82, 0.15)",
-        "moss-lg": "0 6px 24px -4px rgba(93, 112, 82, 0.25)",
-        "clay": "0 10px 40px -10px rgba(193, 140, 93, 0.2)",
-        "clay-lg": "0 20px 50px -12px rgba(193, 140, 93, 0.25)",
+        soft: "0 4px 20px -2px rgba(0, 0, 0, 0.06)",
+        float: "0 10px 40px -10px rgba(0, 0, 0, 0.1)",
+        "soft-lg": "0 20px 40px -10px rgba(0, 0, 0, 0.08)",
+        "float-lg": "0 20px 50px -12px rgba(0, 0, 0, 0.12)",
+        "moss": "0 4px 20px -2px rgba(0, 0, 0, 0.06)",
+        "moss-lg": "0 6px 24px -4px rgba(0, 0, 0, 0.1)",
+        "clay": "0 10px 40px -10px rgba(0, 0, 0, 0.1)",
+        "clay-lg": "0 20px 50px -12px rgba(0, 0, 0, 0.12)",
       },
       keyframes: {
         float: {

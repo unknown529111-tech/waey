@@ -8,12 +8,12 @@ export function EmergencyAccess() {
   const [open, setOpen] = useState(false);
 
   const EMERGENCY_NUMBERS = [
-    { label: t('emergency.ambulance'), number: "123", icon: Ambulance, color: "text-red-500", bg: "bg-red-500/10" },
-    { label: t('emergency.police'), number: "122", icon: Shield, color: "text-blue-600", bg: "bg-blue-600/10" },
-    { label: t('emergency.fire'), number: "180", icon: Flame, color: "text-orange-500", bg: "bg-orange-500/10" },
-    { label: t('emergency.help'), number: "112", icon: PhoneCall, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+    { label: t('emergency.ambulance'), number: "123", icon: Ambulance, color: "text-danger", bg: "bg-danger/10" },
+    { label: t('emergency.police'), number: "122", icon: Shield, color: "text-info", bg: "bg-info/10" },
+    { label: t('emergency.fire'), number: "180", icon: Flame, color: "text-warning", bg: "bg-warning/10" },
+    { label: t('emergency.help'), number: "112", icon: PhoneCall, color: "text-success", bg: "bg-success/10" },
     { label: t('emergency.mentalHealth'), number: "19201", icon: Heart, color: "text-primary", bg: "bg-primary/10" },
-    { label: t('emergency.poison'), number: "16001", icon: Truck, color: "text-amber-600", bg: "bg-amber-600/10" },
+    { label: t('emergency.poison'), number: "16001", icon: Truck, color: "text-warning", bg: "bg-warning/10" },
   ];
 
   const handleCall = (number: string) => {

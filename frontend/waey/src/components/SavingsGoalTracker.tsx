@@ -29,9 +29,9 @@ const SavingsGoalTracker = () => {
 
   return (
     <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16">
-      <div className="bg-card border border-border/50 rounded-[2rem] p-6 md:p-10 shadow-soft">
+      <div className="card p-6 md:p-10">
         <div className="flex items-center gap-2 mb-2">
-          <PiggyBank className="size-6 text-accent" />
+          <PiggyBank className="size-6 text-foreground" />
           <h2 className="section-title text-2xl md:text-3xl">{t('finance.goal.title')}</h2>
         </div>
         <p className="text-muted-foreground mb-8 max-w-[55ch] leading-relaxed -mt-1">
@@ -70,7 +70,7 @@ const SavingsGoalTracker = () => {
                 </span>
                 <span className="text-muted-foreground">
                   {complete ? (
-                    <span className="flex items-center gap-1 text-accent">
+                    <span className="flex items-center gap-1 text-foreground">
                       <PartyPopper className="size-4" />
                       {t('finance.goal.complete')}
                     </span>
@@ -136,7 +136,7 @@ const SavingsGoalTracker = () => {
                 <ul className="space-y-2">
                   {[...goal.deposits].reverse().map((d, i) => (
                     <li key={i} className="flex justify-between items-center bg-secondary/40 rounded-2xl px-4 py-2.5 text-sm">
-                      <span className="text-accent font-bold tabular-nums">+{fmt(d.amount)} {t('calc.currencySymbol.egp')}</span>
+                      <span className="text-foreground font-bold tabular-nums">+{fmt(d.amount)} {t('calc.currencySymbol.egp')}</span>
                       <span className="text-muted-foreground text-xs">
                         {new Date(d.date).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US")}
                       </span>
