@@ -15,7 +15,7 @@ export function SEO({
   description: _description,
   canonical = "https://waey-m7.com",
   ogType = "website",
-  ogImage = "/website-new.png",
+  ogImage = "/icon-512.png",
   schema,
 }: SEOProps) {
   const t = useT();
