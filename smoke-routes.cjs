@@ -6,9 +6,8 @@ const BASE = process.env.BASE_URL || "http://localhost:8080";
 // Route map mirrors App.tsx lazy imports; * = standalone page not under layout
 const ROUTES = [
   "/", "/health", "/finance", "/environment", "/education",
-  "/recipes", "/quiz", "/plans", "/assistant", "/journal",
-  "/activity", "/mood", "/challenges", "/settings", "/about",
-  "/privacy", "/terms", "/admin",
+  "/recipes", "/shopping-list", "/assistant", "/dashboard",
+  "/insights", "/privacy", "/terms", "/admin", "/faq", "/promo",
 ];
 
 (async () => {
