@@ -28,7 +28,7 @@
     <meta name="twitter:image" content="/icon-192.png" />
 
     <script>
-      // Set theme before paint to avoid a flash of the wrong theme.
+      // Set theme and language before paint to avoid a flash of the wrong theme/dir.
       (function () {
         try {
           var k = 'waey-theme';
@@ -36,6 +36,11 @@
           var t = s || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
           if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
         } catch (e) {}
+        var lg = null;
+        try { lg = localStorage.getItem('waey-lang'); } catch (e) {}
+        var lang = lg === 'en' ? 'en' : 'ar';
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       })();
     </script>
   </head>

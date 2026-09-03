@@ -8,10 +8,10 @@ const locales: Record<Lang, Record<string, string>> = { ar, en };
 const langOrder: Lang[] = ['en', 'ar'];
 
 function loadLang(): Lang {
-  if (typeof window === 'undefined') return 'en';
+  if (typeof window === 'undefined') return 'ar';
   const stored = localStorage.getItem('waey-lang');
   if (langOrder.includes(stored as Lang)) return stored as Lang;
-  return 'en';
+  return 'ar';
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
