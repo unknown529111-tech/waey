@@ -2,47 +2,46 @@ import { useEffect, useState } from "react";
 import { useLanguage, useT } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 import { SEO } from "@/components/SEO";
+import {
+  BADGES,
+  getUserPoints,
+  deductPoints,
+  addPoints,
+  getUnlockedBadgeIds,
+  type Badge,
+} from "@/lib/gamification";
+import { getStreakFreezes, addStreakFreeze, getStreak, bumpStreak } from "@/lib/dailyStorage";
+import { StreakRecoveryModal } from "@/components/StreakRecoveryModal";
+import { toast } from "sonner";
+import { Sparkles, Lock } from "lucide-react";
 import "./Dashboard.css";
 
-/* ── Static data (faithful port of track.html) ─────────────── */
-
-const BADGES = [
-  { id: "firstStep", name: "First Step", earned: true },
-  { id: "weeklyCommitment", name: "Weekly Commitment", earned: true },
-  { id: "monthlyAchievement", name: "Monthly Achievement", earned: false },
-  { id: "waeyChampion", name: "Waey Champion", earned: false },
-  { id: "fullHydration", name: "Full Hydration", earned: true },
-  { id: "hydrationMaster", name: "Hydration Master", earned: false },
-  { id: "momentOfPeace", name: "Moment of Peace", earned: false },
-  { id: "gratefulHeart", name: "Grateful Heart", earned: false },
-  { id: "financialAwareness", name: "Financial Awareness", earned: false },
-  { id: "challengeHero", name: "Challenge Hero", earned: true },
-];
+/* ── Badge name/description keys keyed by gamification badge ids ── */
 
 const BADGE_DESC_KEY: Record<string, string> = {
-  firstStep: "badge.progress.firstStep",
-  weeklyCommitment: "badge.progress.streak7",
-  monthlyAchievement: "badge.progress.streak30",
-  waeyChampion: "badge.progress.streak100",
-  fullHydration: "badge.progress.water8",
-  hydrationMaster: "badge.progress.water100",
-  momentOfPeace: "badge.progress.breathing",
-  gratefulHeart: "badge.progress.gratitude",
-  financialAwareness: "badge.progress.finance",
-  challengeHero: "badge.progress.challenge",
+  first_step: "badge.progress.firstStep",
+  streak_7: "badge.progress.streak7",
+  streak_30: "badge.progress.streak30",
+  streak_100: "badge.progress.streak100",
+  water_8: "badge.progress.water8",
+  water_100: "badge.progress.water100",
+  breathing_peace: "badge.progress.breathing",
+  gratitude_heart: "badge.progress.gratitude",
+  finance_wise: "badge.progress.finance",
+  challenge_hero: "badge.progress.challenge",
 };
 
 const BADGE_NAME_KEY: Record<string, string> = {
-  firstStep: "badge.name.firstStep",
-  weeklyCommitment: "badge.name.weeklyCommitment",
-  monthlyAchievement: "badge.name.monthlyAchievement",
-  waeyChampion: "badge.name.waeyChampion",
-  fullHydration: "badge.name.fullHydration",
-  hydrationMaster: "badge.name.hydrationMaster",
-  momentOfPeace: "badge.name.momentOfPeace",
-  gratefulHeart: "badge.name.gratefulHeart",
-  financialAwareness: "badge.name.financialAwareness",
-  challengeHero: "badge.name.challengeHero",
+  first_step: "badge.name.firstStep",
+  streak_7: "badge.name.weeklyCommitment",
+  streak_30: "badge.name.monthlyAchievement",
+  streak_100: "badge.name.waeyChampion",
+  water_8: "badge.name.fullHydration",
+  water_100: "badge.name.hydrationMaster",
+  breathing_peace: "badge.name.momentOfPeace",
+  gratitude_heart: "badge.name.gratefulHeart",
+  finance_wise: "badge.name.financialAwareness",
+  challenge_hero: "badge.name.challengeHero",
 };
 
 type EarnItem = { mk?: string; key: string };
@@ -128,8 +127,12 @@ const Dashboard = () => {
 
   const [view, setView] = useState<"daily" | "weekly">("daily");
 
-  // Check-in
-  const [points, setPoints] = useState(245);
+  // Real gamification state
+  const [points, setPoints] = useState(getUserPoints());
+  const [freezes, setFreezes] = useState(getStreakFreezes());
+  const [unlockedIds, setUnlockedIds] = useState<string[]>(getUnlockedBadgeIds);
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [checked, setChecked] = useState(false);
 
   // Challenge
@@ -191,26 +194,90 @@ const Dashboard = () => {
       <div className={`wrap${view === "daily" ? "" : " hidden"}`}>
         <section className="card">
           <h2>{t("badge.title")}</h2>
-          <p className="sub">{t("badge.unlocked", { count: 4, total: 10 })}</p>
+          <p className="sub">
+            {t("badge.unlocked", { count: unlockedIds.length, total: BADGES.length })}
+          </p>
           <div className="badge-summary">
             <span className="stat-chip"><b>{points}</b> {t("dash.pts")}</span>
-            <span className="stat-chip"><b>56</b> {t("badge.freezes")}</span>
+            <span className="stat-chip"><b>{freezes}</b> {t("badge.freezes")}</span>
             <div className="badge-actions">
-              <button className="btn btn-ghost" type="button">{t("badge.buyFreeze")}</button>
-              <button className="btn btn-ghost" type="button">{t("badge.recoverStreak")}</button>
-              <button className="btn btn-ghost" type="button">{t("badge.shareAll")}</button>
-              <button className="btn btn-solid" type="button">{t("badge.pdf")}</button>
+              <button
+                className="btn btn-ghost"
+                type="button"
+                onClick={() => {
+                  if (deductPoints(50)) {
+                    addStreakFreeze(1);
+                    setPoints(getUserPoints());
+                    setFreezes(getStreakFreezes());
+                  } else {
+                    toast.error(t("badge.buyFreeze"));
+                  }
+                }}
+              >
+                {t("badge.buyFreeze")}
+              </button>
+              <button
+                className="btn btn-ghost"
+                type="button"
+                onClick={() => setRecoveryOpen(true)}
+              >
+                {t("badge.recoverStreak")}
+              </button>
+              <button
+                className="btn btn-ghost"
+                type="button"
+                disabled={exporting}
+                onClick={async () => {
+                  setExporting(true);
+                  try {
+                    const { generateAchievementsShareText, shareContent } = await import("@/lib/share");
+                    const text = generateAchievementsShareText(t);
+                    const success = await shareContent({ title: t("badge.shareTitle"), text });
+                    toast.success(success ? t("badge.shareSuccess") : t("badge.copySuccess"));
+                  } catch {
+                    toast.error(t("badge.copyFail"));
+                  } finally {
+                    setExporting(false);
+                  }
+                }}
+              >
+                {t("badge.shareAll")}
+              </button>
+              <button
+                className="btn btn-solid"
+                type="button"
+                disabled={exporting}
+                onClick={async () => {
+                  setExporting(true);
+                  try {
+                    const { generateBadgesPDF, downloadBlob } = await import("@/lib/share");
+                    const blob = await generateBadgesPDF(t);
+                    const dateStr = new Date().toISOString().split("T")[0];
+                    downloadBlob(blob, `waey-badges-${dateStr}.pdf`);
+                    toast.success(t("badge.pdfSuccess"));
+                  } catch {
+                    toast.error(t("badge.pdfFail"));
+                  } finally {
+                    setExporting(false);
+                  }
+                }}
+              >
+                {t("badge.pdf")}
+              </button>
             </div>
           </div>
           <div className="badge-grid">
-            {BADGES.map((b) => (
-              <div key={b.id} className={`badge${b.earned ? " earned" : ""}`}>
-                <div className="ico">{b.earned ? "✨" : "🔒"}</div>
-                 <div className="nm">{t(BADGE_NAME_KEY[b.id])}</div>
-                <div className="ds">{t(BADGE_DESC_KEY[b.id])}</div>
-                <div className="tag">{b.earned ? t("badge.earned") : t("badge.locked")}</div>
-              </div>
-            ))}
+            {BADGES.map((b) => {
+              const earned = unlockedIds.includes(b.id);
+              return (
+                <div key={b.id} className={`badge${earned ? " earned" : ""}`}>
+                  <div className="ico">{earned ? <Sparkles size={18} /> : <Lock size={18} />}</div>
+                  <div className="nm">{t(BADGE_NAME_KEY[b.id] ?? b.titleKey)}</div>
+                  <div className="ds">{t(BADGE_DESC_KEY[b.id] ?? b.descKey)}</div>
+                  <div className="tag">{earned ? t("badge.earned") : t("badge.locked")}</div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -254,8 +321,10 @@ const Dashboard = () => {
               disabled={checked}
               onClick={() => {
                 if (checked) return;
+                bumpStreak();
+                addPoints(10);
+                setPoints(getUserPoints());
                 setChecked(true);
-                setPoints((p) => p + 10);
               }}
             >
               {checked ? t("checkin.done") : t("dash.checkIn")}
@@ -430,6 +499,12 @@ const Dashboard = () => {
       <footer className="footer">
         <p>{t("footer.tagline")} <a href="/">{t("footer.backHome")}</a></p>
       </footer>
+
+      <StreakRecoveryModal
+        open={recoveryOpen}
+        onClose={() => setRecoveryOpen(false)}
+        onRestored={() => setChecked(true)}
+      />
     </div>
   );
 };
