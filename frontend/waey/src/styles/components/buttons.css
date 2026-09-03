@@ -151,3 +151,14 @@
   }
   .stepper-water:hover { background: hsl(var(--water) / 0.86); color: #fff; }
 }
+
+/* ── Keyboard focus ring (ink, both themes — --foreground flips) ── */
+.btn:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid hsl(var(--foreground));
+  outline-offset: 2px;
+}
