@@ -39,6 +39,7 @@ test-results/
 
 # Logs
 *.log
+*.err
 npm-debug.log*
 
 # Waey old copy
