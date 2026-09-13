@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, vi } from "vitest";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { generateReportPDF, generateBadgesPDF } from "@/lib/share";
 
@@ -13,10 +14,12 @@ function blobToBuffer(blob: Blob): Promise<Buffer> {
   });
 }
 
-const OUT_DIR = "C:/Users/mahmo/AppData/Local/hermes";
+// Portable scratch dir (CI runs on Linux; hardcoded Windows paths broke unit tests there).
+const OUT_DIR = path.join(os.tmpdir(), "waey-pdf-tests");
 
 describe("PDF export (Arabic)", () => {
   beforeAll(() => {
+    mkdirSync(OUT_DIR, { recursive: true }); // scratch dir may not exist on fresh runners
     const today = new Date();
     const key = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
     localStorage.setItem("waey_streak", JSON.stringify({ count: 12, lastDay: key }));

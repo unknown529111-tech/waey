@@ -2025,6 +2025,22 @@ const ar: Record<string, string> = {
   'dash.earn.gratitude': 'تدوين امتنان → قلب شاكر',
   'dash.earn.finance': '٥ مصروفات → وعي مالي',
   'dash.earn.challenge': '٥ تحديات → بطل التحديات',
+
+  // AI fallback replies — regression fix: referenced in AIChat but were missing,
+  // so prod chat rendered raw keys ("🌿 ai.fallback.general")
+  'ai.fallback.water': 'لشرب الماء فوائد رائعة! حاول شرب 8 أكواب يومياً، وابدأ بكوب مع كل وجبة. يمكنك تتبع شربك للماء في صفحة الصحة.',
+  'ai.fallback.sleep': 'لتحسين النوم: حدد موعد نوم ثابت، ابتعد عن الشاشات قبل النوم بساعة، واجعل غرفتك مظلمة وهادئة. النوم الجيد يعزز تركيزك وصحتك.',
+  'ai.fallback.exercise': 'المشي 30 دقيقة يومياً يحسن المزاج والصحة. يمكنك تقسيمها إلى 3 فترات مشي سريع لمدة 10 دقائق. ابدأ بخطوات صغيرة!',
+  'ai.fallback.general': 'وعي هو منصة للتوازن في أربعة مجالات: الصحة 💚، المال 💰، البيئة 🌱، والتعليم 📚. اطرح سؤالك في أي من هذه المجالات وسأجيبك بكل سرور!',
+  'ai.fallback.waterEn': 'Aim for 8 cups of water daily! Try starting with a glass with each meal. Track your water intake on the Health page.',
+  'ai.fallback.sleepEn': 'For better sleep: set a fixed bedtime, avoid screens 1 hour before bed, keep your room dark and quiet.',
+  'ai.fallback.exerciseEn': 'Walking 30 minutes daily boosts mood and health! Split it into 3 brisk 10-minute walks.',
+  'ai.fallback.generalEn': 'Waey is a holistic-awareness platform covering: Health 💚, Finance 💰, Environment 🌱, and Education 📚. Ask me anything in these areas!',
+
+  // Misc keys referenced in code but previously missing
+  'dYK.title': 'هل تعلم؟',
+  'dir': 'rtl',
+  'recipes.egp': 'جنيه',
 };
 
 export default ar;

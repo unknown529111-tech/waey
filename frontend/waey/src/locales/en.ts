@@ -2027,6 +2027,22 @@ const en: Record<string, string> = {
   'dash.earn.gratitude': 'Gratitude entry → Grateful Heart',
   'dash.earn.finance': '5 expenses → Financial Awareness',
   'dash.earn.challenge': '5 challenges → Challenge Hero',
+
+  // AI fallback replies — regression fix: referenced in AIChat but were missing,
+  // so prod chat rendered raw keys ("🌿 ai.fallback.general")
+  'ai.fallback.water': 'Aim for 8 cups of water daily! Try starting with a glass with each meal. Track your water intake on the Health page.',
+  'ai.fallback.sleep': 'For better sleep: set a fixed bedtime, avoid screens 1 hour before bed, keep your room dark and quiet.',
+  'ai.fallback.exercise': 'Walking 30 minutes daily boosts mood and health! Split it into 3 brisk 10-minute walks.',
+  'ai.fallback.general': 'Waey is a holistic-awareness platform covering: Health 💚, Finance 💰, Environment 🌱, and Education 📚. Ask me anything in these areas!',
+  'ai.fallback.waterEn': 'Aim for 8 cups of water daily! Try starting with a glass with each meal. Track your water intake on the Health page.',
+  'ai.fallback.sleepEn': 'For better sleep: set a fixed bedtime, avoid screens 1 hour before bed, keep your room dark and quiet.',
+  'ai.fallback.exerciseEn': 'Walking 30 minutes daily boosts mood and health! Split it into 3 brisk 10-minute walks.',
+  'ai.fallback.generalEn': 'Waey is a holistic-awareness platform covering: Health 💚, Finance 💰, Environment 🌱, and Education 📚. Ask me anything in these areas!',
+
+  // Misc keys referenced in code but previously missing
+  'dYK.title': 'Did You Know?',
+  'dir': 'ltr',
+  'recipes.egp': 'EGP',
 };
 
 export default en;
