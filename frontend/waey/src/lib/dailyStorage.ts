@@ -403,10 +403,17 @@ function seededRandom(seed: number): number {
   return x - Math.floor(x);
 }
 
-export const getDailyQuote = () => {
+/**
+ * Daily quote, in the reader's language.
+ *
+ * QUOTES and EN_QUOTES are parallel arrays of the same length, so the same
+ * day-seeded index lands on the matching line in both languages. Admin-added
+ * quotes are Arabic-authored, so they only join the Arabic pool.
+ */
+export const getDailyQuote = (lang: "ar" | "en" = "ar") => {
   const d = new Date();
   const dayNum = Math.floor(d.getTime() / 86400000);
-  const all = getMergedQuotes();
+  const all = lang === "en" ? [...EN_QUOTES] : getMergedQuotes();
   if (all.length === 0) return "";
   const idx = Math.floor(seededRandom(dayNum) * all.length);
   return all[idx];
