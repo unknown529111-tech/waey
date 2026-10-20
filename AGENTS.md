@@ -7,7 +7,7 @@
 - **Backend**: Supabase (contact form + AI chat proxy only)
 - **Storage**: localStorage-first (no auth, no DB for user data)
 - **Theme**: Full light/dark toggle
-- **Design**: Editorial monochrome system — ink/paper/grey, Instrument Serif (Latin display) + Amiri (Arabic display) + Inter (UI/body) + Roboto Mono (labels), 16-18px cards, pill buttons, light/dark via `data-theme`
+- **Design**: Organic / Natural (wabi-sabi) — rice-paper canvas + grain texture, moss `#5D7052` primary, terracotta `#C18C5D` secondary, sand/stone neutrals. Fraunces (Latin display) + Amiri (Arabic display) + Nunito (UI/body) + IBM Plex Mono (labels). Soft amorphous shapes & colored shadows, pill buttons, light/dark via `data-theme`
 
 ---
 
@@ -202,11 +202,11 @@ npm run test
 
 ### Design & Visual Check
 - [ ] New components match DESIGN.md tokens (colors, spacing, rounded corners, typography)
-- [ ] All cards use 16-18px radii (`rounded-2xl` / `rounded-[18px]`) unless specifically exempted
-- [ ] All buttons are `rounded-full` pills
-- [ ] Headings are weight 700, body has 1.9 line-height
+- [ ] Cards use organic radii (16–32px, asymmetric corner accents welcome) with soft colored shadows — never pure black, never sharp corners on feature surfaces
+- [ ] All buttons are `rounded-full` pills with hover scale (1.03–1.05) and active scale(0.95)
+- [ ] Headings use Fraunces (Latin) / Amiri (Arabic); body uses Nunito; labels use IBM Plex Mono
 - [ ] RTL layout: `dir="rtl"` on all pages, text-right on content
-- [ ] Dark mode: test all new components in `.dark` class
+- [ ] Dark mode: test all new components under `[data-theme="dark"]` (forest-night palette)
 - [ ] Framer Motion page transitions applied (fade + translateY 20px, 0.4s)
 - [ ] Responsive: check mobile (<768px), tablet (768-1023px), desktop (>=1024px)
 
@@ -240,10 +240,12 @@ npm run test
 
 - **RTL**: All text is right-to-left. Never use LTR layout. `dir="rtl"`, `text-align: right`.
 - **No auth/DB for user data**: All trackers, streaks, favorites go in localStorage. Supabase is only for contact form + AI chat proxy.
-- **Typography**: Instrument Serif (Latin display) + Amiri (Arabic display) + Inter (UI/body) + Roboto Mono (labels). Body line-height ~1.9 (Arabic 1.8); headings serif weight 400/700; eyebrows mono uppercase tracked.
-- **Body leading**: Always 1.9 line-height on body text.
-- **Card radius**: Default is 16-18px (`rounded-2xl` / `rounded-[18px]`). NEVER use square corners on cards.
-- **Button shape**: Always `rounded-full` (pill). NEVER square buttons.
-- **Colors**: Use DESIGN.md tokens, never raw hex. Text uses ink `#000` (light) / `#F5F5F5` (dark) per tokens — pure monochrome, no warm-tinted ink.
+- **Typography**: Fraunces (Latin display) + Amiri (Arabic display) + Nunito (UI/body) + IBM Plex Mono (labels). Body line-height ~1.8 (Arabic 1.7); headings weight 600–800; eyebrows mono uppercase tracked (Nunito bold in RTL).
+- **Body leading**: Always ~1.8 line-height on body text.
+- **Card radius**: Organic radii — `rounded-2xl` (32px) / `rounded-3xl` on cards, `.card`/`.ledger` classes use `--radius-card: 2rem`. Asymmetric corner accents (`.corner-accent-tl/tr/bl/br`) are encouraged for feature cards.
+- **Button shape**: Always `rounded-full` (pill) with tactile motion (hover scale, active scale-95). NEVER square buttons.
+- **Shadows**: Always colored and diffused (`--shadow-soft`/`--shadow-float`/`--shadow-lift` — moss/clay tinted). Never pure-black shadows, never hard edges.
+- **Texture**: The global paper-grain veil (`body::before` noise, 3.5% multiply) is the system signature — don't remove or mask it.
+- **Colors**: Use DESIGN.md tokens, never raw hex. Moss green is the only primary action color; terracotta is the warm secondary; sand/stone are neutrals.
 - **Gradient blobs**: Decorate pages with blurred circles in primary/accent tints.
 - **Design integrity**: Before marking UI work complete, load `impeccable` or `design-review` skill for a visual audit.

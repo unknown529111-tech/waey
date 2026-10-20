@@ -51,6 +51,20 @@ const en: Record<string, string> = {
   'hero.cta': 'Begin Journey',
   'hero.alt': 'A green plant growing from golden soil, symbolizing growth and sustainability',
 
+  // What is Waey (home intro)
+  'about.eyebrow': 'What is Waey?',
+  'about.title': 'One Arabic platform for awareness across your whole life.',
+  'about.lead': 'Waey is a holistic-awareness platform: it brings health, money, environment, and education into one calm place and turns each of them into small steps you can take today — with practical tools, simple tracking, and clear language.',
+  'about.cap1.title': 'Simple daily tracking',
+  'about.cap1.desc': 'Water, sleep, weight, spending, and eco habits — log them in one tap and see your progress in front of you, without the clutter.',
+  'about.cap2.title': 'Practical tools, not generic advice',
+  'about.cap2.desc': 'Health and finance calculators, study plans, 116 economical Egyptian recipes, and shopping lists built from the recipes you pick.',
+  'about.cap3.title': 'An Arabic AI assistant',
+  'about.cap3.desc': 'Ask about your health, your budget, or how to study, and get a fast, straightforward answer in the same language.',
+  'about.cap4.title': 'Your data stays yours',
+  'about.cap4.desc': 'Everything you log is stored on your own device, and the app keeps working offline — no ads, no comparisons.',
+  'about.calm': 'Waey is built to be calm: one small step a day, without pressure and without noise.',
+
   // Four fields (home)
   'fields.eyebrow': 'One app · four fields',
   'fields.title': 'Awareness, in every part of life.',

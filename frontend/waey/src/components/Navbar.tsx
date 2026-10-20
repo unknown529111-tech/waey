@@ -32,13 +32,13 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 transition-all duration-500 bg-card/90 backdrop-blur-xl border-b border-border shadow-[0_1px_8px_-2px_rgb(0_0_0_/_0.18)] dark:shadow-[0_1px_8px_-2px_rgb(0_0_0_/_0.5)]">
+      <header className="fixed top-3 left-1/2 -translate-x-1/2 z-40 w-[min(96%,80rem)] rounded-full border border-border/50 bg-card/70 backdrop-blur-md shadow-soft transition-all duration-500">
         <nav
-          className="max-w-[80rem] mx-auto px-8 py-3 flex justify-between items-center relative z-[2] pointer-events-auto"
+          className="px-6 py-2.5 flex justify-between items-center relative z-[2] pointer-events-auto"
           dir={lang === "ar" ? "rtl" : "ltr"}
         >
-          <Link to="/" className="flex items-center shrink-0" aria-label={t('nav.homeLink')}>
-            <img src={theme === "dark" ? logo : logoDark} alt={t('nav.homeLink')} className="h-20 w-auto" />
+          <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={t('nav.homeLink')}>
+            <img src={theme === "dark" ? logo : logoDark} alt={t('nav.homeLink')} className="h-10 w-auto" />
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-8">
@@ -47,10 +47,10 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `font-body text-sm transition-colors ${
+                  `font-body text-sm font-semibold px-3.5 py-2 rounded-full transition-all duration-300 ${
                     isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-primary/12 text-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`
                 }
                 onClick={() => setIsOpen(false)}

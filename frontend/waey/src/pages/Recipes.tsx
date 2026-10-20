@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { RECIPES, type Recipe } from "@/data/recipes";
 import { useLanguage, useT } from "@/contexts/useLanguage";
 import "./Recipes.css";
@@ -26,8 +26,12 @@ const mealOf = (tags: Recipe["tags"]) => {
   return "Any";
 };
 
-const displayName = (r: Recipe) => r.nameEn ?? r.name;
-const displayIngredients = (r: Recipe) => r.ingredientsEn ?? r.ingredients;
+// Language-aware display: Arabic (default) shows the canonical Arabic fields,
+// English shows the translated overrides when present.
+const displayName = (r: Recipe, lang: string) =>
+  lang === "en" ? r.nameEn ?? r.name : r.name;
+const displayIngredients = (r: Recipe, lang: string) =>
+  lang === "en" ? r.ingredientsEn ?? r.ingredients : r.ingredients;
 
 const Recipes = () => {
   const { lang } = useLanguage();
@@ -60,10 +64,10 @@ const Recipes = () => {
         if (r.costEGP > maxCost) return false;
         for (const t of activeTags) if (!r.tags.includes(t)) return false;
         const q = search.trim().toLowerCase();
-        if (q && !displayName(r).toLowerCase().includes(q)) return false;
+        if (q && !displayName(r, lang).toLowerCase().includes(q)) return false;
         return true;
       }),
-    [maxCal, maxCost, activeTags, search]
+    [maxCal, maxCost, activeTags, search, lang]
   );
 
   return (
@@ -142,7 +146,7 @@ const Recipes = () => {
               return (
                 <div className="rcard" key={r.id}>
                   <div className="rhead">
-                    <h3>{displayName(r)}</h3>
+                    <h3>{displayName(r, lang)}</h3>
                     <span className="meal">
                       {mealOf(r.tags) === "Any" ? t("recipe.mealAny") : t(`recipes.tag.${mealOf(r.tags)}`)}
                     </span>
@@ -169,7 +173,7 @@ const Recipes = () => {
                   <details className="ing">
                     <summary>{t("recipes.ingredients")}</summary>
                     <ul className="ing-list">
-                      {displayIngredients(r).map((i) => (
+                      {displayIngredients(r, lang).map((i) => (
                         <li key={i}>{i}</li>
                       ))}
                     </ul>
@@ -215,7 +219,7 @@ const Recipes = () => {
               if (!r) return null;
               return (
                 <li key={id}>
-                  <span>{displayName(r)}</span>
+                  <span>{displayName(r, lang)}</span>
                   <button className="rm" type="button" onClick={() => removeShop(id)}>
                     {t("recipe.remove")}
                   </button>
