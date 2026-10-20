@@ -1,182 +1,231 @@
 ﻿/* ────────────────────────────────────────────────────────────
    Waey design tokens — single source of truth.
-   "Organic / Natural" system: rice-paper canvas, deep-loam ink,
-   moss green primary, terracotta secondary, sand/stone neutrals.
-   Soft amorphous shapes (blob radii), colored diffused shadows,
-   grain texture overlay. Wabi-sabi: warmth over precision.
-   Dark mode = forest-night palette, same hue family.
+   "Cool awareness" system: cool white canvas, teal-navy ink,
+   emerald primary, cool neutrals, four field accents
+   (health / finance / environment / education). Light-first;
+   Soft amorphous shapes (blob radii), cool diffused shadows,
+   grain texture overlay.
+   Dark mode = forest night: deep teal-navy, luminous emerald.
    Dark driven by [data-theme="dark"] on <html>; component CSS
    reads these vars so the whole app reskins by flipping here.
    ──────────────────────────────────────────────────────────── */
 
 :root {
-  /* Rice paper — Organic light (canonical) */
-  --background: 60 33% 98%;        /* #FDFCF8 rice paper */
-  --foreground: 60 8% 16%;         /* #2C2C24 deep loam */
+  /* Cool paper — Awareness light (canonical) */
+  --background: 180 14% 97%;        /* #F7F9F9 cool paper */
+  --foreground: 200 56% 18%;        /* #143647 teal-navy ink */
 
-  --card: 60 45% 99%;              /* #FEFEFA lighter beige */
-  --card-foreground: 60 8% 16%;
+  --card: 0 0% 100%;                /* #FFFFFF clean card */
+  --card-foreground: 200 56% 18%;
 
-  --popover: 60 45% 99%;
-  --popover-foreground: 60 8% 16%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 200 56% 18%;
 
-  /* Moss green — primary */
-  --primary: 100 16% 38%;          /* #5D7052 moss */
-  --primary-foreground: 90 14% 95%;/* #F3F4F1 pale mist */
+  /* Emerald — primary */
+  --primary: 166 81% 23%;          /* #0B6853 emerald */
+  --primary-foreground: 154 37% 96%;/* #F2F9F6 pale mint */
 
-  /* Terracotta / clay — secondary */
-  --secondary: 27 43% 56%;         /* #C18C5D clay */
+  /* Teal-navy — secondary */
+  --secondary: 197 47% 21%;        /* #1C404E teal navy */
   --secondary-foreground: 0 0% 100%;
 
-  /* Sand / beige — accent */
-  --accent: 36 33% 85%;            /* #E6DCCD sand */
-  --accent-foreground: 60 8% 28%;  /* #4A4A40 bark */
+  /* Mint mist — accent */
+  --accent: 173 24% 93%;           /* #EAF2F1 mint mist */
+  --accent-foreground: 200 56% 18%;/* #143647 teal-navy ink */
 
-  /* Stone — muted */
-  --muted: 30 18% 92%;             /* #F0EBE5 stone */
-  --muted-foreground: 60 5% 45%;   /* #78786C dried grass */
+  /* Cool stone — muted */
+  --muted: 190 21% 95%;            /* #EEF3F4 cool stone */
+  --muted-foreground: 198 12% 40%; /* #5A6B72 slate */
 
-  --destructive: 4 41% 47%;        /* #A85448 burnt sienna */
+  --destructive: 6 63% 46%;        /* #C0392B burnt red */
   --destructive-foreground: 0 0% 100%;
+  --destructive-soft: 6 71% 95%;   /* #FBE9E7 blush wash */
 
-  --border: 35 17% 84%;            /* #DED8CF raw timber */
-  --input: 35 17% 84%;
-  --ring: 100 16% 38%;             /* moss focus ring */
+  --border: 191 19% 89%;           /* #DDE6E8 cool hairline */
+  --input: 198 11% 55%;            /* #7E9098 steel */
+  --ring: 166 81% 23%;             /* emerald focus ring */
 
   --radius: 1.5rem;          /* 24px — rounded-3xl organic base */
   --radius-card: 2rem;       /* 32px — cards */
 
   /* Legacy decorative aliases */
-  --leaf-light: 36 33% 85%;
-  --sun-warm: 36 33% 85%;
-  --sand-deep: 30 18% 92%;
+  --leaf-light: 173 24% 93%;       /* #EAF2F1 mint mist */
+  --sun-warm: 190 21% 95%;         /* #EEF3F4 cool stone */
+  --sand-deep: 191 19% 89%;        /* #DDE6E8 cool hairline */
 
-  --ink: 60 8% 16%;
-  --ink-muted: 60 5% 45%;
-  --ink-faint: 60 5% 45%;
+  --ink: 200 56% 18%;
+  --ink-muted: 198 12% 40%;
+  --ink-faint: 198 12% 40%;
 
-  --footer: 60 8% 16%;             /* loam footer */
+  --footer: 209 65% 17%;           /* #0F2C47 deep navy footer */
 
-  /* Data accent — moss for charts/trackers */
-  --water: 100 16% 38%;
-  --water-soft: 36 33% 85%;
+  /* Field accents — one per field, colour is a navigational cue.
+     strong clears 4.5:1 on card (small text + icons),
+     soft is the icon fill on the tint ground,
+     tint is the pastel card ground. */
+  --field-health: 352 63% 47%;           /* #C42D42 health pink, strong */
+  --field-health-soft: 352 78% 59%;      /* #E8465B health pink, soft */
+  --field-health-tint: 356 100% 97%;     /* #FFF1F2 health pink, tint */
+  --field-finance: 214 67% 37%;          /* #1F559E finance blue, strong */
+  --field-finance-soft: 215 62% 49%;     /* #2F6FC9 finance blue, soft */
+  --field-finance-tint: 210 78% 96%;     /* #EFF6FD finance blue, tint */
+  --field-environment: 141 55% 27%;      /* #1F6B39 environment green, strong */
+  --field-environment-soft: 139 51% 37%; /* #2F8F4E environment green, soft */
+  --field-environment-tint: 143 45% 94%; /* #EAF7EF environment green, tint */
+  --field-education: 257 50% 41%;        /* #52349B education purple, strong */
+  --field-education-soft: 257 51% 53%;   /* #6D4BC4 education purple, soft */
+  --field-education-tint: 254 62% 96%;   /* #F1EEFB education purple, tint */
+  --field-current: 166 81% 23%;          /* #0B6853 current field, strong */
+  --field-current-soft: 165 61% 31%;     /* #1F7E66 current field, soft */
+  --field-current-tint: 173 24% 93%;     /* #EAF2F1 current field, tint */
 
-  /* Status — moss family success */
-  --success: 100 16% 38%;
-  --success-foreground: 90 14% 95%;
-  --success-bright: 100 18% 46%;
-  --success-soft: 90 20% 90%;
-  --success-dark: 100 16% 30%;
+  /* Data accent — emerald for charts/trackers */
+  --water: 166 81% 23%;
+  --water-soft: 173 24% 93%;
 
-  /* Status — ochre warning */
-  --warning: 37 75% 48%;
-  --warning-foreground: 60 8% 16%;
-  --warning-bright: 37 75% 56%;
-  --warning-soft: 40 55% 90%;
-  --warning-dark: 37 75% 38%;
+  /* Status — emerald family success */
+  --success: 141 55% 27%;          /* #1F6B39 */
+  --success-foreground: 154 37% 96%;
+  --success-bright: 139 51% 37%;   /* #2F8F4E */
+  --success-soft: 143 45% 94%;     /* #EAF7EF */
+  --success-dark: 142 60% 20%;     /* #14512A */
 
-  /* Status — burnt sienna danger */
-  --danger: 4 41% 47%;
+  /* Status — amber warning */
+  --warning: 39 100% 27%;          /* #8A5A00 */
+  --warning-foreground: 38 100% 96%;/* #FFF8EC */
+  --warning-bright: 40 95% 36%;    /* #B47A05 */
+  --warning-soft: 41 100% 93%;     /* #FFF4DC */
+  --warning-dark: 39 100% 21%;     /* #6B4600 */
+
+  /* Status — burnt red danger */
+  --danger: 6 63% 46%;             /* #C0392B */
   --danger-foreground: 0 0% 100%;
-  --danger-bright: 4 41% 56%;
-  --danger-soft: 10 45% 92%;
-  --danger-dark: 4 41% 37%;
+  --danger-bright: 5 71% 58%;      /* #E0574A */
+  --danger-soft: 6 71% 95%;        /* #FBE9E7 */
+  --danger-dark: 6 66% 37%;        /* #9B2C20 */
 
-  /* Status — clay info */
-  --info: 27 43% 56%;
+  /* Status — finance blue info */
+  --info: 214 67% 37%;             /* #1F559E */
   --info-foreground: 0 0% 100%;
-  --info-bright: 27 43% 64%;
-  --info-soft: 36 33% 85%;
-  --info-dark: 27 43% 44%;
+  --info-bright: 215 62% 49%;      /* #2F6FC9 */
+  --info-soft: 210 78% 96%;        /* #EFF6FD */
+  --info-dark: 214 69% 27%;        /* #163F76 */
 
-  /* Organic shadows (never pure black) */
-  --shadow-soft: 0 4px 20px -2px rgba(93, 112, 82, 0.15);
-  --shadow-soft-hover: 0 6px 24px -4px rgba(93, 112, 82, 0.25);
-  --shadow-float: 0 10px 40px -10px rgba(193, 140, 93, 0.2);
-  --shadow-lift: 0 20px 40px -10px rgba(93, 112, 82, 0.15);
+  /* Cool shadows (never pure black) */
+  --shadow-soft: 0 4px 20px -2px rgba(20, 54, 71, 0.14);
+  --shadow-soft-hover: 0 6px 24px -4px rgba(20, 54, 71, 0.24);
+  --shadow-float: 0 10px 40px -10px rgba(15, 44, 71, 0.20);
+  --shadow-lift: 0 20px 40px -10px rgba(20, 54, 71, 0.16);
 
   /* Raw-hex vocabulary */
-  --bg: #FDFCF8;
-  --fg: #2C2C24;
-  --surface: #FEFEFA;
-  --surface-2: #F0EBE5;
-  --border-strong: #5D7052;
-  --track: #F0EBE5;
-  --fill: #5D7052;
+  --bg: hsl(180 14% 97%);
+  --fg: hsl(200 56% 18%);
+  --surface: hsl(0 0% 100%);
+  --surface-2: hsl(190 21% 95%);
+  --border-strong: hsl(166 81% 23%);
+  --track: hsl(190 21% 95%);
+  --fill: hsl(166 81% 23%);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-pill: 999px;
 }
 
-/* ── Dark mode: forest-night — warm charcoal, luminous moss ── */
+/* ── Dark mode: forest night — deep teal-navy, luminous emerald ── */
 [data-theme="dark"] {
-  --background: 70 10% 9%;         /* #191A14 night loam */
-  --foreground: 60 20% 93%;        /* #F0EFE8 pale mist */
+  --background: 200 39% 9%;        /* #0E1A20 night teal */
+  --foreground: 187 24% 93%;       /* #EAF1F2 pale mist */
 
-  --card: 70 9% 12%;               /* #20211B raised */
-  --card-foreground: 60 20% 93%;
+  --card: 202 39% 14%;             /* #152630 raised */
+  --card-foreground: 187 24% 93%;
 
-  --popover: 70 9% 12%;
-  --popover-foreground: 60 20% 93%;
+  --popover: 202 39% 14%;
+  --popover-foreground: 187 24% 93%;
 
-  --primary: 95 25% 62%;           /* #94B184 luminous moss */
-  --primary-foreground: 70 12% 12%;/* dark text on moss */
+  --primary: 164 46% 45%;          /* #3FA98C luminous emerald */
+  --primary-foreground: 166 71% 8%;/* #06231C dark text on emerald */
 
-  --secondary: 27 55% 66%;         /* #D9A87A warm clay */
-  --secondary-foreground: 70 12% 12%;
+  --secondary: 194 41% 28%;        /* #2A5765 teal navy */
+  --secondary-foreground: 187 24% 93%;
 
-  --accent: 70 8% 18%;
-  --accent-foreground: 60 20% 93%;
+  --accent: 197 43% 16%;           /* #17303A */
+  --accent-foreground: 187 24% 93%;
 
-  --muted: 70 7% 15%;
-  --muted-foreground: 60 8% 62%;
+  --muted: 200 40% 12%;            /* #12222A */
+  --muted-foreground: 192 15% 67%; /* #9FB3B8 */
 
-  --border: 70 6% 20%;
-  --input: 70 6% 20%;
-  --ring: 95 25% 62%;
+  --border: 199 31% 20%;           /* #243A44 */
+  --input: 199 21% 47%;            /* #5E8090 */
+  --ring: 164 46% 45%;             /* emerald focus ring */
 
-  --ink: 60 20% 93%;
-  --ink-muted: 60 8% 62%;
-  --ink-faint: 60 8% 62%;
+  --ink: 187 24% 93%;
+  --ink-muted: 192 15% 67%;
+  --ink-faint: 192 15% 67%;
 
-  --footer: 60 20% 93%;
+  --footer: 187 24% 93%;
 
-  --water: 95 25% 62%;
-  --water-soft: 70 8% 18%;
+  /* Legacy decorative aliases */
+  --leaf-light: 197 43% 16%;       /* #17303A */
+  --sun-warm: 200 40% 12%;         /* #12222A */
+  --sand-deep: 199 31% 20%;        /* #243A44 */
 
-  --success: 95 25% 62%;
-  --success-foreground: 70 12% 12%;
-  --success-soft: 70 8% 18%;
-  --success-bright: 95 25% 70%;
-  --success-dark: 95 20% 50%;
-  --warning: 37 70% 60%;
-  --warning-foreground: 70 12% 12%;
-  --warning-soft: 40 18% 15%;
-  --warning-bright: 37 70% 68%;
-  --warning-dark: 37 60% 46%;
-  --info: 27 55% 66%;
-  --info-foreground: 70 12% 12%;
-  --info-soft: 70 8% 18%;
-  --info-bright: 27 55% 74%;
-  --info-dark: 27 45% 52%;
-  --danger: 4 60% 68%;
-  --danger-foreground: 70 12% 12%;
-  --danger-soft: 8 22% 15%;
-  --danger-dark: 4 50% 54%;
-  --destructive: 4 60% 68%;
-  --destructive-soft: 8 22% 15%;
+  /* Field accents — one per field, colour is a navigational cue.
+     strong clears 4.5:1 on card (small text + icons),
+     soft is the icon fill on the tint ground,
+     tint is the pastel card ground. */
+  --field-health: 352 78% 64%;           /* #EB5C6F health pink, strong */
+  --field-health-soft: 354 85% 74%;      /* #F58490 health pink, soft */
+  --field-health-tint: 351 33% 12%;      /* #2A1518 health pink, tint */
+  --field-finance: 215 62% 59%;          /* #568CD7 finance blue, strong */
+  --field-finance-soft: 215 77% 72%;     /* #7FAEEE finance blue, soft */
+  --field-finance-tint: 212 48% 12%;     /* #101E2E finance blue, tint */
+  --field-environment: 139 51% 41%;      /* #339E55 environment green, strong */
+  --field-environment-soft: 138 43% 53%; /* #55BB74 environment green, soft */
+  --field-environment-tint: 145 35% 11%; /* #12251A environment green, tint */
+  --field-education: 257 51% 66%;        /* #957CD5 education purple, strong */
+  --field-education-soft: 255 60% 77%;   /* #B3A2E8 education purple, soft */
+  --field-education-tint: 255 33% 14%;   /* #1E1830 education purple, tint */
+  --field-current: 164 46% 45%;          /* #3FA98C current field, strong */
+  --field-current-soft: 162 43% 56%;     /* #5FC0A3 current field, soft */
+  --field-current-tint: 165 39% 12%;     /* #132B25 current field, tint */
 
-  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-  --shadow-soft-hover: 0 6px 24px -4px rgba(0, 0, 0, 0.5);
-  --shadow-float: 0 10px 40px -10px rgba(0, 0, 0, 0.45);
-  --shadow-lift: 0 20px 40px -10px rgba(0, 0, 0, 0.45);
+  --water: 164 46% 45%;
+  --water-soft: 197 43% 16%;
 
-  --bg: #191A14;
-  --fg: #F0EFE8;
-  --surface: #20211B;
-  --surface-2: #2A2B23;
-  --border-strong: #94B184;
-  --track: #2A2B23;
-  --fill: #94B184;
+  --success: 140 38% 50%;          /* #4FB070 */
+  --success-foreground: 166 71% 8%;
+  --success-soft: 145 35% 11%;
+  --success-bright: 140 47% 60%;   /* #6BC98A */
+  --success-dark: 139 51% 37%;     /* #2F8F4E */
+  --warning: 38 74% 53%;           /* #E0A030 */
+  --warning-foreground: 35 91% 9%;
+  --warning-soft: 39 45% 11%;
+  --warning-bright: 39 83% 64%;    /* #EFB855 */
+  --warning-dark: 40 95% 36%;      /* #B47A05 */
+  --info: 214 68% 62%;             /* #5A93E0 */
+  --info-foreground: 213 69% 10%;
+  --info-soft: 212 48% 12%;
+  --info-bright: 215 77% 72%;      /* #7FAEEE */
+  --info-dark: 215 62% 49%;        /* #2F6FC9 */
+  --danger: 6 75% 64%;             /* #E86A5C */
+  --danger-foreground: 7 49% 7%;
+  --danger-soft: 6 44% 13%;
+  --danger-bright: 7 86% 73%;      /* #F58B7E */
+  --danger-dark: 6 63% 46%;        /* #C0392B */
+  --destructive: 6 75% 64%;        /* #E86A5C */
+  --destructive-foreground: 7 49% 7%;
+  --destructive-soft: 6 44% 13%;
+
+  --shadow-soft: 0 4px 20px -2px rgba(3, 12, 16, 0.55);
+  --shadow-soft-hover: 0 6px 24px -4px rgba(3, 12, 16, 0.65);
+  --shadow-float: 0 10px 40px -10px rgba(2, 10, 14, 0.60);
+  --shadow-lift: 0 20px 40px -10px rgba(2, 10, 14, 0.70);
+
+  --bg: hsl(200 39% 9%);
+  --fg: hsl(187 24% 93%);
+  --surface: hsl(202 39% 14%);
+  --surface-2: hsl(200 40% 12%);
+  --border-strong: hsl(164 46% 45%);
+  --track: hsl(200 40% 12%);
+  --fill: hsl(164 46% 45%);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-pill: 999px;
 }

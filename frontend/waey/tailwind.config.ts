@@ -66,6 +66,33 @@ export default {
           DEFAULT: "hsl(var(--water))",
           soft: "hsl(var(--water-soft))",
         },
+        field: {
+          health: {
+            DEFAULT: "hsl(var(--field-health) / <alpha-value>)",
+            soft: "hsl(var(--field-health-soft) / <alpha-value>)",
+            tint: "hsl(var(--field-health-tint) / <alpha-value>)",
+          },
+          finance: {
+            DEFAULT: "hsl(var(--field-finance) / <alpha-value>)",
+            soft: "hsl(var(--field-finance-soft) / <alpha-value>)",
+            tint: "hsl(var(--field-finance-tint) / <alpha-value>)",
+          },
+          environment: {
+            DEFAULT: "hsl(var(--field-environment) / <alpha-value>)",
+            soft: "hsl(var(--field-environment-soft) / <alpha-value>)",
+            tint: "hsl(var(--field-environment-tint) / <alpha-value>)",
+          },
+          education: {
+            DEFAULT: "hsl(var(--field-education) / <alpha-value>)",
+            soft: "hsl(var(--field-education-soft) / <alpha-value>)",
+            tint: "hsl(var(--field-education-tint) / <alpha-value>)",
+          },
+          current: {
+            DEFAULT: "hsl(var(--field-current) / <alpha-value>)",
+            soft: "hsl(var(--field-current-soft) / <alpha-value>)",
+            tint: "hsl(var(--field-current-tint) / <alpha-value>)",
+          },
+        },
         moss: {
           DEFAULT: "hsl(var(--primary))",
         },
