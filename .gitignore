@@ -88,3 +88,6 @@ frontend/waey/debug_screenshot.png
 frontend/waey/screenshot.png
 frontend/waey/screenshot3.png
 frontend/waey/website-preview.png
+
+# Local tool markers, not project files
+.freebuff/

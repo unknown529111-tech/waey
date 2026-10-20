@@ -228,11 +228,29 @@ npm run test
 | Command | What it does |
 |---------|-------------|
 | `npm run dev` | Start Vite dev server |
-| `npm run build` | Production build |
+| `npm run build` | Production build (runs `tsc --noEmit` first — a type error blocks the build) |
 | `npm run build:dev` | Development build |
 | `npm run lint` | ESLint check |
 | `npm run test` | Run Vitest tests |
 | `npm run preview` | Preview production build |
+
+### Environment requirements (read before running anything)
+
+- **Use Node 24, not the box default.** Node 26 ships a global `localStorage` that is
+  `undefined` unless `--localstorage-file` is passed, which makes Vitest skip jsdom's
+  working copy and fail 139 tests. CI runs Node 20 (`.nvmrc`) and is unaffected.
+  ```sh
+  export PATH="$HOME/.local/share/mise/installs/node/24.21.0/bin:$PATH"
+  ```
+- **The dev server runs on port 5174 on this machine.** Port 5173 is already taken by the
+  Air SCOUT app on `[::1]`, so a Vite started on 5173 answers with the wrong site.
+  ```sh
+  npm run dev -- --host 127.0.0.1 --port 5174 --strictPort
+  ```
+- `node_modules` may be missing rollup's native optional dependency. Fix:
+  `npm i --no-save @rollup/rollup-linux-x64-gnu` (leaves `package.json` and the lockfile alone).
+- **The redesign plan lives in `tasks/plan.md`** — read it before UI work; it carries the
+  design direction, the measured audit findings and the task order.
 
 ---
 
