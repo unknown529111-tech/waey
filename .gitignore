@@ -91,3 +91,6 @@ frontend/waey/website-preview.png
 
 # Local tool markers, not project files
 .freebuff/
+
+# Card deliverables are copied to the board on close; not project files
+deliverable.md
