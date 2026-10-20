@@ -1,164 +1,182 @@
-/* ────────────────────────────────────────────────────────────
+﻿/* ────────────────────────────────────────────────────────────
    Waey design tokens — single source of truth.
-   Editorial monochrome system: white paper, true ink, warm-gray
-   muted text, hairline borders, black pill actions. Dark mode is
-   restored and driven entirely by these variables, scoped under
-   [data-theme="dark"] on <html> (matches the Redesign2 export).
-   Component CSS (buttons/surfaces/forms) reads these vars, so the
-   whole app reskins by flipping the dark block — no per-component
-   dark rules required.
+   "Organic / Natural" system: rice-paper canvas, deep-loam ink,
+   moss green primary, terracotta secondary, sand/stone neutrals.
+   Soft amorphous shapes (blob radii), colored diffused shadows,
+   grain texture overlay. Wabi-sabi: warmth over precision.
+   Dark mode = forest-night palette, same hue family.
+   Dark driven by [data-theme="dark"] on <html>; component CSS
+   reads these vars so the whole app reskins by flipping here.
    ──────────────────────────────────────────────────────────── */
 
 :root {
-  /* Pure white paper */
-  --background: 0 0% 100%;
-  --foreground: 0 0% 0%;
+  /* Rice paper — Organic light (canonical) */
+  --background: 60 33% 98%;        /* #FDFCF8 rice paper */
+  --foreground: 60 8% 16%;         /* #2C2C24 deep loam */
 
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 0%;
+  --card: 60 45% 99%;              /* #FEFEFA lighter beige */
+  --card-foreground: 60 8% 16%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 0%;
+  --popover: 60 45% 99%;
+  --popover-foreground: 60 8% 16%;
 
-  /* Ink — solid black action (export's .btn-cta) */
-  --primary: 0 0% 0%;
-  --primary-foreground: 0 0% 100%;
+  /* Moss green — primary */
+  --primary: 100 16% 38%;          /* #5D7052 moss */
+  --primary-foreground: 90 14% 95%;/* #F3F4F1 pale mist */
 
-  --secondary: 0 0% 96%;
-  --secondary-foreground: 0 0% 0%;
+  /* Terracotta / clay — secondary */
+  --secondary: 27 43% 56%;         /* #C18C5D clay */
+  --secondary-foreground: 0 0% 100%;
 
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 44%; /* #6F6F6F ≈ hsl(0 0% 43.5%) */
+  /* Sand / beige — accent */
+  --accent: 36 33% 85%;            /* #E6DCCD sand */
+  --accent-foreground: 60 8% 28%;  /* #4A4A40 bark */
 
-  --accent: 0 0% 96%;
-  --accent-foreground: 0 0% 0%;
+  /* Stone — muted */
+  --muted: 30 18% 92%;             /* #F0EBE5 stone */
+  --muted-foreground: 60 5% 45%;   /* #78786C dried grass */
 
-  --destructive: 0 0% 0%;
+  --destructive: 4 41% 47%;        /* #A85448 burnt sienna */
   --destructive-foreground: 0 0% 100%;
 
-  /* Hairline #ECECEC ≈ hsl(0 0% 92.5%) */
-  --border: 0 0% 93%;
-  --input: 0 0% 93%;
-  --ring: 0 0% 0%;
+  --border: 35 17% 84%;            /* #DED8CF raw timber */
+  --input: 35 17% 84%;
+  --ring: 100 16% 38%;             /* moss focus ring */
 
-  --radius: 1rem;          /* 16px — feature cards */
-  --radius-card: 1.125rem; /* 18px — field cards */
+  --radius: 1.5rem;          /* 24px — rounded-3xl organic base */
+  --radius-card: 2rem;       /* 32px — cards */
 
-  /* Legacy decorative tokens kept for compatibility (neutralized) */
-  --leaf-light: 0 0% 96%;
-  --sun-warm: 0 0% 96%;
-  --sand-deep: 0 0% 93%;
+  /* Legacy decorative aliases */
+  --leaf-light: 36 33% 85%;
+  --sun-warm: 36 33% 85%;
+  --sand-deep: 30 18% 92%;
 
-  --ink: 0 0% 0%;
-  --ink-muted: 0 0% 44%;
-  --ink-faint: 0 0% 62%;
+  --ink: 60 8% 16%;
+  --ink-muted: 60 5% 45%;
+  --ink-faint: 60 5% 45%;
 
-  --footer: 0 0% 100%;
+  --footer: 60 8% 16%;             /* loam footer */
 
-  /* Data accent — monochrome (ink + light-grey) for charts/trackers */
-  --water: 0 0% 0%;
-  --water-soft: 0 0% 94%;
+  /* Data accent — moss for charts/trackers */
+  --water: 100 16% 38%;
+  --water-soft: 36 33% 85%;
 
-  /* Status: monochrome — success resolves to ink + light-grey */
-  --success: 0 0% 0%;
-  --success-foreground: 0 0% 100%;
-  --success-bright: 0 0% 0%;
-  --success-soft: 0 0% 94%;
-  --success-dark: 0 0% 0%;
+  /* Status — moss family success */
+  --success: 100 16% 38%;
+  --success-foreground: 90 14% 95%;
+  --success-bright: 100 18% 46%;
+  --success-soft: 90 20% 90%;
+  --success-dark: 100 16% 30%;
 
-  /* Status: monochrome — warning resolves to ink + light-grey */
-  --warning: 0 0% 0%;
-  --warning-foreground: 0 0% 100%;
-  --warning-bright: 0 0% 0%;
-  --warning-soft: 0 0% 94%;
-  --warning-dark: 0 0% 0%;
+  /* Status — ochre warning */
+  --warning: 37 75% 48%;
+  --warning-foreground: 60 8% 16%;
+  --warning-bright: 37 75% 56%;
+  --warning-soft: 40 55% 90%;
+  --warning-dark: 37 75% 38%;
 
-  /* Status: danger (brick red) */
-  --danger: 0 0% 0%;
+  /* Status — burnt sienna danger */
+  --danger: 4 41% 47%;
   --danger-foreground: 0 0% 100%;
-  --danger-bright: 0 0% 0%;
-  --danger-soft: 0 0% 94%;
-  --danger-dark: 0 0% 0%;
+  --danger-bright: 4 41% 56%;
+  --danger-soft: 10 45% 92%;
+  --danger-dark: 4 41% 37%;
 
-  /* Status: monochrome — info resolves to ink + light-grey */
-  --info: 0 0% 0%;
+  /* Status — clay info */
+  --info: 27 43% 56%;
   --info-foreground: 0 0% 100%;
-  --info-bright: 0 0% 0%;
-  --info-soft: 0 0% 94%;
-  --info-dark: 0 0% 0%;
+  --info-bright: 27 43% 64%;
+  --info-soft: 36 33% 85%;
+  --info-dark: 27 43% 44%;
 
-  /* ── Canonical export vocabulary (Redesign2 theme.css parity) ──
-     Raw hex forms mirror the redesign export exactly so the handoff
-     spec and Waey stay in lockstep. Light values below. */
-  --bg: #FFFFFF;
-  --fg: #000000;
-  --surface: #FFFFFF;
-  --surface-2: #F4F4F4;   /* selected / hover fills (.sound-opt.selected) */
-  --border-strong: #000000; /* hover borders */
-  --track: #F4F4F4;        /* progress tracks */
-  --fill: #000000;         /* active fills */
+  /* Organic shadows (never pure black) */
+  --shadow-soft: 0 4px 20px -2px rgba(93, 112, 82, 0.15);
+  --shadow-soft-hover: 0 6px 24px -4px rgba(93, 112, 82, 0.25);
+  --shadow-float: 0 10px 40px -10px rgba(193, 140, 93, 0.2);
+  --shadow-lift: 0 20px 40px -10px rgba(93, 112, 82, 0.15);
+
+  /* Raw-hex vocabulary */
+  --bg: #FDFCF8;
+  --fg: #2C2C24;
+  --surface: #FEFEFA;
+  --surface-2: #F0EBE5;
+  --border-strong: #5D7052;
+  --track: #F0EBE5;
+  --fill: #5D7052;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-pill: 999px;
 }
 
-/* ── Dark mode: restored per Redesign2 export ────────────────
-   White becomes the accent; surfaces step down to near-black.
-   All component CSS consumes these vars, so flipping them here
-   reskins the entire app. ─────────────────────────────────── */
+/* ── Dark mode: forest-night — warm charcoal, luminous moss ── */
 [data-theme="dark"] {
-  --background: 0 0% 4%;        /* #0B0B0B */
-  --foreground: 0 0% 96%;       /* #F5F5F5 */
-  --card: 0 0% 9%;              /* #161616 */
-  --card-foreground: 0 0% 96%;
-  --popover: 0 0% 9%;
-  --popover-foreground: 0 0% 96%;
+  --background: 70 10% 9%;         /* #191A14 night loam */
+  --foreground: 60 20% 93%;        /* #F0EFE8 pale mist */
 
-  --primary: 0 0% 96%;          /* ink-inverted: white action */
-  --primary-foreground: 0 0% 4%;
+  --card: 70 9% 12%;               /* #20211B raised */
+  --card-foreground: 60 20% 93%;
 
-  --secondary: 0 0% 13%;
-  --secondary-foreground: 0 0% 96%;
-  --muted: 0 0% 13%;
-  --muted-foreground: 0 0% 62%; /* #9A9A9A */
+  --popover: 70 9% 12%;
+  --popover-foreground: 60 20% 93%;
 
-  --accent: 0 0% 13%;
-  --accent-foreground: 0 0% 96%;
+  --primary: 95 25% 62%;           /* #94B184 luminous moss */
+  --primary-foreground: 70 12% 12%;/* dark text on moss */
 
-  --border: 0 0% 16%;           /* #2A2A2A */
-  --input: 0 0% 16%;
-  --ring: 0 0% 96%;
+  --secondary: 27 55% 66%;         /* #D9A87A warm clay */
+  --secondary-foreground: 70 12% 12%;
 
-  --ink: 0 0% 96%;
-  --ink-muted: 0 0% 62%;
-  --ink-faint: 0 0% 45%;
-  --footer: 0 0% 4%;
+  --accent: 70 8% 18%;
+  --accent-foreground: 60 20% 93%;
 
-  --water: 0 0% 96%;
-  --water-soft: 0 0% 14%;
+  --muted: 70 7% 15%;
+  --muted-foreground: 60 8% 62%;
 
-  /* Status — monochrome, lightened for dark surfaces */
-  --success: 0 0% 96%;
-  --success-soft: 0 0% 14%;
-  --success-bright: 0 0% 96%;
-  --warning: 0 0% 96%;
-  --warning-soft: 0 0% 14%;
-  --warning-bright: 0 0% 96%;
-  --info: 0 0% 96%;
-  --info-soft: 0 0% 14%;
-  --info-bright: 0 0% 96%;
-  --danger: 0 0% 96%;
-  --danger-soft: 0 0% 14%;
-  --destructive: 0 0% 96%;
-  --destructive-soft: 0 0% 14%;
+  --border: 70 6% 20%;
+  --input: 70 6% 20%;
+  --ring: 95 25% 62%;
 
-  /* ── Canonical export vocabulary (Redesign2 dark parity) ── */
-  --bg: #0B0B0B;
-  --fg: #F5F5F5;
-  --surface: #161616;
-  --surface-2: #202020;
-  --border-strong: #F5F5F5;
-  --track: #202020;
-  --fill: #F5F5F5;
+  --ink: 60 20% 93%;
+  --ink-muted: 60 8% 62%;
+  --ink-faint: 60 8% 62%;
+
+  --footer: 60 20% 93%;
+
+  --water: 95 25% 62%;
+  --water-soft: 70 8% 18%;
+
+  --success: 95 25% 62%;
+  --success-foreground: 70 12% 12%;
+  --success-soft: 70 8% 18%;
+  --success-bright: 95 25% 70%;
+  --success-dark: 95 20% 50%;
+  --warning: 37 70% 60%;
+  --warning-foreground: 70 12% 12%;
+  --warning-soft: 40 18% 15%;
+  --warning-bright: 37 70% 68%;
+  --warning-dark: 37 60% 46%;
+  --info: 27 55% 66%;
+  --info-foreground: 70 12% 12%;
+  --info-soft: 70 8% 18%;
+  --info-bright: 27 55% 74%;
+  --info-dark: 27 45% 52%;
+  --danger: 4 60% 68%;
+  --danger-foreground: 70 12% 12%;
+  --danger-soft: 8 22% 15%;
+  --danger-dark: 4 50% 54%;
+  --destructive: 4 60% 68%;
+  --destructive-soft: 8 22% 15%;
+
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  --shadow-soft-hover: 0 6px 24px -4px rgba(0, 0, 0, 0.5);
+  --shadow-float: 0 10px 40px -10px rgba(0, 0, 0, 0.45);
+  --shadow-lift: 0 20px 40px -10px rgba(0, 0, 0, 0.45);
+
+  --bg: #191A14;
+  --fg: #F0EFE8;
+  --surface: #20211B;
+  --surface-2: #2A2B23;
+  --border-strong: #94B184;
+  --track: #2A2B23;
+  --fill: #94B184;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-pill: 999px;
 }

@@ -1,7 +1,7 @@
-/* ────────────────────────────────────────────────────────────
+﻿/* ────────────────────────────────────────────────────────────
    Base — element defaults, selection, focus, form elements.
-   Layered below Tailwind's output exactly like the original
-   single-file setup.
+   Organic / Natural: Fraunces display, Nunito body, paper
+   grain texture on the body, moss focus glow (not outlines).
    ──────────────────────────────────────────────────────────── */
 
 @layer base {
@@ -18,10 +18,27 @@
     -moz-osx-font-smoothing: grayscale;
     direction: rtl;
     color: hsl(var(--foreground));
-    font-family: "Inter", "Alexandria", sans-serif;
+    font-family: "Nunito", "Alexandria", sans-serif;
     font-size: 16px;
-    line-height: 1.9;
+    line-height: 1.8;
     background-color: hsl(var(--background));
+    position: relative;
+  }
+
+  /* ── Global paper grain — fixed noise veil at 3.5% ────── */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  [data-theme="dark"] body::before {
+    mix-blend-mode: screen;
+    opacity: 0.05;
   }
 
   [dir="ltr"] body,
@@ -30,20 +47,26 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
-    font-weight: 400;
+    font-family: "Fraunces", "Amiri", serif;
+    font-weight: 700;
     letter-spacing: -0.01em;
-    line-height: 1.05;
+    line-height: 1.15;
     text-wrap: balance;
     color: hsl(var(--foreground));
   }
 
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
+  [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
+    font-family: "Amiri", "Alexandria", serif;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
   p {
-    line-height: 1.9;
+    line-height: 1.8;
     color: hsl(var(--foreground));
   }
 
-  /* Tabular figures everywhere numbers appear */
   .tabular-nums, [class*="tabular-nums"] {
     font-variant-numeric: tabular-nums;
   }
@@ -53,12 +76,14 @@
     color: hsl(var(--foreground));
   }
 
+  /* Soft moss glow instead of a hard outline */
   :focus-visible {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring) / 0.45);
+    border-radius: 9999px;
   }
 
-  /* Range slider — hairline track, ring thumb */
+  /* Range slider — rounded track, soft thumb */
   input[type="range"] {
     height: 0.5rem;
     border-radius: 9999px;
@@ -75,6 +100,7 @@
     border-radius: 9999px;
     background: hsl(var(--background));
     border: 3px solid hsl(var(--ring));
+    box-shadow: var(--shadow-soft);
     cursor: grab;
   }
 
@@ -94,6 +120,6 @@
     background-size: 0.7rem;
     padding-inline-start: 1.75rem;
     padding-inline-end: 1rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23777777' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2378786C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
   }
 }

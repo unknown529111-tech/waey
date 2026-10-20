@@ -1,20 +1,20 @@
-/* ────────────────────────────────────────────────────────────
-   Forms — inline field inputs.
+﻿/* ────────────────────────────────────────────────────────────
+   Forms — pill inputs, semi-transparent over grain, moss glow.
    ──────────────────────────────────────────────────────────── */
 
 @layer components {
-  /* Inline field — 8px input radius */
   .field {
-    background: hsl(var(--muted) / 0.4);
-    border: 1px solid hsl(var(--foreground) / 0.12);
-    border-radius: 8px;
+    background: hsl(var(--background) / 0.5);
+    border: 1px solid hsl(var(--border));
+    border-radius: 9999px;
     color: hsl(var(--foreground));
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   }
   .field:focus {
     outline: none;
-    border-color: hsl(var(--ring) / 0.6);
-    background: hsl(var(--muted) / 0.2);
+    border-color: hsl(var(--ring) / 0.5);
+    background: hsl(var(--background) / 0.8);
+    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.18);
   }
   .field::placeholder { color: hsl(var(--ink-faint)); }
 }

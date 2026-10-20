@@ -1,55 +1,80 @@
-/* ────────────────────────────────────────────────────────────
-   Surfaces — flat editorial cards with hairline borders.
-   Matches the redesign export: no frosted glass, no drop
-   shadows. Depth = 1px #ECECEC border; hover = black border
-   + slight lift, ease cubic-bezier(0.22,1,0.36,1).
+﻿/* ────────────────────────────────────────────────────────────
+   Surfaces — organic plates: lighter-beige cards, soft timber
+   borders, moss-tinted diffused shadows, amorphous blob
+   utilities. Depth = soft colored shadow, never black, and
+   hover = gentle lift like picking up a river stone.
    ──────────────────────────────────────────────────────────── */
 
 @layer components {
-  /* ── Card ─────────────────────────────────────────────────
-     The default content surface: white paper, hairline border,
-     18px radius. Combine with padding utilities (p-4 / p-6 …). */
+  /* ── Card — default content surface ─────────────────────── */
   .card {
     background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
+    border: 1px solid hsl(var(--border) / 0.5);
     border-radius: var(--radius-card);
-    transition: border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .card:hover {
-    border-color: hsl(var(--foreground));
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: hsl(var(--border));
   }
 
-  /* ── Feature card (export's .feature / .field-card) ────── */
+  /* ── Ledger — feature plate ─────────────────────────────── */
   .ledger {
     position: relative;
     background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
+    border: 1px solid hsl(var(--border) / 0.5);
     border-radius: var(--radius);
-    transition: border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .ledger:hover {
-    border-color: hsl(var(--foreground));
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: hsl(var(--border));
   }
 
-  /* ── Glass panel — kept as alias for compatibility; now a
-     quiet bordered surface (the system has one depth cue). ── */
+  /* ── Glass panel — frosted organic surface ──────────────── */
   .glass {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.5);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
-  /* bg-card keeps Tailwind semantics but loses the frost */
-  .bg-card {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .hairline { border-top: 1px solid hsl(var(--border) / 0.6); }
+
+  /* ── Organic blob shapes ──────────────────────────────────
+     Amorphous border-radius vocabulary. Use .blob for ambient
+     background washes, .organic-mask for images/avatars. */
+  .blob {
+    position: absolute;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-moss { background: hsl(var(--primary) / 0.16); }
+  .blob-clay { background: hsl(var(--secondary) / 0.18); }
+  .blob-sand { background: hsl(var(--accent) / 0.5); }
+
+  .organic-mask {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  .organic-mask-alt {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   }
 
-  /* Hairline / divider */
-  .hairline { border-top: 1px solid hsl(var(--border)); }
+  /* Asymmetric corner accent for feature cards */
+  .corner-accent-tl { border-top-left-radius: 4rem; }
+  .corner-accent-br { border-bottom-right-radius: 4rem; }
+  .corner-accent-tr { border-top-right-radius: 4rem; }
+  .corner-accent-bl { border-bottom-left-radius: 4rem; }
 }

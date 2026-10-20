@@ -15,7 +15,7 @@
 /* ── Controls panel ───────────────────────────────────────── */
 .controls {
   border: 1px solid hsl(var(--border));
-  border-radius: 18px;
+  border-radius: 2rem;
   padding: 1.5rem;
   margin-top: 1.5rem;
   background: hsl(var(--card));
@@ -40,7 +40,7 @@
 }
 .field input {
   border: 1px solid hsl(var(--border));
-  border-radius: 10px;
+  border-radius: 1rem;
   padding: 0.6rem 0.7rem;
   font-size: 0.95rem;
   width: 8.5rem;
@@ -64,7 +64,7 @@
   color: hsl(var(--foreground));
 }
 .stat-chip b {
-  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-family: "Fraunces", "Amiri", serif;
   font-size: 1.15rem;
   font-weight: 400;
 }
@@ -128,7 +128,7 @@
 }
 .rcard {
   border: 1px solid hsl(var(--border));
-  border-radius: 16px;
+  border-radius: 1.5rem;
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -147,7 +147,7 @@
   gap: 0.5rem;
 }
 .rcard h3 {
-  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-family: "Fraunces", "Amiri", serif;
   font-weight: 400;
   font-size: 1.35rem;
   line-height: 1.1;
@@ -170,7 +170,7 @@
   font-size: 0.85rem;
 }
 .rstats .s b {
-  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-family: "Fraunces", "Amiri", serif;
   font-size: 1.15rem;
   font-weight: 400;
   display: block;
@@ -271,13 +271,13 @@
   color: hsl(var(--foreground));
   width: 100%;
   max-width: 34rem;
-  border-radius: 20px 20px 0 0;
+  border-radius: 2rem 2rem 0 0;
   padding: 1.5rem;
   max-height: 80vh;
   overflow: auto;
 }
 .sheet h2 {
-  font-family: "Instrument Serif", "Amiri", "Alexandria", serif;
+  font-family: "Fraunces", "Amiri", serif;
   font-weight: 400;
   font-size: 1.7rem;
 }
@@ -293,7 +293,7 @@
   justify-content: space-between;
   align-items: center;
   border: 1px solid hsl(var(--border));
-  border-radius: 12px;
+  border-radius: 1.25rem;
   padding: 0.7rem 0.9rem;
   font-size: 0.9rem;
 }
