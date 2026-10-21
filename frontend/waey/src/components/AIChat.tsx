@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import { Send, Loader2, Sparkles, Trash2, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
@@ -115,6 +115,7 @@ const AIChat = () => {
   const [provider, setProvider] = useState<"proxy" | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const inputId = useId();
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-30))); } catch { /* ignore */ }
@@ -178,13 +179,13 @@ const AIChat = () => {
 
   return (
     <div className="max-w-[800px] mx-auto px-4 md:px-6 py-8">
-      <div className="rounded-3xl border border-white/40 dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_20px_50px_-20px_rgba(93,112,82,0.25)] bg-[linear-gradient(165deg,rgba(255,255,255,0.72),rgba(240,244,238,0.55))] dark:bg-[linear-gradient(165deg,rgba(30,28,22,0.75),rgba(24,22,18,0.55))] backdrop-blur-2xl overflow-hidden flex flex-col h-[calc(100vh-220px)] min-h-[500px]">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/40 dark:border-white/10 bg-white/30 dark:bg-white/5 backdrop-blur-md">
-          <div className="flex items-center gap-2">
-            <div className="size-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_16px_-8px_rgba(93,112,82,0.5)]">
-              <Sparkles className="size-5" />
+      <div className="rounded-card border border-border bg-card shadow-float overflow-hidden flex flex-col h-[calc(100vh-220px)] min-h-[500px]">
+        <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/60 px-5 py-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft">
+              <Sparkles className="size-5" aria-hidden />
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className="font-bold text-base leading-tight">{t('chat.title')}</h2>
               <p className="text-xs text-muted-foreground">
                 <AnimatePresence mode="wait">
@@ -195,23 +196,25 @@ const AIChat = () => {
               </p>
             </div>
           </div>
-          {messages.length > 0 && (
-            <button onClick={clearChat} className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-full hover:bg-white/40 dark:hover:bg-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]" aria-label={t('chat.clear')}>
-              <Trash2 className="size-4" />
-            </button>
-          )}
-          {isLoading && messages[messages.length - 1]?.role === "user" && (
-            <button onClick={() => abortRef.current?.abort()} className="text-destructive hover:text-destructive/80 transition-colors p-2 rounded-full hover:bg-destructive/10 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]" aria-label={t('chat.stop')}>
-              <X className="size-4" />
-            </button>
-          )}
+          <div className="flex shrink-0 items-center gap-2">
+            {messages.length > 0 && (
+              <button onClick={clearChat} className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-destructive" aria-label={t('chat.clear')}>
+                <Trash2 className="size-4" aria-hidden />
+              </button>
+            )}
+            {isLoading && messages[messages.length - 1]?.role === "user" && (
+              <button onClick={() => abortRef.current?.abort()} className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-card text-destructive transition-colors hover:bg-muted" aria-label={t('chat.stop')}>
+                <X className="size-4" aria-hidden />
+              </button>
+            )}
+          </div>
         </div>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 md:px-5 py-5 space-y-4">
           {messages.length === 0 && (
             <div className="text-center py-8 space-y-6">
-              <div className="inline-flex size-16 rounded-full bg-primary/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] items-center justify-center">
-                <Sparkles className="size-8 text-primary" />
+              <div className="inline-flex size-16 items-center justify-center rounded-full border border-border bg-accent text-primary shadow-soft">
+                <Sparkles className="size-8" aria-hidden />
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-2">{t('chat.greeting')}</h3>
@@ -219,7 +222,7 @@ const AIChat = () => {
               </div>
               <div className="grid sm:grid-cols-2 gap-2 max-w-[480px] mx-auto">
                 {SUGGESTIONS.map((s) => (
-                  <button key={s} onClick={() => send(s)} className="text-right text-sm p-3 rounded-2xl border border-white/40 dark:border-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] hover:border-primary hover:bg-white/70 dark:hover:bg-white/10 transition-all">{s}</button>
+                  <button key={s} onClick={() => send(s)} className="min-h-11 rounded-2xl border border-border bg-muted p-3 text-start text-sm text-foreground transition-colors hover:border-primary hover:bg-accent">{s}</button>
                 ))}
               </div>
             </div>
@@ -228,7 +231,7 @@ const AIChat = () => {
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex ${m.role === "user" ? "justify-start" : "justify-end"}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${m.role === "user" ? "bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_8px_20px_-12px_rgba(93,112,82,0.55)]" : "bg-secondary/80 text-secondary-foreground backdrop-blur-md border border-white/30 dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]"}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-soft ${m.role === "user" ? "bg-primary text-primary-foreground" : "border border-border bg-muted text-foreground"}`}>
                   {m.role === "assistant" ? (
                     <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-headings:my-2 prose-strong:text-foreground">
                       <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{sanitizeString(m.content || "", 5000)}</ReactMarkdown>
@@ -243,8 +246,8 @@ const AIChat = () => {
 
           {isLoading && messages[messages.length - 1]?.role === "user" && (
             <div className="flex justify-end">
-              <div className="bg-secondary/80 backdrop-blur-md border border-white/30 dark:border-white/10 rounded-2xl px-4 py-3 flex items-center gap-2 text-sm text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]">
-                <Loader2 className="size-4 animate-spin" />
+              <div className="flex items-center gap-2 rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
+                <Loader2 className="size-4 animate-spin" aria-hidden />
                 <AnimatePresence mode="wait">
                   <motion.span key={lang} initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }} transition={{ duration: 0.15, ease: "easeOut" }}>
                     {t('chat.typing')}
@@ -255,12 +258,13 @@ const AIChat = () => {
           )}
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="border-t border-white/40 dark:border-white/10 p-3 md:p-4 bg-background/40 dark:bg-[#181510]/50 backdrop-blur-md">
+        <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="border-t border-border bg-muted/60 p-3 md:p-4">
+          <label htmlFor={inputId} className="sr-only">{t('chat.inputLabel')}</label>
           <div className="flex items-end gap-2">
-            <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }} placeholder={t('chat.placeholder')} rows={1} maxLength={2000} disabled={isLoading}
-              className="flex-1 resize-none bg-white/50 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white/70 dark:focus:bg-white/10 max-h-32 disabled:opacity-50" style={{ minHeight: "48px" }} />
-            <button type="submit" disabled={isLoading || !input.trim()} className="size-12 shrink-0 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_8px_20px_-10px_rgba(93,112,82,0.55)] disabled:opacity-40 disabled:cursor-not-allowed transition-all" aria-label={t('chat.send')}>
-              {isLoading ? <Loader2 className="size-5 animate-spin" /> : <Send className="size-5 -scale-x-100" />}
+            <textarea id={inputId} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }} placeholder={t('chat.placeholder')} rows={1} maxLength={2000} disabled={isLoading}
+              className="flex-1 resize-none rounded-2xl border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card max-h-32 disabled:opacity-60" style={{ minHeight: "48px" }} />
+            <button type="submit" disabled={isLoading || !input.trim()} className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50" aria-label={t('chat.send')}>
+              {isLoading ? <Loader2 className="size-5 animate-spin" aria-hidden /> : <Send className="size-5 -scale-x-100" aria-hidden />}
             </button>
           </div>
           <p className="text-xs text-muted-foreground mt-2 text-center">{t('chat.disclaimer')}</p>

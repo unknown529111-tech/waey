@@ -1,0 +1,17 @@
+=== before-2a ===
+
+--- /faq ---
+controls: 0 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+
+--- /assistant ---
+controls: 6 (5 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+button 236x66 :: How do I start a monthly budget?
+button 236x66 :: Simple tips for better sleep
+button 236x66 :: How do I grow mint on my balcony?
+button 236x66 :: How do I organize my study time?
+textarea 662x48 :: Type your question here...
+button[submit] 48x48 :: Send
+
+console errors: none

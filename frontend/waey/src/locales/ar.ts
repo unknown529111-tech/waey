@@ -2312,6 +2312,71 @@ const ar: Record<string, string> = {
   'insights.alt.distribution': 'توزيع المصاريف',
   'insights.alt.format': '{label}: {value}',
   'insights.alt.summary': '{title}. {data}',
+
+  // ── FAQ: a searchable accordion ──────────────────────────────
+  // The seven answers above are unchanged; these keys only wrap them.
+  'faq.eyebrow': 'وعي · الأسئلة الشائعة',
+  'faq.list.eyebrow': 'قبل أن تسأل',
+  'faq.list.title': 'ابحث عن سؤالك.',
+  'faq.list.lead': 'اكتب كلمة من سؤالك وافتح الإجابة التي تحتاجها، بدل أن تقرأ السبعة كلها.',
+  'faq.search.label': 'ابحث في الأسئلة',
+  'faq.search.placeholder': 'مثلاً: السلسلة، البيانات، أوفلاين',
+  'faq.empty.title': 'لا يوجد سؤال بهذه الكلمة.',
+  'faq.empty.body': 'جرّب كلمة أقصر أو مختلفة، أو ارجع إلى كل الأسئلة.',
+  'faq.empty.clear': 'امسح البحث',
+  'faq.closing.eyebrow': 'لو ما زال عندك سؤال',
+  'faq.closing.title': 'الإجابة ليست هنا؟ اسأل المساعد.',
+  'faq.closing.body': 'المساعد الذكي يرد في الصحة والمال والبيئة والتعليم، ولوحة يومي تبدأ من متتبعاتك أنت.',
+  'faq.closing.assistant': 'افتح المساعد',
+  'faq.closing.dashboard': 'اذهب إلى يومي',
+
+  // ── Assistant: scope, privacy and the closing band ───────────
+  'assistant.eyebrow': 'وعي · المساعد',
+  'assistant.cover.eyebrow': 'نطاق المساعد',
+  'assistant.cover.title': 'أربعة مجالات، ومساعد واحد.',
+  'assistant.cover.lead': 'المساعد محدود بقصد: يرد داخل المجالات الأربعة التي بُني عليها وعي، ويعتذر بلطف عن أي شيء خارجها.',
+  'assistant.cover.health': 'عادات النوم والمياه والحركة والتغذية، ونصائح للصحة النفسية — دون تشخيص طبي.',
+  'assistant.cover.finance': 'ميزانية شهرية وتوفير ومصروفات مرتبة — أرقام صغيرة يمكنك الالتزام بها.',
+  'assistant.cover.environment': 'مياه وكهرباء أقل، تدوير أسهل، وزراعة على البلكونة.',
+  'assistant.cover.education': 'تنظيم وقت المذاكرة، وتقنية البومودورو، وخطط تعلّم بسيطة.',
+  'assistant.privacy.eyebrow': 'قبل أن تكتب',
+  'assistant.privacy.title': 'ما الذي يُحفظ، وأين.',
+  'assistant.privacy.lead': 'ليست وعوداً — هذا ما يفعله الكود بالضبط.',
+  'assistant.privacy.history.title': 'المحادثة محفوظة في متصفحك',
+  'assistant.privacy.history.body': 'آخر ٣٠ رسالة تُحفظ في localStorage على جهازك، وزر المسح يزيلها من المتصفح.',
+  'assistant.privacy.context.title': 'المساعد يقرأ متتبعاتك',
+  'assistant.privacy.context.body': 'لتخصيص الرد، يقرأ المساعد من بياناتك المحلية شيئين فقط: سلسلة الأيام، ومجموع المياه اليوم.',
+  'assistant.privacy.proxy.title': 'من أين تأتي الإجابة',
+  'assistant.privacy.proxy.body': 'إذا كان بروكسي الخادم مضبوطاً في إعدادات التطبيق، تُرسل رسالتك إليه ليرد. وإذا لم يكن مضبوطاً، يرد المساعد محلياً على جهازك — وفي هذه الحالة لا تخرج أي رسالة من المتصفح.',
+  'assistant.cta.eyebrow': 'بعد المحادثة',
+  'assistant.cta.title': 'الكلام وحده ليس عادة — سجّل أول خطوة.',
+  'assistant.cta.body': 'افتح لوحة يومي وسجّل كوب ماء أو مصروفاً واحداً، ثم ارجع للمساعد تسأله عن الباقي.',
+  'assistant.cta.dashboard': 'افتح يومي',
+  'assistant.cta.faq': 'اقرأ الأسئلة الشائعة',
+
+  // A bound, hidden label for the chat textarea.
+  'chat.inputLabel': 'رسالتك',
+
+  // ── P5-2a: the FAQ's search keywords ─────────────────────────
+  // The Arabic words and the English words a visitor might type for
+  // each question. The page searches the title plus both sets, so it
+  // matches in either language, and it does this WITHOUT importing
+  // the dictionaries directly — that moved them into this page's
+  // chunk and made the entry load it eagerly.
+  'faq.what.searchAr': 'منصة تعريف وعي مجالات صحة مالية بيئة تعليم',
+  'faq.what.searchEn': 'what is waey platform about four fields health finance environment education',
+  'faq.trackers.searchAr': 'متتبعات يومية تسجيل مياه نوم نشاط مصروفات',
+  'faq.trackers.searchEn': 'daily trackers log record water cups sleep hours activity minutes expenses',
+  'faq.streak.searchAr': 'سلسلة تتابع ايام تجميد نقاط استرجاع',
+  'faq.streak.searchEn': 'streak consecutive days freeze recover restore points',
+  'faq.points.searchAr': 'نقاط اوشمة انجاز شروط جمع',
+  'faq.points.searchEn': 'points badges earn rewards achievement milestone',
+  'faq.data.searchAr': 'بيانات خصوصية حفظ محلي بدون خوادم',
+  'faq.data.searchEn': 'data privacy stored locally device never uploaded no server',
+  'faq.offline.searchAr': 'بدون انترنت يعمل或者فلاين',
+  'faq.offline.searchEn': 'offline no internet connection works without network',
+  'faq.pwa.searchAr': 'تطبيق تثبيت هاتف رئيسية شاشة',
+  'faq.pwa.searchEn': 'pwa progressive web app install phone home screen shortcut',
 };
 
 export default ar;

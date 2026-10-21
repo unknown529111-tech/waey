@@ -81,17 +81,21 @@ const run = async () => {
   page.on("pageerror", (e) => errors.push("PAGEERROR " + String(e).slice(0, 200)));
   await page.addInitScript(() => localStorage.setItem("waey-lang", "en"));
 
-  const insights = await measurePage(page, "/insights");
-  const recipes = await measurePage(page, "/recipes");
+  const ROUTES = (process.env.ROUTES || "/insights,/recipes")
+    .split(",")
+    .map((r) => r.trim())
+    .filter(Boolean);
+
+  const measured = [];
+  for (const route of ROUTES) {
+    measured.push([route, await measurePage(page, route)]);
+  }
 
   await browser.close();
 
   const lines = [];
   lines.push(`=== ${LABEL} ===`);
-  for (const [route, c] of [
-    ["/insights", insights],
-    ["/recipes", recipes],
-  ]) {
+  for (const [route, c] of measured) {
     const buttons = c.controls.filter((x) => x.tag === "button").length;
     lines.push("");
     lines.push(`--- ${route} ---`);

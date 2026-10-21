@@ -1,0 +1,33 @@
+=== after-2a ===
+
+--- /faq ---
+controls: 10 (7 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+input[search] 544x48 :: Try: streak, data, offline
+button[button] 1230x68 :: What is Waey?
+button[button] 1230x68 :: How do I use the daily trackers?
+button[button] 1230x68 :: How does the streak work?
+button[button] 1230x68 :: How do I earn points and badges?
+button[button] 1230x68 :: Is my data safe?
+button[button] 1230x68 :: Does the platform work offline?
+button[button] 1230x68 :: How do I install the app on my phone?
+a 174x44 :: Open the assistant
+a 138x44 :: Go to my day
+
+--- /assistant ---
+controls: 12 (5 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+button 236x66 :: How do I start a monthly budget?
+button 236x66 :: Simple tips for better sleep
+button 236x66 :: How do I grow mint on my balcony?
+button 236x66 :: How do I organize my study time?
+textarea 662x48 :: Type your question here...
+button[submit] 48x48 :: Send
+a 608x204 :: HealthSleep, water, movement and food habits, plus everyday mental-hea
+a 608x204 :: FinanceMonthly budgets, saving and tidy expenses — small numbers you c
+a 608x181 :: EnvironmentLess water and power, easier recycling, and growing on the 
+a 608x181 :: EducationStudy schedules, the Pomodoro method, and simple learning pla
+a 136x44 :: Open my day
+a 143x44 :: Read the FAQ
+
+console errors: none

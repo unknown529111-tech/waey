@@ -35,6 +35,15 @@ export default defineConfig(({ mode }) => ({
           }
           const pagesMatch = id.match(/src[/\\]pages[/\\]([^/\\]+)\.tsx$/);
           if (pagesMatch) return `page-${pagesMatch[1]}`;
+
+          // The app's own shared modules — the dictionaries, the recipe data,
+          // the storage and gamification helpers — are imported by many page
+          // chunks. Left to the bundler's default they get DUPLICATED into
+          // each of those chunks: @/lib/gamification was in three chunks at
+          // once, and the first paint carried 210 kB of the same code more
+          // than once. One shared chunk, downloaded once.
+          const sharedMatch = id.match(/src[/\\](lib|data|contexts|locales)[/\\]/);
+          if (sharedMatch) return 'app-shared';
         },
       },
     },

@@ -1163,7 +1163,7 @@ const en: Record<string, string> = {
 
   // Assistant
   'assistant.title': 'Ask Waey Assistant',
-  'assistant.subtitle': 'Fast and reliable answers about health, finance, and environment.',
+  'assistant.subtitle': 'Fast and reliable answers about health, finance, environment and education.',
   'assistant.open': 'Open Smart Assistant',
 
   // NotFound
@@ -2314,6 +2314,71 @@ const en: Record<string, string> = {
   'insights.alt.distribution': 'Expense distribution',
   'insights.alt.format': '{label}: {value}',
   'insights.alt.summary': '{title}. {data}',
+
+  // ── FAQ: a searchable accordion ──────────────────────────────
+  // The seven answers above are unchanged; these keys only wrap them.
+  'faq.eyebrow': 'Waey · Frequently asked questions',
+  'faq.list.eyebrow': 'Before you ask',
+  'faq.list.title': 'Find your question.',
+  'faq.list.lead': 'Type one word from your question and open the answer you need, instead of reading all seven.',
+  'faq.search.label': 'Search the questions',
+  'faq.search.placeholder': 'Try: streak, data, offline',
+  'faq.empty.title': 'No question matches that.',
+  'faq.empty.body': 'Try a shorter or different word, or go back to all the questions.',
+  'faq.empty.clear': 'Clear the search',
+  'faq.closing.eyebrow': 'Still unsure',
+  'faq.closing.title': 'Not answered here? Ask the assistant.',
+  'faq.closing.body': 'The assistant answers across health, finance, environment and education, and your day starts from your own trackers.',
+  'faq.closing.assistant': 'Open the assistant',
+  'faq.closing.dashboard': 'Go to my day',
+
+  // ── Assistant: scope, privacy and the closing band ───────────
+  'assistant.eyebrow': 'Waey · Assistant',
+  'assistant.cover.eyebrow': 'What it covers',
+  'assistant.cover.title': 'Four fields, one assistant.',
+  'assistant.cover.lead': 'The assistant is scoped on purpose: it answers inside the four fields Waey is built on, and politely declines anything outside them.',
+  'assistant.cover.health': 'Sleep, water, movement and food habits, plus everyday mental-health tips — never a medical diagnosis.',
+  'assistant.cover.finance': 'Monthly budgets, saving and tidy expenses — small numbers you can actually keep to.',
+  'assistant.cover.environment': 'Less water and power, easier recycling, and growing on the balcony.',
+  'assistant.cover.education': 'Study schedules, the Pomodoro method, and simple learning plans.',
+  'assistant.privacy.eyebrow': 'Before you type',
+  'assistant.privacy.title': 'What is kept, and where.',
+  'assistant.privacy.lead': 'Not a promise — exactly what the code does.',
+  'assistant.privacy.history.title': 'Your conversation stays in your browser',
+  'assistant.privacy.history.body': 'The last 30 messages are kept in localStorage on your device, and the clear button removes them from the browser.',
+  'assistant.privacy.context.title': 'It reads your own trackers',
+  'assistant.privacy.context.body': 'To personalise an answer, the assistant reads two things from your local data: your streak, and today’s water total.',
+  'assistant.privacy.proxy.title': 'Where the answer comes from',
+  'assistant.privacy.proxy.body': 'If a server proxy is configured, your message is sent there to be answered. If it is not, the assistant answers locally on your device — and in that case no message leaves the browser.',
+  'assistant.cta.eyebrow': 'After the chat',
+  'assistant.cta.title': 'Talk alone is not a habit — log the first step.',
+  'assistant.cta.body': 'Open your day and log one glass of water or one expense, then come back and ask about the rest.',
+  'assistant.cta.dashboard': 'Open my day',
+  'assistant.cta.faq': 'Read the FAQ',
+
+  // A bound, hidden label for the chat textarea.
+  'chat.inputLabel': 'Your message',
+
+  // ── P5-2a: the FAQ's search keywords ─────────────────────────
+  // The Arabic words and the English words a visitor might type for
+  // each question. The page searches the title plus both sets, so it
+  // matches in either language, and it does this WITHOUT importing
+  // the dictionaries directly — that moved them into this page's
+  // chunk and made the entry load it eagerly.
+  'faq.what.searchAr': 'منصة تعريف وعي مجالات صحة مالية بيئة تعليم',
+  'faq.what.searchEn': 'what is waey platform about four fields health finance environment education',
+  'faq.trackers.searchAr': 'متتبعات يومية تسجيل مياه نوم نشاط مصروفات',
+  'faq.trackers.searchEn': 'daily trackers log record water cups sleep hours activity minutes expenses',
+  'faq.streak.searchAr': 'سلسلة تتابع ايام تجميد نقاط استرجاع',
+  'faq.streak.searchEn': 'streak consecutive days freeze recover restore points',
+  'faq.points.searchAr': 'نقاط اوشمة انجاز شروط جمع',
+  'faq.points.searchEn': 'points badges earn rewards achievement milestone',
+  'faq.data.searchAr': 'بيانات خصوصية حفظ محلي بدون خوادم',
+  'faq.data.searchEn': 'data privacy stored locally device never uploaded no server',
+  'faq.offline.searchAr': 'بدون انترنت يعمل或者فلاين',
+  'faq.offline.searchEn': 'offline no internet connection works without network',
+  'faq.pwa.searchAr': 'تطبيق تثبيت هاتف رئيسية شاشة',
+  'faq.pwa.searchEn': 'pwa progressive web app install phone home screen shortcut',
 };
 
 export default en;
