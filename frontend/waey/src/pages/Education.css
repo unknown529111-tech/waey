@@ -1,0 +1,86 @@
+/* ────────────────────────────────────────────────────────────
+   Education — field page on the shared system (same idiom as
+   Health.css): accent scope, hero media frame, anchor targets,
+   stat band and closing CTA. The Pomodoro, brain-dump, sound and
+   Cornell panels live in redesign.css; this file covers the page.
+   ──────────────────────────────────────────────────────────── */
+
+.education {
+  overflow-x: clip;
+  /* ToolCard / TipList read the current-field tokens; on this page
+     the current field is education, so their plates and ticks turn purple. */
+  --field-current: var(--field-education);
+  --field-current-soft: var(--field-education-soft);
+  --field-current-tint: var(--field-education-tint);
+}
+
+/* ── Hero media — the field clip, watermark cropped (1088×626) ── */
+.education-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  box-shadow: var(--shadow-float);
+}
+
+.education-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1088 / 626;
+  object-fit: cover;
+}
+
+/* Cards are the only child of their stagger wrapper. */
+.education .stagger-item > * {
+  height: 100%;
+}
+
+/* ── Anchor targets under the sticky navbar ─────────────────── */
+#methods,
+#focus,
+#tips,
+#style,
+#tools,
+#notes {
+  scroll-margin-top: 7rem;
+}
+
+/* The sound and learning-style choices are real buttons now; undo the
+   browser button chrome so they keep the card look. */
+.education .sound-opt,
+.education .vark-opt {
+  width: 100%;
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  font: inherit;
+  cursor: pointer;
+}
+
+/* The choice titles are spans inside the button, so keep their block layout. */
+.education .sound-opt .s-title,
+.education .sound-opt .s-sub {
+  display: block;
+}
+
+/* ── Stat band — the page's own accent, not the platform emerald ── */
+.education-stat {
+  --primary: var(--field-education);
+}
+
+/* ── Tap-target floor for every control in the tool panels ───── */
+.education .btn,
+.education .sound-opt,
+.education .vark-opt {
+  min-height: 2.75rem;
+}
+
+/* ── Closing CTA — the education tint, one quiet plate ──────── */
+.education-cta {
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--field-education) / 0.35);
+  background: hsl(var(--field-education-tint));
+  padding: clamp(2rem, 5vw, 3.5rem);
+  box-shadow: var(--shadow-soft);
+  text-align: start;
+}

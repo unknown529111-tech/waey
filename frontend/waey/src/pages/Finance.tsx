@@ -1,6 +1,23 @@
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  BookOpen,
+  PiggyBank,
+  Receipt,
+  Sparkles,
+  TrendingDown,
+  Wallet,
+  Zap,
+} from "lucide-react";
+import ArticleCard from "@/components/primitives/ArticleCard";
+import NextField from "@/components/NextField";
+import PageHero from "@/components/primitives/PageHero";
+import SectionHeading from "@/components/primitives/SectionHeading";
+import StatBand from "@/components/primitives/StatBand";
+import TipList from "@/components/primitives/TipList";
+import ToolCard from "@/components/primitives/ToolCard";
 import { useT, useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
 import "./Finance.css";
 
 /* ── Shared currency model (faithful port of finance.html) ────── */
@@ -44,6 +61,7 @@ function SavingsGoalTracker({ cur, setCur }: { cur: Cur; setCur: (c: Cur) => voi
             <button
               key={c}
               type="button"
+              aria-pressed={cur === c}
               className={`cur-pill${cur === c ? " active" : ""}`}
               onClick={() => setCur(c)}
             >
@@ -58,6 +76,7 @@ function SavingsGoalTracker({ cur, setCur }: { cur: Cur; setCur: (c: Cur) => voi
       <div className="goal-row">
         <input
           type="number"
+          aria-label={t("finance.goal.setTarget")}
           placeholder={t("finance.goal.setTarget")}
           min={0}
           value={target}
@@ -65,6 +84,7 @@ function SavingsGoalTracker({ cur, setCur }: { cur: Cur; setCur: (c: Cur) => voi
         />
         <input
           type="number"
+          aria-label={t("finance.goal.deposit")}
           placeholder={t("finance.goal.deposit")}
           min={0}
           value={deposit}
@@ -159,6 +179,7 @@ function ElectricityCalculator({ cur }: { cur: Cur }) {
               <td data-label={t("calc.thWatts")}>
                 <input
                   type="number"
+                  aria-label={`${d.name} — ${t("calc.thWatts")}`}
                   min={0}
                   value={d.w}
                   onChange={(e) => setField(i, "w", e.target.value)}
@@ -167,6 +188,7 @@ function ElectricityCalculator({ cur }: { cur: Cur }) {
               <td data-label={t("calc.hourDay")}>
                 <input
                   type="number"
+                  aria-label={`${d.name} — ${t("calc.hourDay")}`}
                   min={0}
                   step={0.5}
                   value={d.h}
@@ -188,10 +210,11 @@ function ElectricityCalculator({ cur }: { cur: Cur }) {
         </tbody>
       </table>
       <div className="calc-add">
-        <input type="text" placeholder={t("calc.devicePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
-        <input type="number" placeholder={t("calc.wattsPlaceholder")} min={0} value={watt} onChange={(e) => setWatt(e.target.value)} />
+        <input type="text" aria-label={t("calc.devicePlaceholder")} placeholder={t("calc.devicePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
+        <input type="number" aria-label={t("calc.wattsPlaceholder")} placeholder={t("calc.wattsPlaceholder")} min={0} value={watt} onChange={(e) => setWatt(e.target.value)} />
         <input
           type="number"
+          aria-label={t("calc.hourDay")}
           placeholder={t("calc.hourDay")}
           min={0}
           step={0.5}
@@ -246,6 +269,7 @@ function MonthlyBudget({ cur }: { cur: Cur }) {
       <div className="budget-row">
         <input
           type="number"
+          aria-label={t("calc.income")}
           placeholder={t("calc.income")}
           min={0}
           value={income}
@@ -267,9 +291,49 @@ function MonthlyBudget({ cur }: { cur: Cur }) {
 
 const FINANCE_VIDEO = "/Finance-tab.mp4";
 
+/* ── Page shell (same idiom as Health.tsx) ───────────────────── */
+
+const SHELL = "mx-auto w-full max-w-[80rem] px-6 py-14 sm:py-20";
+const GRID = "mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4";
+const TOOL_GRID = "mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3";
+
+// Every card points at an anchor on this page, or a route in App.tsx.
+const TOOLS = [
+  { icon: PiggyBank, to: "#goal", titleKey: "finance.goal.title", descKey: "finance.goal.subtitle" },
+  { icon: Wallet, to: "#budget", titleKey: "calc.budget", descKey: "calc.budgetNote" },
+  { icon: Zap, to: "#electricity", titleKey: "calc.electricity", descKey: "calc.electricityNote" },
+  { icon: Receipt, to: "/dashboard", titleKey: "tracker.expense.title", descKey: "finance.expenseDesc" },
+  {
+    icon: TrendingDown,
+    to: "#inflation",
+    titleKey: "financeFeatures.inflationTitle",
+    descKey: "financeFeatures.inflationDesc",
+  },
+  {
+    icon: BookOpen,
+    to: "#principles",
+    titleKey: "finance.principles",
+    descKey: "finance.principles.0.desc",
+  },
+  { icon: Sparkles, to: "#tips", titleKey: "finance.tips", descKey: "finance.h2.habitsSub" },
+];
+
+const INSIGHTS = [
+  { categoryKey: "finance.principles", titleKey: "finance.principles.1.title", excerptKey: "finance.principles.1.desc" },
+  { categoryKey: "finance.beforeBuy", titleKey: "finance.buyQuestions.2.question", excerptKey: "finance.buyQuestions.2.tip" },
+  { categoryKey: "finance.earnMore", titleKey: "finance.earnTips.3.title", excerptKey: "finance.earnTips.3.desc" },
+  {
+    categoryKey: "financeFeatures.psychologyTitle",
+    titleKey: "financeFeatures.spendingTriggers.1.trigger",
+    excerptKey: "financeFeatures.spendingTriggers.1.fix",
+  },
+];
+
+
 const Finance = () => {
   const t = useT();
   const { lang } = useLanguage();
+  const { hash, key } = useLocation();
   const [cur, setCur] = useState<Cur>("EGP");
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -277,12 +341,30 @@ const Finance = () => {
     trackEvent("page_view", { page: "finance" });
   }, []);
 
+  // The hero clip stays still when the reader asked for less motion.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      video.currentTime = 0;
+      return;
+    }
     const p = video.play();
     if (p && typeof p.catch === "function") p.catch(() => undefined);
   }, []);
+
+  // ToolCard renders a router Link, and a hash navigation does not scroll on
+  // its own — so the cards' #anchors are honoured here.
+  useEffect(() => {
+    if (!hash) return;
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!target) return;
+    target.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [hash, key]);
 
   const principles = [
     { title: t("finance.principles.0.title"), desc: t("finance.principles.0.desc") },
@@ -372,34 +454,53 @@ const Finance = () => {
   ];
 
   return (
-    <div className="relative" dir={lang === "ar" ? "rtl" : "ltr"}>
-      <div className="field-hero-media">
-        <video
-          className="field-video-bg"
-          ref={videoRef}
-          src={FINANCE_VIDEO}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        />
-        <div className="field-video-overlay" aria-hidden="true" />
+    <div dir={lang === "ar" ? "rtl" : "ltr"} className="finance">
+      <PageHero
+        eyebrow={t("finance.eyebrow")}
+        title={t("finance.title")}
+        lead={t("finance.subtitle")}
+        primaryAction={{ label: t("finance.hero.primary"), to: "#goal" }}
+        media={
+          <div className="finance-media">
+            <video
+              ref={videoRef}
+              src={FINANCE_VIDEO}
+              loop
+              muted
+              playsInline
+              preload="auto"
+              disablePictureInPicture
+              aria-hidden="true"
+            />
+          </div>
+        }
+      />
 
-        <header className="field-hero">
-          <p className="field-eyebrow">{t("finance.eyebrow")}</p>
-          <h1 className="field-title">
-            {t("finance.h1a")} <em>{t("finance.h1b")}</em>
-          </h1>
-          <p className="field-desc">
-            {t("finance.heroDesc")}
-          </p>
-        </header>
-      </div>
+      <section className={SHELL} aria-label={t("finance.intro.title")}>
+        <SectionHeading
+          eyebrow={t("field.intro.eyebrow")}
+          title={t("finance.intro.title")}
+          lead={t("finance.intro.lead")}
+        />
+      </section>
+
+      <section className={SHELL} aria-label={t("finance.tools.title")}>
+        <SectionHeading
+          eyebrow={t("finance.tools.eyebrow")}
+          title={t("finance.tools.title")}
+          lead={t("finance.tools.lead")}
+        />
+        <div className={TOOL_GRID}>
+          {TOOLS.map(({ icon, to, titleKey, descKey }, i) => (
+            <div key={titleKey} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+              <ToolCard icon={icon} to={to} title={t(titleKey)} description={t(descKey)} />
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Financial Principles */}
-      <section className="field-section">
+      <section className="field-section" id="principles">
         <div className="field-section-head">
           <p className="field-section-kicker">{t("finance.principles")}</p>
           <h2 className="field-section-title">
@@ -417,23 +518,17 @@ const Finance = () => {
         ))}
       </div>
 
-      {/* Daily Savings Tips */}
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("finance.tips")}</p>
-          <h2 className="field-section-title">
-            {t("finance.h2.habits1")} <em>{t("finance.h2.habits2")}</em>
-          </h2>
-          <p className="field-section-sub">{t("finance.h2.habitsSub")}</p>
+      {/* Daily Savings Tips — the page's checklist */}
+      <section id="tips" className={SHELL} aria-label={t("quicktips.title")}>
+        <SectionHeading
+          eyebrow={t("finance.eyebrow")}
+          title={t("quicktips.title")}
+          lead={t("quicktips.subtitle")}
+        />
+        <div className="mt-10 max-w-3xl">
+          <TipList title={t("finance.tips.checklist")} items={everydayTips} />
         </div>
       </section>
-      <div className="tips">
-        {everydayTips.map((tip, i) => (
-          <div className="tip" key={i}>
-            <span>{tip}</span>
-          </div>
-        ))}
-      </div>
 
       {/* Before You Buy */}
       <section className="field-section">
@@ -476,7 +571,7 @@ const Finance = () => {
       </div>
 
       {/* Inflation */}
-      <section className="field-section">
+      <section className="field-section" id="inflation">
         <div className="field-section-head">
           <p className="field-section-kicker">{t("financeFeatures.inflationTitle")}</p>
           <h2 className="field-section-title">
@@ -706,21 +801,74 @@ const Finance = () => {
           </p>
         </div>
       </section>
-      <SavingsGoalTracker cur={cur} setCur={setCur} />
-      <ElectricityCalculator cur={cur} />
-      <MonthlyBudget cur={cur} />
+      <div id="goal" className="finance-anchor mx-auto w-full max-w-[80rem] px-6">
+        <SavingsGoalTracker cur={cur} setCur={setCur} />
+      </div>
+      <div id="electricity" className="finance-anchor mx-auto w-full max-w-[80rem] px-6">
+        <ElectricityCalculator cur={cur} />
+      </div>
+      <div id="budget" className="finance-anchor mx-auto w-full max-w-[80rem] px-6">
+        <MonthlyBudget cur={cur} />
+      </div>
 
-      {/* Closing */}
-      <section className="closing">
-        <p>{t("finance.footerQuote1")}</p>
-        <p className="small">{t("finance.footerQuote3")}</p>
+      <section className={SHELL} aria-label={t("finance.insights.title")}>
+        <SectionHeading
+          eyebrow={t("finance.insights.eyebrow")}
+          title={t("finance.insights.title")}
+          lead={t("finance.insights.lead")}
+          action={{ label: t("home.insights.action"), to: "/insights" }}
+        />
+        <div className={GRID}>
+          {INSIGHTS.map(({ categoryKey, titleKey, excerptKey }, i) => (
+            <div key={titleKey} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+              <ArticleCard
+                category={t(categoryKey)}
+                title={t(titleKey)}
+                excerpt={t(excerptKey)}
+                meta={t("finance.insights.meta")}
+                to="/insights"
+                field="finance"
+              />
+            </div>
+          ))}
+        </div>
       </section>
 
-      <footer className="footer">
-        <p>
-          {t("footer.tagline")} <a href="/">{t("footer.backHome")}</a>
-        </p>
-      </footer>
+      <div className="finance-stat">
+        <StatBand
+          items={[
+            { value: String(TOOLS.length), label: t("finance.stats.tools") },
+            { value: String(everydayTips.length), label: t("finance.stats.tips") },
+            { value: "0", label: t("home.stats.ads") },
+            { value: "100%", label: t("home.stats.data") },
+          ]}
+        />
+      </div>
+
+      <section className={SHELL}>
+        <div className="finance-cta">
+          <p className="eyebrow mb-3">{t("home.cta.eyebrow")}</p>
+          <h2 className="font-display text-3xl text-balance tracking-tight text-foreground sm:text-4xl">
+            {t("finance.cta.title")}
+          </h2>
+          <p className="font-body mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {t("finance.cta.body")}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="#goal" className="btn btn-solid min-h-11 px-6 text-sm">
+              {t("finance.goal.title")}
+            </Link>
+            <Link to="/dashboard" className="btn btn-ghost min-h-11 px-6 text-sm">
+              {t("home.cta.dashboard")}
+            </Link>
+            <NextField
+              to="environment"
+              toRoute="/environment"
+              label={t("field.next.finance")}
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

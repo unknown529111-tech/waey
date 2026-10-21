@@ -103,3 +103,69 @@
   .alt-table td { border-bottom: none; padding: 0.4rem 1.25rem; }
   .alt-table td.col-chem::before { content: "Chemical → "; color: var(--muted-foreground); font-size: 0.75rem; }
 }
+
+/* ────────────────────────────────────────────────────────────
+   Environment — field page on the shared system (same idiom as
+   Health.css): accent scope, hero media frame, anchor targets,
+   stat band and closing CTA. Token-driven throughout.
+   ──────────────────────────────────────────────────────────── */
+
+.environment {
+  overflow-x: clip;
+  /* ToolCard / TipList read the current-field tokens; on this page
+     the current field is environment, so their plates and ticks turn green. */
+  --field-current: var(--field-environment);
+  --field-current-soft: var(--field-environment-soft);
+  --field-current-tint: var(--field-environment-tint);
+}
+
+/* ── Hero media — the field clip, watermark cropped (1088×626) ── */
+.environment-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  box-shadow: var(--shadow-float);
+}
+
+.environment-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1088 / 626;
+  object-fit: cover;
+}
+
+/* Cards are the only child of their stagger wrapper. */
+.environment .stagger-item > * {
+  height: 100%;
+}
+
+/* ── Anchor targets under the sticky navbar ─────────────────── */
+#cleaners,
+#tips,
+#waste,
+#numbers,
+#recycling {
+  scroll-margin-top: 7rem;
+}
+
+/* ── Stat band — the page's own accent, not the platform emerald ── */
+.environment-stat {
+  --primary: var(--field-environment);
+}
+
+/* ── Tap-target floor for every control in the field panels ──── */
+.environment .btn {
+  min-height: 2.75rem;
+}
+
+/* ── Closing CTA — the environment tint, one quiet plate ─────── */
+.environment-cta {
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--field-environment) / 0.35);
+  background: hsl(var(--field-environment-tint));
+  padding: clamp(2rem, 5vw, 3.5rem);
+  box-shadow: var(--shadow-soft);
+  text-align: start;
+}

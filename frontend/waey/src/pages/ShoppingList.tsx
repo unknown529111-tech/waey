@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingBasket, Trash2, CheckCheck, UtensilsCrossed } from "lucide-react";
-import PageHero from "@/components/PageHero";
+import PageHero from "@/components/primitives/PageHero";
 import { useT } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
+import "./utility-hero.css";
 import {
   getShoppingList,
   toggleShoppingItem,
@@ -27,7 +28,13 @@ const ShoppingList = () => {
   return (
     <div className="relative min-h-[60vh]">
       <div className="relative">
-        <PageHero title={t('shopping.title')} subtitle={t('shopping.subtitle')} eyebrow={'Waey · ' + t('shopping.title')} />
+        <div className="utility-hero">
+          <PageHero
+            title={t("shopping.title")}
+            lead={t("shopping.subtitle")}
+            eyebrow={"Waey · " + t("shopping.title")}
+          />
+        </div>
 
         <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">

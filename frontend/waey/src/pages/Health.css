@@ -14,6 +14,11 @@
   --field-current-tint: var(--field-health-tint);
 }
 
+/* Health is the page's field, so the hero eyebrow carries its colour. */
+.health > header .eyebrow {
+  color: hsl(var(--field-health));
+}
+
 /* ── Hero media — the field clip, watermark cropped (1088×626) ── */
 .health-media {
   position: relative;

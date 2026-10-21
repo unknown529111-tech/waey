@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import PageHero from "@/components/PageHero";
+import PageHero from "@/components/primitives/PageHero";
 import { useT } from "@/contexts/useLanguage";
+import "./utility-hero.css";
 
 const FAQ_ITEMS = [
   { key: "what" },
@@ -18,11 +19,13 @@ const Faq = () => {
   return (
     <div className="relative">
       <div className="relative">
-        <PageHero
-          eyebrow={'Waey · ' + t('nav.faq')}
-          title={t('faq.title')}
-          subtitle={t('faq.subtitle')}
-        />
+        <div className="utility-hero">
+          <PageHero
+            eyebrow={"Waey · " + t("nav.faq")}
+            title={t("faq.title")}
+            lead={t("faq.subtitle")}
+          />
+        </div>
         <div className="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto pb-16">
           <div className="space-y-4">
             {FAQ_ITEMS.map((item, i) => (

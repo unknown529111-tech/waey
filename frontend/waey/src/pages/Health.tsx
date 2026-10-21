@@ -14,6 +14,7 @@ import {
   Wind,
 } from "lucide-react";
 import ArticleCard from "@/components/primitives/ArticleCard";
+import NextField from "@/components/NextField";
 import PageHero from "@/components/primitives/PageHero";
 import SectionHeading from "@/components/primitives/SectionHeading";
 import StatBand from "@/components/primitives/StatBand";
@@ -125,9 +126,8 @@ function MorningRoutineTool() {
           return (
             <li key={s.key} className={cls}>
               <span>{t(s.key)}</span>
-              <span>
-                {s.secs}
-                {t("breathing.seconds")}
+              <span dir="ltr">
+                {s.secs} {t("breathing.seconds")}
               </span>
             </li>
           );
@@ -184,20 +184,20 @@ function SugarCalculatorTool() {
       <div className="sugar-preset">
         <div className="sp">
           {t("healthCalc.drinks.label")}
-          <b>
-            35{t("healthCalc.gram")}
+          <b dir="ltr">
+            35 {t("healthCalc.gram")}
           </b>
         </div>
         <div className="sp">
           {t("healthCalc.sweets.label")}
-          <b>
-            25{t("healthCalc.gram")}
+          <b dir="ltr">
+            25 {t("healthCalc.gram")}
           </b>
         </div>
         <div className="sp">
           {t("healthCalc.fastfood.label")}
-          <b>
-            15{t("healthCalc.gram")}
+          <b dir="ltr">
+            15 {t("healthCalc.gram")}
           </b>
         </div>
       </div>
@@ -234,15 +234,21 @@ function SugarCalculatorTool() {
       <div className="res-grid" aria-live="polite">
         <div className="res">
           <div className="l">{t("healthCalc.result.total")}</div>
-          <div className="v">{total}g</div>
+          <div className="v" dir="ltr">
+            {total} {t("healthCalc.gram")}
+          </div>
         </div>
         <div className="res">
           <div className="l">{t("healthCalc.result.recommended")}</div>
-          <div className="v">25g</div>
+          <div className="v" dir="ltr">
+            25 {t("healthCalc.gram")}
+          </div>
         </div>
         <div className="res">
           <div className="l">{t("healthCalc.result.points")}</div>
-          <div className="v">{score}/100</div>
+          <div className="v" dir="ltr">
+            {score}/100
+          </div>
         </div>
         <div className="res warn">
           <div className="l">{t("healthCalc.noteLabel")}</div>
@@ -344,11 +350,15 @@ function CalorieCalculatorTool() {
       <div className="res-grid" aria-live="polite">
         <div className="res">
           <div className="l">{t("calorie.bmr")}</div>
-          <div className="v">{Math.round(bmr).toLocaleString("en-US")}</div>
+          <div className="v" dir="ltr">
+            {Math.round(bmr).toLocaleString("en-US")}
+          </div>
         </div>
         <div className="res">
           <div className="l">{t("calorie.tdee")}</div>
-          <div className="v">{Math.round(tdee).toLocaleString("en-US")}</div>
+          <div className="v" dir="ltr">
+            {Math.round(tdee).toLocaleString("en-US")}
+          </div>
         </div>
       </div>
       <p className="calc-note">{t("calorie.disclaimer")}</p>
@@ -423,7 +433,9 @@ function WaterCalculatorTool() {
       <div className="res-grid" aria-live="polite">
         <div className="res">
           <div className="l">{t("waterCalc.result")}</div>
-          <div className="v">{L.toFixed(1)} L</div>
+          <div className="v">
+            {L.toFixed(1)} {t("health.waterUnit")}
+          </div>
         </div>
         <div className="res">
           <div className="l">{t("waterCalc.aboutLabel")}</div>
@@ -478,9 +490,12 @@ function SleepCycleTool() {
         {out.map((o) => (
           <div className="res" key={o.cycles}>
             <div className="l">
-              {o.cycles} cycles ({o.hours}h)
+              {o.cycles} {t("sleepCalc.cycle")} ({o.hours}
+              {t("insights.hours")})
             </div>
-            <div className="v">{o.time}</div>
+            <div className="v" dir="ltr">
+              {o.time}
+            </div>
           </div>
         ))}
       </div>
@@ -600,6 +615,12 @@ const HOSPITALS: Hospital[] = [
   { name: "Beni-Suef University Hospital", gov: "Beni Suef", type: "university" },
 ];
 
+const HOSPITAL_TYPE: Record<string, string> = {
+  university: "hospital.typeUniversity",
+  public: "hospital.typePublic",
+  private: "hospital.typePrivate",
+};
+
 function HospitalTool() {
   const { t } = useLanguage();
   const govs = Array.from(new Set(HOSPITALS.map((hosp) => hosp.gov))).sort();
@@ -646,7 +667,7 @@ function HospitalTool() {
             <li key={hosp.name}>
               <div className="hn">{hosp.name}</div>
               <div className="hm">
-                {hosp.gov} · {hosp.type}
+                {hosp.gov} · {t(HOSPITAL_TYPE[hosp.type])}
               </div>
             </li>
           ))
@@ -981,7 +1002,7 @@ const Health = () => {
           title={t("quicktips.title")}
           lead={t("quicktips.subtitle")}
         />
-        <div className="mt-10 max-w-3xl">
+        <div className="mx-auto mt-10 max-w-3xl">
           <TipList title={t("health.tips.checklist")} items={TIPS.map((key) => t(key))} />
         </div>
       </section>
@@ -1036,6 +1057,11 @@ const Health = () => {
             <Link to="/insights" className="btn btn-ghost min-h-11 px-6 text-sm">
               {t("home.insights.action")}
             </Link>
+            <NextField
+              to="finance"
+              toRoute="/finance"
+              label={t("field.next.health")}
+            />
           </div>
         </div>
       </section>

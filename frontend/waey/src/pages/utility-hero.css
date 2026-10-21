@@ -1,0 +1,11 @@
+/* ────────────────────────────────────────────────────────────
+   Utility pages — Assistant, Faq, Privacy, ShoppingList, Terms.
+   These five moved onto primitives/PageHero. The shared hero
+   lays its text beside a media slot; none of these pages has
+   media, so one rule gives the text the full width of the band
+   instead of leaving half of it empty.
+   ──────────────────────────────────────────────────────────── */
+
+.utility-hero > header > div {
+  grid-template-columns: minmax(0, 1fr);
+}

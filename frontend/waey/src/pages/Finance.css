@@ -89,3 +89,74 @@
   .calc-table td { display: flex; align-items: center; gap: 0.5rem; border-bottom: none; padding: 0.3rem 0; }
   .calc-table td::before { content: attr(data-label); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; width: 6.5rem; flex: none; }
 }
+
+/* ────────────────────────────────────────────────────────────
+   Finance — field page on the shared system (same idiom as
+   Health.css): accent scope, hero media frame, anchor targets,
+   stat band and closing CTA. Token-driven throughout.
+   ──────────────────────────────────────────────────────────── */
+
+.finance {
+  overflow-x: clip;
+  /* ToolCard / TipList read the current-field tokens; on this page
+     the current field is finance, so their plates and ticks turn blue. */
+  --field-current: var(--field-finance);
+  --field-current-soft: var(--field-finance-soft);
+  --field-current-tint: var(--field-finance-tint);
+}
+
+/* ── Hero media — the field clip, watermark cropped (1088×626) ── */
+.finance-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  box-shadow: var(--shadow-float);
+}
+
+.finance-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1088 / 626;
+  object-fit: cover;
+}
+
+/* Cards are the only child of their stagger wrapper. */
+.finance .stagger-item > * {
+  height: 100%;
+}
+
+/* ── Anchor targets under the sticky navbar ─────────────────── */
+.finance-anchor,
+#goal,
+#budget,
+#electricity,
+#inflation,
+#principles,
+#tips {
+  scroll-margin-top: 7rem;
+}
+
+/* ── Stat band — the page's own accent, not the platform emerald ── */
+.finance-stat {
+  --primary: var(--field-finance);
+}
+
+/* ── Tap-target floor for every control in the field panels ──── */
+.finance .btn,
+.finance .cur-pill,
+.finance input,
+.finance select {
+  min-height: 2.75rem;
+}
+
+/* ── Closing CTA — the finance tint, one quiet plate ─────────── */
+.finance-cta {
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--field-finance) / 0.35);
+  background: hsl(var(--field-finance-tint));
+  padding: clamp(2rem, 5vw, 3.5rem);
+  box-shadow: var(--shadow-soft);
+  text-align: start;
+}

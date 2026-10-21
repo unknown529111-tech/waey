@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import PageHero from "@/components/PageHero";
+import PageHero from "@/components/primitives/PageHero";
 import { useLanguage } from "@/contexts/useLanguage";
+import "./utility-hero.css";
 
 const Privacy = () => {
   const { t } = useLanguage();
   return (
     <div className="relative">
       <div className="relative">
-        <PageHero
-          title={t('privacy.title')}
-          subtitle={t('privacy.subtitle')}
-        />
+        <div className="utility-hero">
+          <PageHero title={t("privacy.title")} lead={t("privacy.subtitle")} />
+        </div>
         <div className="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto pb-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}

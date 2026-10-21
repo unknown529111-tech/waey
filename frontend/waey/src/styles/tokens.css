@@ -171,16 +171,16 @@
      strong clears 4.5:1 on card (small text + icons),
      soft is the icon fill on the tint ground,
      tint is the pastel card ground. */
-  --field-health: 352 78% 64%;           /* #EB5C6F health pink, strong */
+  --field-health: 352 78% 66%;           /* #EC6577 health pink, strong */
   --field-health-soft: 354 85% 74%;      /* #F58490 health pink, soft */
   --field-health-tint: 351 33% 12%;      /* #2A1518 health pink, tint */
-  --field-finance: 215 62% 59%;          /* #568CD7 finance blue, strong */
+  --field-finance: 215 62% 62%;          /* #6294DA finance blue, strong */
   --field-finance-soft: 215 77% 72%;     /* #7FAEEE finance blue, soft */
   --field-finance-tint: 212 48% 12%;     /* #101E2E finance blue, tint */
-  --field-environment: 139 51% 41%;      /* #339E55 environment green, strong */
+  --field-environment: 139 51% 43%;      /* #36A659 environment green, strong */
   --field-environment-soft: 138 43% 53%; /* #55BB74 environment green, soft */
   --field-environment-tint: 145 35% 11%; /* #12251A environment green, tint */
-  --field-education: 257 51% 66%;        /* #957CD5 education purple, strong */
+  --field-education: 257 51% 68%;        /* #9B84D7 education purple, strong */
   --field-education-soft: 255 60% 77%;   /* #B3A2E8 education purple, soft */
   --field-education-tint: 255 33% 14%;   /* #1E1830 education purple, tint */
   --field-current: 164 46% 45%;          /* #3FA98C current field, strong */

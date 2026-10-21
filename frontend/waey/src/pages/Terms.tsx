@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import PageHero from "@/components/PageHero";
+import PageHero from "@/components/primitives/PageHero";
 import { useLanguage } from "@/contexts/useLanguage";
+import "./utility-hero.css";
 
 const Terms = () => {
   const { t } = useLanguage();
   return (
     <div className="relative">
       <div className="relative">
-        <PageHero
-          title={t('terms.title')}
-          subtitle={t('terms.subtitle')}
-        />
+        <div className="utility-hero">
+          <PageHero title={t("terms.title")} lead={t("terms.subtitle")} />
+        </div>
         <div className="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto pb-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
