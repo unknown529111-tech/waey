@@ -6,9 +6,13 @@ import path from "path";
 export default defineConfig(({ mode }) => ({
   server: {
     // 127.0.0.1 only. `host: "::"` binds every interface, which the box's
-    // standing rules forbid for a service on this machine.
+    // standing rules forbid for a service on this machine. Playwright's baseURL
+    // uses 127.0.0.1 for the same reason: `localhost` can resolve to ::1,
+    // which nothing is listening on.
     host: "127.0.0.1",
-    port: 5173,
+    // 8080 is the contract: CI starts `npm run dev` with no port flag and the
+    // Playwright baseURL points here. Pass --port to move it.
+    port: 8080,
     // No hardcoded `hmr` block. Pinning the HMR socket to a fixed port made
     // the client dial a port the server was not on, so the page hard-reloaded
     // every few seconds and any browser assertion lost its context. Leaving

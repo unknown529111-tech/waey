@@ -16,7 +16,7 @@ test('capture console errors and screenshot', async ({ page }) => {
     consoleErrors.push(error.message);
   });
   
-  await page.goto('http://localhost:8080/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto('http://127.0.0.1:8080/', { waitUntil: 'domcontentloaded', timeout: 30000 });
   
   // Wait for React to hydrate
   await page.waitForTimeout(5000);

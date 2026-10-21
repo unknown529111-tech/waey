@@ -2,7 +2,7 @@
 // Run against the live dev server: node smoke-routes.cjs
 const { chromium } = require("playwright-core");
 
-const BASE = process.env.BASE_URL || "http://localhost:8080";
+const BASE = process.env.BASE_URL || "http://127.0.0.1:8080";
 // Route map mirrors App.tsx lazy imports; * = standalone page not under layout
 const ROUTES = [
   "/", "/health", "/finance", "/environment", "/education",
