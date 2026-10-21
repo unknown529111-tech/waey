@@ -1,118 +1,220 @@
+import { useEffect, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { useT, useLanguage } from "@/contexts/useLanguage";
+import { Droplet, ShoppingCart, Sparkles, Utensils } from "lucide-react";
+import heroNature from "@/assets/hero-nature.jpg";
+import ArticleCard from "@/components/primitives/ArticleCard";
+import FieldCard from "@/components/primitives/FieldCard";
+import NewsletterBand from "@/components/primitives/NewsletterBand";
+import PageHero from "@/components/primitives/PageHero";
+import SectionHeading from "@/components/primitives/SectionHeading";
+import StatBand from "@/components/primitives/StatBand";
+import TipList from "@/components/primitives/TipList";
+import ToolCard from "@/components/primitives/ToolCard";
+import { useLanguage, useT } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect, type CSSProperties } from "react";
-import { Activity, Calculator, Sparkles, ShieldCheck, type LucideIcon } from "lucide-react";
+import { setEmailReminderEnabled } from "@/lib/emailReminder";
 import "./Index.css";
 
-const CAPABILITIES: { Icon: LucideIcon; key: string }[] = [
-  { Icon: Activity, key: "about.cap1" },
-  { Icon: Calculator, key: "about.cap2" },
-  { Icon: Sparkles, key: "about.cap3" },
-  { Icon: ShieldCheck, key: "about.cap4" },
-];
+const REMINDER_EMAIL_KEY = "waey_reminder_email";
+
+// One shell for every band, so the page reads as one column of sections.
+const SHELL = "mx-auto w-full max-w-[80rem] px-6 py-14 sm:py-20";
+const GRID = "mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4";
 
 const FIELDS = [
-  { to: "/health", titleKey: "fields.health", descKey: "fields.healthDesc", corner: "corner-accent-tl" },
-  { to: "/finance", titleKey: "fields.finance", descKey: "fields.financeDesc", corner: "corner-accent-br" },
-  { to: "/environment", titleKey: "fields.environment", descKey: "fields.environmentDesc", corner: "corner-accent-tr" },
-  { to: "/education", titleKey: "fields.education", descKey: "fields.educationDesc", corner: "corner-accent-bl" },
+  { field: "health", to: "/health", titleKey: "fields.health", descKey: "fields.healthDesc" },
+  { field: "finance", to: "/finance", titleKey: "fields.finance", descKey: "fields.financeDesc" },
+  {
+    field: "environment",
+    to: "/environment",
+    titleKey: "fields.environment",
+    descKey: "fields.environmentDesc",
+  },
+  {
+    field: "education",
+    to: "/education",
+    titleKey: "fields.education",
+    descKey: "fields.educationDesc",
+  },
+] as const;
+
+// Real app copy: the quick-tips families already written in ar.ts / en.ts.
+const INSIGHTS = [
+  { tipKey: "quicktips.week1.tip1", excerptKey: "home.insights.excerpt1" },
+  { tipKey: "quicktips.week1.tip2", excerptKey: "home.insights.excerpt2" },
+  { tipKey: "quicktips.week1.tip3", excerptKey: "home.insights.excerpt3" },
+  { tipKey: "quicktips.week1.tip4", excerptKey: "home.insights.excerpt4" },
+];
+
+const TIPS = [
+  "quicktips.week3.tip1",
+  "quicktips.week3.tip2",
+  "quicktips.week3.tip3",
+  "quicktips.week3.tip4",
+];
+
+const TOOLS = [
+  { icon: Droplet, to: "/health", key: "home.tools.tracker" },
+  { icon: Utensils, to: "/recipes", key: "home.tools.recipes" },
+  { icon: ShoppingCart, to: "/shopping-list", key: "home.tools.shopping" },
+  { icon: Sparkles, to: "/insights", key: "home.tools.insights" },
 ];
 
 const Index = () => {
   const t = useT();
   const { lang } = useLanguage();
-
-  const title2 = t("hero.title2");
-  const title2Split = title2.lastIndexOf(" ");
-  const title2a = title2.slice(0, title2Split);
-  const title2b = title2.slice(title2Split + 1);
-
-  const fieldsTitle = t("fields.title");
-  const ftSplit = fieldsTitle.indexOf(" ");
-  const fieldsTitleA = fieldsTitle.slice(0, ftSplit);
-  const fieldsTitleB = fieldsTitle.slice(ftSplit + 1);
+  const [reminderSaved, setReminderSaved] = useState(false);
 
   useEffect(() => {
     trackEvent("page_view", { page: "home" });
   }, []);
 
+  // No mailing list in this app: the address stays on this device and turns on
+  // the existing daily reminder toggle.
+  const saveReminder = (email: string) => {
+    try {
+      localStorage.setItem(REMINDER_EMAIL_KEY, email);
+    } catch {
+      /* private mode — the reminder toggle below still works */
+    }
+    setEmailReminderEnabled(true);
+    setReminderSaved(true);
+  };
+
   return (
-    <div dir={lang === "ar" ? "rtl" : "ltr"}>
-      <div className="home-container" data-od-id="hero-page">
-        {/* Ambient organic blobs */}
-        <div className="blob blob-moss hero-blob-1" aria-hidden="true" />
-        <div className="blob blob-clay hero-blob-2" aria-hidden="true" />
-        <div className="blob blob-sand hero-blob-3" aria-hidden="true" />
-
-        <section className="hero" data-od-id="hero">
-          <h1 className="headline animate-fade-rise">
-            {t("hero.title1")}
-            <br />
-            {title2a} <em>{title2b}</em>
-          </h1>
-          <p className="desc animate-fade-rise-delay">{t("hero.desc")}</p>
-          <div className="hero-actions animate-fade-rise-delay-2">
-            <a href="#home-fields" className="btn btn-moss hero-cta" data-od-id="hero-cta">
-              {t("hero.cta")}
-            </a>
-            <Link to="/dashboard" className="btn btn-ink hero-ghost">
-              {t("nav.dashboard")}
-            </Link>
+    <div dir={lang === "ar" ? "rtl" : "ltr"} className="home">
+      <PageHero
+        eyebrow={t("home.hero.eyebrow")}
+        title={t("home.hero.title")}
+        lead={t("home.hero.lead")}
+        primaryAction={{ label: t("home.hero.primary"), to: "/dashboard" }}
+        secondaryAction={{ label: t("home.hero.secondary"), to: "/health" }}
+        media={
+          <div className="home-media">
+            <img
+              src={heroNature}
+              alt={t("home.hero.mediaAlt")}
+              width={1160}
+              height={790}
+              loading="eager"
+              decoding="async"
+            />
           </div>
-        </section>
-      </div>
+        }
+      />
 
-      <section className="home-about" id="what-is-waey" data-od-id="home-about">
-        <div className="blob blob-clay about-blob" aria-hidden="true" />
-        <div className="home-about-inner">
-          <div className="home-about-head">
-            <p className="eyebrow">{t("about.eyebrow")}</p>
-            <h2 className="home-about-title">{t("about.title")}</h2>
-            <p className="home-about-lead">{t("about.lead")}</p>
-          </div>
-
-          <div className="about-caps">
-            {CAPABILITIES.map(({ Icon, key }) => (
-              <article key={key} className="about-cap">
-                <span className="about-cap-icon" aria-hidden="true">
-                  <Icon className="size-6" />
-                </span>
-                <h3 className="about-cap-title">{t(`${key}.title`)}</h3>
-                <p className="about-cap-desc">{t(`${key}.desc`)}</p>
-              </article>
-            ))}
-          </div>
-
-          <p className="about-calm">{t("about.calm")}</p>
+      <section className={SHELL} aria-labelledby="home-fields">
+        <div id="home-fields">
+          <SectionHeading
+            eyebrow={t("fields.eyebrow")}
+            title={t("fields.title")}
+            lead={t("fields.subtitle")}
+          />
+        </div>
+        <div className={GRID}>
+          {FIELDS.map(({ field, to, titleKey, descKey }, i) => (
+            <div key={to} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+              <FieldCard field={field} to={to} title={t(titleKey)} description={t(descKey)} />
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="home-fields" id="home-fields" data-od-id="home-fields">
-        <div className="home-fields-inner">
-          <div className="home-fields-head">
-            <p className="eyebrow">{t("fields.eyebrow")}</p>
-            <h2 className="home-fields-title">
-              {fieldsTitleA} <em className="em-muted">{fieldsTitleB}</em>
-            </h2>
-            <p className="home-fields-sub">{t("fields.subtitle")}</p>
-          </div>
-          <div className="field-cards">
-            {FIELDS.map((f, i) => (
-              <Link
-                key={f.to}
-                to={f.to}
-                className={`field-card ${f.corner}`}
-                style={{ "--i": i } as CSSProperties}
-              >
-                <span className="marker-num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="field-card-title">{t(f.titleKey)}</span>
-                <span className="field-card-desc">{t(f.descKey)}</span>
-                <span className="field-card-arrow">
-                  {lang === "ar" ? t("fields.open") : "Open →"}
-                </span>
-              </Link>
+      <section className={SHELL} aria-labelledby="home-insights">
+        <div id="home-insights">
+          <SectionHeading
+            eyebrow={t("home.insights.eyebrow")}
+            title={t("home.insights.title")}
+            lead={t("home.insights.lead")}
+            action={{ label: t("home.insights.action"), to: "/insights" }}
+          />
+        </div>
+        <div className={GRID}>
+          {INSIGHTS.map(({ tipKey, excerptKey }, i) => (
+            <div key={tipKey} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+              <ArticleCard
+                category={t(`${tipKey}.category`)}
+                title={t(`${tipKey}.tip`)}
+                excerpt={t(excerptKey)}
+                meta={t("home.insights.meta")}
+                to="/insights"
+                field="health"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className={SHELL} aria-labelledby="home-tools">
+        <div id="home-tools">
+          <SectionHeading
+            eyebrow={t("home.tools.eyebrow")}
+            title={t("home.tools.title")}
+            lead={t("home.tools.lead")}
+          />
+        </div>
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
+            {TOOLS.map(({ icon, to, key }, i) => (
+              <div key={key} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+                <ToolCard
+                  icon={icon}
+                  to={to}
+                  title={t(`${key}.title`)}
+                  description={t(`${key}.desc`)}
+                />
+              </div>
             ))}
+          </div>
+          <TipList
+            title={t("quicktips.title")}
+            items={TIPS.map((key) => t(`${key}.tip`))}
+          />
+        </div>
+      </section>
+
+      <StatBand
+        items={[
+          { value: "4", label: t("home.stats.fields") },
+          { value: "1", label: t("home.stats.platform") },
+          { value: "0", label: t("home.stats.ads") },
+          { value: "100%", label: t("home.stats.data") },
+        ]}
+      />
+
+      <NewsletterBand
+        heading={t("home.newsletter.heading")}
+        description={t("home.newsletter.description")}
+        placeholder={t("home.newsletter.placeholder")}
+        buttonLabel={t("home.newsletter.button")}
+        onSubmit={saveReminder}
+      />
+      <div className="bg-secondary pb-12">
+        <div aria-live="polite" className="mx-auto w-full max-w-[80rem] px-6">
+          {reminderSaved && (
+            <p className="font-body text-sm font-bold text-secondary-foreground">
+              {t("home.newsletter.success")}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <section className={SHELL}>
+        <div className="home-cta">
+          <p className="eyebrow mb-3">{t("home.cta.eyebrow")}</p>
+          <h2 className="font-display text-3xl text-balance tracking-tight text-foreground sm:text-4xl">
+            {t("home.cta.title")}
+          </h2>
+          <p className="font-body mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {t("home.cta.lead")}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/dashboard" className="btn btn-moss min-h-11 px-6 text-sm">
+              {t("home.cta.dashboard")}
+            </Link>
+            <Link to="/recipes" className="btn btn-ink min-h-11 px-6 text-sm">
+              {t("home.cta.recipes")}
+            </Link>
           </div>
         </div>
       </section>
@@ -121,4 +223,3 @@ const Index = () => {
 };
 
 export default Index;
-

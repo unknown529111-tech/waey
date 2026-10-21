@@ -1,256 +1,50 @@
 ﻿/* ────────────────────────────────────────────────────────────
-   Index (Home) — Organic / Natural.
-   Typographic hero over ambient moss/clay/sand blobs (no
-   video); field cards with asymmetric organic corner radii
-   and gentle lift. Token-driven -> reskins under dark.
+   Index (Home) — "Cool awareness" system.
+   The page is composed from the shared primitives; this file
+   only holds what the primitives cannot express: the hero media
+   frame and the closing CTA panel. Token-driven, so the whole
+   page reskins under [data-theme="dark"].
    ──────────────────────────────────────────────────────────── */
 
-/* ── Hero shell ───────────────────────────────────────────── */
-.home-container {
+.home {
+  overflow-x: clip;
+}
+
+/* Cards are the only child of their stagger wrapper, so they need an explicit
+   height to share one row height with their shorter siblings. */
+.home .stagger-item > * {
+  height: 100%;
+}
+
+/* ── Hero media — the app's own illustration ─────────────────
+   The five public/*-tab.mp4 clips are AI-generated and carry a
+   "Dola AI" watermark burned into the corner, so the home hero
+   uses the clean sprout illustration instead. The field-page
+   videos still need their watermark cropped away. */
+.home-media {
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  box-shadow: var(--shadow-float);
 }
 
-/* Ambient blobs — blurred organic washes behind the hero */
-.hero-blob-1 { width: 34rem; height: 34rem; top: -8rem; inset-inline-start: -10rem; }
-.hero-blob-2 { width: 28rem; height: 28rem; bottom: -6rem; inset-inline-end: -8rem; }
-.hero-blob-3 { width: 20rem; height: 20rem; top: 30%; inset-inline-end: 18%; }
-
-/* ── Hero ─────────────────────────────────────────────────── */
-.hero {
-  position: relative;
-  z-index: 10;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 80vh;
-  padding: 6rem 1.5rem 6rem;
-}
-.headline {
-  font-family: "Fraunces", "Amiri", serif;
-  font-weight: 700;
-  font-size: 3rem;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: hsl(var(--foreground));
-  max-width: 64rem;
-  margin: 0;
-}
-[dir="rtl"] .headline {
-  font-family: "Amiri", "Alexandria", serif;
-  letter-spacing: 0;
-  line-height: 1.25;
-}
-.headline em {
-  font-style: italic;
-  color: hsl(var(--primary));
-}
-[dir="rtl"] .headline em { font-style: normal; }
-.desc {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: hsl(var(--muted-foreground));
-  max-width: 38rem;
-  margin-top: 1.75rem;
-}
-.hero-actions {
-  display: flex;
-  gap: 0.9rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 2.75rem;
-}
-.hero-cta { padding: 1.1rem 2.75rem; font-size: 1rem; }
-.hero-ghost { padding: 1.1rem 2.25rem; font-size: 1rem; }
-
-@media (min-width: 640px) {
-  .headline { font-size: 4.25rem; }
-  .desc { font-size: 1.125rem; }
-}
-@media (min-width: 768px) {
-  .headline { font-size: 5.5rem; }
+.home-media img {
+  display: block;
+  width: 100%;
+  /* The illustration is 1200x800 — keep its own 3:2 ratio so nothing is
+     cropped out of the frame. */
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
 }
 
-/* ── What is Waey — intro + capabilities ───────────────────── */
-.home-about {
-  position: relative;
-  overflow: hidden;
-  padding: 6rem 1.5rem;
-  background: hsl(var(--muted) / 0.5);
-}
-.about-blob {
-  width: 26rem;
-  height: 26rem;
-  top: -6rem;
-  inset-inline-end: -8rem;
-  opacity: 0.8;
-}
-.home-about-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 80rem;
-  margin-inline: auto;
-}
-.home-about-head { max-width: 48rem; margin-bottom: 3rem; }
-.home-about-title {
-  font-family: "Fraunces", "Amiri", serif;
-  font-weight: 700;
-  font-size: 2.4rem;
-  line-height: 1.15;
-  color: hsl(var(--foreground));
-  margin: 0.5rem 0 0;
-}
-[dir="rtl"] .home-about-title {
-  font-family: "Amiri", "Alexandria", serif;
-  line-height: 1.35;
-}
-.home-about-lead {
-  margin-top: 1.25rem;
-  color: hsl(var(--muted-foreground));
-  font-size: 1.0625rem;
-  line-height: 1.85;
-  max-width: 44rem;
-}
-
-.about-caps {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-.about-cap {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border) / 0.5);
-  border-radius: 2rem;
-  padding: 1.9rem;
+/* ── Closing CTA — a quiet plate, not a second hero ────────── */
+.home-cta {
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--accent));
+  padding: clamp(2rem, 5vw, 3.5rem);
   box-shadow: var(--shadow-soft);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.about-cap:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
-/* Asymmetric organic corners, cycled */
-.about-cap:nth-child(1) { border-top-left-radius: 3.5rem; }
-.about-cap:nth-child(2) { border-bottom-right-radius: 3.5rem; }
-.about-cap:nth-child(3) { border-bottom-left-radius: 3.5rem; }
-.about-cap:nth-child(4) { border-top-right-radius: 3.5rem; }
-
-.about-cap-icon {
-  display: grid;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1rem;
-  background: hsl(var(--primary) / 0.12);
-  color: hsl(var(--primary));
-  margin-bottom: 1rem;
-}
-.about-cap-title {
-  font-family: "Fraunces", "Amiri", serif;
-  font-weight: 700;
-  font-size: 1.2rem;
-  line-height: 1.3;
-  margin: 0 0 0.4rem;
-}
-[dir="rtl"] .about-cap-title {
-  font-family: "Amiri", "Alexandria", serif;
-  font-size: 1.35rem;
-}
-.about-cap-desc {
-  color: hsl(var(--muted-foreground));
-  font-size: 0.95rem;
-  line-height: 1.75;
-  margin: 0;
-}
-
-.about-calm {
-  margin: 2.75rem auto 0;
-  text-align: center;
-  color: hsl(var(--muted-foreground));
-  font-size: 1rem;
-  line-height: 1.8;
-  max-width: 40rem;
-}
-
-@media (max-width: 720px) {
-  .home-about { padding: 4.5rem 1.25rem; }
-  .about-caps { grid-template-columns: 1fr; }
-  .home-about-title { font-size: 1.9rem; }
-  .about-blob { display: none; }
-}
-
-/* ── Field cards — organic corner accents ─────────────────── */
-.home-fields {
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  padding: 7rem 1.5rem 8rem;
-}
-.home-fields-inner { max-width: 80rem; margin-inline: auto; }
-.home-fields-head { max-width: 46rem; margin-bottom: 3rem; }
-.home-fields-title {
-  font-family: "Fraunces", "Amiri", serif;
-  font-weight: 700;
-  line-height: 1.15;
-  font-size: 2.5rem;
-  color: hsl(var(--foreground));
-  margin: 0;
-}
-[dir="rtl"] .home-fields-title { font-family: "Amiri", "Alexandria", serif; line-height: 1.3; }
-.home-fields-sub {
-  margin-top: 1.25rem;
-  color: hsl(var(--muted-foreground));
-  font-size: 1.0625rem;
-  line-height: 1.8;
-  max-width: 40rem;
-}
-
-.field-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-.field-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  border: 1px solid hsl(var(--border) / 0.5);
-  border-radius: 2rem;
-  padding: 2.25rem;
-  background: hsl(var(--card));
-  box-shadow: var(--shadow-soft);
-  color: inherit;
-  text-decoration: none;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.field-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lift);
-}
-.field-card .marker-num { margin-bottom: 0.75rem; }
-.field-card-title {
-  font-family: "Fraunces", "Amiri", serif;
-  font-weight: 700;
-  font-size: 1.9rem;
-  line-height: 1.15;
-}
-[dir="rtl"] .field-card-title { font-family: "Amiri", "Alexandria", serif; line-height: 1.3; }
-.field-card-desc {
-  color: hsl(var(--muted-foreground));
-  font-size: 0.95rem;
-  line-height: 1.7;
-  max-width: 28rem;
-}
-.field-card-arrow {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: hsl(var(--primary));
-}
-
-@media (max-width: 720px) {
-  .field-cards { grid-template-columns: 1fr; }
-  .home-fields { padding: 4.5rem 1.25rem 5.5rem; }
-  .home-fields-title { font-size: 2rem; }
-  .hero-blob-2, .hero-blob-3 { display: none; }
+  text-align: start;
 }
