@@ -43,7 +43,7 @@ glance.
 | D1 | **Pages are too thin to be useful.** Home = 1,619 chars of text; Assistant = 654; Insights = 1,038; Shopping list = 453; Admin = 328. The references show dense, content-rich pages. | `document.body.innerText.length` per route |
 | D2 | **7 WCAG AA contrast failures in light mode** — 4 nav links at 4.42 (need 4.5), hero description 4.34, and `.btn-ink` at **2.91** (a primary CTA). | measured sRGB luminance ratio, first 700px of the page |
 | D3 | **Field pages are strips.** `/health`, `/finance`, `/environment`, `/education` render most sections at 114–182px tall with 19–100 chars each — the content exists but has no room, hierarchy, or per-field identity. | per-`<section>` geometry + text length |
-| D4 | **12 duplicate `id="card"` elements on `/dashboard`.** Invalid DOM; breaks label/aria targeting and in-page anchors. | section census on `/dashboard` |
+| D4 | **RETRACTED — this was a misreading.** An earlier note claimed 12 duplicate `id="card"` elements on `/dashboard`. The probe printed `id || className`, and those 12 elements share the CLASS `card`; a live check of `[id]` finds 2 elements with ids and **no duplicates**. The real dashboard defect is that it is thin (2,706 chars across 13 sections) and still on the old composition. | live `[id]` audit on `/dashboard` |
 | D5 | **3 tap targets under 24px** on `/finance`. | measured `getBoundingClientRect().height` |
 | D6 | **One image per page** (the logo) and no imagery on home — against a reference system that is image-led. | `document.querySelectorAll('img').length` = 1 on every route |
 | D7 | **Dead features in copy.** `nav.design` ("تصميم الوكالة" / "Design Agency") is a leftover template key referenced nowhere. `/plans` and `/quiz` both redirect to `/`, but the README and `fields.educationDesc` advertise "30-day plans". | grep + `App.tsx` routes |
@@ -139,7 +139,7 @@ redesign as it moves. This document is the index; the card body is the contract.
 | P4-1 | Sidebar shell + welcome + overall progress ring (real gamification data) | P3-5 |
 | P4-2 | Per-field progress cards with the new field accents | P4-1 |
 | P4-3 | Recent activity + achievements + quick-stats rail | P4-2 |
-| P4-4 | Remove the 12 duplicate `id="card"` elements | P4-1 |
+| P4-4 | Give the dashboard a real sidebar/rail and a scannable hierarchy — the 13 sections are all equal-weight cards today | P4-1 |
 
 ### Phase 5 — Supporting pages (FRONTEND ENGINEER + CONTENT WRITER)
 
