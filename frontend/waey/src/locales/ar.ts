@@ -2058,6 +2058,19 @@ const ar: Record<string, string> = {
 
   // Shared UI primitives — chrome only; all content arrives as props
   'prim.statsLabel': 'أرقام تستحق الوقوف عندها',
+  'prim.newsletter.label': 'البريد الإلكتروني',
+  'prim.newsletter.eyebrow': 'ابقَ على اتصال',
+  'prim.newsletter.success': 'شكرًا لك — تفقّد بريدك لتأكيد الاشتراك.',
+  'prim.newsletter.invalid': 'من فضلك أدخل بريدًا إلكترونيًا صحيحًا.',
+  'prim.percent': '٪',
+  'prim.delta.up': 'ارتفاع',
+  'prim.delta.down': 'انخفاض',
+  'prim.article.opens': 'يقرأ المقال',
+  'prim.article.dateLabel': 'تاريخ النشر',
+  'prim.tool.opens': 'يفتح الأداة',
+  'prim.field.opens': 'يفتح المجال',
+  'prim.pageHero.label': 'مقدمة الصفحة',
+  'prim.pageHero.media': 'صورة توضيحية',
 };
 
 export default ar;

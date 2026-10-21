@@ -2060,6 +2060,19 @@ const en: Record<string, string> = {
 
   // Shared UI primitives — chrome only; all content arrives as props
   'prim.statsLabel': 'Numbers worth pausing on',
+  'prim.newsletter.label': 'Email address',
+  'prim.newsletter.eyebrow': 'Stay connected',
+  'prim.newsletter.success': 'Thank you — check your inbox to confirm.',
+  'prim.newsletter.invalid': 'Please enter a valid email address.',
+  'prim.percent': '%',
+  'prim.delta.up': 'rising',
+  'prim.delta.down': 'falling',
+  'prim.article.opens': 'reads the article',
+  'prim.article.dateLabel': 'Published on',
+  'prim.tool.opens': 'opens the tool',
+  'prim.field.opens': 'opens the field',
+  'prim.pageHero.label': 'Page introduction',
+  'prim.pageHero.media': 'Illustration',
 };
 
 export default en;
