@@ -2262,6 +2262,58 @@ const en: Record<string, string> = {
   'goal.targetLabel': 'Target',
   'goal.categoryLabel': 'Field',
   'weight.placeholder': 'Weight (kg)',
+
+  // ── Weekly report (/insights) ──
+  'insights.eyebrow': 'Waey · Weekly report',
+  'insights.report.eyebrow': 'The short answer',
+  'insights.report.lead': 'Two sentences that sum up your sleep and water across seven days.',
+  'insights.report.range': '{from} to {to}',
+  'insights.charts.eyebrow': 'The detail',
+  'insights.charts.title': 'Your week, drawn',
+  'insights.charts.lead': 'Every chart is built from what you logged on this device — none of it is invented.',
+  'insights.cta.eyebrow': 'The next step',
+  'insights.cta.title': 'A week makes more sense when you connect it to money.',
+  'insights.cta.body': 'Spending is a measured number, just like water and sleep. Open the money field and see where each pound goes.',
+
+  // ── Recipe library (/recipes) ──
+  'recipes.stats.total': 'recipes in the library',
+  'recipes.stats.matching': 'match the current filters',
+  'recipes.stats.mealTypes': 'meal types',
+  'recipes.filters.eyebrow': 'Filters',
+  'recipes.filters.title': 'Narrow the list',
+  'recipes.filters.lead': 'Calories, cost and meal type — all read straight from the recipe data.',
+  'recipes.filters.diet': 'Diet filters',
+  'recipes.filters.meals': 'Meal type',
+  'recipes.library.eyebrow': 'The library',
+  'recipes.library.title': 'Pick today’s recipe',
+  'recipes.library.lead': 'Cook with the numbers in front of you: calories, cost and time before you start.',
+  'recipes.shopping.eyebrow': 'Before the market',
+  'recipes.cta.eyebrow': 'After the plate',
+  'recipes.cta.title': 'A good recipe saves you money; watching the spend saves more.',
+  'recipes.cta.body': 'Open the shopping list while you buy, and log the spend the same day — the two numbers complete your week.',
+
+  // ── Library filters: all + the weekly report's stat units ──
+  'recipes.filters.all': 'All',
+
+  // ── Weekly report numbers, with their units ──
+  'insights.stat.water': 'Total water (cups)',
+  'insights.stat.sleep': 'Total sleep (hours)',
+  'insights.stat.expenses': 'Weekly expenses (EGP)',
+  'insights.stat.streak': 'Streak days',
+
+  // ── P5-1: a text description for every chart ────────────────
+  // A chart is a picture, so each one carries a sentence built from the
+  // same numbers it draws. These are the series names and the two shapes
+  // the sentence is assembled from.
+  'insights.alt.water': 'Water (cups)',
+  'insights.alt.expenses': 'Expenses (EGP)',
+  'insights.alt.sleep': 'Sleep (hours)',
+  'insights.alt.mood': 'Mood',
+  'insights.alt.steps': 'Steps',
+  'insights.alt.eco': 'Eco actions',
+  'insights.alt.distribution': 'Expense distribution',
+  'insights.alt.format': '{label}: {value}',
+  'insights.alt.summary': '{title}. {data}',
 };
 
 export default en;

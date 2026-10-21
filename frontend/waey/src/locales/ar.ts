@@ -2260,6 +2260,58 @@ const ar: Record<string, string> = {
   'goal.targetLabel': 'الهدف',
   'goal.categoryLabel': 'المجال',
   'weight.placeholder': 'الوزن (كجم)',
+
+  // ── التقرير الأسبوعي (صفحة /insights) ──
+  'insights.eyebrow': 'وعي · التقرير الأسبوعي',
+  'insights.report.eyebrow': 'الخلاصة',
+  'insights.report.lead': 'جملتين تلخّصان نومك ومياهك على مدار سبعة أيام.',
+  'insights.report.range': 'من {from} إلى {to}',
+  'insights.charts.eyebrow': 'التفاصيل',
+  'insights.charts.title': 'أسبوعك في رسوم',
+  'insights.charts.lead': 'كل رسم مبني على اللي سجّلته بنفسك على الجهاز ده — مفيش رقم من عندنا.',
+  'insights.cta.eyebrow': 'الخطوة اللي بعدها',
+  'insights.cta.title': 'الأسبوع بيبان أحسن لما تربطه بالفلوس.',
+  'insights.cta.body': 'المصروف رقم مُقاس زيّ المياه والنوم. افتح المجال المالي وشوف الجنيه رايح فين.',
+
+  // ── مكتبة الوصفات (صفحة /recipes) ──
+  'recipes.stats.total': 'وصفة في المكتبة',
+  'recipes.stats.matching': 'مطابقة للفلاتر الحالية',
+  'recipes.stats.mealTypes': 'أنواع وجبات',
+  'recipes.filters.eyebrow': 'الفلاتر',
+  'recipes.filters.title': 'ضيّق الخيارات',
+  'recipes.filters.lead': 'سعرات وتكلفة ونوع وجبة — كلها مقروءة من بيانات الوصفة نفسها.',
+  'recipes.filters.diet': 'الفلاتر الغذائية',
+  'recipes.filters.meals': 'نوع الوجبة',
+  'recipes.library.eyebrow': 'المكتبة',
+  'recipes.library.title': 'اختار وصفة النهاردة',
+  'recipes.library.lead': 'اطبخ ببيانات واضحة: السعرات والتكلفة والوقت مكتوبين قبل ما تبدأ.',
+  'recipes.shopping.eyebrow': 'قبل ما تنزل السوق',
+  'recipes.cta.eyebrow': 'بعد الطبق',
+  'recipes.cta.title': 'الوصفة بتوفّر، والحساب بيوفّر أكتر.',
+  'recipes.cta.body': 'افتح قائمة التسوق وأنت بتشتري، وسجّل المصروف في نفس اليوم — الرقمين هيكمّلوا صورة أسبوعك.',
+
+  // ── شريط الأرقام في صفحة الوصفات: الفلاترdiet + نوع الوجبة ──
+  'recipes.filters.all': 'الكل',
+
+  // ── أرقام التقرير الأسبوعي بوحداتها ──
+  'insights.stat.water': 'إجمالي المياه (كوب)',
+  'insights.stat.sleep': 'إجمالي النوم (ساعة)',
+  'insights.stat.expenses': 'مصاريف الأسبوع (جنيه)',
+  'insights.stat.streak': 'أيام متتالية',
+
+  // ── P5-1: a text description for every chart ────────────────
+  // A chart is a picture, so each one carries a sentence built from the
+  // same numbers it draws. These are the series names and the two shapes
+  // the sentence is assembled from.
+  'insights.alt.water': 'المياه (أكواب)',
+  'insights.alt.expenses': 'المصاريف (جنيه)',
+  'insights.alt.sleep': 'النوم (ساعات)',
+  'insights.alt.mood': 'المزاج',
+  'insights.alt.steps': 'الخطوات',
+  'insights.alt.eco': 'أفعال بيئية',
+  'insights.alt.distribution': 'توزيع المصاريف',
+  'insights.alt.format': '{label}: {value}',
+  'insights.alt.summary': '{title}. {data}',
 };
 
 export default ar;

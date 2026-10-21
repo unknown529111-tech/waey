@@ -1,0 +1,369 @@
+=== BEFORE ===
+
+--- /insights ---
+controls: 1 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 140x36 :: Back to Daily
+
+--- /recipes ---
+controls: 357 (238 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+input[number] 136x49 :: Max Calories
+input[number] 136x49 :: Max Cost (EGP)
+button[button] 178x36 :: Shopping List (0)
+input[search] 224x47 :: Search recipes
+button[button] 76x44 :: Vegan
+button[button] 71x44 :: Quick
+button[button] 137x44 :: Budget-Friendly
+button[button] 85x44 :: Healthy
+button[button] 113x44 :: High Protein
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+summary 358x24 :: Ingredients
+button[button] 175x40 :: ♡ Save
+button[button] 175x40 :: Add to list
+
+console errors: none

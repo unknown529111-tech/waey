@@ -7,8 +7,8 @@
 // Run: node scripts/dashboard-audit.mjs
 import { chromium } from "playwright";
 
-const BASE = "http://127.0.0.1:5174";
-const PATHS = ["/dashboard"];
+const BASE = process.env.BASE || "http://127.0.0.1:5188";
+const PATHS = (process.env.PATHS || "/dashboard").split(",").map((p) => p.trim());
 const WIDTHS = [320, 768, 1024, 1440];
 const THEMES = ["light", "dark"];
 const LANGS = ["en", "ar"];

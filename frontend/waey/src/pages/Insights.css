@@ -1,0 +1,170 @@
+/* ────────────────────────────────────────────────────────────
+   Weekly insights — the composition of a data page, built from
+   the same primitives as the dashboard.
+
+   Rules kept here:
+   · every colour reads a token (no raw hex, no rgba);
+   · logical properties so RTL mirrors itself;
+   · borders / radii / shadows / easing are the house tokens.
+   Every selector is scoped to .insights.
+   ──────────────────────────────────────────────────────────── */
+
+.insights {
+  overflow-x: clip;
+}
+
+/* Keyboard focus must survive the cards' own soft shadows */
+.insights :focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+
+/* ── The week's headline ───────────────────────────────────── */
+.insights .ins-report {
+  position: relative;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-card);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-soft);
+}
+
+/* A short accent stroke instead of a top border — the colour is a cue,
+   the sentence stays the point. */
+.insights .ins-report::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: clamp(1.5rem, 4vw, 2.75rem);
+  top: 0;
+  width: 3.5rem;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: hsl(var(--field-current));
+}
+
+.insights .ins-report-range {
+  display: block;
+  margin-bottom: 1.25rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Two display sentences, not a bullet list — this is the page's headline. */
+.insights .ins-report-lead {
+  max-width: 34ch;
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  line-height: 1.35;
+  text-wrap: balance;
+  color: hsl(var(--foreground));
+}
+
+.insights .ins-report-line {
+  margin-top: 0.9rem;
+  max-width: 46ch;
+  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+  line-height: 1.5;
+  color: hsl(var(--foreground) / 0.82);
+}
+
+/* ── Chart grid: two columns, one on narrow screens ────────── */
+.insights .ins-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.insights .ins-chart {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-card);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+.insights .ins-chart:hover {
+  box-shadow: var(--shadow-soft-hover);
+}
+
+/* The chart card's own heading is a caption, not a page title. */
+.insights .ins-chart h2 {
+  font-size: 1.35rem;
+}
+
+/* The daily-activity chart reads across both columns. */
+.insights .ins-chart-wide {
+  grid-column: 1 / -1;
+}
+
+/* A <figure> wraps each chart so the drawing can be hidden from the
+   accessibility tree while its text description is read instead. The
+   browser's own figure margin would break the card's flex rhythm. */
+.insights .ins-figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.insights .ins-chart-plot {
+  min-width: 0;
+  margin-top: 0.75rem;
+}
+
+.insights .ins-chart-empty {
+  display: flex;
+  min-height: 220px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.9rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ── Closing invitation ───────────────────────────────────── */
+.insights .ins-cta {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid hsl(var(--primary) / 0.28);
+  border-radius: var(--radius-card);
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  box-shadow: var(--shadow-soft);
+}
+
+.insights .ins-cta-title {
+  margin-top: 0.75rem;
+  max-width: 24ch;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.insights .ins-cta-body {
+  margin-top: 1rem;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .insights .ins-grid {
+    grid-template-columns: 1fr;
+  }
+  .insights .ins-chart-wide {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .insights .ins-chart {
+    transition: none;
+  }
+  .insights .ins-chart:hover {
+    transform: none;
+  }
+}
