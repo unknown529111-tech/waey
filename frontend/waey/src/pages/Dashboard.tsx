@@ -669,7 +669,7 @@ const Dashboard = () => {
               {pending > 0 ? (
                 <>
                   <span className="dash-pending-dot" aria-hidden="true" />
-                  {t("dash.remaining", { n: pending })}
+                  {t("dash.remaining", { n: fmt(pending) })}
                 </>
               ) : (
                 <>

@@ -14,6 +14,21 @@
   overflow-x: clip;
 }
 
+/* Keyboard focus must survive the cards' own soft shadows */
+.dash :focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+
+/* A disabled action stays readable instead of fading to a ghost */
+.dash .btn-solid[disabled] {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  opacity: 1;
+  box-shadow: none;
+}
+
 /* ── Field accent scopes ────────────────────────────────────── */
 .dash [data-field="health"] {
   --tone: var(--field-health);
@@ -475,12 +490,12 @@
     color 0.2s var(--ease);
 }
 .dash-mood button:hover {
-  border-color: hsl(var(--tone));
+  border-color: hsl(var(--foreground));
 }
 .dash-mood button[aria-pressed="true"] {
-  background: hsl(var(--tone));
-  border-color: hsl(var(--tone));
-  color: hsl(var(--card));
+  background: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   font-weight: 700;
 }
 
@@ -969,7 +984,6 @@
 
 /* Disabled pills */
 .dash .btn[disabled] {
-  opacity: 0.55;
   cursor: default;
   transform: none;
 }
