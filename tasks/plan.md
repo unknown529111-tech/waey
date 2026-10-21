@@ -181,12 +181,22 @@ redesign as it moves. This document is the index; the card body is the contract.
 ## 5. How the crew executes
 
 - **EXECUTOR** owns the plan, the briefs, the verification and the report. Nothing ships unverified.
-- **FRONTEND ENGINEER** (child of DEVELOPER) writes the UI, driving **OpenCode with `opencode/deepseek-v4.1-flash-free`** as its implementation engine inside the repo, with the reference JPEGs attached via `-f`.
+- **FRONTEND ENGINEER** (child of DEVELOPER) writes the UI, driving **OpenCode with `opencode/deepseek-v4.1-flash-free`** as its implementation engine inside the repo.
 - **CONTENT WRITER** writes the Arabic copy that needs a human voice.
 - **QA ENGINEER** proves the result in a browser, both themes, four widths.
 - **DEVELOPER** handles the build, the deploy and anything structural.
 - One card per task, run **sequentially** — the slices share `tokens.css`, the primitives and the Navbar, so two writers in the same tree would collide.
 - Every card carries its own acceptance criteria, the exact commands, and the exact files. The seat never has to explore to find out how something works.
+
+### Two rules the crew learned the hard way
+
+1. **Always attach the reference image to the engine call** (`opencode run … -f "<the jpeg>"`). On the first primitives batch the image was not attached, and the engine reported so plainly — it built from `tokens.css` and `DESIGN.md` alone. The result was good because the tokens carry the palette, but the *composition* of the reference (split hero, generous white space, one accent per domain) only reaches the engine through the image. The image path to use:
+   `/home/m7/Projects/New Waey design/WhatsApp Unknown 2026-10-14 at 11.02.34 PM/WhatsApp Image 2026-10-14 at 11.01.50 PM (4).jpeg` (home), `(3)` (health), `(2)` (finance), `(1)` (education), and the un-suffixed one (environment).
+2. **A provider stall costs one slice, not the whole build.** On 2026-10-21 a card's model hung for 5.8 hours and the seat wrote nothing for 5.5 hours. The pattern that survived it: EXECUTOR drives the engine directly in small committed slices, each verified in a real browser, so the work is never more than one slice from a lost provider. Never dispatch the same slice to a seat a third time.
+
+### A colour trap the tokens will not warn you about
+
+`base.css` used to force `color: hsl(var(--foreground))` on every `p` and heading. That overrode the colour of whatever they sat in, so text inside any coloured band (the footer wordmark, the stat band) inherited the page ink instead of the band's own foreground and became invisible. It is fixed — the element rules now set typography only and let colour inherit — but **when a new component puts text on a coloured surface, check it in a browser in both themes.** The engine's own reasoning can be right about the tokens and wrong about the cascade, because it reasons from the token file and not from the rendered page.
 
 ## 6. Risks and mitigations
 
