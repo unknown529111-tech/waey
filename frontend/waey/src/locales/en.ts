@@ -2214,6 +2214,54 @@ const en: Record<string, string> = {
   'field.next.finance': 'Environment',
   'field.next.environment': 'Education',
   'field.next.education': 'Health',
+
+  // ── Dashboard introduction — hero, overall progress and field cards ──
+  'dash.welcome': 'Welcome back —',
+  'dash.welcomeEm': 'here is your day.',
+  'dash.quoteLabel': 'Today’s wisdom',
+  'dash.remaining': '{n} trackers still open today',
+  'dash.allDone': 'Every tracker is done. Take the evening in.',
+  'dash.overall.title': 'Today at a glance',
+  'dash.overall.caption': 'Overall completion',
+  'dash.field.doneOf': '{done} of {total} done',
+  'dash.field.noTrackers': 'No trackers in this field yet',
+  'dash.field.details': 'of today’s targets',
+
+  // ── Dashboard trackers and view controls ──
+  'dash.trackers.eyebrow': 'Today’s trackers',
+  'dash.trackers.title': 'What the rest of today needs',
+  'dash.trackers.lead': 'One small number at a time — together they make the picture above.',
+  'dash.trackers.progressLabel': 'Progress toward today’s target',
+  'dash.step.increase': 'Increase',
+  'dash.step.decrease': 'Decrease',
+  'dash.view.label': 'Dashboard view',
+  'dash.big3.toggle': 'Mark task {n} as done',
+
+  // ── Dashboard side rails and closing ──
+  'dash.recent.title': 'Recent activity',
+  'dash.recent.today': 'Today',
+  'dash.recent.empty': 'Nothing logged in the last six days. Start with one glass of water.',
+  'dash.recent.water': '{n} cups of water',
+  'dash.recent.sleep': '{n} hours of sleep',
+  'dash.recent.activity': '{n} minutes of movement',
+  'dash.recent.eco': '{n} eco actions',
+  'dash.recent.spend': '{n} EGP spent',
+  'dash.recent.challenge': 'Daily challenge completed',
+  'dash.stats.title': 'Your numbers',
+  'dash.stats.points': 'Points',
+  'dash.stats.badges': 'Badges',
+  'dash.cta.title': 'Awareness is a daily practice.',
+  'dash.cta.body': 'You have seen where today stands. Next, look at what your money is doing — one honest number is enough to start.',
+
+  // ── Keys the dashboard referenced before they existed (raw-key fixes) ──
+  'dash.recoverStreak': 'Recover streak',
+  'dash.badgeUnlockedToast': 'New badge: {name}',
+  'dash.notEnoughPoints': 'You need {cost} points to freeze your streak',
+  'badge.noneEarned': 'No badges yet',
+  'badge.shareSignature': 'Tracked with Waey',
+  'goal.targetLabel': 'Target',
+  'goal.categoryLabel': 'Field',
+  'weight.placeholder': 'Weight (kg)',
 };
 
 export default en;

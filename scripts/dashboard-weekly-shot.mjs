@@ -1,0 +1,14 @@
+import { chromium } from "playwright";
+const b = await chromium.launch({ executablePath: "/home/m7/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome", args: ["--no-sandbox","--disable-gpu"] });
+const ctx = await b.newContext({ viewport: { width: 1440, height: 1600 } });
+const p = await ctx.newPage();
+await p.addInitScript(() => localStorage.setItem("waey-theme","light"));
+await p.addInitScript(() => localStorage.setItem("waey-lang","en"));
+await p.goto("http://127.0.0.1:5174/dashboard", { waitUntil: "networkidle" });
+await p.waitForTimeout(900);
+await p.evaluate(() => [...document.querySelectorAll(".seg button")].find(b=>b.textContent.includes("Weekly"))?.click());
+await p.waitForTimeout(700);
+const out = "/home/m7/.hermes/profiles/frontendengineer/cache/scratch/dash-en-weekly.png";
+await p.screenshot({ path: out });
+console.log(out);
+await b.close();

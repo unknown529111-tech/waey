@@ -2212,6 +2212,54 @@ const ar: Record<string, string> = {
   'field.next.finance': 'البيئة',
   'field.next.environment': 'التعليم',
   'field.next.education': 'الصحة',
+
+  // ── مقدمة اللوحة — الترحيب، الإنجاز الكلي وبطاقات المجالات ──
+  'dash.welcome': 'أهلًا بعودتك —',
+  'dash.welcomeEm': 'ده يومك.',
+  'dash.quoteLabel': 'حكمة اليوم',
+  'dash.remaining': 'فاضل {n} متابعة النهاردة',
+  'dash.allDone': 'خلصت كل حاجة النهاردة. خد ليلتك على راحتك.',
+  'dash.overall.title': 'نظرة على يومك',
+  'dash.overall.caption': 'نسبة الإنجاز الكلية',
+  'dash.field.doneOf': '{done} من {total} خلصوا',
+  'dash.field.noTrackers': 'لسه مفيش متابعات في المجال ده',
+  'dash.field.details': 'من أهداف النهاردة',
+
+  // ── متابعات اللوحة وأزرار العرض ──
+  'dash.trackers.eyebrow': 'متابعات النهاردة',
+  'dash.trackers.title': 'باقي اليوم محتاج إيه',
+  'dash.trackers.lead': 'رقم صغير كل مرة — ومع بعض بيكمّلوا الصورة اللي فوق.',
+  'dash.trackers.progressLabel': 'التقدّم ناحية هدف النهاردة',
+  'dash.step.increase': 'زيادة',
+  'dash.step.decrease': 'تقليل',
+  'dash.view.label': 'طريقة عرض اللوحة',
+  'dash.big3.toggle': 'علّم المهمة {n} كإنها خلصت',
+
+  // ── أعمدة اللوحة الجانبية والخاتمة ──
+  'dash.recent.title': 'آخر اللي حصل',
+  'dash.recent.today': 'النهاردة',
+  'dash.recent.empty': 'مفيش حاجة متسجلة في آخر ست أيام. ابدأ بكوب مية.',
+  'dash.recent.water': '{n} أكواب مية',
+  'dash.recent.sleep': '{n} ساعات نوم',
+  'dash.recent.activity': '{n} دقيقة حركة',
+  'dash.recent.eco': '{n} أفعال للبيئة',
+  'dash.recent.spend': '{n} جنيه مصروف',
+  'dash.recent.challenge': 'خلّصت تحدي اليوم',
+  'dash.stats.title': 'أرقامك',
+  'dash.stats.points': 'النقاط',
+  'dash.stats.badges': 'الشارات',
+  'dash.cta.title': 'الوعي ممارسة يومية.',
+  'dash.cta.body': 'شوفت يومك واقف فين. تعالى بقى تبص على فلوسك — رقم واحد صادق يكفي عشان تبدأ.',
+
+  // ── مفاتيح كانت اللوحة بتستخدمها قبل ما تتعرّف (إصلاح النصوص الخام) ──
+  'dash.recoverStreak': 'استعد سلسلتك',
+  'dash.badgeUnlockedToast': 'شارة جديدة: {name}',
+  'dash.notEnoughPoints': 'محتاج {cost} نقطة عشان تجمّد سلسلتك',
+  'badge.noneEarned': 'لسه مفيش شارات',
+  'badge.shareSignature': 'متابع يومي مع وعي',
+  'goal.targetLabel': 'الهدف',
+  'goal.categoryLabel': 'المجال',
+  'weight.placeholder': 'الوزن (كجم)',
 };
 
 export default ar;
