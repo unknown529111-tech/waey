@@ -92,13 +92,18 @@
   }
   .btn-linen:hover { transform: scale(1.03); box-shadow: var(--shadow-soft); }
 
-  /* Outline — clay-bordered */
+  /* Outline — ink-bordered */
+  /* "Ink" = the page's own foreground, not the secondary surface. The old
+     palette had --secondary as a light warm clay in dark mode, so it read as an
+     ink here; the new --secondary is a dark teal SURFACE in both themes, which
+     made this outline button 2.23:1 against the dark page. --foreground is the
+     ink: 12:1 on the light canvas, 15:1 on the night one. */
   .btn-ink {
-    color: hsl(var(--secondary));
+    color: hsl(var(--foreground));
     background: transparent;
-    border: 2px solid hsl(var(--secondary));
+    border: 2px solid hsl(var(--foreground));
   }
-  .btn-ink:hover { background: hsl(var(--secondary) / 0.08); transform: scale(1.03); }
+  .btn-ink:hover { background: hsl(var(--foreground) / 0.08); transform: scale(1.03); }
 
   /* ── Circular steppers for trackers ─────────────────────── */
   .stepper {
