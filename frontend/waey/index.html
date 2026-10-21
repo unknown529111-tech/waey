@@ -33,7 +33,7 @@
         try {
           var k = 'waey-theme';
           var s = localStorage.getItem(k);
-          var t = s || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          var t = s || 'light';
           if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
         } catch (e) {}
         var lg = null;

@@ -24,7 +24,18 @@ import {
 import { Droplet, Moon, Wallet, Flame, Footprints, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const COLORS = ["#5D7052", "#C18C5D", "#7BA98F", "#D4A656", "#8C7A6B", "#E6DCCD", "#9CC1A8"];
+// Charts read the field-accent tokens so they reskin with the theme (var() resolves in SVG attrs).
+const fieldColor = (name: string) => `hsl(var(--field-${name}))`;
+
+const COLORS = [
+  fieldColor("finance"),
+  fieldColor("health"),
+  fieldColor("environment"),
+  fieldColor("education"),
+  fieldColor("current"),
+  fieldColor("finance-soft"),
+  fieldColor("health-soft"),
+];
 
 const Insights = () => {
   const t = useT();
@@ -127,7 +138,7 @@ const Insights = () => {
         </div>
         <Link
           to="/dashboard"
-          className="inline-flex items-center gap-1.5 text-sm font-bold bg-secondary hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-4 py-2"
+          className="inline-flex items-center gap-1.5 text-sm font-bold bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95 transition-all duration-300 rounded-full px-4 py-2"
         >
           <ArrowRight className="size-4" />
           {t('insights.back')}
@@ -161,7 +172,7 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Bar dataKey="water" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="water" fill="hsl(var(--field-current))" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -176,7 +187,7 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Line type="monotone" dataKey="expenses" stroke="#C18C5D" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="expenses" stroke="hsl(var(--field-finance))" strokeWidth={3} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -191,8 +202,8 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Line type="monotone" dataKey="sleep" stroke="#6366F1" strokeWidth={2} />
-              <Line type="monotone" dataKey="mood" stroke="#5D7052" strokeWidth={2} />
+              <Line type="monotone" dataKey="sleep" stroke="hsl(var(--field-education))" strokeWidth={2} />
+              <Line type="monotone" dataKey="mood" stroke="hsl(var(--field-health))" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -229,8 +240,8 @@ const Insights = () => {
               <XAxis dataKey="day" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Bar dataKey="steps" fill="#5D7052" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="eco" fill="#C18C5D" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="steps" fill="hsl(var(--field-health))" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="eco" fill="hsl(var(--field-environment))" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
