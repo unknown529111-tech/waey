@@ -5,13 +5,14 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
-    port: 8080,
-    hmr: {
-      host: "localhost",
-      port: 8080,
-      protocol: "ws",
-    },
+    // 127.0.0.1 only. `host: "::"` binds every interface, which the box's
+    // standing rules forbid for a service on this machine.
+    host: "127.0.0.1",
+    port: 5173,
+    // No hardcoded `hmr` block. Pinning the HMR socket to a fixed port made
+    // the client dial a port the server was not on, so the page hard-reloaded
+    // every few seconds and any browser assertion lost its context. Leaving
+    // the HMR port to Vite ties it to the server's own port, whatever that is.
   },
   build: {
     chunkSizeWarningLimit: 900,
