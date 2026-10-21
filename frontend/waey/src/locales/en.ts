@@ -2379,6 +2379,34 @@ const en: Record<string, string> = {
   'faq.offline.searchEn': 'offline no internet connection works without network',
   'faq.pwa.searchAr': 'تطبيق تثبيت هاتف رئيسية شاشة',
   'faq.pwa.searchEn': 'pwa progressive web app install phone home screen shortcut',
+
+  // ── Shopping list rebuild — every per-item control names its item ──
+  'shopping.eyebrow': 'Waey · Shopping list',
+  'shopping.list.eyebrow': 'Before the market',
+  'shopping.list.title': 'What you need from the market',
+  'shopping.list.lead': 'Tick what you have bought, remove what you no longer need. The list stays on your device.',
+  'shopping.stat.total': 'Items on the list',
+  'shopping.stat.done': 'Bought',
+  'shopping.stat.left': 'Still to get',
+  'shopping.markDone': 'Mark {name} as bought',
+  'shopping.markUndone': 'Mark {name} as not bought',
+  'shopping.removeItem': 'Remove {name} from the list',
+  'shopping.closing.eyebrow': 'After the market',
+  'shopping.closing.title': 'There are more recipes worth trying',
+  'shopping.closing.body': 'Pick your next recipe and add its ingredients to the list in one tap.',
+  'shopping.closing.dashboard': 'Open the dashboard',
+
+  // ── Privacy + Terms rebuild — contents rail and closing band ──
+  'legal.contents.eyebrow': 'Contents',
+  'legal.contents.title': 'Jump to the clause you need',
+  'legal.contents.lead': 'The page is long. Pick a clause from the list and go straight to it.',
+  'legal.nav.label': 'Page contents',
+  'legal.privacy.eyebrow': 'Waey · Privacy',
+  'legal.terms.eyebrow': 'Waey · Terms',
+  'legal.closing.eyebrow': 'From here',
+  'legal.closing.title': 'Back to the app',
+  'legal.closing.body': 'Everything here describes how Waey works. Your trackers and your data live on the dashboard, stored on your device.',
+  'legal.closing.back': 'Open the dashboard',
 };
 
 export default en;

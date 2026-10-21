@@ -2377,6 +2377,34 @@ const ar: Record<string, string> = {
   'faq.offline.searchEn': 'offline no internet connection works without network',
   'faq.pwa.searchAr': 'تطبيق تثبيت هاتف رئيسية شاشة',
   'faq.pwa.searchEn': 'pwa progressive web app install phone home screen shortcut',
+
+  // ── Shopping list rebuild — every per-item control names its item ──
+  'shopping.eyebrow': 'وعي · قائمة التسوق',
+  'shopping.list.eyebrow': 'قبل ما تنزل السوق',
+  'shopping.list.title': 'اللي محتاجه من السوق',
+  'shopping.list.lead': 'علّم على اللي اشتريته، وامسح اللي مش محتاجه. القائمة محفوظة على جهازك.',
+  'shopping.stat.total': 'عناصر في القائمة',
+  'shopping.stat.done': 'تم شراؤها',
+  'shopping.stat.left': 'باقي عليها',
+  'shopping.markDone': 'علّم {name} كمُشترى',
+  'shopping.markUndone': 'ألغِ تعليم {name}',
+  'shopping.removeItem': 'احذف {name} من القائمة',
+  'shopping.closing.eyebrow': 'بعد السوق',
+  'shopping.closing.title': 'وصفات تانية تستاهل التجربة',
+  'shopping.closing.body': 'اختار وصفتك الجاية وأضف مكوناتها للقائمة بضغطة واحدة.',
+  'shopping.closing.dashboard': 'افتح لوحة المتابعة',
+
+  // ── Privacy + Terms rebuild — contents rail and closing band ──
+  'legal.contents.eyebrow': 'المحتويات',
+  'legal.contents.title': 'اقفز إلى البند الذي تريده',
+  'legal.contents.lead': 'الصفحة طويلة. اختر البند من القائمة واذهب إليه مباشرة.',
+  'legal.nav.label': 'محتويات الصفحة',
+  'legal.privacy.eyebrow': 'وعي · الخصوصية',
+  'legal.terms.eyebrow': 'وعي · الشروط',
+  'legal.closing.eyebrow': 'من هنا',
+  'legal.closing.title': 'ارجع إلى التطبيق',
+  'legal.closing.body': 'كل ما قرأته هنا يشرح طريقة عمل وعي. متتبعاتك وبياناتك في لوحة المتابعة، محفوظة على جهازك.',
+  'legal.closing.back': 'افتح لوحة المتابعة',
 };
 
 export default ar;

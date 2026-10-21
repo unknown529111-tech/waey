@@ -1,0 +1,339 @@
+/* ────────────────────────────────────────────────────────────
+   Shopping list — the list itself, with controls a thumb and a
+   keyboard can actually reach.
+
+   Rules kept here:
+   · every colour reads a token (no raw hex, no rgba);
+   · logical properties so RTL mirrors itself;
+   · borders / radii / shadows / easing are the house tokens.
+   Every selector is scoped to .shopping.
+   ──────────────────────────────────────────────────────────── */
+
+.shopping {
+  overflow-x: clip;
+}
+
+/* Keyboard focus must survive the cards' own soft shadows */
+.shopping :focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+
+/* ── Toolbar: the count, and the two ways to empty part of it ── */
+.shopping .shop-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-top: 2rem;
+}
+
+.shopping .shop-count {
+  gap: 0.4rem;
+  color: hsl(var(--muted-foreground));
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.shopping .shop-count .shop-count-value {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.shopping .shop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.shopping .shop-btn {
+  min-height: 2.75rem;
+  padding-inline: 1.25rem;
+  border-radius: var(--radius-pill);
+  font-family: "Nunito", "Alexandria", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.3s var(--ease),
+    background-color 0.3s var(--ease);
+}
+
+.shopping .shop-btn:hover {
+  transform: scale(1.03);
+}
+
+.shopping .shop-btn:active {
+  transform: scale(0.95);
+}
+
+.shopping .shop-btn-soft {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+}
+
+.shopping .shop-btn-soft:hover {
+  background: hsl(var(--accent));
+}
+
+.shopping .shop-btn-danger {
+  border: 1px solid hsl(var(--destructive) / 0.35);
+  background: hsl(var(--destructive-soft));
+  color: hsl(var(--destructive));
+}
+
+.shopping .shop-btn-danger:hover {
+  background: hsl(var(--destructive-soft));
+  border-color: hsl(var(--destructive));
+}
+
+/* ── The list ──────────────────────────────────────────────── */
+.shopping .shop-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shopping .shop-item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-soft);
+  transition:
+    background-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+.shopping .shop-item:hover {
+  box-shadow: var(--shadow-soft-hover);
+}
+
+/* Bought rows keep full-contrast text and their controls; the ground
+   shifts, the words strike through, the tick appears. */
+.shopping .shop-item.is-checked {
+  border-color: hsl(var(--primary) / 0.28);
+  background: hsl(var(--accent));
+}
+
+.shopping .shop-name {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: hsl(var(--foreground));
+}
+
+.shopping .shop-item.is-checked .shop-name {
+  color: hsl(var(--muted-foreground));
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+/* ── The two per-item controls, both at least 44×44 ────────── */
+.shopping .shop-toggle,
+.shopping .shop-remove {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+
+.shopping .shop-toggle {
+  /* The unchecked circle is the affordance, so its edge must clear 3:1 —
+     --border is a hairline, too faint to be a control boundary. */
+  border: 2px solid hsl(var(--muted-foreground));
+  background: hsl(var(--card));
+  color: transparent;
+}
+
+.shopping .shop-toggle:hover {
+  border-color: hsl(var(--primary));
+}
+
+/* Checked: filled ground + the tick + aria-pressed — never the colour alone. */
+.shopping .shop-toggle[aria-pressed="true"] {
+  border-color: hsl(var(--primary));
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/* Always visible: no hover to hide behind. */
+.shopping .shop-remove {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--muted-foreground));
+}
+
+.shopping .shop-remove:hover {
+  border-color: hsl(var(--destructive));
+  background: hsl(var(--destructive-soft));
+  color: hsl(var(--destructive));
+}
+
+/* ── Empty list ────────────────────────────────────────────── */
+.shopping .shop-empty {
+  margin-top: 1.25rem;
+  padding: clamp(1.75rem, 5vw, 3rem);
+  border: 1px dashed hsl(var(--border));
+  border-radius: var(--radius-card);
+  background: hsl(var(--card));
+  text-align: center;
+}
+
+.shopping .shop-empty-icon {
+  display: block;
+  margin: 0 auto 0.75rem;
+  color: hsl(var(--primary));
+}
+
+.shopping .shop-empty-text {
+  max-width: 44ch;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: hsl(var(--muted-foreground));
+}
+
+.shopping .shop-empty-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-inline: 1.5rem;
+  border-radius: var(--radius-pill);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-family: "Nunito", "Alexandria", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s var(--ease);
+}
+
+.shopping .shop-empty-link:hover {
+  transform: scale(1.03);
+}
+
+.shopping .shop-empty-link:active {
+  transform: scale(0.95);
+}
+
+/* ── The band of three numbers ─────────────────────────────── */
+.shopping .shop-metrics {
+  margin-top: 3.5rem;
+}
+
+/* ── Closing invitation ───────────────────────────────────── */
+.shopping .shop-cta {
+  margin-top: 3.5rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid hsl(var(--primary) / 0.28);
+  border-radius: var(--radius-card);
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  box-shadow: var(--shadow-soft);
+}
+
+.shopping .shop-cta-title {
+  max-width: 26ch;
+  margin-top: 0.75rem;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.shopping .shop-cta-body {
+  max-width: 52ch;
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: hsl(var(--muted-foreground));
+}
+
+.shopping .shop-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.shopping .shop-cta-primary,
+.shopping .shop-cta-secondary {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-inline: 1.5rem;
+  border-radius: var(--radius-pill);
+  font-family: "Nunito", "Alexandria", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: transform 0.3s var(--ease);
+}
+
+.shopping .shop-cta-primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-soft);
+}
+
+.shopping .shop-cta-secondary {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-soft);
+}
+
+.shopping .shop-cta-primary:hover,
+.shopping .shop-cta-secondary:hover {
+  transform: scale(1.03);
+}
+
+.shopping .shop-cta-primary:active,
+.shopping .shop-cta-secondary:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shopping .shop-item,
+  .shopping .shop-btn,
+  .shopping .shop-toggle,
+  .shopping .shop-remove,
+  .shopping .shop-empty-link,
+  .shopping .shop-cta-primary,
+  .shopping .shop-cta-secondary {
+    transition: none;
+  }
+  .shopping .shop-btn:hover,
+  .shopping .shop-btn:active,
+  .shopping .shop-empty-link:hover,
+  .shopping .shop-empty-link:active,
+  .shopping .shop-cta-primary:hover,
+  .shopping .shop-cta-primary:active,
+  .shopping .shop-cta-secondary:hover,
+  .shopping .shop-cta-secondary:active {
+    transform: none;
+  }
+}

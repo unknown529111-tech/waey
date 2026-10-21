@@ -1,0 +1,18 @@
+=== before-2b ===
+
+--- /shopping-list ---
+controls: 1 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 147x40 :: Browse recipes
+
+--- /privacy ---
+controls: 1 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 177x19 :: waey.official.mk@gmail.com
+
+--- /terms ---
+controls: 1 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 177x19 :: waey.official.mk@gmail.com
+
+console errors: none

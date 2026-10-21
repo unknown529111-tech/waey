@@ -1,10 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingBasket, Trash2, CheckCheck, UtensilsCrossed } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCheck,
+  ShoppingBasket,
+  Trash2,
+  UtensilsCrossed,
+} from "lucide-react";
 import PageHero from "@/components/primitives/PageHero";
-import { useT } from "@/contexts/useLanguage";
+import SectionHeading from "@/components/primitives/SectionHeading";
+import StatBand from "@/components/primitives/StatBand";
+import { useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
 import "./utility-hero.css";
+import "./ShoppingList.css";
 import {
   getShoppingList,
   toggleShoppingItem,
@@ -14,8 +24,10 @@ import {
   type ShoppingItem,
 } from "@/lib/shoppingList";
 
+const SHELL = "mx-auto w-full max-w-[80rem] px-6";
+
 const ShoppingList = () => {
-  const t = useT();
+  const { lang, t } = useLanguage();
   const [items, setItems] = useState<ShoppingItem[]>([]);
 
   useEffect(() => {
@@ -24,93 +36,139 @@ const ShoppingList = () => {
   }, []);
 
   const done = items.filter((i) => i.checked).length;
+  const Arrow = lang === "ar" ? ArrowLeft : ArrowRight;
 
   return (
-    <div className="relative min-h-[60vh]">
-      <div className="relative">
-        <div className="utility-hero">
-          <PageHero
-            title={t("shopping.title")}
-            lead={t("shopping.subtitle")}
-            eyebrow={"Waey · " + t("shopping.title")}
-          />
+    <div className="shopping" dir={lang === "ar" ? "rtl" : "ltr"}>
+      <div className="utility-hero">
+        <PageHero
+          eyebrow={t("shopping.eyebrow")}
+          title={t("shopping.title")}
+          lead={t("shopping.subtitle")}
+        />
+      </div>
+
+      {/* ═══════════ THE LIST ═══════════ */}
+      <section className={SHELL} aria-label={t("shopping.list.title")}>
+        <SectionHeading
+          eyebrow={t("shopping.list.eyebrow")}
+          title={t("shopping.list.title")}
+          lead={t("shopping.list.lead")}
+        />
+
+        <div className="shop-toolbar">
+          <p className="shop-count mono-label">
+            <ShoppingBasket className="size-4 shrink-0" aria-hidden />
+            <span dir="ltr" className="shop-count-value tabular-nums">
+              {items.length}
+            </span>
+            <span>{t("shopping.items")}</span>
+            {done > 0 && (
+              <>
+                <span aria-hidden>·</span>
+                <span dir="ltr" className="shop-count-value tabular-nums">
+                  {done}
+                </span>
+                <span>{t("shopping.done")}</span>
+              </>
+            )}
+          </p>
+
+          <div className="shop-actions">
+            {done > 0 && (
+              <button
+                type="button"
+                onClick={() => setItems(clearCheckedItems())}
+                className="shop-btn shop-btn-soft"
+              >
+                {t("shopping.clearChecked")}
+              </button>
+            )}
+            {items.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setItems(clearShoppingList())}
+                className="shop-btn shop-btn-danger"
+              >
+                {t("shopping.clearAll")}
+              </button>
+            )}
+          </div>
         </div>
 
-        <section className="px-4 sm:px-6 lg:px-8 pb-16 max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <ShoppingBasket className="size-4 text-primary" />
-              <span className="font-bold tabular-nums">{items.length}</span> {t('shopping.items')}
-              {done > 0 && (
-                <span className="text-accent font-bold tabular-nums">
-                  · {done} {t('shopping.done')}
-                </span>
-              )}
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {done > 0 && (
-                <button
-                  onClick={() => setItems(clearCheckedItems())}
-                  className="px-4 py-1.5 rounded-full text-xs font-bold bg-secondary text-foreground hover:bg-muted transition-all duration-300"
-                >
-                  {t('shopping.clearChecked')}
-                </button>
-              )}
-              {items.length > 0 && (
-                <button
-                  onClick={() => setItems(clearShoppingList())}
-                  className="px-4 py-1.5 rounded-full text-xs font-bold bg-destructive/10 text-destructive hover:bg-destructive/20 transition-all duration-300"
-                >
-                  {t('shopping.clearAll')}
-                </button>
-              )}
-            </div>
+        {items.length === 0 ? (
+          <div className="shop-empty">
+            <UtensilsCrossed className="shop-empty-icon size-9" aria-hidden />
+            <p className="font-body shop-empty-text">{t("shopping.empty")}</p>
+            <Link to="/recipes" className="shop-empty-link">
+              {t("shopping.goToRecipes")}
+              <Arrow className="size-4" aria-hidden />
+            </Link>
           </div>
-
-          {items.length === 0 ? (
-            <div className="card p-10 text-center shadow-soft">
-              <UtensilsCrossed className="size-10 text-primary mx-auto mb-4" />
-              <p className="text-muted-foreground mb-6">{t('shopping.empty')}</p>
-              <Link to="/recipes" className="btn btn-moss font-body px-6 py-2.5 text-sm inline-flex items-center gap-2 hover:scale-[1.03] transition-transform">
-                {t('shopping.goToRecipes')}
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-2.5">
-              {items.map((item) => (
-                <div
-                  key={item.key}
-                  className={`group flex items-center gap-4 card px-5 py-3.5 shadow-soft transition-all duration-300 ${
-                    item.checked ? "opacity-60" : "hover:-translate-y-0.5 hover:shadow-moss-lg"
-                  }`}
+        ) : (
+          <ul role="list" className="shop-list">
+            {items.map((item) => (
+              <li
+                key={item.key}
+                className={`shop-item${item.checked ? " is-checked" : ""}`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setItems(toggleShoppingItem(item.key))}
+                  aria-pressed={item.checked}
+                  aria-label={t(
+                    item.checked ? "shopping.markUndone" : "shopping.markDone",
+                    { name: item.name },
+                  )}
+                  className="shop-toggle"
                 >
-                  <button
-                    onClick={() => setItems(toggleShoppingItem(item.key))}
-                    aria-label={t('shopping.done')}
-                    className={`size-6 rounded-full border-2 shrink-0 flex items-center justify-center transition-all duration-300 ${
-                      item.checked
-                        ? "bg-primary border-primary text-primary-foreground"
-                        : "border-border hover:border-primary"
-                    }`}
-                  >
-                    {item.checked && <CheckCheck className="size-3.5" />}
-                  </button>
-                  <span className={`flex-1 leading-relaxed text-sm md:text-base ${item.checked ? "line-through" : ""}`}>
-                    {item.name}
-                  </span>
-                  <button
-                    onClick={() => setItems(removeShoppingItem(item.key))}
-                    aria-label={t('shopping.clearAll')}
-                    className="size-8 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
-                  >
-                    <Trash2 className="size-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+                  <CheckCheck className="size-5" aria-hidden />
+                </button>
+
+                <span className="font-body shop-name">{item.name}</span>
+
+                <button
+                  type="button"
+                  onClick={() => setItems(removeShoppingItem(item.key))}
+                  aria-label={t("shopping.removeItem", { name: item.name })}
+                  className="shop-remove"
+                >
+                  <Trash2 className="size-5" aria-hidden />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* ═══════════ THE THREE NUMBERS ═══════════ */}
+      <div className="shop-metrics">
+        <StatBand
+          items={[
+            { value: String(items.length), label: t("shopping.stat.total") },
+            { value: String(done), label: t("shopping.stat.done") },
+            { value: String(items.length - done), label: t("shopping.stat.left") },
+          ]}
+        />
       </div>
+
+      {/* ═══════════ WHERE NEXT ═══════════ */}
+      <section className={`${SHELL} pb-20`} aria-label={t("shopping.closing.title")}>
+        <div className="shop-cta">
+          <p className="eyebrow">{t("shopping.closing.eyebrow")}</p>
+          <h2 className="font-display shop-cta-title">{t("shopping.closing.title")}</h2>
+          <p className="font-body shop-cta-body">{t("shopping.closing.body")}</p>
+          <div className="shop-cta-actions">
+            <Link to="/recipes" className="shop-cta-primary">
+              {t("shopping.goToRecipes")}
+              <Arrow className="size-4" aria-hidden />
+            </Link>
+            <Link to="/dashboard" className="shop-cta-secondary">
+              {t("shopping.closing.dashboard")}
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

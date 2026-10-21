@@ -7,7 +7,7 @@
 // Run: node scripts/p5-census.mjs <label>
 import { chromium } from "playwright";
 
-const BASE = "http://127.0.0.1:5188";
+const BASE = process.env.BASE || "http://127.0.0.1:5188";
 const LABEL = process.argv[2] || "run";
 
 const CENSUS = () => {

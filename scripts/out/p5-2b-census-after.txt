@@ -1,0 +1,41 @@
+=== after-2b ===
+
+--- /shopping-list ---
+controls: 3 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 174x44 :: Browse recipes
+a 174x44 :: Browse recipes
+a 187x44 :: Open the dashboard
+
+--- /privacy ---
+controls: 12 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 230x44 :: 1. Introduction
+a 230x44 :: 2. Data We Collect
+a 230x44 :: 3. How We Use Your Data
+a 230x44 :: 4. Contact Form
+a 230x44 :: 5. Cookies
+a 230x44 :: 6. Security
+a 230x44 :: 7. Your Rights
+a 230x44 :: 8. Policy Updates
+a 230x44 :: 9. Contact
+a 199x44 :: waey.official.mk@gmail.com
+a 209x44 :: Open the dashboard
+a 263x44 :: waey.official.mk@gmail.com
+
+--- /terms ---
+controls: 11 (0 buttons)
+horizontal overflow: scrollW 1440 vs clientW 1440
+a 230x44 :: 1. Acceptance of Terms
+a 230x44 :: 2. Service Description
+a 230x44 :: 3. Disclaimer
+a 230x44 :: 4. Intellectual Property
+a 230x44 :: 5. Permitted Use
+a 230x44 :: 6. Modifications
+a 230x44 :: 7. Termination
+a 230x44 :: 8. Contact Us
+a 199x44 :: waey.official.mk@gmail.com
+a 209x44 :: Open the dashboard
+a 263x44 :: waey.official.mk@gmail.com
+
+console errors: none
