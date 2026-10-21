@@ -2055,6 +2055,9 @@ const ar: Record<string, string> = {
   'dYK.title': 'هل تعلم؟',
   'dir': 'rtl',
   'recipes.egp': 'جنيه',
+
+  // Shared UI primitives — chrome only; all content arrives as props
+  'prim.statsLabel': 'أرقام تستحق الوقوف عندها',
 };
 
 export default ar;

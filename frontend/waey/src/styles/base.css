@@ -50,13 +50,17 @@
     direction: ltr;
   }
 
+  /* Colour is NOT set here. These rules set typography only, so a heading or
+     paragraph inherits the colour of whatever it sits in. Forcing
+     hsl(var(--foreground)) here overrode the colour of every coloured band
+     (the footer wordmark, the stat band) and made that text invisible.
+     `body` already sets the default ink, so ordinary text is unchanged. */
   h1, h2, h3, h4, h5, h6 {
     font-family: "Fraunces", "Amiri", serif;
     font-weight: 700;
     letter-spacing: -0.01em;
     line-height: 1.15;
     text-wrap: balance;
-    color: hsl(var(--foreground));
   }
 
   [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
@@ -68,7 +72,6 @@
 
   p {
     line-height: 1.8;
-    color: hsl(var(--foreground));
   }
 
   .tabular-nums, [class*="tabular-nums"] {

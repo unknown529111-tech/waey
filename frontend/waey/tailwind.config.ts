@@ -142,11 +142,14 @@ export default {
         soft: "var(--shadow-soft)",
         float: "var(--shadow-float)",
         "soft-lg": "var(--shadow-lift)",
-        "float-lg": "0 20px 50px -12px rgba(193, 140, 93, 0.25)",
+        // The -lg tiers used to be a hardcoded warm clay rgba(193, 140, 93),
+        // which is the retired palette's clay. They now resolve to the
+        // teal shadow tokens so nothing carries the old colour.
+        "float-lg": "var(--shadow-lift)",
         "moss": "var(--shadow-soft)",
         "moss-lg": "var(--shadow-soft-hover)",
         "clay": "var(--shadow-float)",
-        "clay-lg": "0 20px 50px -12px rgba(193, 140, 93, 0.25)",
+        "clay-lg": "var(--shadow-float)",
       },
       keyframes: {
         float: {

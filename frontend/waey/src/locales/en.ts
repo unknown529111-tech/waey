@@ -2057,6 +2057,9 @@ const en: Record<string, string> = {
   'dYK.title': 'Did You Know?',
   'dir': 'ltr',
   'recipes.egp': 'EGP',
+
+  // Shared UI primitives — chrome only; all content arrives as props
+  'prim.statsLabel': 'Numbers worth pausing on',
 };
 
 export default en;
