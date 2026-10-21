@@ -2123,6 +2123,22 @@ const ar: Record<string, string> = {
   'home.cta.lead': 'افتح يومي وسجّل أول عادة، أو اختار وصفة تعملها حالاً.',
   'home.cta.dashboard': 'افتح يومي',
   'home.cta.recipes': 'شوف الوصفات',
+
+  // ── Health field page (rebuilt on the primitives) ──
+  'health.hero.primary': 'افتح يومي',
+  'health.intro.eyebrow': 'المجال باختصار',
+  'health.intro.title': 'الصحة مش مشروع كبير — عادة صغيرة بتتكرر.',
+  'health.intro.lead': 'من الماء والنوم للسكر والوزن، كل أداة هنا تجاوب على سؤال واحد وتوريك أثر العادة قبل ما تحكم عليها.',
+  'health.tools.eyebrow': 'أدوات المجال',
+  'health.tracker.title': 'متتبّع الوزن',
+  'health.tracker.desc': 'سجّل وزنك يوميًا في صفحة «يومي» وشوف اتجاهك مع الوقت.',
+  'health.tips.checklist': 'أربع نصائح تبدأ بها النهاردة',
+  'health.insights.eyebrow': 'رؤى صحية',
+  'health.insights.title': 'نصيحة واحدة تقدر تبدأ بها.',
+  'health.insights.lead': 'أربع أفكار من محتوى وعي نفسه — افتح اللي يناسب يومك.',
+  'health.insights.meta': 'من محتوى وعي',
+  'health.stats.tools': 'أدوات صحية متاحة',
+  'health.stats.tips': 'نصائح عملية',
 };
 
 export default ar;

@@ -1,25 +1,45 @@
-import "./Health.css";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Candy,
+  ClipboardList,
+  Droplet,
+  Flame,
+  HeartPulse,
+  Moon,
+  Scale,
+  Stethoscope,
+  Timer,
+  Utensils,
+  Wind,
+} from "lucide-react";
+import ArticleCard from "@/components/primitives/ArticleCard";
+import PageHero from "@/components/primitives/PageHero";
+import SectionHeading from "@/components/primitives/SectionHeading";
+import StatBand from "@/components/primitives/StatBand";
+import TipList from "@/components/primitives/TipList";
+import ToolCard from "@/components/primitives/ToolCard";
 import { useLanguage } from "@/contexts/useLanguage";
 import { trackEvent } from "@/lib/analytics";
-import { useEffect, useRef, useState } from "react";
+import "./Health.css";
 
 /* ── Interactive Health tools (faithful port of health.html) ── */
 
 type RoutineKey = "morning" | "evening";
-const ROUTINES: Record<RoutineKey, [string, number][]> = {
+const ROUTINES: Record<RoutineKey, { key: string; secs: number }[]> = {
   morning: [
-    ["Drink a glass of water", 45],
-    ["Stretch & roll shoulders", 60],
-    ["Breathe 4-4-6 ×3", 60],
-    ["Set your one key intention", 75],
-    ["Read something light", 60],
+    { key: "routine.morning.step1", secs: 45 },
+    { key: "routine.morning.step2", secs: 60 },
+    { key: "routine.morning.step3", secs: 60 },
+    { key: "routine.morning.step4", secs: 75 },
+    { key: "routine.morning.step5", secs: 60 },
   ],
   evening: [
-    ["Tidy your space", 45],
-    ["Digital sunset (phone away)", 60],
-    ["Stretch & neck rolls", 60],
-    ["Plan tomorrow’s 3 tasks", 75],
-    ["Gratitude: name 1 good thing", 60],
+    { key: "routine.evening.step1", secs: 45 },
+    { key: "routine.evening.step2", secs: 60 },
+    { key: "routine.evening.step3", secs: 60 },
+    { key: "routine.evening.step4", secs: 75 },
+    { key: "routine.evening.step5", secs: 60 },
   ],
 };
 
@@ -31,16 +51,17 @@ function MorningRoutineTool() {
   const [status, setStatus] = useState("");
 
   const steps = ROUTINES[cur];
-  const total = steps.reduce((s, x) => s + x[1], 0);
+  const total = steps.reduce((s, x) => s + x.secs, 0);
   const doneSecs =
-    steps.slice(0, prog.step).reduce((s, x) => s + x[1], 0) + (prog.step < steps.length ? prog.elapsed : 0);
+    steps.slice(0, prog.step).reduce((s, x) => s + x.secs, 0) +
+    (prog.step < steps.length ? prog.elapsed : 0);
   const pct = prog.step >= steps.length ? 100 : Math.min(100, Math.round((doneSecs / total) * 100));
 
   useEffect(() => {
     if (!running) return;
     const id = setInterval(() => {
       setProg((p) => {
-        const dur = ROUTINES[cur][p.step]?.[1] ?? 1;
+        const dur = ROUTINES[cur][p.step]?.secs ?? 1;
         const ne = p.elapsed + 1;
         if (ne >= dur) return { step: p.step + 1, elapsed: 0 };
         return { step: p.step, elapsed: ne };
@@ -54,7 +75,7 @@ function MorningRoutineTool() {
       setRunning(false);
       setStatus(t("health.routineDone"));
     }
-  }, [running, prog.step, cur]);
+  }, [running, prog.step, cur, t]);
 
   useEffect(() => {
     if (running && prog.step > 0 && prog.step < ROUTINES[cur].length) beep();
@@ -73,6 +94,7 @@ function MorningRoutineTool() {
         <div className="seg">
           <button
             type="button"
+            aria-pressed={cur === "morning"}
             className={cur === "morning" ? "active" : ""}
             onClick={() => {
               setCur("morning");
@@ -83,6 +105,7 @@ function MorningRoutineTool() {
           </button>
           <button
             type="button"
+            aria-pressed={cur === "evening"}
             className={cur === "evening" ? "active" : ""}
             onClick={() => {
               setCur("evening");
@@ -93,17 +116,19 @@ function MorningRoutineTool() {
           </button>
         </div>
       </div>
-      <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.75rem" }}>
+      <p className="tool-desc">
         {t("routine.morning.subtitle")} {t("routine.idle")}
       </p>
       <ul className="routine-list">
         {steps.map((s, i) => {
-          const cls =
-            i === prog.step && running ? "active" : i < prog.step ? "done" : "";
+          const cls = i === prog.step && running ? "active" : i < prog.step ? "done" : "";
           return (
-            <li key={i} className={cls}>
-              <span>{s[0]}</span>
-              <span>{s[1]}s</span>
+            <li key={s.key} className={cls}>
+              <span>{t(s.key)}</span>
+              <span>
+                {s.secs}
+                {t("breathing.seconds")}
+              </span>
             </li>
           );
         })}
@@ -111,7 +136,7 @@ function MorningRoutineTool() {
       <div className="progress">
         <div className="progress-fill" style={{ width: `${pct}%` }} />
       </div>
-      <div className="calc-row" style={{ marginTop: "0.75rem" }}>
+      <div className="calc-row calc-actions">
         <button
           className="btn btn-solid"
           type="button"
@@ -130,7 +155,9 @@ function MorningRoutineTool() {
         <button className="btn btn-ghost" type="button" onClick={reset}>
           {t("routine.reset")}
         </button>
-        <span style={{ fontSize: "0.85rem", color: "hsl(var(--muted-foreground))" }}>{status}</span>
+        <span className="tool-note" role="status">
+          {status}
+        </span>
       </div>
     </div>
   );
@@ -145,9 +172,7 @@ function SugarCalculatorTool() {
   const limit = 25;
   const over = Math.max(0, total - limit);
   const score = Math.max(0, Math.min(100, Math.round((limit / Math.max(total, 1)) * 52)));
-  const warn = over > 0
-    ? t("healthCalc.warnOver", { over })
-    : t("healthCalc.warnOk");
+  const warn = over > 0 ? t("healthCalc.warnOver", { over }) : t("healthCalc.warnOk");
 
   return (
     <div className="tool">
@@ -155,31 +180,74 @@ function SugarCalculatorTool() {
         <span className="tool-name">{t("healthCalc.title")}</span>
         <span className="tool-note">{t("healthCalc.note")}</span>
       </div>
-      <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.75rem" }}>
-        {t("healthCalc.desc")}
-      </p>
+      <p className="tool-desc">{t("healthCalc.desc")}</p>
       <div className="sugar-preset">
-        <div className="sp">{t("healthCalc.drinks.label")}<b>35g</b>each</div>
-        <div className="sp">{t("healthCalc.sweets.label")}<b>25g</b>each</div>
-        <div className="sp">{t("healthCalc.fastfood.label")}<b>15g</b>each</div>
+        <div className="sp">
+          {t("healthCalc.drinks.label")}
+          <b>
+            35{t("healthCalc.gram")}
+          </b>
+        </div>
+        <div className="sp">
+          {t("healthCalc.sweets.label")}
+          <b>
+            25{t("healthCalc.gram")}
+          </b>
+        </div>
+        <div className="sp">
+          {t("healthCalc.fastfood.label")}
+          <b>
+            15{t("healthCalc.gram")}
+          </b>
+        </div>
       </div>
       <div className="calc-row">
-        <label>{t("healthCalc.drinks.label")}</label>
-        <input type="number" min={0} value={drink} onChange={(e) => setDrink(parseFloat(e.target.value) || 0)} />
+        <label htmlFor="sugar-drinks">{t("healthCalc.drinks.label")}</label>
+        <input
+          id="sugar-drinks"
+          type="number"
+          min={0}
+          value={drink}
+          onChange={(e) => setDrink(parseFloat(e.target.value) || 0)}
+        />
       </div>
       <div className="calc-row">
-        <label>{t("healthCalc.sweets.label")}</label>
-        <input type="number" min={0} value={sweet} onChange={(e) => setSweet(parseFloat(e.target.value) || 0)} />
+        <label htmlFor="sugar-sweets">{t("healthCalc.sweets.label")}</label>
+        <input
+          id="sugar-sweets"
+          type="number"
+          min={0}
+          value={sweet}
+          onChange={(e) => setSweet(parseFloat(e.target.value) || 0)}
+        />
       </div>
       <div className="calc-row">
-        <label>{t("healthCalc.fastfood.label")}</label>
-        <input type="number" min={0} value={meal} onChange={(e) => setMeal(parseFloat(e.target.value) || 0)} />
+        <label htmlFor="sugar-meals">{t("healthCalc.fastfood.label")}</label>
+        <input
+          id="sugar-meals"
+          type="number"
+          min={0}
+          value={meal}
+          onChange={(e) => setMeal(parseFloat(e.target.value) || 0)}
+        />
       </div>
-      <div className="res-grid">
-        <div className="res"><div className="l">{t("healthCalc.result.total")}</div><div className="v">{total}g</div></div>
-        <div className="res"><div className="l">{t("healthCalc.result.recommended")}</div><div className="v">25g</div></div>
-        <div className="res"><div className="l">{t("healthCalc.result.points")}</div><div className="v">{score}/100</div></div>
-        <div className="res warn"><div className="l">{t("healthCalc.noteLabel")}</div><div className="v" style={{ fontSize: "0.95rem" }}>{warn}</div></div>
+      <div className="res-grid" aria-live="polite">
+        <div className="res">
+          <div className="l">{t("healthCalc.result.total")}</div>
+          <div className="v">{total}g</div>
+        </div>
+        <div className="res">
+          <div className="l">{t("healthCalc.result.recommended")}</div>
+          <div className="v">25g</div>
+        </div>
+        <div className="res">
+          <div className="l">{t("healthCalc.result.points")}</div>
+          <div className="v">{score}/100</div>
+        </div>
+        <div className="res warn">
+          <div className="l">{t("healthCalc.noteLabel")}</div>
+          <div className="v tool-desc">{warn}</div>
+        </div>
       </div>
     </div>
   );
@@ -201,32 +269,87 @@ function CalorieCalculatorTool() {
         <span className="tool-name">{t("calorie.title")}</span>
         <span className="tool-note">{t("calorie.note")}</span>
       </div>
-      <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.75rem" }}>
-        {t("calorie.subtitle")}
-      </p>
+      <p className="tool-desc">{t("calorie.subtitle")}</p>
       <div className="calc-row">
-        <label>{t("calorie.sex")}</label>
+        <span className="calc-label">{t("calorie.sex")}</span>
         <div className="seg">
-          <button type="button" className={sex === "male" ? "active" : ""} onClick={() => setSex("male")}>{t("calorie.male")}</button>
-          <button type="button" className={sex === "female" ? "active" : ""} onClick={() => setSex("female")}>{t("calorie.female")}</button>
+          <button
+            type="button"
+            aria-pressed={sex === "male"}
+            className={sex === "male" ? "active" : ""}
+            onClick={() => setSex("male")}
+          >
+            {t("calorie.male")}
+          </button>
+          <button
+            type="button"
+            aria-pressed={sex === "female"}
+            className={sex === "female" ? "active" : ""}
+            onClick={() => setSex("female")}
+          >
+            {t("calorie.female")}
+          </button>
         </div>
       </div>
-      <div className="calc-row"><label>{t("calorie.weight")}</label><input type="number" min={0} value={w} onChange={(e) => setW(parseFloat(e.target.value) || 0)} /></div>
-      <div className="calc-row"><label>{t("calorie.height")}</label><input type="number" min={0} value={h} onChange={(e) => setH(parseFloat(e.target.value) || 0)} /></div>
-      <div className="calc-row"><label>{t("calorie.age")}</label><input type="number" min={0} value={a} onChange={(e) => setA(parseFloat(e.target.value) || 0)} /></div>
       <div className="calc-row">
-        <label>{t("calorie.activity")}</label>
-        <select value={act} onChange={(e) => setAct(parseFloat(e.target.value))}>
-          <option value={1.2}>{t("calorie.activity.sedentary")} — {t("calorie.activity.sedentary.desc")}</option>
-          <option value={1.375}>{t("calorie.activity.light")} — {t("calorie.activity.light.desc")}</option>
-          <option value={1.55}>{t("calorie.activity.moderate")} — {t("calorie.activity.moderate.desc")}</option>
-          <option value={1.725}>{t("calorie.activity.active")} — {t("calorie.activity.active.desc")}</option>
-          <option value={1.9}>{t("calorie.activity.intense")} — {t("calorie.activity.intense.desc")}</option>
+        <label htmlFor="calorie-weight">{t("calorie.weight")}</label>
+        <input
+          id="calorie-weight"
+          type="number"
+          min={0}
+          value={w}
+          onChange={(e) => setW(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+      <div className="calc-row">
+        <label htmlFor="calorie-height">{t("calorie.height")}</label>
+        <input
+          id="calorie-height"
+          type="number"
+          min={0}
+          value={h}
+          onChange={(e) => setH(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+      <div className="calc-row">
+        <label htmlFor="calorie-age">{t("calorie.age")}</label>
+        <input
+          id="calorie-age"
+          type="number"
+          min={0}
+          value={a}
+          onChange={(e) => setA(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+      <div className="calc-row">
+        <label htmlFor="calorie-activity">{t("calorie.activity")}</label>
+        <select id="calorie-activity" value={act} onChange={(e) => setAct(parseFloat(e.target.value))}>
+          <option value={1.2}>
+            {t("calorie.activity.sedentary")} — {t("calorie.activity.sedentary.desc")}
+          </option>
+          <option value={1.375}>
+            {t("calorie.activity.light")} — {t("calorie.activity.light.desc")}
+          </option>
+          <option value={1.55}>
+            {t("calorie.activity.moderate")} — {t("calorie.activity.moderate.desc")}
+          </option>
+          <option value={1.725}>
+            {t("calorie.activity.active")} — {t("calorie.activity.active.desc")}
+          </option>
+          <option value={1.9}>
+            {t("calorie.activity.intense")} — {t("calorie.activity.intense.desc")}
+          </option>
         </select>
       </div>
-      <div className="res-grid">
-        <div className="res"><div className="l">{t("calorie.bmr")}</div><div className="v">{Math.round(bmr).toLocaleString("en-US")}</div></div>
-        <div className="res"><div className="l">{t("calorie.tdee")}</div><div className="v">{Math.round(tdee).toLocaleString("en-US")}</div></div>
+      <div className="res-grid" aria-live="polite">
+        <div className="res">
+          <div className="l">{t("calorie.bmr")}</div>
+          <div className="v">{Math.round(bmr).toLocaleString("en-US")}</div>
+        </div>
+        <div className="res">
+          <div className="l">{t("calorie.tdee")}</div>
+          <div className="v">{Math.round(tdee).toLocaleString("en-US")}</div>
+        </div>
       </div>
       <p className="calc-note">{t("calorie.disclaimer")}</p>
     </div>
@@ -248,23 +371,64 @@ function WaterCalculatorTool() {
         <span className="tool-name">{t("waterCalc.title")}</span>
         <span className="tool-note">{t("waterCalc.note")}</span>
       </div>
-      <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.75rem" }}>
-        {t("waterCalc.subtitle")}
-      </p>
-      <div className="calc-row"><label>{t("waterCalc.weight")}</label><input type="number" min={0} value={w} onChange={(e) => setW(parseFloat(e.target.value) || 0)} /></div>
-      <div className="calc-row"><label>{t("waterCalc.height")}</label><input type="number" min={0} value={h} onChange={(e) => setH(parseFloat(e.target.value) || 0)} /></div>
-      <div className="calc-row"><label>{t("waterCalc.age")}</label><input type="number" min={0} value={a} onChange={(e) => setA(parseFloat(e.target.value) || 0)} /></div>
+      <p className="tool-desc">{t("waterCalc.subtitle")}</p>
       <div className="calc-row">
-        <label>{t("waterCalc.activity")}</label>
-        <select value={act} onChange={(e) => setAct(e.target.value as "low" | "medium" | "high")}>
-          <option value="low">{t("waterCalc.lowLabel")} — {t("waterCalc.lowDesc")}</option>
-          <option value="medium">{t("waterCalc.medLabel")} — {t("waterCalc.medDesc")}</option>
-          <option value="high">{t("waterCalc.highLabel")} — {t("waterCalc.highDesc")}</option>
+        <label htmlFor="water-weight">{t("waterCalc.weight")}</label>
+        <input
+          id="water-weight"
+          type="number"
+          min={0}
+          value={w}
+          onChange={(e) => setW(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+      <div className="calc-row">
+        <label htmlFor="water-height">{t("waterCalc.height")}</label>
+        <input
+          id="water-height"
+          type="number"
+          min={0}
+          value={h}
+          onChange={(e) => setH(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+      <div className="calc-row">
+        <label htmlFor="water-age">{t("waterCalc.age")}</label>
+        <input
+          id="water-age"
+          type="number"
+          min={0}
+          value={a}
+          onChange={(e) => setA(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+      <div className="calc-row">
+        <label htmlFor="water-activity">{t("waterCalc.activity")}</label>
+        <select
+          id="water-activity"
+          value={act}
+          onChange={(e) => setAct(e.target.value as "low" | "medium" | "high")}
+        >
+          <option value="low">
+            {t("waterCalc.lowLabel")} — {t("waterCalc.lowDesc")}
+          </option>
+          <option value="medium">
+            {t("waterCalc.medLabel")} — {t("waterCalc.medDesc")}
+          </option>
+          <option value="high">
+            {t("waterCalc.highLabel")} — {t("waterCalc.highDesc")}
+          </option>
         </select>
       </div>
-      <div className="res-grid">
-        <div className="res"><div className="l">{t("waterCalc.result")}</div><div className="v">{L.toFixed(1)} L</div></div>
-        <div className="res"><div className="l">{t("waterCalc.aboutLabel")}</div><div className="v">{t("waterCalc.cups", { n: Math.round(L / 0.25) })}</div></div>
+      <div className="res-grid" aria-live="polite">
+        <div className="res">
+          <div className="l">{t("waterCalc.result")}</div>
+          <div className="v">{L.toFixed(1)} L</div>
+        </div>
+        <div className="res">
+          <div className="l">{t("waterCalc.aboutLabel")}</div>
+          <div className="v">{t("waterCalc.cups", { n: Math.round(L / 0.25) })}</div>
+        </div>
       </div>
     </div>
   );
@@ -297,18 +461,25 @@ function SleepCycleTool() {
         <span className="tool-name">{t("sleepCalc.title")}</span>
         <span className="tool-note">{t("sleepCalc.subtitle")}</span>
       </div>
-        <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.75rem" }}>
-          {t("sleepCalc.note")}
-        </p>
+      <p className="tool-desc">{t("sleepCalc.note")}</p>
       <div className="calc-row">
-        <label>{t("sleepCalc.sleepTime")}</label>
-        <input type="time" value={bed} onChange={(e) => setBed(e.target.value)} />
+        <label htmlFor="sleep-bedtime">{t("sleepCalc.sleepTime")}</label>
+        <input
+          id="sleep-bedtime"
+          type="time"
+          value={bed}
+          onChange={(e) => setBed(e.target.value)}
+        />
       </div>
-      <button className="btn btn-solid" type="button" onClick={calc}>{t("sleepCalc.calc")}</button>
-      <div className="res-grid">
+      <button className="btn btn-solid" type="button" onClick={calc}>
+        {t("sleepCalc.calc")}
+      </button>
+      <div className="res-grid" aria-live="polite">
         {out.map((o) => (
           <div className="res" key={o.cycles}>
-            <div className="l">{o.cycles} cycles ({o.hours}h)</div>
+            <div className="l">
+              {o.cycles} cycles ({o.hours}h)
+            </div>
             <div className="v">{o.time}</div>
           </div>
         ))}
@@ -325,17 +496,22 @@ function EgyptianPlateTool() {
         <span className="tool-name">{t("plate.title")}</span>
         <span className="tool-note">{t("plate.subtitle")}</span>
       </div>
-      <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.5rem" }}>
-        {t("plate.subtitle")}
-      </p>
+      <p className="tool-desc">{t("plate.subtitle")}</p>
       <div className="plate-wrap">
         <div className="plate" aria-hidden="true" />
         <div className="plate-legend">
-          <div><b>{t("plate.half")}:</b> {t("plate.vegSection")}</div>
-          <div><b>{t("plate.proteinQuarter")}:</b> {t("plate.proteinSection")}</div>
-          <div><b>{t("plate.carbsQuarter")}:</b> {t("plate.carbsSection")}</div>
-          <div style={{ marginTop: "0.5rem", color: "hsl(var(--muted-foreground))", fontSize: "0.85rem" }}>
-            {t("plate.vegName")}: {t("plate.vegItems")}. {t("plate.proteinName")}: {t("plate.proteinItems")}. {t("plate.carbsName")}: {t("plate.carbsItems")}.
+          <div>
+            <b>{t("plate.half")}:</b> {t("plate.vegSection")}
+          </div>
+          <div>
+            <b>{t("plate.proteinQuarter")}:</b> {t("plate.proteinSection")}
+          </div>
+          <div>
+            <b>{t("plate.carbsQuarter")}:</b> {t("plate.carbsSection")}
+          </div>
+          <div className="tool-note">
+            {t("plate.vegName")}: {t("plate.vegItems")}. {t("plate.proteinName")}:{" "}
+            {t("plate.proteinItems")}. {t("plate.carbsName")}: {t("plate.carbsItems")}.
           </div>
         </div>
       </div>
@@ -345,8 +521,8 @@ function EgyptianPlateTool() {
 
 function BreathingTool() {
   const { t } = useLanguage();
-   const [running, setRunning] = useState(false);
-   const [label, setLabel] = useState(t("breathing.ready"));
+  const [running, setRunning] = useState(false);
+  const [label, setLabel] = useState(t("breathing.ready"));
   const [scale, setScale] = useState(1);
   const runningRef = useRef(false);
   const timer = useRef<number | null>(null);
@@ -388,7 +564,9 @@ function BreathingTool() {
         <span className="tool-note">{t("breathing.subtitle")}</span>
       </div>
       <div className="breath-stage">
-        <div className="breath-circle" style={{ transform: `scale(${scale})` }}>{label}</div>
+        <div className="breath-circle" style={{ transform: `scale(${scale})` }}>
+          {label}
+        </div>
         <button className="btn btn-solid" type="button" onClick={() => setRunning((r) => !r)}>
           {running ? t("breathing.stop") : t("breathing.start")}
         </button>
@@ -427,7 +605,9 @@ function HospitalTool() {
   const govs = Array.from(new Set(HOSPITALS.map((hosp) => hosp.gov))).sort();
   const [gov, setGov] = useState("");
   const [type, setType] = useState("all");
-  const list = HOSPITALS.filter((hosp) => (!gov || hosp.gov === gov) && (type === "all" || hosp.type === type));
+  const list = HOSPITALS.filter(
+    (hosp) => (!gov || hosp.gov === gov) && (type === "all" || hosp.type === type)
+  );
 
   return (
     <div className="tool">
@@ -435,17 +615,23 @@ function HospitalTool() {
         <span className="tool-name">{t("hospital.badge")}</span>
         <span className="tool-note">{t("hospital.note")}</span>
       </div>
-      <p style={{ fontSize: "0.9rem", color: "hsl(var(--muted-foreground))", lineHeight: 1.6, marginBottom: "0.75rem" }}>
-        {t("hospital.subtitle")}
-      </p>
+      <p className="tool-desc">{t("hospital.subtitle")}</p>
       <div className="hosp-controls">
-        <select value={gov} onChange={(e) => setGov(e.target.value)}>
+        <label className="sr-only" htmlFor="hospital-gov">
+          {t("hospital.governorate")}
+        </label>
+        <select id="hospital-gov" value={gov} onChange={(e) => setGov(e.target.value)}>
           <option value="">{t("hospital.selectGovernorate")}</option>
           {govs.map((g) => (
-            <option key={g} value={g}>{g}</option>
+            <option key={g} value={g}>
+              {g}
+            </option>
           ))}
         </select>
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+        <label className="sr-only" htmlFor="hospital-type">
+          {t("hospital.typeLabel")}
+        </label>
+        <select id="hospital-type" value={type} onChange={(e) => setType(e.target.value)}>
           <option value="all">{t("hospital.all")}</option>
           <option value="public">{t("hospital.typePublic")}</option>
           <option value="university">{t("hospital.typeUniversity")}</option>
@@ -459,7 +645,9 @@ function HospitalTool() {
           list.map((hosp) => (
             <li key={hosp.name}>
               <div className="hn">{hosp.name}</div>
-              <div className="hm">{hosp.gov} · {hosp.type}</div>
+              <div className="hm">
+                {hosp.gov} · {hosp.type}
+              </div>
             </li>
           ))
         )}
@@ -471,7 +659,9 @@ function HospitalTool() {
 
 function beep() {
   try {
-    const Ctor = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const Ctor =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     const C = new Ctor();
     const o = C.createOscillator();
     const g = C.createGain();
@@ -489,257 +679,366 @@ function beep() {
   }
 }
 
-/* ── Page ─────────────────────────────────────────────────────── */
+/* ── Page data ────────────────────────────────────────────────── */
 
-const quickTips: { hKey: string; pKey: string }[] = [
-  { hKey: "quicktips.week3.tip1.category", pKey: "quicktips.week3.tip1.tip" },
-  { hKey: "quicktips.week3.tip2.category", pKey: "quicktips.week3.tip2.tip" },
-  { hKey: "quicktips.week3.tip3.category", pKey: "quicktips.week3.tip3.tip" },
-  { hKey: "quicktips.week3.tip4.category", pKey: "quicktips.week3.tip4.tip" },
-  { hKey: "health.recipesHeading", pKey: "health.recipesDesc" },
+const SHELL = "mx-auto w-full max-w-[80rem] px-6 py-14 sm:py-20";
+const GRID = "mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4";
+const TOOL_GRID = "mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3";
+
+// Every card points at a section on this page or a route that exists in App.tsx.
+const TOOLS = [
+  {
+    icon: Droplet,
+    to: "#water",
+    titleKey: "waterCalc.title",
+    descKey: "waterCalc.subtitle",
+  },
+  {
+    icon: Flame,
+    to: "#calories",
+    titleKey: "calorie.title",
+    descKey: "calorie.subtitle",
+  },
+  {
+    icon: Candy,
+    to: "#sugar",
+    titleKey: "healthCalc.title",
+    descKey: "healthCalc.desc",
+  },
+  {
+    icon: Moon,
+    to: "#sleep",
+    titleKey: "sleepCalc.title",
+    descKey: "sleepCalc.subtitle",
+  },
+  {
+    icon: Scale,
+    to: "/dashboard",
+    titleKey: "health.tracker.title",
+    descKey: "health.tracker.desc",
+  },
+  {
+    icon: Timer,
+    to: "#routine",
+    titleKey: "routine.morning.title",
+    descKey: "routine.morning.subtitle",
+  },
+  {
+    icon: Utensils,
+    to: "#plate",
+    titleKey: "plate.title",
+    descKey: "plate.subtitle",
+  },
+  {
+    icon: Wind,
+    to: "#breathing",
+    titleKey: "breathing.title",
+    descKey: "breathing.subtitle",
+  },
+  {
+    icon: Stethoscope,
+    to: "#hospitals",
+    titleKey: "hospital.badge",
+    descKey: "hospital.subtitle",
+  },
+  {
+    icon: HeartPulse,
+    to: "#first-aid",
+    titleKey: "health.firstAid",
+    descKey: "health.firstAidSub",
+  },
+  {
+    icon: ClipboardList,
+    to: "#checkups",
+    titleKey: "health.checkups",
+    descKey: "health.checkupsSub",
+  },
 ];
 
-const officeTips: { hKey: string; pKey: string }[] = [
-  { hKey: "officeHealth.tip1.title", pKey: "officeHealth.tip1.desc" },
-  { hKey: "officeHealth.tip2.title", pKey: "officeHealth.tip2.desc" },
-  { hKey: "officeHealth.tip3.title", pKey: "officeHealth.tip3.desc" },
+const TIPS = [
+  "quicktips.week1.tip1.tip",
+  "quicktips.week1.tip2.tip",
+  "quicktips.week1.tip3.tip",
+  "quicktips.week1.tip4.tip",
 ];
 
-const sleepTips: { hKey: string; pKey: string }[] = [
-  { hKey: "sleepHygiene.digitalSunset.title", pKey: "sleepHygiene.digitalSunset.desc" },
-  { hKey: "sleepHygiene.powerNap.title", pKey: "sleepHygiene.powerNap.desc" },
-  { hKey: "sleepHygiene.food.title", pKey: "sleepHygiene.food.desc" },
-];
-
-const digitalTips: { hKey: string; pKey: string }[] = [
-  { hKey: "digitalWellness.dopamine.title", pKey: "digitalWellness.dopamine.desc" },
-  { hKey: "digitalWellness.cleanup.title", pKey: "digitalWellness.cleanup.desc" },
-];
-
-const stressTips: { hKey: string; pKey: string }[] = [
-  { hKey: "health.stressTip1", pKey: "health.stressDesc1" },
-  { hKey: "health.stressTip2", pKey: "health.stressDesc2" },
-  { hKey: "health.stressTip3", pKey: "health.stressDesc3" },
-  { hKey: "health.stressTip4", pKey: "health.stressDesc4" },
-  { hKey: "health.stressTip5", pKey: "health.stressDesc5" },
-];
-
-const checkups: { tKey: string; cKey: string; fKey: string }[] = [
-  { tKey: "checkups.cbc", cKey: "checkups.all", fKey: "checkups.yearly" },
-  { tKey: "checkups.vitaminD", cKey: "checkups.all", fKey: "checkups.yearlyAfter30" },
-  { tKey: "checkups.hba1c", cKey: "checkups.all", fKey: "checkups.yearly" },
-  { tKey: "checkups.lipids", cKey: "checkups.all", fKey: "checkups.yearly" },
-  { tKey: "checkups.mammogram", cKey: "checkups.women", fKey: "checkups.biennialAfter40" },
-  { tKey: "checkups.psa", cKey: "checkups.men", fKey: "checkups.yearlyAfter45" },
-  { tKey: "checkups.dental", cKey: "checkups.all", fKey: "checkups.every6Months" },
-  { tKey: "checkups.liverKidney", cKey: "checkups.all", fKey: "checkups.yearly" },
-];
-
-const groundSteps: { n: string; labKey: string }[] = [
-  { n: "5", labKey: "health.groundSeeDesc" },
-  { n: "4", labKey: "health.groundTouchDesc" },
-  { n: "3", labKey: "health.groundHearDesc" },
-  { n: "2", labKey: "health.groundSmellDesc" },
-  { n: "1", labKey: "health.groundTasteDesc" },
+const INSIGHTS = [
+  {
+    categoryKey: "health.sleep",
+    titleKey: "sleepHygiene.digitalSunset.title",
+    excerptKey: "sleepHygiene.digitalSunset.desc",
+  },
+  {
+    categoryKey: "health.office",
+    titleKey: "officeHealth.tip1.title",
+    excerptKey: "officeHealth.tip1.desc",
+  },
+  {
+    categoryKey: "health.digital",
+    titleKey: "digitalWellness.dopamine.title",
+    excerptKey: "digitalWellness.dopamine.desc",
+  },
+  {
+    categoryKey: "health.stress",
+    titleKey: "health.stressTip1",
+    excerptKey: "health.stressDesc1",
+  },
 ];
 
 const HEALTH_VIDEO = "/Health-tab.mp4";
 
 const Health = () => {
   const { lang, t } = useLanguage();
+  const { hash, key } = useLocation();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     trackEvent("page_view", { page: "health" });
   }, []);
 
+  // ToolCard renders a router Link, and a hash navigation does not scroll on
+  // its own — so the tool cards' #anchors are honoured here.
+  useEffect(() => {
+    if (!hash) return;
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (!target) return;
+    target.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [hash, key]);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      video.currentTime = 0;
+      return;
+    }
     const p = video.play();
     if (p && typeof p.catch === "function") p.catch(() => undefined);
   }, []);
 
   return (
-    <div className="relative" dir={lang === "ar" ? "rtl" : "ltr"}>
-      <div className="field-hero-media">
-        <video
-          className="field-video-bg"
-          ref={videoRef}
-          src={HEALTH_VIDEO}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
+    <div dir={lang === "ar" ? "rtl" : "ltr"} className="health">
+      <PageHero
+        eyebrow={t("health.eyebrow")}
+        title={t("health.title")}
+        lead={t("health.subtitle")}
+        primaryAction={{ label: t("health.hero.primary"), to: "/dashboard" }}
+        media={
+          <div className="health-media">
+            <video
+              ref={videoRef}
+              src={HEALTH_VIDEO}
+              loop
+              muted
+              playsInline
+              preload="auto"
+              disablePictureInPicture
+              aria-hidden="true"
+            />
+          </div>
+        }
+      />
+
+      <section className={SHELL} aria-label={t("health.intro.title")}>
+        <SectionHeading
+          eyebrow={t("health.intro.eyebrow")}
+          title={t("health.intro.title")}
+          lead={t("health.intro.lead")}
         />
-        <div className="field-video-overlay" aria-hidden="true" />
-
-        <header className="field-hero">
-          <p className="field-eyebrow">{t("health.eyebrow")}</p>
-          <h1 className="field-title">{t("health.title")}</h1>
-          <p className="field-desc">{t("quicktips.subtitle")}</p>
-        </header>
-      </div>
-
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("quicktips.title")}</p>
-          <h2 className="field-section-title">{t("health.h2.quickDrops1")} <em>{t("health.h2.quickDrops2")}</em></h2>
-        </div>
       </section>
-      <div className="feature-grid">
-        {quickTips.map((m) => (
-          <div className="feature" key={m.hKey}><h3>{t(m.hKey)}</h3><p>{t(m.pKey)}</p></div>
-        ))}
-      </div>
 
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.office")}</p>
-          <h2 className="field-section-title">{t("health.h2.protectBody1")} <em>{t("health.h2.protectBody2")}</em></h2>
+      <section className={SHELL} aria-label={t("health.tools")}>
+        <SectionHeading
+          eyebrow={t("health.tools.eyebrow")}
+          title={t("health.tools")}
+          lead={t("health.toolsSub")}
+        />
+        <div className={TOOL_GRID}>
+          {TOOLS.map(({ icon, to, titleKey, descKey }, i) => (
+            <div key={titleKey} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+              <ToolCard
+                icon={icon}
+                to={to}
+                title={t(titleKey)}
+                description={t(descKey)}
+              />
+            </div>
+          ))}
         </div>
-      </section>
-      <div className="feature-grid">
-        {officeTips.map((m) => (
-          <div className="feature" key={m.hKey}><h3>{t(m.hKey)}</h3><p>{t(m.pKey)}</p></div>
-        ))}
-      </div>
 
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.firstAid")}</p>
-          <h2 className="field-section-title">{t("health.h2.firstAid1")} <em>{t("health.h2.firstAid2")}</em></h2>
-          <p className="field-section-sub">{t("health.firstAidSub")}</p>
-        </div>
-        <div className="two-col">
-          <div className="panel">
-            <h4>{t("firstAid.burns.title")}</h4>
-            <ol className="steps">
-              <li>{t("firstAid.burns.step1")}</li>
-              <li>{t("firstAid.burns.step2")}</li>
-              <li>{t("firstAid.burns.step3")}</li>
-              <li>{t("firstAid.burns.step4")}</li>
-            </ol>
+        <div className="health-tools-grid mt-10 grid gap-6 lg:grid-cols-2">
+          <div id="routine" className="health-anchor min-w-0">
+            <MorningRoutineTool />
           </div>
-          <div className="panel">
-            <h4>{t("firstAid.choking.title")}</h4>
-            <ol className="steps">
-              <li>{t("firstAid.choking.step1")}</li>
-              <li>{t("firstAid.choking.step2")}</li>
-              <li>{t("firstAid.choking.step3")}</li>
-              <li>{t("firstAid.choking.step4")}</li>
-            </ol>
+          <div id="water" className="health-anchor min-w-0">
+            <WaterCalculatorTool />
+          </div>
+          <div id="calories" className="health-anchor min-w-0">
+            <CalorieCalculatorTool />
+          </div>
+          <div id="sugar" className="health-anchor min-w-0">
+            <SugarCalculatorTool />
+          </div>
+          <div id="sleep" className="health-anchor min-w-0">
+            <SleepCycleTool />
+          </div>
+          <div id="plate" className="health-anchor min-w-0">
+            <EgyptianPlateTool />
+          </div>
+          <div id="breathing" className="health-anchor min-w-0">
+            <BreathingTool />
+          </div>
+          <div id="hospitals" className="health-anchor min-w-0">
+            <HospitalTool />
           </div>
         </div>
-        <div className="panel" style={{ marginTop: "1rem" }}>
-          <h4>{t("firstAid.sugarDrop.title")}</h4>
-          <ol className="steps">
-            <li>{t("firstAid.sugarDrop.step1")}</li>
-            <li>{t("firstAid.sugarDrop.step2")}</li>
-            <li>{t("firstAid.sugarDrop.step3")}</li>
-            <li>{t("firstAid.sugarDrop.step4")}</li>
-          </ol>
+
+        <div id="first-aid" className="health-anchor mt-14">
+          <h2 className="font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+            {t("health.firstAid")}
+          </h2>
+          <p className="font-body mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {t("health.firstAidSub")}
+          </p>
+          <div className="two-col">
+            <div className="panel">
+              <h4>{t("firstAid.burns.title")}</h4>
+              <ol className="steps">
+                <li>{t("firstAid.burns.step1")}</li>
+                <li>{t("firstAid.burns.step2")}</li>
+                <li>{t("firstAid.burns.step3")}</li>
+                <li>{t("firstAid.burns.step4")}</li>
+              </ol>
+            </div>
+            <div className="panel">
+              <h4>{t("firstAid.choking.title")}</h4>
+              <ol className="steps">
+                <li>{t("firstAid.choking.step1")}</li>
+                <li>{t("firstAid.choking.step2")}</li>
+                <li>{t("firstAid.choking.step3")}</li>
+                <li>{t("firstAid.choking.step4")}</li>
+              </ol>
+            </div>
+          </div>
+          <div className="panel mt-4">
+            <h4>{t("firstAid.sugarDrop.title")}</h4>
+            <ol className="steps">
+              <li>{t("firstAid.sugarDrop.step1")}</li>
+              <li>{t("firstAid.sugarDrop.step2")}</li>
+              <li>{t("firstAid.sugarDrop.step3")}</li>
+              <li>{t("firstAid.sugarDrop.step4")}</li>
+            </ol>
+          </div>
+        </div>
+
+        <div id="checkups" className="health-anchor mt-14">
+          <h2 className="font-display text-3xl tracking-tight text-foreground sm:text-4xl">
+            {t("health.checkups")}
+          </h2>
+          <p className="font-body mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {t("health.checkupsSub")}
+          </p>
+          <div className="mt-8 overflow-x-auto">
+            <table className="ck-table">
+              <caption className="sr-only">{t("checkups.title")}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{t("checkups.test")}</th>
+                  <th scope="col">{t("checkups.category")}</th>
+                  <th scope="col">{t("checkups.frequency")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { tKey: "checkups.cbc", cKey: "checkups.all", fKey: "checkups.yearly" },
+                  { tKey: "checkups.vitaminD", cKey: "checkups.all", fKey: "checkups.yearlyAfter30" },
+                  { tKey: "checkups.hba1c", cKey: "checkups.all", fKey: "checkups.yearly" },
+                  { tKey: "checkups.lipids", cKey: "checkups.all", fKey: "checkups.yearly" },
+                  { tKey: "checkups.mammogram", cKey: "checkups.women", fKey: "checkups.biennialAfter40" },
+                  { tKey: "checkups.psa", cKey: "checkups.men", fKey: "checkups.yearlyAfter45" },
+                  { tKey: "checkups.dental", cKey: "checkups.all", fKey: "checkups.every6Months" },
+                  { tKey: "checkups.liverKidney", cKey: "checkups.all", fKey: "checkups.yearly" },
+                ].map((row) => (
+                  <tr key={row.tKey}>
+                    <td>{t(row.tKey)}</td>
+                    <td>{t(row.cKey)}</td>
+                    <td>{t(row.fKey)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.sleep")}</p>
-          <h2 className="field-section-title">{t("health.h2.rest1")} <em>{t("health.h2.rest2")}</em></h2>
+      <section className={SHELL} aria-label={t("quicktips.title")}>
+        <SectionHeading
+          eyebrow={t("health.eyebrow")}
+          title={t("quicktips.title")}
+          lead={t("quicktips.subtitle")}
+        />
+        <div className="mt-10 max-w-3xl">
+          <TipList title={t("health.tips.checklist")} items={TIPS.map((key) => t(key))} />
         </div>
       </section>
-      <div className="feature-grid">
-        {sleepTips.map((m) => (
-          <div className="feature" key={m.hKey}><h3>{t(m.hKey)}</h3><p>{t(m.pKey)}</p></div>
-        ))}
-      </div>
 
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.digital")}</p>
-          <h2 className="field-section-title">{t("health.h2.attention1")} <em>{t("health.h2.attention2")}</em></h2>
-        </div>
-      </section>
-      <div className="feature-grid">
-        {digitalTips.map((m) => (
-          <div className="feature" key={m.hKey}><h3>{t(m.hKey)}</h3><p>{t(m.pKey)}</p></div>
-        ))}
-      </div>
-
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.checkups")}</p>
-          <h2 className="field-section-title">{t("health.h2.serviceBody1")} <em>{t("health.h2.serviceBody2")}</em></h2>
-          <p className="field-section-sub">{t("health.checkupsSub")}</p>
-        </div>
-        <table className="ck-table">
-          <thead>
-            <tr><th>{t("checkups.test")}</th><th>{t("checkups.category")}</th><th>{t("checkups.frequency")}</th></tr>
-          </thead>
-          <tbody>
-            {checkups.map((row) => (
-              <tr key={row.tKey}><td>{t(row.tKey)}</td><td>{t(row.cKey)}</td><td>{t(row.fKey)}</td></tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.stress")}</p>
-          <h2 className="field-section-title">{t("health.h2.calm1")} <em>{t("health.h2.calm2")}</em></h2>
-        </div>
-      </section>
-      <div className="feature-grid">
-        {stressTips.map((m) => (
-          <div className="feature" key={m.hKey}><h3>{t(m.hKey)}</h3><p>{t(m.pKey)}</p></div>
-        ))}
-      </div>
-
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.grounding")}</p>
-          <h2 className="field-section-title">{t("health.h2.present1")} <em>{t("health.h2.present2")}</em></h2>
-          <p className="field-section-sub">{t("health.groundingDesc")}</p>
-        </div>
-        <div className="ground">
-          {groundSteps.map((g) => (
-            <div className="g" key={g.n}>
-              <div className="n">{g.n}</div>
-              <div className="lab">{t(g.labKey)}</div>
+      <section className={SHELL} aria-label={t("health.insights.title")}>
+        <SectionHeading
+          eyebrow={t("health.insights.eyebrow")}
+          title={t("health.insights.title")}
+          lead={t("health.insights.lead")}
+          action={{ label: t("home.insights.action"), to: "/insights" }}
+        />
+        <div className={GRID}>
+          {INSIGHTS.map(({ categoryKey, titleKey, excerptKey }, i) => (
+            <div key={titleKey} className="stagger-item" style={{ "--i": i } as CSSProperties}>
+              <ArticleCard
+                category={t(categoryKey)}
+                title={t(titleKey)}
+                excerpt={t(excerptKey)}
+                meta={t("health.insights.meta")}
+                to="/insights"
+                field="health"
+              />
             </div>
           ))}
         </div>
       </section>
 
-      <section className="closing">
-        <p>{t("health.perfectTitle")}</p>
-        <p className="small">
-          {t("health.perfectBody")} {t("health.restMind")} {t("health.breathe")}
-        </p>
-      </section>
+      <div className="health-stat">
+        <StatBand
+          items={[
+            { value: String(TOOLS.length), label: t("health.stats.tools") },
+            { value: String(TIPS.length), label: t("health.stats.tips") },
+            { value: "0", label: t("home.stats.ads") },
+            { value: "100%", label: t("home.stats.data") },
+          ]}
+        />
+      </div>
 
-      <section className="field-section">
-        <div className="field-section-head">
-          <p className="field-section-kicker">{t("health.tools")}</p>
-          <h2 className="field-section-title">{t("health.h2.work1")} <em>{t("health.h2.work2")}</em></h2>
-          <p className="field-section-sub">{t("health.toolsSub")}</p>
+      <section className={SHELL}>
+        <div className="health-cta">
+          <p className="eyebrow mb-3">{t("home.cta.eyebrow")}</p>
+          <h2 className="font-display text-3xl text-balance tracking-tight text-foreground sm:text-4xl">
+            {t("health.perfectTitle")}
+          </h2>
+          <p className="font-body mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {t("health.perfectBody")}
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/dashboard" className="btn btn-solid min-h-11 px-6 text-sm">
+              {t("home.cta.dashboard")}
+            </Link>
+            <Link to="/insights" className="btn btn-ghost min-h-11 px-6 text-sm">
+              {t("home.insights.action")}
+            </Link>
+          </div>
         </div>
-        <MorningRoutineTool />
-        <SugarCalculatorTool />
-        <CalorieCalculatorTool />
-        <WaterCalculatorTool />
-        <SleepCycleTool />
-        <EgyptianPlateTool />
-        <BreathingTool />
-        <HospitalTool />
       </section>
-
-      <footer className="footer">
-        <p>{t("footer.tagline")} <a href="/">{t("footer.backHome")}</a></p>
-      </footer>
     </div>
   );
 };

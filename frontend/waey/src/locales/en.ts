@@ -2125,6 +2125,22 @@ const en: Record<string, string> = {
   'home.cta.lead': 'Open Today and log your first habit, or pick a recipe you can cook right now.',
   'home.cta.dashboard': 'Open Today',
   'home.cta.recipes': 'Browse recipes',
+
+  // ── Health field page (rebuilt on the primitives) ──
+  'health.hero.primary': 'Open Today',
+  'health.intro.eyebrow': 'The field at a glance',
+  'health.intro.title': 'Health is not a big project — it is a small habit repeated.',
+  'health.intro.lead': 'From water and sleep to sugar and weight, each tool here answers one question and shows you a habit’s effect before you judge it.',
+  'health.tools.eyebrow': 'Field tools',
+  'health.tracker.title': 'Weight tracker',
+  'health.tracker.desc': 'Log your weight in Today and watch the trend over time.',
+  'health.tips.checklist': 'Four tips to start with today',
+  'health.insights.eyebrow': 'Health insights',
+  'health.insights.title': 'One tip you can start with.',
+  'health.insights.lead': 'Four ideas drawn from Waey’s own health content — open the one that fits your day.',
+  'health.insights.meta': 'From Waey content',
+  'health.stats.tools': 'health tools available',
+  'health.stats.tips': 'practical tips',
 };
 
 export default en;

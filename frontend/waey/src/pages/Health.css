@@ -1,80 +1,387 @@
 /* ────────────────────────────────────────────────────────────
-   Health page-specific classes (port of health.html)
-   Styles not present in redesign.css, restyled with Waey tokens
-   so the page auto-reskins under [data-theme="dark"].
+   Health — the field page on the "Cool awareness" system.
+   Page-specific classes only: the accent scope, the hero media
+   frame, the anchored tool panels and the closing CTA. Token-driven
+   so the whole page reskins under [data-theme="dark"].
    ──────────────────────────────────────────────────────────── */
 
-/* ── Checkup table ──────────────────────────────────────────── */
-.ck-table { width: calc(100% - 3rem); max-width: 80rem; margin-inline: auto; border-collapse: collapse; border: 1px solid hsl(var(--border)); border-radius: 1.5rem; overflow: hidden; }
-.ck-table th, .ck-table td { text-align: left; padding: 0.9rem 1.25rem; border-bottom: 1px solid hsl(var(--border)); font-size: 0.9rem; color: hsl(var(--foreground)); }
-.ck-table thead th { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: hsl(var(--muted-foreground)); font-weight: 600; background: var(--surface-2); }
-.ck-table tbody tr:last-child td { border-bottom: none; }
+.health {
+  overflow-x: clip;
+  /* ToolCard / TipList read the current-field tokens; on this page the
+     current field is health, so their plates and ticks turn pink. */
+  --field-current: var(--field-health);
+  --field-current-soft: var(--field-health-soft);
+  --field-current-tint: var(--field-health-tint);
+}
 
-/* ── Grounding grid (5-4-3-2-1) ─────────────────────────────── */
-.ground { max-width: 80rem; margin-inline: auto; padding: 1.75rem 1.5rem 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
-.ground .g { border: 1px solid hsl(var(--border)); border-radius: 1.25rem; padding: 1.1rem; text-align: center; background: hsl(var(--card)); }
-.ground .g .n { font-family: "Fraunces", "Amiri", serif; font-size: 2.2rem; color: hsl(var(--foreground)); }
-.ground .g .lab { font-size: 0.78rem; color: hsl(var(--muted-foreground)); margin-top: 0.3rem; line-height: 1.4; }
+/* ── Hero media — the field clip, watermark cropped (1088×626) ── */
+.health-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  box-shadow: var(--shadow-float);
+}
+
+.health-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1088 / 626;
+  object-fit: cover;
+}
+
+/* ── Anchor targets under the sticky navbar ─────────────────── */
+.health-anchor {
+  scroll-margin-top: 7rem;
+}
+
+.health-tools-grid > * > .tool {
+  height: 100%;
+  margin-top: 0;
+}
+
+/* ── Tool body typography ──────────────────────────────────── */
+.tool-desc {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: hsl(var(--muted-foreground));
+}
+
+.calc-label {
+  min-width: 9rem;
+  font-size: 0.85rem;
+  color: hsl(var(--foreground));
+}
+
+.calc-actions {
+  margin-top: 0.75rem;
+}
 
 /* ── Segmented control (sex / routine toggles) ──────────────── */
-.seg { display: inline-flex; border: 1px solid hsl(var(--foreground)); border-radius: var(--radius-pill); overflow: hidden; }
-.seg button { padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 500; color: hsl(var(--foreground)); background: hsl(var(--card)); cursor: pointer; font-family: inherit; }
-.seg button.active { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); box-shadow: var(--shadow-soft); }
+.seg {
+  display: inline-flex;
+  border: 1px solid hsl(var(--foreground));
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+.seg button {
+  min-height: 2.75rem;
+  padding: 0.45rem 1.1rem;
+  border: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  background: hsl(var(--card));
+  cursor: pointer;
+  font-family: inherit;
+}
+.seg button.active {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-soft);
+}
 
 /* ── Calculator rows + result cards ─────────────────────────── */
-.calc-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.7rem; }
-.calc-row label { font-size: 0.85rem; min-width: 9rem; color: hsl(var(--foreground)); }
-.calc-row input, .calc-row select { border: 1px solid hsl(var(--border)); border-radius: 1rem; padding: 0.55rem 0.7rem; font-size: 0.9rem; font-family: inherit; color: hsl(var(--foreground)); background: hsl(var(--card)); }
-.calc-row input:focus, .calc-row select:focus { outline: none; border-color: hsl(var(--foreground)); box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
-.res-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1rem; }
-.res { border: 1px solid hsl(var(--border)); border-radius: 1.25rem; padding: 1rem; }
-.res .l { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: hsl(var(--muted-foreground)); font-weight: 600; }
-.res .v { font-family: "Fraunces", "Amiri", serif; font-size: 1.8rem; margin-top: 0.25rem; color: hsl(var(--foreground)); }
-.res.warn { border-color: hsl(var(--foreground)); }
-.res.warn .v { font-size: 1.3rem; }
-.calc-note { font-size: 0.8rem; color: hsl(var(--muted-foreground)); margin-top: 0.8rem; line-height: 1.5; }
+.calc-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.7rem;
+}
+.calc-row label,
+.calc-row .calc-label {
+  font-size: 0.85rem;
+  min-width: 9rem;
+  color: hsl(var(--foreground));
+}
+.calc-row input,
+.calc-row select,
+.hosp-controls select {
+  min-height: 2.75rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: hsl(var(--foreground));
+  background: hsl(var(--card));
+}
+.calc-row input:focus-visible,
+.calc-row select:focus-visible,
+.hosp-controls select:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.res {
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.25rem;
+  padding: 1rem;
+}
+.res .l {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+}
+.res .v {
+  font-family: "Fraunces", "Amiri", serif;
+  font-size: 1.8rem;
+  margin-top: 0.25rem;
+  color: hsl(var(--foreground));
+}
+.res.warn {
+  border-color: hsl(var(--field-health));
+}
+.res.warn .v {
+  font-size: 0.95rem;
+}
+.calc-note {
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.8rem;
+  line-height: 1.5;
+}
 
 /* ── Sugar presets ──────────────────────────────────────────── */
-.sugar-preset { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
-.sugar-preset .sp { border: 1px solid hsl(var(--border)); border-radius: 1.25rem; padding: 0.6rem 0.8rem; font-size: 0.82rem; color: hsl(var(--foreground)); }
-.sugar-preset .sp b { display: block; font-family: "Fraunces", "Amiri", serif; font-size: 1.2rem; }
+.sugar-preset {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+.sugar-preset .sp {
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.25rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  color: hsl(var(--foreground));
+}
+.sugar-preset .sp b {
+  display: block;
+  font-family: "Fraunces", "Amiri", serif;
+  font-size: 1.2rem;
+}
 
 /* ── Egyptian plate ─────────────────────────────────────────── */
-.plate-wrap { display: grid; grid-template-columns: 200px 1fr; gap: 1.5rem; align-items: center; margin-top: 1rem; }
-.plate { width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(hsl(var(--primary)) 0 50%, hsl(var(--secondary)) 50% 75%, #AAA 75% 100%); border: 1px solid hsl(var(--foreground)); position: relative; }
-.plate::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); }
-.plate-legend div { font-size: 0.88rem; margin-bottom: 0.4rem; color: hsl(var(--foreground)); }
-.plate-legend b { font-family: "Fraunces", "Amiri", serif; }
+.plate-wrap {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+.plate {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    hsl(var(--primary)) 0 50%,
+    hsl(var(--secondary)) 50% 75%,
+    hsl(var(--muted-foreground)) 75% 100%
+  );
+  border: 1px solid hsl(var(--foreground));
+  position: relative;
+}
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+}
+.plate-legend div {
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+  color: hsl(var(--foreground));
+}
+.plate-legend b {
+  font-family: "Fraunces", "Amiri", serif;
+}
 
 /* ── Breathing exercise ─────────────────────────────────────── */
-.breath-stage { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; margin-top: 1rem; }
-.breath-circle { width: 140px; height: 140px; border-radius: 50%; border: 2px solid hsl(var(--foreground)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 600; color: hsl(var(--foreground)); transition: transform 0.4s ease; }
+.breath-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+.breath-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--field-health));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  transition: transform 0.4s ease;
+}
 
 /* ── Routine tracker ────────────────────────────────────────── */
-.routine-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; padding: 0; }
-.routine-list li { border: 1px solid hsl(var(--border)); border-radius: 1rem; padding: 0.7rem 0.9rem; font-size: 0.9rem; display: flex; justify-content: space-between; gap: 1rem; color: hsl(var(--foreground)); }
-.routine-list li.active { border-color: hsl(var(--foreground)); background: var(--surface-2); }
-.routine-list li.done { color: hsl(var(--muted-foreground)); }
-.progress { height: 12px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-top: 0.75rem; }
-.progress-fill { height: 100%; width: 0%; background: hsl(var(--primary)); border-radius: 999px; transition: width 0.3s linear; }
+.routine-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+.routine-list li {
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: hsl(var(--foreground));
+}
+.routine-list li.active {
+  border-color: hsl(var(--field-health));
+  background: hsl(var(--field-health-tint));
+}
+.routine-list li.done {
+  color: hsl(var(--muted-foreground));
+}
+.progress {
+  height: 12px;
+  background: hsl(var(--muted));
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: hsl(var(--field-health));
+  border-radius: 999px;
+  transition: width 0.3s linear;
+}
 
 /* ── Hospital directory ─────────────────────────────────────── */
-.hosp-controls { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
-.hosp-controls select { border: 1px solid hsl(var(--border)); border-radius: 1rem; padding: 0.55rem 0.7rem; font-size: 0.9rem; font-family: inherit; color: hsl(var(--foreground)); background: hsl(var(--card)); }
-.hosp-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; padding: 0; }
-.hosp-list li { border: 1px solid hsl(var(--border)); border-radius: 1.25rem; padding: 0.9rem 1rem; }
-.hosp-list .hn { font-family: "Fraunces", "Amiri", serif; font-size: 1.2rem; color: hsl(var(--foreground)); }
-.hosp-list .hm { font-size: 0.82rem; color: hsl(var(--muted-foreground)); margin-top: 0.2rem; }
-.hosp-empty { color: hsl(var(--muted-foreground)); }
+.hosp-controls {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.hosp-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0;
+}
+.hosp-list li {
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.25rem;
+  padding: 0.9rem 1rem;
+}
+.hosp-list .hn {
+  font-family: "Fraunces", "Amiri", serif;
+  font-size: 1.2rem;
+  color: hsl(var(--foreground));
+}
+.hosp-list .hm {
+  font-size: 0.82rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.2rem;
+}
+.hosp-empty {
+  color: hsl(var(--muted-foreground));
+}
 
-/* ── Responsive (match export breakpoint) ───────────────────── */
+/* ── Checkup table ──────────────────────────────────────────── */
+.ck-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+.ck-table th,
+.ck-table td {
+  text-align: start;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: 0.9rem;
+  color: hsl(var(--foreground));
+}
+.ck-table thead th {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  background: hsl(var(--muted));
+}
+.ck-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Stat band — the page's own accent, not the platform emerald ── */
+.health-stat {
+  --primary: var(--field-health);
+}
+
+/* ── Tap-target floor for every pressable in the tool panels ── */
+.health .btn {
+  min-height: 2.75rem;
+}
+
+/* ── Closing CTA — the health tint, one quiet plate ─────────── */
+.health-cta {
+  border-radius: var(--radius-card);
+  border: 1px solid hsl(var(--field-health) / 0.35);
+  background: hsl(var(--field-health-tint));
+  padding: clamp(2rem, 5vw, 3.5rem);
+  box-shadow: var(--shadow-soft);
+  text-align: start;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 720px) {
-  .ground { grid-template-columns: repeat(2, 1fr); }
-  .res-grid { grid-template-columns: 1fr; }
-  .plate-wrap { grid-template-columns: 1fr; justify-items: center; }
-  .ck-table { width: calc(100% - 2.5rem); }
-  .ck-table thead { display: none; }
-  .ck-table, .ck-table tbody, .ck-table tr, .ck-table td { display: block; width: 100%; }
-  .ck-table tr { border-bottom: 1px solid hsl(var(--border)); padding: 0.5rem 0; }
-  .ck-table td { border-bottom: none; padding: 0.3rem 1.25rem; }
+  .res-grid {
+    grid-template-columns: 1fr;
+  }
+  .plate-wrap {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .ck-table {
+    min-width: 0;
+  }
+  .ck-table thead {
+    display: none;
+  }
+  .ck-table,
+  .ck-table tbody,
+  .ck-table tr,
+  .ck-table td {
+    display: block;
+    width: 100%;
+  }
+  .ck-table tr {
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 0.5rem 0;
+  }
+  .ck-table td {
+    border-bottom: none;
+    padding: 0.3rem 1.25rem;
+  }
 }
