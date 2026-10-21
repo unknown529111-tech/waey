@@ -63,8 +63,6 @@ function AppRoutes() {
         <Route path="/recipes" element={<ErrorBoundary><Recipes /></ErrorBoundary>} />
         <Route path="/shopping-list" element={<ErrorBoundary><ShoppingList /></ErrorBoundary>} />
         <Route path="/education" element={<ErrorBoundary><Education /></ErrorBoundary>} />
-        <Route path="/quiz" element={<Navigate to="/" replace />} />
-        <Route path="/plans" element={<Navigate to="/" replace />} />
         <Route path="/privacy" element={<ErrorBoundary><Privacy /></ErrorBoundary>} />
         <Route path="/terms" element={<ErrorBoundary><Terms /></ErrorBoundary>} />
         <Route path="/admin" element={<ErrorBoundary><Admin /></ErrorBoundary>} />

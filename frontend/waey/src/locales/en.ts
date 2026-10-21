@@ -1,7 +1,6 @@
 const en: Record<string, string> = {
   // Navbar
   'nav.home': 'Home',
-  'nav.design': 'Design Agency',
   'nav.health': 'Health',
   'nav.finance': 'Finance',
   'nav.environment': 'Environment',
@@ -24,6 +23,12 @@ const en: Record<string, string> = {
   'nav.menu': 'Menu',
   'nav.loggedInAs': 'Signed in as',
   'nav.homeLink': 'Waey - Home',
+  'nav.langSwitch': 'عربي',
+  'nav.close': 'Close',
+
+  // Brand
+  'brand.name': 'Waey',
+  'brand.tagline': 'Awareness in one calm place',
 
   // Auth
   'auth.name': 'Full Name',
@@ -1650,6 +1655,11 @@ const en: Record<string, string> = {
   'footer.ownerLinkedin': 'LinkedIn',
   'footer.ownerFacebookTitle': 'Founder Personal Facebook',
   'footer.ownerLinkedinTitle': 'Founder Personal LinkedIn',
+  'footer.groupFields': 'Fields',
+  'footer.groupFeatures': 'App features',
+  'footer.groupLegal': 'Legal',
+  'footer.link.trackers': 'Daily trackers',
+  'footer.legal': '© {year} Waey. All rights reserved.',
 
   // Theme Toggle
   'themeToggle.dark': 'Dark mode',

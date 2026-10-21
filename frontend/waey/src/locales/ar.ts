@@ -1,7 +1,6 @@
 const ar: Record<string, string> = {
   // Navbar
   'nav.home': 'الرئيسية',
-  'nav.design': 'تصميم الوكالة',
   'nav.health': 'الصحة',
   'nav.finance': 'المالية',
   'nav.environment': 'البيئة',
@@ -24,6 +23,12 @@ const ar: Record<string, string> = {
   'nav.menu': 'القائمة',
   'nav.loggedInAs': 'مسجل الدخول كـ',
   'nav.homeLink': 'وعي - الرئيسية',
+  'nav.langSwitch': 'EN',
+  'nav.close': 'إغلاق',
+
+  // Brand
+  'brand.name': 'وعي',
+  'brand.tagline': 'وعي في مكان هادئ واحد',
 
   // Auth
   'auth.name': 'الاسم',
@@ -1651,6 +1656,11 @@ const ar: Record<string, string> = {
   'footer.ownerLinkedin': 'لينكد إن',
   'footer.ownerFacebookTitle': 'فيسبوك الشخصي للمؤسس',
   'footer.ownerLinkedinTitle': 'لينكد إن الشخصي للمؤسس',
+  'footer.groupFields': 'المجالات',
+  'footer.groupFeatures': 'ميزات التطبيق',
+  'footer.groupLegal': 'قانوني',
+  'footer.link.trackers': 'المتتبعات اليومية',
+  'footer.legal': '© {year} وعي. جميع الحقوق محفوظة.',
 
   // Theme Toggle
   'themeToggle.dark': 'الوضع الداكن',
