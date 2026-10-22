@@ -62,15 +62,15 @@ const NightReview = () => {
           <label className="text-xs font-bold flex items-center gap-1.5 mb-1.5">
             <Trophy className="size-3.5 text-secondary" /> {t('daily.nightReview.achievement')}
           </label>
-          <input value={achievement} onChange={(e) => setAchievement(e.target.value)} placeholder={t('daily.nightReview.achievementPlaceholder')} className="w-full field rounded-2xl p-2.5 text-xs" />
+          <input value={achievement} onChange={(e) => setAchievement(e.target.value)} placeholder={t('daily.nightReview.achievementPlaceholder')} className="w-full field rounded-2xl p-2.5 text-xs min-h-[44px]" />
         </div>
         <div>
           <label className="text-xs font-bold flex items-center gap-1.5 mb-1.5">
             <Lightbulb className="size-3.5 text-secondary" /> {t('daily.nightReview.lesson')}
           </label>
-          <input value={lesson} onChange={(e) => setLesson(e.target.value)} placeholder={t('daily.nightReview.lessonPlaceholder')} className="w-full field rounded-2xl p-2.5 text-xs" />
+          <input value={lesson} onChange={(e) => setLesson(e.target.value)} placeholder={t('daily.nightReview.lessonPlaceholder')} className="w-full field rounded-2xl p-2.5 text-xs min-h-[44px]" />
         </div>
-        <button onClick={() => setScreensOff(!screensOff)} className={`flex items-center gap-2 w-full p-3 rounded-2xl text-xs font-bold transition-all border ${screensOff ? "bg-water-soft/50 border-water/40 text-water" : "field"}`}>
+        <button onClick={() => setScreensOff(!screensOff)} className={`flex items-center gap-2 w-full p-3 rounded-2xl text-xs font-bold transition-all border min-h-[44px] ${screensOff ? "bg-water-soft/50 border-water/40 text-water" : "field"}`}>
           <Smartphone className="size-4" />
           {screensOff ? t('daily.nightReview.screensOff') : t('daily.nightReview.screensOn')}
         </button>
