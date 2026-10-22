@@ -2375,7 +2375,7 @@ const en: Record<string, string> = {
   'faq.points.searchEn': 'points badges earn rewards achievement milestone',
   'faq.data.searchAr': 'بيانات خصوصية حفظ محلي بدون خوادم',
   'faq.data.searchEn': 'data privacy stored locally device never uploaded no server',
-  'faq.offline.searchAr': 'بدون انترنت يعمل或者فلاين',
+  'faq.offline.searchAr': 'بدون انترنت يعمل اوفلاين اتصال شبكة',
   'faq.offline.searchEn': 'offline no internet connection works without network',
   'faq.pwa.searchAr': 'تطبيق تثبيت هاتف رئيسية شاشة',
   'faq.pwa.searchEn': 'pwa progressive web app install phone home screen shortcut',

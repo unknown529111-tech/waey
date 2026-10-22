@@ -89,7 +89,10 @@ async function open(path, lang) {
 
   await search("en", "streak", "English word");
   await search("en", "pwa", "English acronym");
+  await search("en", "OFFLINE", "English, upper case");
   await search("ar", "نقاط", "Arabic word");
+  await search("ar", "البيانات", "Arabic with the definite article");
+  await search("ar", "أوفلاين", "Arabic with a hamza");
   await search("ar", "streak", "English word on the ARABIC page");
 
   // the empty state

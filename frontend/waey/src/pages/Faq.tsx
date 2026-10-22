@@ -18,6 +18,35 @@ const FAQ_KEYS = [
 
 const SHELL = "mx-auto w-full max-w-[80rem] px-6";
 
+/**
+ * Fold a string to the shape the search actually compares.
+ *
+ * Arabic is searched the way a person says it, and the copy stores the
+ * bare stem: a visitor types "البيانات" where the keyword list says
+ * "بيانات", and "أوفلاين" where it says "اوفلاين". A raw substring test
+ * therefore misses almost every Arabic word someone would type.
+ *
+ * Both sides of the comparison are folded the same way — the definite
+ * article (and the clitic that carries it) is dropped, the hamza, alef,
+ * ya and ta-marbuta variants are unified, and diacritics are removed.
+ * Latin text is untouched by every rule here, so the English page keeps
+ * matching on plain words.
+ */
+const fold = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[\u064B-\u0652\u0670]/g, "") // harakat
+    .replace(/[\u0623\u0625\u0622\u0671]/g, "\u0627") // أ إ آ ٱ -> ا
+    .replace(/\u0649/g, "\u064A") // ى -> ي
+    .replace(/\u0629/g, "\u0647") // ة -> ه
+    .split(/\s+/)
+    .map((word) => {
+      // "ال" on its own, or behind its clitic: وال / فال / بال / كال / لل
+      const stripped = word.replace(/^[وفبكل]?ال(?=[\u0621-\u064A])/, "");
+      return stripped || word;
+    })
+    .join(" ");
+
 const Faq = () => {
   const { lang, t } = useLanguage();
   const [query, setQuery] = useState("");
@@ -34,14 +63,14 @@ const Faq = () => {
   // pull it eagerly: the entry grew from 92 kB to 368 kB and the whole build
   // grew by 209 kB, for a page most visitors never open.
   const items = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = fold(query.trim());
     if (!needle) return [...FAQ_KEYS];
     return FAQ_KEYS.filter((key) =>
       [
         t(`faq.${key}.title`),
         t(`faq.${key}.searchAr`),
         t(`faq.${key}.searchEn`),
-      ].some((text) => text?.toLowerCase().includes(needle)),
+      ].some((text) => fold(text).includes(needle)),
     );
   }, [query, t]);
 
